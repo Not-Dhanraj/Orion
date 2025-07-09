@@ -1,29 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:radarr_flutter/radarr.dart';
+import 'package:radarr_flutter/radarr_flutter.dart';
 import 'package:client/api/api_client.dart';
 import 'package:client/providers/credentials_provider.dart';
 
 final moviesProvider = FutureProvider<List<RadarrMovie>>((ref) async {
   final radarr = ref.watch(radarrProvider);
-  return await radarr.getMovies();
+  return await radarr.movie.getAll();
 });
 
 class RadarrScreen extends ConsumerWidget {
+  const RadarrScreen({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final moviesValue = ref.watch(moviesProvider);
     final credentials = ref.watch(credentialsProvider);
 
-    String getPosterUrl(RadarrMovie movie) {
-      final remotePoster = movie.images?.firstWhere(
-        (image) => image.coverType == 'poster',
-        orElse: () => Image(),
-      );
-      if (remotePoster?.url != null) {
-        return '${credentials?.radarrUrl}${remotePoster?.url}';
+    String? getPosterUrl(RadarrMovie movie) {
+      try {
+        final remotePoster = movie.images?.firstWhere(
+          (image) => image.coverType == 'poster',
+        );
+        if (remotePoster?.remoteUrl != null) {
+          return remotePoster?.remoteUrl;
+        }
+      } catch (e) {
+        // Ignore the error and return null if no poster is found.
       }
-      return '';
+      return null;
     }
 
     return Scaffold(
@@ -38,7 +43,7 @@ class RadarrScreen extends ConsumerWidget {
               return Card(
                 margin: const EdgeInsets.all(8.0),
                 child: ListTile(
-                  leading: posterUrl.isNotEmpty
+                  leading: posterUrl != null
                       ? Image.network(
                           posterUrl,
                           headers: {

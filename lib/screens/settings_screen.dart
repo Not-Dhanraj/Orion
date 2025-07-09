@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:client/providers/credentials_provider.dart';
 
 class SettingsScreen extends ConsumerWidget {
+  const SettingsScreen({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(

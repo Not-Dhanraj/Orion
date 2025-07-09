@@ -1,29 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sonarr_flutter/sonarr.dart';
+import 'package:sonarr_flutter/sonarr_flutter.dart';
 import 'package:client/api/api_client.dart';
 import 'package:client/providers/credentials_provider.dart';
 
 final seriesProvider = FutureProvider<List<SonarrSeries>>((ref) async {
   final sonarr = ref.watch(sonarrProvider);
-  return await sonarr.getSeries();
+  return await sonarr.series.getAllSeries();
 });
 
 class SonarrScreen extends ConsumerWidget {
+  const SonarrScreen({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final seriesValue = ref.watch(seriesProvider);
     final credentials = ref.watch(credentialsProvider);
 
-    String getPosterUrl(SonarrSeries series) {
-      final remotePoster = series.images?.firstWhere(
-        (image) => image.coverType == 'poster',
-        orElse: () => Image(),
-      );
-      if (remotePoster?.url != null) {
-        return '${credentials?.sonarrUrl}${remotePoster?.url}';
+    String? getPosterUrl(SonarrSeries series) {
+      try {
+        final remotePoster = series.images?.firstWhere(
+          (image) => image.coverType == 'poster',
+        );
+        if (remotePoster?.remoteUrl != null) {
+          return remotePoster?.remoteUrl;
+        }
+      } catch (e) {
+        // Ignore the error and return null if no poster is found.
       }
-      return '';
+      return null;
     }
 
     return Scaffold(
@@ -38,7 +43,7 @@ class SonarrScreen extends ConsumerWidget {
               return Card(
                 margin: const EdgeInsets.all(8.0),
                 child: ListTile(
-                  leading: posterUrl.isNotEmpty
+                  leading: posterUrl != null
                       ? Image.network(
                           posterUrl,
                           headers: {

@@ -5,6 +5,8 @@ import 'package:client/models/credentials.dart';
 import 'package:client/providers/credentials_provider.dart';
 
 class AuthScreen extends ConsumerWidget {
+  AuthScreen({super.key});
+
   final _sonarrUrlController = TextEditingController();
   final _sonarrApiKeyController = TextEditingController();
   final _radarrUrlController = TextEditingController();

@@ -380,10 +380,10 @@ packages:
     dependency: "direct main"
     description:
       name: radarr_flutter
-      sha256: f57a01edaa0ee1a945bb41168317dc5d33ebc6901c185825f32f52cef470eb95
+      sha256: "2b59e9180fbe864ebfbe531fa38132ba91d96112f0e028fd6d5429bca947d4a5"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.0+1"
+    version: "3.0.1"
   riverpod:
     dependency: transitive
     description:
@@ -401,10 +401,10 @@ packages:
     dependency: "direct main"
     description:
       name: sonarr_flutter
-      sha256: "2e01385acc8c02072c3e17690b665e75a40bed25f308cc87c34640b7dd72b8e5"
+      sha256: "3f4378c876964a02ccea8fb2f0beb1012b3b76d89de3539dd62c1b7e2365b6e5"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.0"
+    version: "3.0.1"
   source_span:
     dependency: transitive
     description:

@@ -32,8 +32,8 @@ dependencies:
     sdk: flutter
   flutter_riverpod: ^2.5.1
   hooks_riverpod: ^2.5.1
-  sonarr_flutter: ^3.0.0
-  radarr_flutter: ^3.0.0+1
+  sonarr_flutter: ^3.0.1
+  radarr_flutter: ^3.0.1
   flutter_secure_storage: ^9.2.2
   dio: ^5.5.0+1
   intl: ^0.20.2

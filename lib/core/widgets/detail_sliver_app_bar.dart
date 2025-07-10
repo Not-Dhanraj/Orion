@@ -58,8 +58,8 @@ class DetailSliverAppBar extends StatelessWidget {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      theme.primaryColor.withOpacity(0.8),
-                      theme.primaryColor.withOpacity(0.4),
+                      theme.primaryColor.withAlpha(204),
+                      theme.primaryColor.withAlpha(102),
                     ],
                   ),
                 ),
@@ -71,7 +71,7 @@ class DetailSliverAppBar extends StatelessWidget {
                   end: Alignment.bottomCenter,
                   colors: [
                     Colors.transparent,
-                    Colors.black.withOpacity(0.7),
+                    Colors.black.withAlpha(178),
                   ],
                   stops: const [0.3, 1.0],
                 ),

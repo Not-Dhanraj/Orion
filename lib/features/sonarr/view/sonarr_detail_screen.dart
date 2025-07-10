@@ -46,7 +46,7 @@ class SonarrDetailScreen extends ConsumerWidget {
               SliverToBoxAdapter(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.background,
+                    color: theme.colorScheme.surface,
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(24.0),
                       topRight: Radius.circular(24.0),
@@ -60,7 +60,8 @@ class SonarrDetailScreen extends ConsumerWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: OverviewCard(
-                          overview: seriesDetail.overview ??
+                          overview:
+                              seriesDetail.overview ??
                               'No plot summary available.',
                         ),
                       ),

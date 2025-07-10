@@ -1,5 +1,6 @@
 import 'package:client/features/auth/model/credentials.dart';
 import 'package:client/features/auth/provider/credentials_provider.dart';
+import 'package:client/features/home/view/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -110,18 +111,24 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 50),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     final credentials = Credentials(
                       sonarrUrl: _sonarrUrlController.text,
                       sonarrApiKey: _sonarrApiKeyController.text,
                       radarrUrl: _radarrUrlController.text,
                       radarrApiKey: _radarrApiKeyController.text,
                     );
-                    ref
+                    await ref
                         .read(credentialsProvider.notifier)
                         .saveCredentials(credentials);
                     if (_isEditing) {
                       Navigator.pop(context);
+                    } else {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => const HomeScreen(),
+                        ),
+                      );
                     }
                   },
                   child: const Text('Save'),

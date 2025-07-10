@@ -4,17 +4,19 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 final credentialsProvider =
     StateNotifierProvider<CredentialsNotifier, Credentials?>((ref) {
-      return CredentialsNotifier();
-    });
+  return CredentialsNotifier();
+});
 
 class CredentialsNotifier extends StateNotifier<Credentials?> {
-  CredentialsNotifier() : super(null) {
-    _loadCredentials();
-  }
+  CredentialsNotifier() : super(null);
 
   final _storage = const FlutterSecureStorage();
 
-  Future<void> _loadCredentials() async {
+  Future<void> init() async {
+    await _loadCredentials();
+  }
+
+  Future<bool> _loadCredentials() async {
     final sonarrUrl = await _storage.read(key: 'sonarrUrl');
     final sonarrApiKey = await _storage.read(key: 'sonarrApiKey');
     final radarrUrl = await _storage.read(key: 'radarrUrl');
@@ -30,7 +32,9 @@ class CredentialsNotifier extends StateNotifier<Credentials?> {
         radarrUrl: radarrUrl,
         radarrApiKey: radarrApiKey,
       );
+      return true;
     }
+    return false;
   }
 
   Future<void> saveCredentials(Credentials credentials) async {
@@ -46,3 +50,4 @@ class CredentialsNotifier extends StateNotifier<Credentials?> {
     state = null;
   }
 }
+

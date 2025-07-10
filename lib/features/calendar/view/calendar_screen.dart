@@ -1,11 +1,10 @@
 import 'package:client/features/calendar/providers/calendar_provider.dart';
 import 'package:client/features/calendar/widgets/calendar_view.dart';
 import 'package:client/features/calendar/widgets/episode_dialog.dart';
-import 'package:client/features/calendar/widgets/error_view.dart';
+import 'package:client/widgets/error_view.dart';
 import 'package:client/models/calendar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class CalendarScreen extends ConsumerStatefulWidget {
   const CalendarScreen({super.key});
@@ -41,17 +40,17 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    if (!isSameDay(_selectedDay.value, selectedDay)) {
-      setState(() {
-        _selectedDay.value = selectedDay;
-        _focusedDay.value = focusedDay;
-      });
+    // if (!isSameDay(_selectedDay.value, selectedDay)) {
+    setState(() {
+      _selectedDay.value = selectedDay;
+      _focusedDay.value = focusedDay;
+    });
 
-      final episodes = _getEventsForDay(selectedDay);
-      if (episodes.isNotEmpty) {
-        showEpisodesDialog(context, selectedDay, episodes);
-      }
+    final episodes = _getEventsForDay(selectedDay);
+    if (episodes.isNotEmpty) {
+      showEpisodesDialog(context, selectedDay, episodes);
     }
+    // }
   }
 
   @override
@@ -65,7 +64,11 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           _events.clear();
           for (final item in items) {
             if (item.date != null) {
-              final date = DateTime(item.date!.year, item.date!.month, item.date!.day);
+              final date = DateTime(
+                item.date!.year,
+                item.date!.month,
+                item.date!.day,
+              );
               if (_events[date] == null) {
                 _events[date] = [];
               }

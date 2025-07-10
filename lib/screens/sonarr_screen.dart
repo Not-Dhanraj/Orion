@@ -1,3 +1,4 @@
+import 'package:client/widgets/error_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
@@ -32,7 +33,7 @@ class SonarrScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Sonarr')),
+      appBar: AppBar(title: const Text('Sonarr'), centerTitle: true),
       body: seriesValue.when(
         data: (series) {
           return ListView.builder(
@@ -61,7 +62,10 @@ class SonarrScreen extends ConsumerWidget {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(child: Text('Error: $err')),
+        error: (err, stack) => ErrorView(
+          error: err,
+          onRetry: () => ref.refresh(seriesProvider),
+        ),
       ),
     );
   }

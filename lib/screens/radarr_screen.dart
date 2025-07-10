@@ -1,3 +1,4 @@
+import 'package:client/widgets/error_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr_flutter/radarr_flutter.dart';
@@ -32,7 +33,7 @@ class RadarrScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Radarr')),
+      appBar: AppBar(title: const Text('Radarr'), centerTitle: true),
       body: moviesValue.when(
         data: (movies) {
           return ListView.builder(
@@ -62,7 +63,10 @@ class RadarrScreen extends ConsumerWidget {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(child: Text('Error: $err')),
+        error: (err, stack) => ErrorView(
+          error: err,
+          onRetry: () => ref.refresh(moviesProvider),
+        ),
       ),
     );
   }

@@ -10,6 +10,7 @@ class SettingsScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
+        centerTitle: true,
       ),
       body: Center(
         child: ElevatedButton(

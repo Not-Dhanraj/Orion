@@ -14,7 +14,7 @@ class ErrorView extends StatelessWidget {
         children: [
           const Icon(Icons.error, size: 64, color: Colors.red),
           const SizedBox(height: 16),
-          Text('Error loading calendar: $error'),
+          Text('Error: $error'),
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: onRetry,

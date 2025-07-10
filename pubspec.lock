@@ -553,10 +553,10 @@ packages:
     dependency: "direct main"
     description:
       name: sonarr_flutter
-      sha256: "3f4378c876964a02ccea8fb2f0beb1012b3b76d89de3539dd62c1b7e2365b6e5"
+      sha256: "9239a32cfbda047515ca9e13444cd65456d3c121dc8e4da1a5225e3750a5cf43"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.1"
+    version: "3.0.3"
   source_span:
     dependency: transitive
     description:

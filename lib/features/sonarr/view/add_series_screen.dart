@@ -1,5 +1,6 @@
 import 'package:client/core/api/api_client.dart';
 import 'package:client/core/widgets/media_item_card.dart';
+import 'package:client/features/sonarr/view/add_series_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
@@ -45,55 +46,21 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
   }
 
   Future<void> _addSeries(SonarrSeriesLookup series) async {
-    final sonarr = ref.read(sonarrProvider);
-    // I need to get the quality profile and root folder path
-    // For now, I will use hardcoded values.
-    // I will need to implement a way to select these later.
-    final rootFolderPath = await _getRootFolderPath();
-    if (rootFolderPath != null) {
-      try {
-        //qualitylistprofile
-        // sonarr.profile.getQualityProfiles()
-        //language profiles
-        // sonarr.profile.getLanguageProfiles();
-        await sonarr.series.addSeries(
-          tvdbId: series.tvdbId!,
+    // Navigate to the details screen
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddSeriesDetailsScreen(series: series),
+      ),
+    );
 
-          // Get the list and get from user
-          qualityProfileId: 1,
-          title: series.title!,
-          images: series.images!,
-          seasons: series.seasons!,
-          seriesType: series.seriesType!,
-          languageProfileId: series.languageProfileId!,
-          rootFolderPath: rootFolderPath,
-        );
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${series.title} added successfully')),
-        );
-      } catch (e) {
-        print(e);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to add ${series.title}')),
-        );
-      }
+    // If we got a result back, it means the series was added successfully
+    if (result == true) {
+      // Refresh the search results
+      setState(() {
+        _searchResults = [];
+      });
     }
-  }
-
-  Future<String?> _getRootFolderPath() async {
-    final sonarr = ref.read(sonarrProvider);
-    try {
-      final rootFolders = await sonarr.rootFolder.getRootFolders();
-      if (rootFolders.isNotEmpty) {
-        return rootFolders.first.path;
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Failed to get root folder: $e')));
-    }
-    return null;
   }
 
   @override
@@ -127,6 +94,7 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
                 ),
+                padding: const EdgeInsets.all(8.0),
                 itemCount: _searchResults.length,
                 itemBuilder: (context, index) {
                   final series = _searchResults[index];

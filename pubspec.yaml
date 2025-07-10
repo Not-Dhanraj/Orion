@@ -41,7 +41,9 @@ dependencies:
   intl: ^0.20.2
   radarr_flutter: ^3.0.1
   shared_preferences: ^2.5.3
-  sonarr_flutter: ^3.0.3
+  sonarr_flutter:
+    git:
+      url: https://github.com/Not-Dhanraj/sonarr_flutter.git
   table_calendar: ^3.2.0
 
 dependency_overrides:

@@ -552,10 +552,11 @@ packages:
   sonarr_flutter:
     dependency: "direct main"
     description:
-      name: sonarr_flutter
-      sha256: "9239a32cfbda047515ca9e13444cd65456d3c121dc8e4da1a5225e3750a5cf43"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: "919cba264311a9a43469e704352d2b1cab5fc1a1"
+      url: "https://github.com/Not-Dhanraj/sonarr_flutter.git"
+    source: git
     version: "3.0.3"
   source_span:
     dependency: transitive

@@ -1,82 +1,174 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:client/core/widgets/error_view.dart';
+import 'package:client/core/widgets/info_grid.dart';
+import 'package:client/core/widgets/section_title.dart';
+import 'package:client/features/radarr/provider/movie_detail_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr_flutter/radarr_flutter.dart';
 
-class RadarrDetailScreen extends StatelessWidget {
+class RadarrDetailScreen extends ConsumerWidget {
   final RadarrMovie movie;
 
   const RadarrDetailScreen({super.key, required this.movie});
 
-  String? _getImageUrl(RadarrMovie movie) {
+  String? _getImageUrl(RadarrMovie movie, {String coverType = 'poster'}) {
     try {
-      final fanart = movie.images?.firstWhere(
-        (image) => image.coverType == 'fanart',
+      final image = movie.images?.firstWhere(
+        (image) => image.coverType == coverType,
       );
-      if (fanart?.remoteUrl != null) {
-        return fanart?.remoteUrl;
-      }
+      return image?.remoteUrl;
     } catch (e) {
-      // Ignore and try poster
-    }
-    try {
-      final poster = movie.images?.firstWhere(
-        (image) => image.coverType == 'poster',
-      );
-      if (poster?.remoteUrl != null) {
-        return poster?.remoteUrl;
-      }
-    } catch (e) {
-      // Ignore
+      // Ignore if not found
     }
     return null;
   }
 
   @override
-  Widget build(BuildContext context) {
-    final imageUrl = _getImageUrl(movie);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final movieDetailValue = ref.watch(movieDetailProvider(movie.id!));
+    final theme = Theme.of(context);
 
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            expandedHeight: 200.0,
-            floating: false,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              title: Text(
-                movie.title ?? 'Unknown Title',
-                style: const TextStyle(
-                  shadows: [Shadow(blurRadius: 8, color: Colors.black)],
+    return movieDetailValue.when(
+      data: (movieDetails) {
+        final movieDetail = movieDetails.movie;
+        final details = movieDetails.imdbDetails;
+        final fanartUrl = _getImageUrl(movieDetail, coverType: 'fanart');
+        final posterUrl = _getImageUrl(movieDetail, coverType: 'poster');
+
+        return Scaffold(
+          body: CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                expandedHeight: 200.0,
+                pinned: true,
+                flexibleSpace: FlexibleSpaceBar(
+                  title: Text(
+                    movieDetail.title ?? 'Details',
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      color: Colors.white,
+                      shadows: [
+                        const Shadow(blurRadius: 4, color: Colors.black54),
+                      ],
+                    ),
+                  ),
+                  background: fanartUrl != null
+                      ? CachedNetworkImage(
+                          imageUrl: fanartUrl,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) =>
+                              Container(color: Colors.grey[800]),
+                          errorWidget: (context, url, error) =>
+                              Container(color: Colors.grey[800]),
+                        )
+                      : Container(color: Colors.grey[800]),
                 ),
               ),
-              background: imageUrl != null
-                  ? CachedNetworkImage(imageUrl: imageUrl, fit: BoxFit.cover)
-                  : Container(color: Colors.grey),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Overview',
-                    style: Theme.of(context).textTheme.headlineSmall,
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (posterUrl != null)
+                            SizedBox(
+                              width: 120,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: CachedNetworkImage(
+                                  imageUrl: posterUrl,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          const SizedBox(width: 16.0),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  details['title'] ?? movieDetail.title,
+                                  style: theme.textTheme.headlineSmall
+                                      ?.copyWith(fontWeight: FontWeight.bold),
+                                ),
+                                if (details['originalTitle'] != null &&
+                                    details['originalTitle'] !=
+                                        details['title'])
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 4.0),
+                                    child: Text(
+                                      details['originalTitle'],
+                                      style: theme.textTheme.titleMedium
+                                          ?.copyWith(
+                                            fontStyle: FontStyle.italic,
+                                          ),
+                                    ),
+                                  )
+                                else
+                                  Text(
+                                    'No Original Title Available',
+                                    style: theme.textTheme.titleMedium
+                                        ?.copyWith(fontStyle: FontStyle.italic),
+                                  ),
+                                const SizedBox(height: 8.0),
+                                Text(
+                                  '${movieDetail.year} • ${details['genres']?.join(', ')}',
+                                  style: theme.textTheme.bodyMedium,
+                                ),
+                                const SizedBox(height: 8.0),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 4.0),
+                                    Text(
+                                      '${details['ratings']?['average'] ?? 'N/A'} / 10 (${details['ratings']?['count'] ?? 0} votes)',
+                                      style: theme.textTheme.bodyLarge,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 24.0),
+                      const SectionTitle('Plot'),
+                      const SizedBox(height: 8.0),
+                      Text(
+                        details['plot'] ?? 'No plot summary available.',
+                        style: theme.textTheme.bodyLarge,
+                      ),
+                      const SizedBox(height: 24.0),
+                      InfoGrid({
+                        'Status':
+                            movieDetail.status?.name?.toString() ?? 'Unknown',
+                        'IMDb ID': movieDetail.imdbId,
+                        'ID': movieDetail.id?.toString(),
+                        'TMDB ID': movieDetail.tmdbId?.toString(),
+                      }),
+                      const SizedBox(height: 24.0),
+                    ],
                   ),
-                  const SizedBox(height: 8),
-                  Text(movie.overview ?? 'No overview available.'),
-                  const SizedBox(height: 16),
-                  Text('Status: ${movie.status?.name ?? 'Unknown'}'),
-                  const SizedBox(height: 8),
-                  Text('Year: ${movie.year}'),
-                  const SizedBox(height: 8),
-                  Text('Monitored: ${movie.monitored == true ? 'Yes' : 'No'}'),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
+        );
+      },
+      loading: () =>
+          const Scaffold(body: Center(child: CircularProgressIndicator())),
+      error: (err, stack) => Scaffold(
+        body: ErrorView(
+          error: err.toString(),
+          onRetry: () => ref.refresh(movieDetailProvider(movie.id!)),
+        ),
       ),
     );
   }

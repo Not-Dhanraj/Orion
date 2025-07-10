@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/core/widgets/error_view.dart';
+import 'package:client/core/widgets/info_grid.dart';
+import 'package:client/core/widgets/section_title.dart';
 import 'package:client/features/sonarr/provider/series_detail_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -137,14 +139,19 @@ class SonarrDetailScreen extends ConsumerWidget {
                         ],
                       ),
                       const SizedBox(height: 24.0),
-                      _buildSectionTitle(context, 'Plot'),
+                      const SectionTitle('Plot'),
                       const SizedBox(height: 8.0),
                       Text(
                         details['plot'] ?? 'No plot summary available.',
                         style: theme.textTheme.bodyLarge,
                       ),
                       const SizedBox(height: 24.0),
-                      _buildInfoGrid(context, seriesDetail, details),
+                      InfoGrid({
+                        'Status': seriesDetail.status,
+                        'IMDb ID': seriesDetail.imdbId,
+                        'ID': seriesDetail.id?.toString(),
+                        'TVDB ID': seriesDetail.tvdbId?.toString(),
+                      }),
                       const SizedBox(height: 24.0),
                     ],
                   ),
@@ -162,65 +169,6 @@ class SonarrDetailScreen extends ConsumerWidget {
           onRetry: () => ref.refresh(seriesDetailProvider(series.id!)),
         ),
       ),
-    );
-  }
-
-  Widget _buildSectionTitle(BuildContext context, String title) {
-    return Text(
-      title,
-      style: Theme.of(
-        context,
-      ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-    );
-  }
-
-  Widget _buildInfoGrid(
-    BuildContext context,
-    SonarrSeries series,
-    dynamic details,
-  ) {
-    final theme = Theme.of(context);
-    final items = {
-      'Status': series.status,
-      'IMDb ID': series.imdbId,
-      'ID': series.id?.toString(),
-      'TVDB ID': series.tvdbId?.toString(),
-    };
-
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 2.85,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
-      ),
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        final key = items.keys.elementAt(index);
-        final value = items[key] ?? 'N/A';
-        return Card(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(key, style: theme.textTheme.labelSmall),
-                const SizedBox(height: 4),
-                Text(
-                  value,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 }

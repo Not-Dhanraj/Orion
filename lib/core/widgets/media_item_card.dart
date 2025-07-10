@@ -5,14 +5,12 @@ class MediaItemCard extends StatelessWidget {
   final String title;
   final String status;
   final String? posterUrl;
-  final Map<String, String>? headers;
 
   const MediaItemCard({
     super.key,
     required this.title,
     required this.status,
     this.posterUrl,
-    this.headers,
   });
 
   @override
@@ -26,7 +24,6 @@ class MediaItemCard extends StatelessWidget {
           if (posterUrl != null)
             CachedNetworkImage(
               imageUrl: posterUrl!,
-              httpHeaders: headers,
               fit: BoxFit.cover,
               placeholder: (context, url) =>
                   const Center(child: CircularProgressIndicator()),

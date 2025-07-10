@@ -1,7 +1,7 @@
 import 'package:client/core/api/api_client.dart';
 import 'package:client/core/widgets/error_view.dart';
 import 'package:client/core/widgets/media_item_card.dart';
-import 'package:client/features/auth/provider/credentials_provider.dart';
+import 'package:client/features/radarr/view/radarr_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr_flutter/radarr_flutter.dart';
@@ -17,7 +17,6 @@ class RadarrScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final moviesValue = ref.watch(moviesProvider);
-    final credentials = ref.watch(credentialsProvider);
 
     String? getPosterUrl(RadarrMovie movie) {
       try {
@@ -49,13 +48,20 @@ class RadarrScreen extends ConsumerWidget {
             itemBuilder: (context, index) {
               final m = movies[index];
               final posterUrl = getPosterUrl(m);
-              return MediaItemCard(
-                title: m.title ?? 'No Title',
-                status: m.status?.name ?? 'No Status',
-                posterUrl: posterUrl,
-                headers: {
-                  'X-Api-Key': credentials?.radarrApiKey ?? '',
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RadarrDetailScreen(movie: m),
+                    ),
+                  );
                 },
+                child: MediaItemCard(
+                  title: m.title ?? 'No Title',
+                  status: m.status?.name ?? 'No Status',
+                  posterUrl: posterUrl,
+                ),
               );
             },
           );

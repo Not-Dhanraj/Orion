@@ -1,6 +1,7 @@
 import 'package:client/core/api/api_client.dart';
 import 'package:client/core/widgets/error_view.dart';
 import 'package:client/core/widgets/media_item_card.dart';
+import 'package:client/features/sonarr/view/sonarr_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
@@ -47,10 +48,20 @@ class SonarrScreen extends ConsumerWidget {
             itemBuilder: (context, index) {
               final s = series[index];
               final posterUrl = getPosterUrl(s);
-              return MediaItemCard(
-                title: s.title ?? 'Unknown Title',
-                status: s.status?.toString() ?? 'Unknown Status',
-                posterUrl: posterUrl,
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SonarrDetailScreen(series: s),
+                    ),
+                  );
+                },
+                child: MediaItemCard(
+                  title: s.title ?? 'Unknown Title',
+                  status: s.status?.toString() ?? 'Unknown Status',
+                  posterUrl: posterUrl,
+                ),
               );
             },
           );

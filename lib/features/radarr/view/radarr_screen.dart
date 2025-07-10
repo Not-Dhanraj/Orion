@@ -1,5 +1,6 @@
 import 'package:client/core/api/api_client.dart';
 import 'package:client/core/widgets/error_view.dart';
+import 'package:client/core/widgets/media_item_card.dart';
 import 'package:client/features/auth/provider/credentials_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,28 +37,25 @@ class RadarrScreen extends ConsumerWidget {
       appBar: AppBar(title: const Text('Radarr'), centerTitle: true),
       body: moviesValue.when(
         data: (movies) {
-          return ListView.builder(
+          return GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.65,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+            ),
+            padding: const EdgeInsets.all(8),
             itemCount: movies.length,
             itemBuilder: (context, index) {
               final m = movies[index];
               final posterUrl = getPosterUrl(m);
-              return Card(
-                margin: const EdgeInsets.all(8.0),
-                child: ListTile(
-                  leading: posterUrl != null
-                      ? Image.network(
-                          posterUrl,
-                          headers: {
-                            'X-Api-Key': credentials?.radarrApiKey ?? '',
-                          },
-                          width: 50,
-                          fit: BoxFit.cover,
-                        )
-                      : const Icon(Icons.movie),
-                  title: Text(m.title ?? 'No Title'),
-                  //TODO
-                  subtitle: Text(m.status?.name ?? 'No Status'),
-                ),
+              return MediaItemCard(
+                title: m.title ?? 'No Title',
+                status: m.status?.name ?? 'No Status',
+                posterUrl: posterUrl,
+                headers: {
+                  'X-Api-Key': credentials?.radarrApiKey ?? '',
+                },
               );
             },
           );

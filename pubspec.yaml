@@ -38,6 +38,7 @@ dependencies:
   flutter_secure_storage: ^9.2.2
   flutter_svg: ^2.2.0
   hooks_riverpod: ^2.5.1
+  imdb_scraper: ^0.1.0
   intl: ^0.20.2
   radarr_flutter: ^3.0.1
   shared_preferences: ^2.5.3

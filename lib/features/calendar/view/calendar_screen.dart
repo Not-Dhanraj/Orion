@@ -1,8 +1,8 @@
+import 'package:client/core/widgets/error_view.dart';
+import 'package:client/features/calendar/models/calendar_item.dart';
 import 'package:client/features/calendar/providers/calendar_provider.dart';
 import 'package:client/features/calendar/widgets/calendar_view.dart';
 import 'package:client/features/calendar/widgets/episode_dialog.dart';
-import 'package:client/widgets/error_view.dart';
-import 'package:client/models/calendar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

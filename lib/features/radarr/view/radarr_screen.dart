@@ -1,9 +1,9 @@
-import 'package:client/widgets/error_view.dart';
+import 'package:client/core/api/api_client.dart';
+import 'package:client/core/widgets/error_view.dart';
+import 'package:client/features/auth/provider/credentials_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr_flutter/radarr_flutter.dart';
-import 'package:client/api/api_client.dart';
-import 'package:client/providers/credentials_provider.dart';
 
 final moviesProvider = FutureProvider<List<RadarrMovie>>((ref) async {
   final radarr = ref.watch(radarrProvider);
@@ -63,10 +63,8 @@ class RadarrScreen extends ConsumerWidget {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => ErrorView(
-          error: err,
-          onRetry: () => ref.refresh(moviesProvider),
-        ),
+        error: (err, stack) =>
+            ErrorView(error: err, onRetry: () => ref.refresh(moviesProvider)),
       ),
     );
   }

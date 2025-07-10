@@ -1,8 +1,8 @@
+import 'package:client/features/radarr/view/radarr_screen.dart';
+import 'package:client/features/settings/view/settings_screen.dart';
+import 'package:client/features/sonarr/view/sonarr_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:client/screens/sonarr_screen.dart';
-import 'package:client/screens/radarr_screen.dart';
 import 'package:client/features/calendar/view/calendar_screen.dart';
-import 'package:client/screens/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -30,19 +30,11 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
+      body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.tv),
-            label: 'Sonarr',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.movie),
-            label: 'Radarr',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.tv), label: 'Sonarr'),
+          BottomNavigationBarItem(icon: Icon(Icons.movie), label: 'Radarr'),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today),
             label: 'Calendar',

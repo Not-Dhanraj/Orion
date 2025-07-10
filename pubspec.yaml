@@ -30,6 +30,7 @@ environment:
 dependencies:
   cupertino_icons: ^1.0.8
   dio: ^5.5.0+1
+  flex_color_scheme: ^8.2.0
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.5.1
@@ -38,6 +39,7 @@ dependencies:
   hooks_riverpod: ^2.5.1
   intl: ^0.20.2
   radarr_flutter: ^3.0.1
+  shared_preferences: ^2.5.3
   sonarr_flutter: ^3.0.1
   table_calendar: ^3.2.0
 

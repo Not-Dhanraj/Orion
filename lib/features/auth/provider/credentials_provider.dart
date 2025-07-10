@@ -1,10 +1,11 @@
+import 'package:client/features/auth/model/credentials.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:client/models/credentials.dart';
 
-final credentialsProvider = StateNotifierProvider<CredentialsNotifier, Credentials?>((ref) {
-  return CredentialsNotifier();
-});
+final credentialsProvider =
+    StateNotifierProvider<CredentialsNotifier, Credentials?>((ref) {
+      return CredentialsNotifier();
+    });
 
 class CredentialsNotifier extends StateNotifier<Credentials?> {
   CredentialsNotifier() : super(null) {
@@ -19,7 +20,10 @@ class CredentialsNotifier extends StateNotifier<Credentials?> {
     final radarrUrl = await _storage.read(key: 'radarrUrl');
     final radarrApiKey = await _storage.read(key: 'radarrApiKey');
 
-    if (sonarrUrl != null && sonarrApiKey != null && radarrUrl != null && radarrApiKey != null) {
+    if (sonarrUrl != null &&
+        sonarrApiKey != null &&
+        radarrUrl != null &&
+        radarrApiKey != null) {
       state = Credentials(
         sonarrUrl: sonarrUrl,
         sonarrApiKey: sonarrApiKey,

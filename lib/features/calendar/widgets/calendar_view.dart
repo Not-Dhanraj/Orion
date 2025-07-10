@@ -1,4 +1,4 @@
-import 'package:client/models/calendar_item.dart';
+import 'package:client/features/calendar/models/calendar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -75,14 +75,8 @@ class CalendarView extends StatelessWidget {
         fontSize: 18,
         fontWeight: FontWeight.bold,
       ),
-      leftChevronIcon: Icon(
-        Icons.chevron_left,
-        color: theme.primaryColor,
-      ),
-      rightChevronIcon: Icon(
-        Icons.chevron_right,
-        color: theme.primaryColor,
-      ),
+      leftChevronIcon: Icon(Icons.chevron_left, color: theme.primaryColor),
+      rightChevronIcon: Icon(Icons.chevron_right, color: theme.primaryColor),
     );
   }
 }

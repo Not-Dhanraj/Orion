@@ -1,15 +1,13 @@
+import 'package:client/features/auth/provider/credentials_provider.dart';
+import 'package:client/features/auth/view/auth_screen.dart';
+import 'package:client/features/home/view/home_screen.dart';
+import 'package:client/features/settings/provider/theme_provider.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:client/providers/credentials_provider.dart';
-import 'package:client/screens/auth_screen.dart';
-import 'package:client/screens/home_screen.dart';
 
 void main() {
-  runApp(
-    const ProviderScope(
-      child: MyApp(),
-    ),
-  );
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends ConsumerWidget {
@@ -18,15 +16,14 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final credentials = ref.watch(credentialsProvider);
+    final themeSettings = ref.watch(themeProvider);
 
     return MaterialApp(
-      title: 'Arr Client',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: credentials == null ? AuthScreen() : HomeScreen(),
+      title: 'arr',
+      theme: FlexThemeData.light(scheme: themeSettings.flexScheme),
+      darkTheme: FlexThemeData.dark(scheme: themeSettings.flexScheme),
+      themeMode: themeSettings.themeMode,
+      home: credentials == null ? AuthScreen() : const HomeScreen(),
     );
   }
 }
-

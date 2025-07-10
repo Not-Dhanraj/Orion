@@ -33,10 +33,7 @@ class SonarrDetailScreen extends ConsumerWidget {
       backgroundColor: theme.colorScheme.surface,
       body: CustomScrollView(
         slivers: [
-          DetailSliverAppBar(
-            title: series.title ?? 'Details',
-            fanartUrl: fanartUrl,
-          ),
+          DetailSliverAppBar(title: 'Details', fanartUrl: fanartUrl),
           SliverToBoxAdapter(
             child: Container(
               decoration: BoxDecoration(

@@ -1,86 +1,62 @@
 import 'package:client/core/widgets/error_view.dart';
 import 'package:client/features/calendar/models/calendar_item.dart';
 import 'package:client/features/calendar/providers/calendar_provider.dart';
+import 'package:client/features/calendar/providers/calendar_screen_providers.dart';
 import 'package:client/features/calendar/widgets/calendar_view.dart';
 import 'package:client/features/calendar/widgets/episode_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CalendarScreen extends ConsumerStatefulWidget {
+class CalendarScreen extends ConsumerWidget {
   const CalendarScreen({super.key});
 
   @override
-  ConsumerState<CalendarScreen> createState() => _CalendarScreenState();
-}
-
-class _CalendarScreenState extends ConsumerState<CalendarScreen> {
-  late final ValueNotifier<DateTime> _selectedDay;
-  late final ValueNotifier<DateTime> _focusedDay;
-  late final Map<DateTime, List<CalendarItem>> _events;
-
-  @override
-  void initState() {
-    super.initState();
-    final today = DateTime.now();
-    _selectedDay = ValueNotifier(today);
-    _focusedDay = ValueNotifier(today);
-    _events = {};
-  }
-
-  @override
-  void dispose() {
-    _selectedDay.dispose();
-    _focusedDay.dispose();
-    super.dispose();
-  }
-
-  List<CalendarItem> _getEventsForDay(DateTime day) {
-    final normalizedDay = DateTime(day.year, day.month, day.day);
-    return _events[normalizedDay] ?? [];
-  }
-
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    // if (!isSameDay(_selectedDay.value, selectedDay)) {
-    setState(() {
-      _selectedDay.value = selectedDay;
-      _focusedDay.value = focusedDay;
-    });
-
-    final episodes = _getEventsForDay(selectedDay);
-    if (episodes.isNotEmpty) {
-      showEpisodesDialog(context, selectedDay, episodes);
-    }
-    // }
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final calendar = ref.watch(sonarrCalendarProvider);
+    final selectedDay = ref.watch(selectedDayProvider);
+    final focusedDay = ref.watch(focusedDayProvider);
+
+    List<CalendarItem> getEventsForDay(DateTime day) {
+      final normalizedDay = DateTime(day.year, day.month, day.day);
+      final events = ref.watch(sonarrCalendarProvider).asData?.value ?? [];
+      final eventMap = <DateTime, List<CalendarItem>>{};
+      for (final item in events) {
+        if (item.date != null) {
+          final date = DateTime(
+            item.date!.year,
+            item.date!.month,
+            item.date!.day,
+          );
+          if (eventMap[date] == null) {
+            eventMap[date] = [];
+          }
+          eventMap[date]!.add(item);
+        }
+      }
+      return eventMap[normalizedDay] ?? [];
+    }
+
+    void onDaySelected(DateTime newSelectedDay, DateTime newFocusedDay) {
+      ref.read(selectedDayProvider.notifier).state = newSelectedDay;
+      ref.read(focusedDayProvider.notifier).state = newFocusedDay;
+
+      final episodes = getEventsForDay(newSelectedDay);
+      if (episodes.isNotEmpty) {
+        showEpisodesDialog(context, newSelectedDay, episodes);
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(title: const Text('Calendar'), centerTitle: true),
       body: calendar.when(
         data: (items) {
-          _events.clear();
-          for (final item in items) {
-            if (item.date != null) {
-              final date = DateTime(
-                item.date!.year,
-                item.date!.month,
-                item.date!.day,
-              );
-              if (_events[date] == null) {
-                _events[date] = [];
-              }
-              _events[date]!.add(item);
-            }
-          }
           return CalendarView(
-            focusedDay: _focusedDay,
-            selectedDay: _selectedDay,
-            getEventsForDay: _getEventsForDay,
-            onDaySelected: _onDaySelected,
-            onPageChanged: (focusedDay) => _focusedDay.value = focusedDay,
+            focusedDay: focusedDay,
+            selectedDay: selectedDay,
+            getEventsForDay: getEventsForDay,
+            onDaySelected: onDaySelected,
+            onPageChanged: (newFocusedDay) =>
+                ref.read(focusedDayProvider.notifier).state = newFocusedDay,
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),

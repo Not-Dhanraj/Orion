@@ -1,18 +1,13 @@
+import 'package:client/features/home/provider/home_providers.dart';
 import 'package:client/features/radarr/view/radarr_screen.dart';
 import 'package:client/features/settings/view/settings_screen.dart';
 import 'package:client/features/sonarr/view/sonarr_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/calendar/view/calendar_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
-
-  @override
-  HomeScreenState createState() => HomeScreenState();
-}
-
-class HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
 
   static final List<Widget> _widgetOptions = <Widget>[
     SonarrScreen(),
@@ -21,16 +16,12 @@ class HomeScreenState extends State<HomeScreen> {
     SettingsScreen(),
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedIndex = ref.watch(homeScreenIndexProvider);
+
     return Scaffold(
-      body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
+      body: Center(child: _widgetOptions.elementAt(selectedIndex)),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.tv), label: 'Sonarr'),
@@ -44,10 +35,11 @@ class HomeScreenState extends State<HomeScreen> {
             label: 'Settings',
           ),
         ],
-        currentIndex: _selectedIndex,
+        currentIndex: selectedIndex,
         selectedItemColor: Theme.of(context).colorScheme.primary,
         unselectedItemColor: Colors.grey,
-        onTap: _onItemTapped,
+        onTap: (index) =>
+            ref.read(homeScreenIndexProvider.notifier).state = index,
       ),
     );
   }

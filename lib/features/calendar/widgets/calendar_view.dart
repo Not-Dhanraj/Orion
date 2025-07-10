@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarView extends StatelessWidget {
-  final ValueNotifier<DateTime> focusedDay;
-  final ValueNotifier<DateTime> selectedDay;
+  final DateTime focusedDay;
+  final DateTime selectedDay;
   final List<CalendarItem> Function(DateTime) getEventsForDay;
   final void Function(DateTime, DateTime) onDaySelected;
   final void Function(DateTime) onPageChanged;
@@ -20,28 +20,18 @@ class CalendarView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<DateTime>(
-      valueListenable: focusedDay,
-      builder: (context, focusedDayValue, _) {
-        return ValueListenableBuilder<DateTime>(
-          valueListenable: selectedDay,
-          builder: (context, selectedDayValue, _) {
-            return TableCalendar<CalendarItem>(
-              firstDay: DateTime.utc(2020, 1, 1),
-              lastDay: DateTime.utc(2030, 12, 31),
-              focusedDay: focusedDayValue,
-              calendarFormat: CalendarFormat.month,
-              eventLoader: getEventsForDay,
-              startingDayOfWeek: StartingDayOfWeek.monday,
-              calendarStyle: _calendarStyle(context),
-              headerStyle: _headerStyle(context),
-              selectedDayPredicate: (day) => isSameDay(selectedDayValue, day),
-              onDaySelected: onDaySelected,
-              onPageChanged: onPageChanged,
-            );
-          },
-        );
-      },
+    return TableCalendar<CalendarItem>(
+      firstDay: DateTime.utc(2020, 1, 1),
+      lastDay: DateTime.utc(2030, 12, 31),
+      focusedDay: focusedDay,
+      calendarFormat: CalendarFormat.month,
+      eventLoader: getEventsForDay,
+      startingDayOfWeek: StartingDayOfWeek.monday,
+      calendarStyle: _calendarStyle(context),
+      headerStyle: _headerStyle(context),
+      selectedDayPredicate: (day) => isSameDay(selectedDay, day),
+      onDaySelected: onDaySelected,
+      onPageChanged: onPageChanged,
     );
   }
 

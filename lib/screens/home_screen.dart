@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:client/screens/sonarr_screen.dart';
 import 'package:client/screens/radarr_screen.dart';
-import 'package:client/screens/calendar_screen.dart';
+import 'package:client/features/calendar/view/calendar_screen.dart';
 import 'package:client/screens/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {

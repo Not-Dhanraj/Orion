@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr_flutter/radarr_flutter.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';

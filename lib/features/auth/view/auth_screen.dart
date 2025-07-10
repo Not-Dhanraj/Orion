@@ -112,6 +112,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                     minimumSize: const Size(double.infinity, 50),
                   ),
                   onPressed: () async {
+                    final navigator = Navigator.of(context);
                     final credentials = Credentials(
                       sonarrUrl: _sonarrUrlController.text,
                       sonarrApiKey: _sonarrApiKeyController.text,
@@ -122,9 +123,9 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                         .read(credentialsProvider.notifier)
                         .saveCredentials(credentials);
                     if (_isEditing) {
-                      Navigator.pop(context);
+                      navigator.pop();
                     } else {
-                      Navigator.of(context).pushReplacement(
+                      navigator.pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => const HomeScreen(),
                         ),

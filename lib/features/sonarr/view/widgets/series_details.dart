@@ -28,7 +28,7 @@ class SeriesDetails extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12.0),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
+                          color: Colors.black.withAlpha((255 * 0.3).round()),
                           blurRadius: 8.0,
                           offset: const Offset(0, 4),
                         ),
@@ -75,7 +75,7 @@ class SeriesDetails extends StatelessWidget {
                           vertical: 4.0,
                         ),
                         decoration: BoxDecoration(
-                          color: theme.colorScheme.surfaceVariant,
+                          color: theme.colorScheme.surfaceContainerHighest,
                           borderRadius: BorderRadius.circular(
                             8.0,
                           ),

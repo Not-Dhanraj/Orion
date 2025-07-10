@@ -1,7 +1,5 @@
 import 'package:client/core/widgets/detail_sliver_app_bar.dart';
-import 'package:client/core/widgets/error_view.dart';
 import 'package:client/core/widgets/overview_card.dart';
-import 'package:client/features/sonarr/provider/series_detail_provider.dart';
 import 'package:client/features/sonarr/view/widgets/series_details.dart';
 import 'package:client/features/sonarr/view/widgets/series_information_card.dart';
 import 'package:flutter/material.dart';
@@ -27,74 +25,49 @@ class SonarrDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final seriesDetailValue = ref.watch(seriesDetailProvider(series.id!));
-    final theme = Theme.of(context);
+    var theme = Theme.of(context);
+    final fanartUrl = _getImageUrl(series, coverType: 'fanart');
+    final posterUrl = _getImageUrl(series, coverType: 'poster');
 
-    return seriesDetailValue.when(
-      data: (seriesDetail) {
-        final fanartUrl = _getImageUrl(seriesDetail, coverType: 'fanart');
-        final posterUrl = _getImageUrl(seriesDetail, coverType: 'poster');
-
-        return Scaffold(
-          backgroundColor: theme.colorScheme.surface,
-          body: CustomScrollView(
-            slivers: [
-              DetailSliverAppBar(
-                title: seriesDetail.title ?? 'Details',
-                fanartUrl: fanartUrl,
-              ),
-              SliverToBoxAdapter(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.surface,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(24.0),
-                      topRight: Radius.circular(24.0),
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SeriesDetails(series: seriesDetail, posterUrl: posterUrl),
-                      const SizedBox(height: 24.0),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: OverviewCard(
-                          overview:
-                              seriesDetail.overview ??
-                              'No plot summary available.',
-                        ),
-                      ),
-                      const SizedBox(height: 24.0),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: SeriesInformationCard(series: seriesDetail),
-                      ),
-                      const SizedBox(height: 24.0),
-                    ],
-                  ),
+    return Scaffold(
+      backgroundColor: theme.colorScheme.surface,
+      body: CustomScrollView(
+        slivers: [
+          DetailSliverAppBar(
+            title: series.title ?? 'Details',
+            fanartUrl: fanartUrl,
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surface,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(24.0),
+                  topRight: Radius.circular(24.0),
                 ),
               ),
-            ],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SeriesDetails(series: series, posterUrl: posterUrl),
+                  const SizedBox(height: 24.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: OverviewCard(
+                      overview: series.overview ?? 'No plot summary available.',
+                    ),
+                  ),
+                  const SizedBox(height: 24.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: SeriesInformationCard(series: series),
+                  ),
+                  const SizedBox(height: 24.0),
+                ],
+              ),
+            ),
           ),
-          floatingActionButton: FloatingActionButton.extended(
-            onPressed: () {
-              ref.invalidate(seriesDetailProvider(series.id!));
-            },
-            icon: const Icon(Icons.refresh),
-            label: const Text('Refresh'),
-            backgroundColor: theme.primaryColor,
-            foregroundColor: theme.colorScheme.onPrimary,
-          ),
-        );
-      },
-      loading: () =>
-          const Scaffold(body: Center(child: CircularProgressIndicator())),
-      error: (err, stack) => Scaffold(
-        body: ErrorView(
-          error: err.toString(),
-          onRetry: () => ref.refresh(seriesDetailProvider(series.id!)),
-        ),
+        ],
       ),
     );
   }

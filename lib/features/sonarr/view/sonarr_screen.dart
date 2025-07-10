@@ -48,19 +48,22 @@ class SonarrScreen extends ConsumerWidget {
             itemBuilder: (context, index) {
               final s = series[index];
               final posterUrl = getPosterUrl(s);
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SonarrDetailScreen(series: s),
-                    ),
-                  );
-                },
-                child: MediaItemCard(
-                  title: s.title ?? 'Unknown Title',
-                  status: s.status?.toString() ?? 'Unknown Status',
-                  posterUrl: posterUrl,
+              return Hero(
+                tag: s.id!,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SonarrDetailScreen(series: s),
+                      ),
+                    );
+                  },
+                  child: MediaItemCard(
+                    title: s.title ?? 'Unknown Title',
+                    status: s.status?.toString() ?? 'Unknown Status',
+                    posterUrl: posterUrl,
+                  ),
                 ),
               );
             },

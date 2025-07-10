@@ -38,9 +38,7 @@ class DetailSliverAppBar extends StatelessWidget {
                 fit: BoxFit.cover,
                 placeholder: (context, url) => Container(
                   color: Colors.grey[800],
-                  child: const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  child: const Center(child: CircularProgressIndicator()),
                 ),
                 errorWidget: (context, url, error) => Container(
                   color: Colors.grey[800],
@@ -69,10 +67,7 @@ class DetailSliverAppBar extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.transparent,
-                    Colors.black.withAlpha(178),
-                  ],
+                  colors: [Colors.transparent, Colors.black.withAlpha(178)],
                   stops: const [0.3, 1.0],
                 ),
               ),

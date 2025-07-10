@@ -20,20 +20,20 @@ class SeriesDetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (posterUrl != null)
-                Hero(
-                  tag: 'poster_${series.id}',
-                  child: Container(
-                    width: 120,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withAlpha((255 * 0.3).round()),
-                          blurRadius: 8.0,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
+                Container(
+                  width: 120,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withAlpha((255 * 0.3).round()),
+                        blurRadius: 8.0,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Hero(
+                    tag: series.id!,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12.0),
                       child: CachedNetworkImage(
@@ -76,9 +76,7 @@ class SeriesDetails extends StatelessWidget {
                         ),
                         decoration: BoxDecoration(
                           color: theme.colorScheme.surfaceContainerHighest,
-                          borderRadius: BorderRadius.circular(
-                            8.0,
-                          ),
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
                         child: Text(
                           series.alternateTitles!.last.title ?? '',
@@ -93,16 +91,13 @@ class SeriesDetails extends StatelessWidget {
                       Wrap(
                         spacing: 8.0,
                         runSpacing: 4.0,
-                        children: series.genres!.map((
-                          genre,
-                        ) {
+                        children: series.genres!.map((genre) {
                           return Chip(
                             label: Text(
                               genre,
                               style: theme.textTheme.bodySmall,
                             ),
-                            backgroundColor:
-                                theme.colorScheme.primaryContainer,
+                            backgroundColor: theme.colorScheme.primaryContainer,
                             labelStyle: TextStyle(
                               color: theme.colorScheme.onPrimaryContainer,
                             ),
@@ -120,9 +115,7 @@ class SeriesDetails extends StatelessWidget {
                         ),
                         decoration: BoxDecoration(
                           color: theme.colorScheme.errorContainer,
-                          borderRadius: BorderRadius.circular(
-                            16.0,
-                          ),
+                          borderRadius: BorderRadius.circular(16.0),
                           border: Border.all(
                             color: theme.colorScheme.error,
                             width: 1.0,

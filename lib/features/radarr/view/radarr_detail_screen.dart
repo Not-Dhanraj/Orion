@@ -30,9 +30,7 @@ class RadarrDetailScreen extends ConsumerWidget {
     final theme = Theme.of(context);
 
     return movieDetailValue.when(
-      data: (movieDetails) {
-        final movieDetail = movieDetails.movie;
-        final details = movieDetails.imdbDetails;
+      data: (movieDetail) {
         final fanartUrl = _getImageUrl(movieDetail, coverType: 'fanart');
         final posterUrl = _getImageUrl(movieDetail, coverType: 'poster');
 
@@ -90,48 +88,26 @@ class RadarrDetailScreen extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  details['title'] ?? movieDetail.title,
+                                  movieDetail.title ?? '',
                                   style: theme.textTheme.headlineSmall
                                       ?.copyWith(fontWeight: FontWeight.bold),
                                 ),
-                                if (details['originalTitle'] != null &&
-                                    details['originalTitle'] !=
-                                        details['title'])
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 4.0),
-                                    child: Text(
-                                      details['originalTitle'],
-                                      style: theme.textTheme.titleMedium
-                                          ?.copyWith(
-                                            fontStyle: FontStyle.italic,
-                                          ),
-                                    ),
-                                  )
-                                else
-                                  Text(
-                                    'No Original Title Available',
-                                    style: theme.textTheme.titleMedium
-                                        ?.copyWith(fontStyle: FontStyle.italic),
-                                  ),
-                                const SizedBox(height: 8.0),
                                 Text(
-                                  '${movieDetail.year} • ${details['genres']?.join(', ')}',
-                                  style: theme.textTheme.bodyMedium,
+                                  movieDetail.alternateTitles!.isNotEmpty
+                                      ? 'Alternate Title: ${movieDetail.alternateTitles!.last.title}'
+                                      : 'Alternate Title: No Alternate Title',
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    fontStyle: FontStyle.italic,
+                                  ),
                                 ),
                                 const SizedBox(height: 8.0),
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.star,
-                                      color: Colors.amber,
-                                      size: 20,
-                                    ),
-                                    const SizedBox(width: 4.0),
-                                    Text(
-                                      '${details['ratings']?['average'] ?? 'N/A'} / 10 (${details['ratings']?['count'] ?? 0} votes)',
-                                      style: theme.textTheme.bodyLarge,
-                                    ),
-                                  ],
+
+                                Text(
+                                  'Genre: ${movieDetail.genres.toString().replaceAll(RegExp(r'[\[\]]'), '')}',
+                                ),
+                                Text(
+                                  'Certification: ${movieDetail.certification}',
+                                  style: theme.textTheme.bodyMedium,
                                 ),
                               ],
                             ),
@@ -139,16 +115,16 @@ class RadarrDetailScreen extends ConsumerWidget {
                         ],
                       ),
                       const SizedBox(height: 24.0),
-                      const SectionTitle('Plot'),
+                      const SectionTitle('Overview'),
                       const SizedBox(height: 8.0),
                       Text(
-                        details['plot'] ?? 'No plot summary available.',
+                        movieDetail.overview ?? 'No plot summary available.',
                         style: theme.textTheme.bodyLarge,
                       ),
                       const SizedBox(height: 24.0),
                       InfoGrid({
                         'Status':
-                            movieDetail.status?.name?.toString() ?? 'Unknown',
+                            movieDetail.status?.name.toString() ?? 'Unknown',
                         'IMDb ID': movieDetail.imdbId,
                         'ID': movieDetail.id?.toString(),
                         'TMDB ID': movieDetail.tmdbId?.toString(),

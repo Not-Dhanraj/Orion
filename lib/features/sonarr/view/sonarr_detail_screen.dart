@@ -30,9 +30,7 @@ class SonarrDetailScreen extends ConsumerWidget {
     final theme = Theme.of(context);
 
     return seriesDetailValue.when(
-      data: (seriesDetails) {
-        final seriesDetail = seriesDetails.series;
-        final details = seriesDetails.imdbDetails;
+      data: (seriesDetail) {
         final fanartUrl = _getImageUrl(seriesDetail, coverType: 'fanart');
         final posterUrl = _getImageUrl(seriesDetail, coverType: 'poster');
 
@@ -90,48 +88,26 @@ class SonarrDetailScreen extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  details['title'] ?? seriesDetail.title,
+                                  seriesDetail.title ?? '',
                                   style: theme.textTheme.headlineSmall
                                       ?.copyWith(fontWeight: FontWeight.bold),
                                 ),
-                                if (details['originalTitle'] != null &&
-                                    details['originalTitle'] !=
-                                        details['title'])
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 4.0),
-                                    child: Text(
-                                      details['originalTitle'],
-                                      style: theme.textTheme.titleMedium
-                                          ?.copyWith(
-                                            fontStyle: FontStyle.italic,
-                                          ),
-                                    ),
-                                  )
-                                else
-                                  Text(
-                                    'No Original Title Available',
-                                    style: theme.textTheme.titleMedium
-                                        ?.copyWith(fontStyle: FontStyle.italic),
-                                  ),
-                                const SizedBox(height: 8.0),
                                 Text(
-                                  '${seriesDetail.year} • ${details['genres']?.join(', ')}',
-                                  style: theme.textTheme.bodyMedium,
+                                  seriesDetail.alternateTitles!.isNotEmpty
+                                      ? 'Alternate Title: ${seriesDetail.alternateTitles!.last.title}'
+                                      : 'Alternate Title: No Alternate Title',
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    fontStyle: FontStyle.italic,
+                                  ),
                                 ),
                                 const SizedBox(height: 8.0),
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.star,
-                                      color: Colors.amber,
-                                      size: 20,
-                                    ),
-                                    const SizedBox(width: 4.0),
-                                    Text(
-                                      '${details['ratings']?['average'] ?? 'N/A'} / 10 (${details['ratings']?['count'] ?? 0} votes)',
-                                      style: theme.textTheme.bodyLarge,
-                                    ),
-                                  ],
+
+                                Text(
+                                  'Genre: ${seriesDetail.genres.toString().replaceAll(RegExp(r'[\[\]]'), '')}',
+                                ),
+                                Text(
+                                  'Certification: ${seriesDetail.certification}',
+                                  style: theme.textTheme.bodyMedium,
                                 ),
                               ],
                             ),
@@ -139,10 +115,10 @@ class SonarrDetailScreen extends ConsumerWidget {
                         ],
                       ),
                       const SizedBox(height: 24.0),
-                      const SectionTitle('Plot'),
+                      const SectionTitle('Overview'),
                       const SizedBox(height: 8.0),
                       Text(
-                        details['plot'] ?? 'No plot summary available.',
+                        seriesDetail.overview ?? 'No plot summary available.',
                         style: theme.textTheme.bodyLarge,
                       ),
                       const SizedBox(height: 24.0),

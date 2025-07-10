@@ -1,17 +1,11 @@
 import 'package:client/core/api/api_client.dart';
-import 'package:client/features/radarr/model/radarr_movie_details.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:imdb_scraper/imdb_scraper.dart';
+import 'package:radarr_flutter/radarr_flutter.dart';
 
-final movieDetailProvider = FutureProvider.family<RadarrMovieDetails, int>((
+final movieDetailProvider = FutureProvider.family<RadarrMovie, int>((
   ref,
   movieId,
 ) async {
   final radarr = ref.watch(radarrProvider);
-  final movie = await radarr.movie.get(movieId: movieId);
-
-  final imdb = Imdb();
-  final imdbDetails = await imdb.getDetails(movie.imdbId ?? '');
-
-  return RadarrMovieDetails(movie: movie, imdbDetails: imdbDetails ?? {});
+  return await radarr.movie.get(movieId: movieId);
 });

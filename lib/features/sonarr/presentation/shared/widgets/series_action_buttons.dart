@@ -91,58 +91,58 @@ class SeriesActionButtons extends ConsumerWidget {
                 : const Icon(Icons.folder),
           ),
         ),
-        Tooltip(
-          message: series.monitored == true
-              ? 'Unmonitor Series'
-              : 'Monitor Series',
-          child: IconButton(
-            onPressed: seriesManagement is AsyncLoading
-                ? null
-                : () async {
-                    try {
-                      final updatedSeries = await notifier
-                          .toggleSeriesMonitoring(series);
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              updatedSeries.monitored == true
-                                  ? 'Series is now being monitored: ${series.title}'
-                                  : 'Series is no longer being monitored: ${series.title}',
-                            ),
-                            duration: const Duration(seconds: 2),
-                          ),
-                        );
-                      }
-                    } catch (e) {
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'Error toggling monitoring status: $e',
-                            ),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
-                      }
-                    }
-                  },
-            icon: seriesManagement is AsyncLoading
-                ? const SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : Icon(
-                    series.monitored == true
-                        ? Icons.visibility
-                        : Icons.visibility_off,
-                    color: series.monitored == true
-                        ? Colors.green
-                        : Colors.grey,
-                  ),
-          ),
-        ),
+        // Tooltip(
+        //   message: series.monitored == true
+        //       ? 'Unmonitor Series'
+        //       : 'Monitor Series',
+        //   child: IconButton(
+        //     onPressed: seriesManagement is AsyncLoading
+        //         ? null
+        //         : () async {
+        //             try {
+        //               final updatedSeries = await notifier
+        //                   .toggleSeriesMonitoring(series);
+        //               if (context.mounted) {
+        //                 ScaffoldMessenger.of(context).showSnackBar(
+        //                   SnackBar(
+        //                     content: Text(
+        //                       updatedSeries.monitored == true
+        //                           ? 'Series is now being monitored: ${series.title}'
+        //                           : 'Series is no longer being monitored: ${series.title}',
+        //                     ),
+        //                     duration: const Duration(seconds: 2),
+        //                   ),
+        //                 );
+        //               }
+        //             } catch (e) {
+        //               if (context.mounted) {
+        //                 ScaffoldMessenger.of(context).showSnackBar(
+        //                   SnackBar(
+        //                     content: Text(
+        //                       'Error toggling monitoring status: $e',
+        //                     ),
+        //                     backgroundColor: Colors.red,
+        //                   ),
+        //                 );
+        //               }
+        //             }
+        //           },
+        //     icon: seriesManagement is AsyncLoading
+        //         ? const SizedBox(
+        //             width: 20,
+        //             height: 20,
+        //             child: CircularProgressIndicator(strokeWidth: 2),
+        //           )
+        //         : Icon(
+        //             series.monitored == true
+        //                 ? Icons.visibility
+        //                 : Icons.visibility_off,
+        //             color: series.monitored == true
+        //                 ? Colors.green
+        //                 : Colors.grey,
+        //           ),
+        //   ),
+        // ),
       ],
     );
   }

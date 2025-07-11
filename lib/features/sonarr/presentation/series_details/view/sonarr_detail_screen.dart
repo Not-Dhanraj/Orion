@@ -59,6 +59,11 @@ class SonarrDetailScreen extends ConsumerWidget {
                   );
                 },
               ),
+              IconButton(
+                icon: const Icon(Icons.delete_outline),
+                tooltip: 'Delete Series',
+                onPressed: () => _showDeleteSeriesDialog(context, ref),
+              ),
               SeriesActionButtons(series: series),
             ],
           ),
@@ -652,5 +657,107 @@ class SonarrDetailScreen extends ConsumerWidget {
         ),
       ],
     );
+  }
+
+  // Shows a dialog to confirm series deletion
+  void _showDeleteSeriesDialog(BuildContext context, WidgetRef ref) async {
+    final navigator = Navigator.of(context);
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    final seriesManagementNotifier = ref.read(seriesManagementProvider.notifier);
+    
+    // Confirm deletion with the user
+    final confirmed = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false, // Prevent closing by tapping outside
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Series'),
+        content: Text(
+          'Are you sure you want to delete "${series.title}"?\n\n'
+          'This will remove the entire series from Sonarr server.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => navigator.pop(false),
+            child: const Text('CANCEL'),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            onPressed: () => navigator.pop(true),
+            child: const Text('DELETE'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && series.id != null) {
+      // Show loading indicator
+      final loadingOverlay = _showLoadingOverlay(context, 'Deleting series...');
+      
+      try {
+        final result = await seriesManagementNotifier.deleteSeries(
+          series.id!,
+        );
+
+        // Hide loading indicator
+        loadingOverlay.remove();
+
+        if (result) {
+          // Notify user of success
+          scaffoldMessenger.showSnackBar(
+            SnackBar(
+              content: Text('${series.title} has been deleted'),
+              backgroundColor: Colors.green,
+              duration: const Duration(seconds: 2),
+            ),
+          );
+
+          // Pop back to the series list screen
+          if (navigator.canPop()) {
+            navigator.pop(); // Pop back to series list
+          }
+        } else {
+          scaffoldMessenger.showSnackBar(
+            SnackBar(
+              content: Text('Failed to delete ${series.title}'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } catch (e) {
+        // Hide loading indicator if there's an error
+        loadingOverlay.remove();
+        
+        scaffoldMessenger.showSnackBar(
+          SnackBar(
+            content: Text('Error deleting series: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+  
+  // Helper method to show a loading overlay during deletion process
+  OverlayEntry _showLoadingOverlay(BuildContext context, String message) {
+    final overlay = Overlay.of(context);
+    final overlayEntry = OverlayEntry(
+      builder: (context) => Container(
+        color: Colors.black54,
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(height: 16),
+            Text(
+              message,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ],
+        ),
+      ),
+    );
+    overlay.insert(overlayEntry);
+    return overlayEntry;
   }
 }

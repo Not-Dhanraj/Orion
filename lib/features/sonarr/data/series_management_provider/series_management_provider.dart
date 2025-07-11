@@ -1,6 +1,8 @@
 import 'package:client/core/api/api_client.dart';
 import 'package:client/features/sonarr/data/commands_provider/commands_provider.dart';
 import 'package:client/features/sonarr/data/episode_provider/episode_provider.dart';
+import 'package:client/features/sonarr/data/series_provider/series_provider.dart'
+    as series_list;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
 
@@ -126,6 +128,39 @@ class SeriesManagementNotifier extends StateNotifier<AsyncValue<void>> {
       _ref.invalidate(seriesEpisodesProvider(series.id!));
 
       state = const AsyncValue.data(null);
+      return result;
+    } catch (e, stack) {
+      state = AsyncValue.error(e, stack);
+      rethrow;
+    }
+  }
+
+  /// Deletes a series from Sonarr and updates the UI
+  ///
+  /// Returns true if deletion was successful, false otherwise
+  Future<bool> deleteSeries(int seriesId) async {
+    state = const AsyncValue.loading();
+    try {
+      final sonarrApi = _ref.read(sonarrProvider);
+
+      // Delete the series using the API
+      final result = await sonarrApi.series.deleteSeries(seriesId: seriesId);
+
+      // Always update state to not-loading regardless of result
+      state = const AsyncValue.data(null);
+
+      // If deletion was successful, invalidate all relevant caches
+      if (result == true) {
+        // Invalidate the single series cache
+        _ref.invalidate(seriesProvider(seriesId));
+
+        // Invalidate episodes for this series
+        _ref.invalidate(seriesEpisodesProvider(seriesId));
+
+        // Invalidate the main series list to refresh the UI
+        _ref.invalidate(series_list.seriesProvider);
+      }
+
       return result;
     } catch (e, stack) {
       state = AsyncValue.error(e, stack);

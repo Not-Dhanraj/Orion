@@ -641,7 +641,9 @@ class EpisodeListItem extends ConsumerWidget {
                   await episodeNotifier.downloadEpisode(episode.id!);
                   scaffoldMessenger.showSnackBar(
                     SnackBar(
-                      content: Text('Downloading "${episode.title}"'),
+                      content: Text(
+                        'Searching "${episode.title}". Please check queue after few seconds',
+                      ),
                       backgroundColor: Colors.green,
                       duration: const Duration(seconds: 2),
                     ),

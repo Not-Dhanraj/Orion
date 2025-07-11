@@ -80,18 +80,38 @@ class EpisodeNotifier extends StateNotifier<AsyncValue<void>> {
   }
 
   /// Toggle monitoring status for a specific episode
-  Future<SonarrEpisode> toggleEpisodeMonitored(
+  Future<void> toggleEpisodeMonitored(
     SonarrEpisode episode,
     bool monitored,
   ) async {
     state = const AsyncValue.loading();
     try {
       final commands = _ref.read(sonarrCommandsProvider);
-      final result = await commands.toggleEpisodeMonitored(episode, monitored);
+      // Use the new monitorEpisodes method for single episode monitoring
+      await commands.monitorEpisodes([episode.id!], monitored);
       // Refresh the episodes list to reflect the changes
       _ref.invalidate(seriesEpisodesProvider(episode.seriesId!));
       state = const AsyncValue.data(null);
-      return result;
+    } catch (e, stack) {
+      state = AsyncValue.error(e, stack);
+      rethrow;
+    }
+  }
+
+  /// Toggle monitoring status for multiple episodes at once
+  Future<void> toggleMultipleEpisodesMonitored(
+    List<int> episodeIds,
+    int seriesId,
+    bool monitored,
+  ) async {
+    state = const AsyncValue.loading();
+    try {
+      final commands = _ref.read(sonarrCommandsProvider);
+      // Use the new monitorEpisodes method for bulk episode monitoring
+      await commands.monitorEpisodes(episodeIds, monitored);
+      // Refresh the episodes list to reflect the changes
+      _ref.invalidate(seriesEpisodesProvider(seriesId));
+      state = const AsyncValue.data(null);
     } catch (e, stack) {
       state = AsyncValue.error(e, stack);
       rethrow;
@@ -99,7 +119,7 @@ class EpisodeNotifier extends StateNotifier<AsyncValue<void>> {
   }
 
   /// Toggle monitoring status for all episodes in a season
-  Future<List<SonarrEpisode>> toggleSeasonMonitored(
+  Future<void> toggleSeasonMonitored(
     int seriesId,
     int seasonNumber,
     bool monitored,
@@ -107,7 +127,7 @@ class EpisodeNotifier extends StateNotifier<AsyncValue<void>> {
     state = const AsyncValue.loading();
     try {
       final commands = _ref.read(sonarrCommandsProvider);
-      final result = await commands.toggleSeasonMonitored(
+      await commands.toggleSeasonMonitored(
         seriesId,
         seasonNumber,
         monitored,
@@ -115,7 +135,6 @@ class EpisodeNotifier extends StateNotifier<AsyncValue<void>> {
       // Refresh the episodes list to reflect the changes
       _ref.invalidate(seriesEpisodesProvider(seriesId));
       state = const AsyncValue.data(null);
-      return result;
     } catch (e, stack) {
       state = AsyncValue.error(e, stack);
       rethrow;

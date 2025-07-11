@@ -138,15 +138,33 @@ class SonarrCommands {
     final seasonEpisodes = episodes
         .where((episode) => episode.seasonNumber == seasonNumber)
         .toList();
-
-    // Update each episode's monitored status
-    final updatedEpisodes = <SonarrEpisode>[];
-    for (final episode in seasonEpisodes) {
-      episode.monitored = monitored;
-      final updated = await sonarrApi.episode.updateEpisode(episode: episode);
-      updatedEpisodes.add(updated);
-    }
-
-    return updatedEpisodes;
+    
+    // Get episode IDs
+    final episodeIds = seasonEpisodes.map((e) => e.id!).toList();
+    
+    // Use the monitorEpisodes method instead of updating each episode individually
+    await sonarrApi.episode.monitorEpisodes(
+      episodeIds: episodeIds, 
+      monitored: monitored
+    );
+    
+    // Return the updated episodes
+    return await sonarrApi.episode.getSeriesEpisodes(seriesId: seriesId)
+      .then((allEpisodes) => allEpisodes
+        .where((e) => e.seasonNumber == seasonNumber)
+        .toList());
+  }
+  
+  /// Sets monitoring status for multiple episodes in a single API call
+  ///
+  /// [episodeIds] List of episode IDs to update monitoring status
+  /// [monitored] Whether to monitor or unmonitor the episodes
+  /// Returns a Future with updated episodes
+  Future<void> monitorEpisodes(List<int> episodeIds, bool monitored) async {
+    final sonarrApi = _ref.read(sonarrProvider);
+    return await sonarrApi.episode.monitorEpisodes(
+      episodeIds: episodeIds,
+      monitored: monitored
+    );
   }
 }

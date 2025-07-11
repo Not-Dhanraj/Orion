@@ -43,7 +43,7 @@ class SeasonsPage extends ConsumerWidget {
             itemBuilder: (context, index) {
               final seasonNumber = seasonNumbers[index];
               return SeasonCard(
-                seriesId: series.id!,
+                series: series,
                 seasonNumber: seasonNumber!,
                 seasonName: 'Season ${seasonNumber}',
               );

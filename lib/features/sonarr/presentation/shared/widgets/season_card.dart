@@ -1,17 +1,18 @@
 import 'package:client/features/sonarr/data/episode_provider/episode_provider.dart';
+import 'package:client/features/sonarr/data/series_management_provider/series_management_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
 
 /// A widget that displays season information and provides actions
 class SeasonCard extends ConsumerWidget {
-  final int seriesId;
+  final SonarrSeries series;
   final int seasonNumber;
   final String seasonName;
 
   const SeasonCard({
     super.key,
-    required this.seriesId,
+    required this.series,
     required this.seasonNumber,
     required this.seasonName,
   });
@@ -20,7 +21,21 @@ class SeasonCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final episodeState = ref.watch(episodeNotifierProvider);
     final episodeNotifier = ref.read(episodeNotifierProvider.notifier);
+    final seriesManagementNotifier = ref.read(
+      seriesManagementProvider.notifier,
+    );
     final theme = Theme.of(context);
+
+    // Find the current monitored status of this season
+    bool? isSeasonMonitored;
+    if (series.seasons != null) {
+      for (final season in series.seasons!) {
+        if (season.seasonNumber == seasonNumber) {
+          isSeasonMonitored = season.monitored;
+          break;
+        }
+      }
+    }
 
     return Card(
       elevation: 2,
@@ -39,12 +54,17 @@ class SeasonCard extends ConsumerWidget {
                   children: [
                     // Monitor/unmonitor dropdown for the entire season
                     PopupMenuButton<bool>(
-                      icon: const Icon(Icons.visibility),
+                      icon: Icon(
+                        Icons.visibility,
+                        color: isSeasonMonitored == true
+                            ? Colors.green
+                            : Colors.grey,
+                      ),
                       tooltip: 'Monitor/Unmonitor Season',
                       onSelected: (bool monitored) async {
                         try {
-                          await episodeNotifier.toggleSeasonMonitored(
-                            seriesId,
+                          await seriesManagementNotifier.setSeasonMonitoring(
+                            series,
                             seasonNumber,
                             monitored,
                           );
@@ -100,7 +120,7 @@ class SeasonCard extends ConsumerWidget {
                           : () async {
                               try {
                                 await episodeNotifier.seasonSearch(
-                                  seriesId,
+                                  series.id!,
                                   seasonNumber,
                                 );
                                 if (context.mounted) {
@@ -149,7 +169,7 @@ class SeasonCard extends ConsumerWidget {
   }
 
   Widget _buildEpisodesList(WidgetRef ref) {
-    final episodesAsyncValue = ref.watch(seriesEpisodesProvider(seriesId));
+    final episodesAsyncValue = ref.watch(seriesEpisodesProvider(series.id!));
 
     return episodesAsyncValue.when(
       data: (episodes) {
@@ -225,15 +245,16 @@ class EpisodeListItem extends ConsumerWidget {
             : 'Monitor Episode',
         onPressed: () async {
           try {
+            final isCurrentlyMonitored = episode.monitored ?? false;
             await episodeNotifier.toggleEpisodeMonitored(
               episode,
-              !(episode.monitored ?? false),
+              !isCurrentlyMonitored,
             );
             if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
-                    '${episode.title} ${episode.monitored == true ? 'unmonitored' : 'monitored'}',
+                    '${episode.title} ${isCurrentlyMonitored ? 'unmonitored' : 'monitored'}',
                   ),
                   duration: const Duration(seconds: 2),
                 ),

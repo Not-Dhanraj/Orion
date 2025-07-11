@@ -33,13 +33,17 @@ class MediaItemCard extends StatelessWidget {
               imageUrl: posterUrl!,
               fit: BoxFit.cover,
               placeholder: (context, url) => Container(
-                color: theme.colorScheme.surfaceContainerHighest.withAlpha(76), // 0.3 opacity
+                color: theme.colorScheme.surfaceContainerHighest.withAlpha(
+                  76,
+                ), // 0.3 opacity
                 child: const Center(
                   child: CircularProgressIndicator(strokeWidth: 2),
                 ),
               ),
               errorWidget: (context, url, error) => Container(
-                color: theme.colorScheme.surfaceContainerHighest.withAlpha(128), // 0.5 opacity
+                color: theme.colorScheme.surfaceContainerHighest.withAlpha(
+                  128,
+                ), // 0.5 opacity
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -61,14 +65,18 @@ class MediaItemCard extends StatelessWidget {
             )
           else
             Container(
-              color: theme.colorScheme.surfaceContainerHighest.withAlpha(128), // 0.5 opacity
+              color: theme.colorScheme.surfaceContainerHighest.withAlpha(
+                128,
+              ), // 0.5 opacity
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.tv,
                     size: 50,
-                    color: theme.colorScheme.onSurfaceVariant.withAlpha(153), // 0.6 opacity
+                    color: theme.colorScheme.onSurfaceVariant.withAlpha(
+                      153,
+                    ), // 0.6 opacity
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -144,8 +152,12 @@ class MediaItemCard extends StatelessWidget {
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: onTap,
-                  splashColor: theme.colorScheme.primary.withAlpha(76), // 0.3 opacity
-                  highlightColor: theme.colorScheme.primary.withAlpha(25), // 0.1 opacity
+                  splashColor: theme.colorScheme.primary.withAlpha(
+                    76,
+                  ), // 0.3 opacity
+                  highlightColor: theme.colorScheme.primary.withAlpha(
+                    25,
+                  ), // 0.1 opacity
                 ),
               ),
             ),

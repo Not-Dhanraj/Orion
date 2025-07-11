@@ -1,8 +1,8 @@
 import 'package:client/features/sonarr/application/provider/series_management_provider/series_management_provider.dart';
 import 'package:client/features/sonarr/presentation/shared/controllers/season_card_controller.dart';
-import 'package:client/features/sonarr/presentation/shared/widgets/episodes_list.dart';
-import 'package:client/features/sonarr/presentation/shared/widgets/season_card_header.dart';
-import 'package:client/features/sonarr/presentation/shared/widgets/season_progress_bar.dart';
+import 'package:client/features/sonarr/presentation/shared/widgets/season_card/episodes_list.dart';
+import 'package:client/features/sonarr/presentation/shared/widgets/season_card/season_card_header.dart';
+import 'package:client/features/sonarr/presentation/shared/widgets/season_card/season_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';

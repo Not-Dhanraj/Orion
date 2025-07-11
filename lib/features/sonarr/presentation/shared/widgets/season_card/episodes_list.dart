@@ -1,5 +1,5 @@
 import 'package:client/features/sonarr/application/provider/episode_provider/episode_provider.dart';
-import 'package:client/features/sonarr/presentation/shared/widgets/episode_list_item.dart';
+import 'package:client/features/sonarr/presentation/shared/widgets/season_card/episode_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -26,8 +26,9 @@ class EpisodesList extends ConsumerWidget {
           const SizedBox(height: 8),
           episodesAsyncValue.when(
             data: (episodes) {
-              final seasonEpisodes =
-                  episodes.where((e) => e.seasonNumber == seasonNumber).toList();
+              final seasonEpisodes = episodes
+                  .where((e) => e.seasonNumber == seasonNumber)
+                  .toList();
 
               if (seasonEpisodes.isEmpty) {
                 return Padding(
@@ -106,8 +107,9 @@ class EpisodesList extends ConsumerWidget {
           ),
         ],
       ),
-      crossFadeState:
-          isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+      crossFadeState: isExpanded
+          ? CrossFadeState.showSecond
+          : CrossFadeState.showFirst,
       duration: const Duration(milliseconds: 300),
     );
   }

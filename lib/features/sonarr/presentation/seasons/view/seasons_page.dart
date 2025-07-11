@@ -1,6 +1,6 @@
 import 'package:client/features/sonarr/application/provider/episode_provider/episode_provider.dart';
 import 'package:client/features/sonarr/application/provider/series_management_provider/series_management_provider.dart';
-import 'package:client/features/sonarr/presentation/shared/widgets/season_card.dart';
+import 'package:client/features/sonarr/presentation/shared/widgets/season_card/season_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';

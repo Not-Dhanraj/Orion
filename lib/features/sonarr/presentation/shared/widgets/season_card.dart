@@ -21,15 +21,20 @@ class SeasonCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final episodeState = ref.watch(episodeNotifierProvider);
     final episodeNotifier = ref.read(episodeNotifierProvider.notifier);
-    final seriesManagementNotifier = ref.read(
-      seriesManagementProvider.notifier,
-    );
+    final seriesManagementNotifier = ref.read(seriesManagementProvider.notifier);
     final theme = Theme.of(context);
-
+    
+    // Watch the series data to get real-time updates when changes occur
+    final seriesAsync = ref.watch(seriesProvider(series.id!));
+    
     // Find the current monitored status of this season
     bool? isSeasonMonitored;
-    if (series.seasons != null) {
-      for (final season in series.seasons!) {
+    
+    // Use the latest series data if available, otherwise fall back to the passed series
+    final currentSeries = seriesAsync.value ?? series;
+    
+    if (currentSeries.seasons != null) {
+      for (final season in currentSeries.seasons!) {
         if (season.seasonNumber == seasonNumber) {
           isSeasonMonitored = season.monitored;
           break;
@@ -49,22 +54,47 @@ class SeasonCard extends ConsumerWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(seasonName, style: theme.textTheme.titleLarge),
+                Row(
+                  children: [
+                    Text(seasonName, style: theme.textTheme.titleLarge),
+                    const SizedBox(width: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: isSeasonMonitored == true ? Colors.green.withOpacity(0.2) : Colors.grey.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: isSeasonMonitored == true ? Colors.green : Colors.grey,
+                          width: 1,
+                        ),
+                      ),
+                      child: Text(
+                        isSeasonMonitored == true ? 'Monitored' : 'Not Monitored',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: isSeasonMonitored == true ? Colors.green : Colors.grey,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                 Row(
                   children: [
                     // Monitor/unmonitor dropdown for the entire season
                     PopupMenuButton<bool>(
                       icon: Icon(
-                        Icons.visibility,
+                        isSeasonMonitored == true ? Icons.visibility : Icons.visibility_off,
                         color: isSeasonMonitored == true
                             ? Colors.green
                             : Colors.grey,
+                        size: 28,
                       ),
                       tooltip: 'Monitor/Unmonitor Season',
                       onSelected: (bool monitored) async {
                         try {
                           await seriesManagementNotifier.setSeasonMonitoring(
-                            series,
+                            currentSeries,
                             seasonNumber,
                             monitored,
                           );
@@ -120,7 +150,7 @@ class SeasonCard extends ConsumerWidget {
                           : () async {
                               try {
                                 await episodeNotifier.seasonSearch(
-                                  series.id!,
+                                  currentSeries.id!,
                                   seasonNumber,
                                 );
                                 if (context.mounted) {
@@ -161,15 +191,15 @@ class SeasonCard extends ConsumerWidget {
             ),
             const Divider(),
             const SizedBox(height: 8),
-            _buildEpisodesList(ref),
+            _buildEpisodesList(ref, currentSeries.id!),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildEpisodesList(WidgetRef ref) {
-    final episodesAsyncValue = ref.watch(seriesEpisodesProvider(series.id!));
+  Widget _buildEpisodesList(WidgetRef ref, int seriesId) {
+    final episodesAsyncValue = ref.watch(seriesEpisodesProvider(seriesId));
 
     return episodesAsyncValue.when(
       data: (episodes) {

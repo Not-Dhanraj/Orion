@@ -138,23 +138,25 @@ class SonarrCommands {
     final seasonEpisodes = episodes
         .where((episode) => episode.seasonNumber == seasonNumber)
         .toList();
-    
+
     // Get episode IDs
     final episodeIds = seasonEpisodes.map((e) => e.id!).toList();
-    
+
     // Use the monitorEpisodes method instead of updating each episode individually
     await sonarrApi.episode.monitorEpisodes(
-      episodeIds: episodeIds, 
-      monitored: monitored
+      episodeIds: episodeIds,
+      monitored: monitored,
     );
-    
+
     // Return the updated episodes
-    return await sonarrApi.episode.getSeriesEpisodes(seriesId: seriesId)
-      .then((allEpisodes) => allEpisodes
-        .where((e) => e.seasonNumber == seasonNumber)
-        .toList());
+    return await sonarrApi.episode
+        .getSeriesEpisodes(seriesId: seriesId)
+        .then(
+          (allEpisodes) =>
+              allEpisodes.where((e) => e.seasonNumber == seasonNumber).toList(),
+        );
   }
-  
+
   /// Sets monitoring status for multiple episodes in a single API call
   ///
   /// [episodeIds] List of episode IDs to update monitoring status
@@ -164,7 +166,7 @@ class SonarrCommands {
     final sonarrApi = _ref.read(sonarrProvider);
     return await sonarrApi.episode.monitorEpisodes(
       episodeIds: episodeIds,
-      monitored: monitored
+      monitored: monitored,
     );
   }
 }

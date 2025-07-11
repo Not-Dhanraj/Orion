@@ -1,21 +1,28 @@
 import 'package:client/features/sonarr/data/episode_provider/episode_provider.dart';
+import 'package:client/features/sonarr/data/series_management_provider/series_management_provider.dart';
 import 'package:client/features/sonarr/presentation/shared/widgets/season_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
 
 class SeasonsPage extends ConsumerWidget {
-  final SonarrSeries series;
+  final SonarrSeries initialSeries;
 
-  const SeasonsPage({super.key, required this.series});
+  const SeasonsPage({super.key, required this.initialSeries});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final episodesAsyncValue = ref.watch(seriesEpisodesProvider(series.id!));
+    // Watch for series updates
+    final seriesAsync = ref.watch(seriesProvider(initialSeries.id!));
+    
+    // Use the most current series data, falling back to the initial data
+    final currentSeries = seriesAsync.value ?? initialSeries;
+    
+    final episodesAsyncValue = ref.watch(seriesEpisodesProvider(currentSeries.id!));
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('${series.title} - Seasons'),
+        title: Text('${currentSeries.title} - Seasons'),
         centerTitle: true,
       ),
       body: episodesAsyncValue.when(
@@ -43,7 +50,7 @@ class SeasonsPage extends ConsumerWidget {
             itemBuilder: (context, index) {
               final seasonNumber = seasonNumbers[index];
               return SeasonCard(
-                series: series,
+                series: currentSeries,
                 seasonNumber: seasonNumber!,
                 seasonName: 'Season ${seasonNumber}',
               );
@@ -70,7 +77,7 @@ class SeasonsPage extends ConsumerWidget {
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () =>
-                    ref.refresh(seriesEpisodesProvider(series.id!)),
+                    ref.refresh(seriesEpisodesProvider(initialSeries.id!)),
                 child: const Text('Try Again'),
               ),
             ],

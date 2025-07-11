@@ -127,11 +127,7 @@ class EpisodeNotifier extends StateNotifier<AsyncValue<void>> {
     state = const AsyncValue.loading();
     try {
       final commands = _ref.read(sonarrCommandsProvider);
-      await commands.toggleSeasonMonitored(
-        seriesId,
-        seasonNumber,
-        monitored,
-      );
+      await commands.toggleSeasonMonitored(seriesId, seasonNumber, monitored);
       // Refresh the episodes list to reflect the changes
       _ref.invalidate(seriesEpisodesProvider(seriesId));
       state = const AsyncValue.data(null);

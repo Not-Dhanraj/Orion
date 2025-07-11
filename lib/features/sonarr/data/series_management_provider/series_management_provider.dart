@@ -1,7 +1,14 @@
 import 'package:client/core/api/api_client.dart';
 import 'package:client/features/sonarr/data/commands_provider/commands_provider.dart';
+import 'package:client/features/sonarr/data/episode_provider/episode_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
+
+/// Provider for getting a single series by ID
+final seriesProvider = FutureProvider.family<SonarrSeries, int>((ref, seriesId) async {
+  final sonarrApi = ref.read(sonarrProvider);
+  return await sonarrApi.series.getSeries(seriesId: seriesId);
+});
 
 /// Notifier to manage series operations like refresh and rescan
 class SeriesManagementNotifier extends StateNotifier<AsyncValue<void>> {
@@ -85,7 +92,7 @@ class SeriesManagementNotifier extends StateNotifier<AsyncValue<void>> {
       rethrow;
     }
   }
-  
+
   /// Sets the monitoring status of a specific season in a series
   Future<SonarrSeries> setSeasonMonitoring(
     SonarrSeries series,
@@ -108,6 +115,13 @@ class SeriesManagementNotifier extends StateNotifier<AsyncValue<void>> {
 
       // Update the series using the API
       final result = await sonarrApi.series.updateSeries(series: series);
+      
+      // Invalidate the cached series data so it will be re-fetched with the updated values
+      _ref.invalidate(seriesProvider(series.id!));
+      
+      // Also invalidate the episodes since monitoring status affects them
+      _ref.invalidate(seriesEpisodesProvider(series.id!));
+      
       state = const AsyncValue.data(null);
       return result;
     } catch (e, stack) {

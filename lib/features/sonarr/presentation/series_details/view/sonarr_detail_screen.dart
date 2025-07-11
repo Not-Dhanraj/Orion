@@ -73,7 +73,7 @@ class SonarrDetailScreen extends ConsumerWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SeasonsPage(series: series),
+                            builder: (context) => SeasonsPage(initialSeries: series),
                           ),
                         );
                       },

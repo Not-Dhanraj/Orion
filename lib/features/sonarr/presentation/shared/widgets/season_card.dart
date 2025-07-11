@@ -89,7 +89,10 @@ class _SeasonCardState extends ConsumerState<SeasonCard>
                 series: currentSeries,
                 seasonNumber: widget.seasonNumber,
               ),
-              _SeasonProgressBar(seriesId: currentSeries.id!, seasonNumber: widget.seasonNumber),
+              _SeasonProgressBar(
+                seriesId: currentSeries.id!,
+                seasonNumber: widget.seasonNumber,
+              ),
               const Divider(height: 24),
               _EpisodesList(
                 isExpanded: _isExpanded,
@@ -134,7 +137,9 @@ class _SeasonCardHeader extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final episodeNotifier = ref.read(episodeNotifierProvider.notifier);
-    final seriesManagementNotifier = ref.read(seriesManagementProvider.notifier);
+    final seriesManagementNotifier = ref.read(
+      seriesManagementProvider.notifier,
+    );
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -143,7 +148,10 @@ class _SeasonCardHeader extends ConsumerWidget {
           child: Row(
             children: [
               RotationTransition(
-                turns: Tween(begin: 0.0, end: 0.25).animate(animationController),
+                turns: Tween(
+                  begin: 0.0,
+                  end: 0.25,
+                ).animate(animationController),
                 child: Icon(
                   Icons.keyboard_arrow_right,
                   color: theme.colorScheme.primary,
@@ -162,7 +170,10 @@ class _SeasonCardHeader extends ConsumerWidget {
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),
-                    _EpisodeStats(seriesId: series.id!, seasonNumber: seasonNumber),
+                    _EpisodeStats(
+                      seriesId: series.id!,
+                      seasonNumber: seasonNumber,
+                    ),
                   ],
                 ),
               ),
@@ -181,7 +192,8 @@ class _SeasonCardHeader extends ConsumerWidget {
             context,
           ),
           onSearch: () => _searchSeason(episodeNotifier, series, context),
-          onShowReleases: () => _showSeasonReleases(context, ref, series.id!, seasonNumber),
+          onShowReleases: () =>
+              _showSeasonReleases(context, ref, series.id!, seasonNumber),
         ),
       ],
     );
@@ -193,28 +205,31 @@ class _SeasonCardHeader extends ConsumerWidget {
     SonarrSeries currentSeries,
     BuildContext context,
   ) async {
-    final scaffoldMessenger = ScaffoldMessenger.of(context);
     try {
       await seriesManagementNotifier.setSeasonMonitoring(
         currentSeries,
         seasonNumber,
         monitored,
       );
-      scaffoldMessenger.showSnackBar(
-        SnackBar(
-          content: Text(
-            '$seasonName ${monitored ? 'monitored' : 'unmonitored'}',
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              '$seasonName ${monitored ? 'monitored' : 'unmonitored'}',
+            ),
+            duration: const Duration(seconds: 2),
           ),
-          duration: const Duration(seconds: 2),
-        ),
-      );
+        );
+      }
     } catch (e) {
-      scaffoldMessenger.showSnackBar(
-        SnackBar(
-          content: Text('Error updating season: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error updating season: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -223,25 +238,28 @@ class _SeasonCardHeader extends ConsumerWidget {
     SonarrSeries currentSeries,
     BuildContext context,
   ) async {
-    final scaffoldMessenger = ScaffoldMessenger.of(context);
     try {
       await episodeNotifier.seasonSearch(
         currentSeries.id!,
         seasonNumber,
       );
-      scaffoldMessenger.showSnackBar(
-        SnackBar(
-          content: Text('Searching for $seasonName episodes'),
-          duration: const Duration(seconds: 2),
-        ),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Searching for $seasonName episodes'),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
     } catch (e) {
-      scaffoldMessenger.showSnackBar(
-        SnackBar(
-          content: Text('Error searching for episodes: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error searching for episodes: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -251,47 +269,56 @@ class _SeasonCardHeader extends ConsumerWidget {
     int seriesId,
     int seasonNumber,
   ) async {
-    final scaffoldMessenger = ScaffoldMessenger.of(context);
-    try {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => const Center(child: CircularProgressIndicator()),
-      );
+    if (!context.mounted) return;
 
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator()),
+    );
+
+    try {
       final commandsProvider = ref.read(sonarrCommandsProvider);
       final releases = await commandsProvider.getSeasonReleases(
         seriesId,
         seasonNumber,
       );
 
-      Navigator.of(context).pop();
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
 
       if (releases.isEmpty) {
-        scaffoldMessenger.showSnackBar(
-          const SnackBar(
-            content: Text('No releases found for this season'),
-            duration: Duration(seconds: 2),
-          ),
-        );
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('No releases found for this season'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }
         return;
       }
 
-      await showDialog(
-        context: context,
-        builder: (context) => ReleaseSelectionDialog(
-          releases: releases,
-          title: 'Season $seasonNumber Releases',
-        ),
-      );
+      if (context.mounted) {
+        await showDialog(
+          context: context,
+          builder: (context) => ReleaseSelectionDialog(
+            releases: releases,
+            title: 'Season $seasonNumber Releases',
+          ),
+        );
+      }
     } catch (e) {
-      Navigator.of(context).pop();
-      scaffoldMessenger.showSnackBar(
-        SnackBar(
-          content: Text('Error fetching releases: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (context.mounted) {
+        Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error fetching releases: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 }
@@ -309,11 +336,13 @@ class _EpisodeStats extends ConsumerWidget {
 
     return episodesAsyncValue.when(
       data: (episodes) {
-        final seasonEpisodes =
-            episodes.where((e) => e.seasonNumber == seasonNumber).toList();
+        final seasonEpisodes = episodes
+            .where((e) => e.seasonNumber == seasonNumber)
+            .toList();
         final totalEpisodes = seasonEpisodes.length;
-        final downloadedEpisodes =
-            seasonEpisodes.where((e) => e.hasFile == true).length;
+        final downloadedEpisodes = seasonEpisodes
+            .where((e) => e.hasFile == true)
+            .length;
 
         if (totalEpisodes == 0) {
           return const SizedBox.shrink();
@@ -323,8 +352,9 @@ class _EpisodeStats extends ConsumerWidget {
           padding: const EdgeInsets.only(top: 4.0),
           child: Text(
             '$downloadedEpisodes/$totalEpisodes episodes',
-            style: theme.textTheme.bodySmall
-                ?.copyWith(color: theme.textTheme.bodySmall?.color?.withAlpha(178)),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.textTheme.bodySmall?.color?.withAlpha(178),
+            ),
           ),
         );
       },
@@ -417,7 +447,11 @@ class _SeasonActionsMenu extends StatelessWidget {
           value: 'monitor',
           child: Row(
             children: [
-              Icon(Icons.visibility, color: theme.colorScheme.primary, size: 20),
+              Icon(
+                Icons.visibility,
+                color: theme.colorScheme.primary,
+                size: 20,
+              ),
               const SizedBox(width: 12),
               const Text('Monitor Season'),
             ],
@@ -462,7 +496,10 @@ class _SeasonProgressBar extends ConsumerWidget {
   final int seriesId;
   final int seasonNumber;
 
-  const _SeasonProgressBar({required this.seriesId, required this.seasonNumber});
+  const _SeasonProgressBar({
+    required this.seriesId,
+    required this.seasonNumber,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -471,14 +508,16 @@ class _SeasonProgressBar extends ConsumerWidget {
 
     return episodesAsyncValue.when(
       data: (episodes) {
-        final seasonEpisodes =
-            episodes.where((e) => e.seasonNumber == seasonNumber).toList();
+        final seasonEpisodes = episodes
+            .where((e) => e.seasonNumber == seasonNumber)
+            .toList();
         final totalEpisodes = seasonEpisodes.length;
         if (totalEpisodes == 0) {
           return const SizedBox.shrink();
         }
-        final downloadedEpisodes =
-            seasonEpisodes.where((e) => e.hasFile == true).length;
+        final downloadedEpisodes = seasonEpisodes
+            .where((e) => e.hasFile == true)
+            .length;
         final progressValue = downloadedEpisodes / totalEpisodes;
 
         return Padding(
@@ -543,8 +582,9 @@ class _EpisodesList extends ConsumerWidget {
           const SizedBox(height: 8),
           episodesAsyncValue.when(
             data: (episodes) {
-              final seasonEpisodes =
-                  episodes.where((e) => e.seasonNumber == seasonNumber).toList();
+              final seasonEpisodes = episodes
+                  .where((e) => e.seasonNumber == seasonNumber)
+                  .toList();
 
               if (seasonEpisodes.isEmpty) {
                 return Padding(
@@ -606,7 +646,11 @@ class _EpisodesList extends ConsumerWidget {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  Icon(Icons.error_outline, color: Colors.red.shade300, size: 40),
+                  Icon(
+                    Icons.error_outline,
+                    color: Colors.red.shade300,
+                    size: 40,
+                  ),
                   const SizedBox(height: 8),
                   Text(
                     'Error loading episodes: $error',
@@ -619,8 +663,9 @@ class _EpisodesList extends ConsumerWidget {
           ),
         ],
       ),
-      crossFadeState:
-          isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+      crossFadeState: isExpanded
+          ? CrossFadeState.showSecond
+          : CrossFadeState.showFirst,
       duration: const Duration(milliseconds: 300),
     );
   }

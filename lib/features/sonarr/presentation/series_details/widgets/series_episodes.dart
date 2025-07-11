@@ -85,8 +85,9 @@ class SeriesEpisodes extends StatelessWidget {
                               Text(
                                 'Browse all episodes by season',
                                 style: theme.textTheme.bodyMedium?.copyWith(
-                                  color:
-                                      theme.colorScheme.onSurface.withAlpha(178),
+                                  color: theme.colorScheme.onSurface.withAlpha(
+                                    178,
+                                  ),
                                 ),
                               ),
                             ],
@@ -111,10 +112,9 @@ class SeriesEpisodes extends StatelessWidget {
                       const SizedBox(height: 8),
                       Text(
                         () {
-                          final regularSeasons = series.seasons
-                                  ?.where(
-                                    (season) => season.seasonNumber != 0,
-                                  )
+                          final regularSeasons =
+                              series.seasons
+                                  ?.where((season) => season.seasonNumber != 0)
                                   .toList() ??
                               [];
                           final specialsCount =

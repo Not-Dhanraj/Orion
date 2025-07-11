@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 
-final themeProvider = StateNotifierProvider<ThemeNotifier, ThemeSettings>((ref) {
+final themeProvider = StateNotifierProvider<ThemeNotifier, ThemeSettings>((
+  ref,
+) {
   return ThemeNotifier();
 });
 
@@ -16,7 +18,8 @@ class ThemeNotifier extends StateNotifier<ThemeSettings> {
     final prefs = await SharedPreferences.getInstance();
     final themeModeIndex = prefs.getInt('themeMode') ?? ThemeMode.system.index;
     final themeMode = ThemeMode.values[themeModeIndex];
-    final schemeIndex = prefs.getInt('schemeIndex') ?? FlexScheme.material.index;
+    final schemeIndex =
+        prefs.getInt('schemeIndex') ?? FlexScheme.material.index;
     state = state.copyWith(
       themeMode: themeMode,
       flexScheme: FlexScheme.values[schemeIndex],
@@ -45,10 +48,7 @@ class ThemeSettings {
     this.flexScheme = FlexScheme.material,
   });
 
-  ThemeSettings copyWith({
-    ThemeMode? themeMode,
-    FlexScheme? flexScheme,
-  }) {
+  ThemeSettings copyWith({ThemeMode? themeMode, FlexScheme? flexScheme}) {
     return ThemeSettings(
       themeMode: themeMode ?? this.themeMode,
       flexScheme: flexScheme ?? this.flexScheme,

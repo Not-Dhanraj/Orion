@@ -29,7 +29,9 @@ class SeriesHeaderCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: backgroundColor ?? theme.colorScheme.surface.withAlpha(204), // 0.8 opacity
+        color:
+            backgroundColor ??
+            theme.colorScheme.surface.withAlpha(204), // 0.8 opacity
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -80,7 +82,8 @@ class SeriesHeaderCard extends StatelessWidget {
                   },
                   blendMode: BlendMode.srcOver,
                   child: CachedNetworkImage(
-                    imageUrl: series.images!
+                    imageUrl:
+                        series.images!
                             .firstWhere(
                               (image) => image.coverType == 'banner',
                               orElse: () => SonarrSeriesImage(remoteUrl: null),
@@ -154,7 +157,9 @@ class SeriesHeaderCard extends StatelessWidget {
                                 color: Colors.white,
                                 shadows: [
                                   Shadow(
-                                    color: Colors.black.withAlpha(128), // 0.5 opacity
+                                    color: Colors.black.withAlpha(
+                                      128,
+                                    ), // 0.5 opacity
                                     blurRadius: 2,
                                     offset: const Offset(1, 1),
                                   ),

@@ -4,8 +4,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 final credentialsProvider =
     StateNotifierProvider<CredentialsNotifier, Credentials?>((ref) {
-  return CredentialsNotifier();
-});
+      return CredentialsNotifier();
+    });
 
 class CredentialsNotifier extends StateNotifier<Credentials?> {
   CredentialsNotifier() : super(null);
@@ -50,4 +50,3 @@ class CredentialsNotifier extends StateNotifier<Credentials?> {
     state = null;
   }
 }
-

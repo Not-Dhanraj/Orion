@@ -21,8 +21,8 @@ class EpisodeListItem extends ConsumerWidget {
           ? () => _showEpisodeReleases(context, ref, episode.id!)
           : null,
       borderRadius: BorderRadius.circular(8),
-      splashColor: theme.colorScheme.primary.withOpacity(0.1),
-      highlightColor: theme.colorScheme.primary.withOpacity(0.05),
+      splashColor: theme.colorScheme.primary.withAlpha(25),
+      highlightColor: theme.colorScheme.primary.withAlpha(12),
       child: ListTile(
         contentPadding: EdgeInsets.zero,
         title: Text(
@@ -46,14 +46,14 @@ class EpisodeListItem extends ConsumerWidget {
                     Icon(
                       Icons.touch_app,
                       size: 14,
-                      color: theme.colorScheme.secondary.withOpacity(0.7),
+                      color: theme.colorScheme.secondary.withAlpha(178),
                     ),
                     const SizedBox(width: 4),
                     Text(
                       'Long press to view available releases',
                       style: theme.textTheme.bodySmall?.copyWith(
                         fontStyle: FontStyle.italic,
-                        color: theme.colorScheme.secondary.withOpacity(0.7),
+                        color: theme.colorScheme.secondary.withAlpha(178),
                       ),
                     ),
                   ],
@@ -145,7 +145,7 @@ class EpisodeListItem extends ConsumerWidget {
                       scaffoldMessenger.showSnackBar(
                         const SnackBar(
                           content: Text('Episode file deleted'),
-                          duration: const Duration(seconds: 2),
+                          duration: Duration(seconds: 2),
                         ),
                       );
                     } catch (e) {

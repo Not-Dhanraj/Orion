@@ -44,7 +44,8 @@ class _SonarrQueueScreenState extends ConsumerState<SonarrQueueScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Download Queue'), centerTitle: true),
       body: RefreshIndicator(
-        onRefresh: () => ref.read(queueNotifierProvider.notifier).refreshQueue(),
+        onRefresh: () =>
+            ref.read(queueNotifierProvider.notifier).refreshQueue(),
         child: queueValue.when(
           data: (queue) {
             if (queue.isEmpty) {

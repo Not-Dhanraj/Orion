@@ -46,10 +46,7 @@ class _QueueItemHeader extends ConsumerWidget {
             color: theme.colorScheme.primaryContainer,
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Icon(
-            Icons.downloading,
-            color: theme.colorScheme.primary,
-          ),
+          child: Icon(Icons.downloading, color: theme.colorScheme.primary),
         ),
         const SizedBox(width: 16),
         Expanded(
@@ -103,7 +100,8 @@ class _QueueItemProgress extends StatelessWidget {
     final theme = Theme.of(context);
     final size = queueItem.size ?? 0;
     final sizeInMB = size / 1024 / 1024;
-    final downloadedSize = size *
+    final downloadedSize =
+        size *
         (queueItem.sizeLeft != null && size > 0
             ? (size - queueItem.sizeLeft!) / size
             : 0);
@@ -194,10 +192,7 @@ class _StatusBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8,
-        vertical: 2,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       decoration: BoxDecoration(
         color: _getStatusColor(status).withAlpha(38),
         borderRadius: BorderRadius.circular(12),
@@ -243,9 +238,7 @@ class _ActionsMenu extends ConsumerWidget {
     return PopupMenuButton<String>(
       icon: Icon(Icons.more_vert, color: theme.colorScheme.primary),
       tooltip: 'Queue Actions',
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       position: PopupMenuPosition.under,
       onSelected: (String action) {
         switch (action) {
@@ -262,11 +255,7 @@ class _ActionsMenu extends ConsumerWidget {
           value: 'remove',
           child: Row(
             children: [
-              Icon(
-                Icons.delete_outline,
-                color: Colors.red.shade700,
-                size: 20,
-              ),
+              Icon(Icons.delete_outline, color: Colors.red.shade700, size: 20),
               const SizedBox(width: 12),
               const Text('Remove'),
             ],
@@ -276,11 +265,7 @@ class _ActionsMenu extends ConsumerWidget {
           value: 'blacklist',
           child: Row(
             children: [
-              Icon(
-                Icons.block,
-                color: Colors.red.shade900,
-                size: 20,
-              ),
+              Icon(Icons.block, color: Colors.red.shade900, size: 20),
               const SizedBox(width: 12),
               const Text('Remove & Blacklist'),
             ],
@@ -298,7 +283,7 @@ class _ActionsMenu extends ConsumerWidget {
         content: Text(
           blacklist
               ? 'Are you sure you want to remove and blacklist "${queueItem.title}"? '
-                  'This will prevent this release from being downloaded again.'
+                    'This will prevent this release from being downloaded again.'
               : 'Are you sure you want to remove "${queueItem.title}" from the queue?',
         ),
         actions: [
@@ -320,7 +305,10 @@ class _ActionsMenu extends ConsumerWidget {
   }
 
   Future<void> _deleteQueueItem(
-      BuildContext context, WidgetRef ref, bool blacklist) async {
+    BuildContext context,
+    WidgetRef ref,
+    bool blacklist,
+  ) async {
     try {
       await ref
           .read(queueNotifierProvider.notifier)

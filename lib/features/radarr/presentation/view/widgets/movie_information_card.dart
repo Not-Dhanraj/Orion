@@ -20,11 +20,7 @@ class MovieInformationCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(
-                  Icons.info_outline,
-                  color: theme.primaryColor,
-                  size: 20,
-                ),
+                Icon(Icons.info_outline, color: theme.primaryColor, size: 20),
                 const SizedBox(width: 8.0),
                 Text(
                   'Movie Information',

@@ -15,7 +15,9 @@ _$MovieImpl _$$MovieImplFromJson(Map<String, dynamic> json) => _$MovieImpl(
   year: (json['year'] as num).toInt(),
   runtime: (json['runtime'] as num).toInt(),
   status: json['status'] as String,
-  movieStatus: $enumDecode(_$MovieStatusEnumMap, json['movieStatus']),
+  movieStatus: const MovieStatusConverter().fromJson(
+    json['movieStatus'] as String,
+  ),
   digitalRelease: DateTime.parse(json['digitalRelease'] as String),
   certification: json['certification'] as String,
   youTubeTrailerId: json['youTubeTrailerId'] as String,
@@ -38,7 +40,7 @@ Map<String, dynamic> _$$MovieImplToJson(_$MovieImpl instance) =>
       'year': instance.year,
       'runtime': instance.runtime,
       'status': instance.status,
-      'movieStatus': _$MovieStatusEnumMap[instance.movieStatus]!,
+      'movieStatus': const MovieStatusConverter().toJson(instance.movieStatus),
       'digitalRelease': instance.digitalRelease.toIso8601String(),
       'certification': instance.certification,
       'youTubeTrailerId': instance.youTubeTrailerId,
@@ -50,11 +52,3 @@ Map<String, dynamic> _$$MovieImplToJson(_$MovieImpl instance) =>
       'qualityProfileId': instance.qualityProfileId,
       'minimumAvailability': instance.minimumAvailability,
     };
-
-const _$MovieStatusEnumMap = {
-  MovieStatus.tba: 'tba',
-  MovieStatus.announced: 'announced',
-  MovieStatus.inCinemas: 'inCinemas',
-  MovieStatus.released: 'released',
-  MovieStatus.deleted: 'deleted',
-};

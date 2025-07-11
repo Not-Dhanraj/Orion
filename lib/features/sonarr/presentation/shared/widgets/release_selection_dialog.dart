@@ -8,7 +8,11 @@ class ReleaseSelectionDialog extends ConsumerWidget {
   final List<SonarrRelease> releases;
   final String title;
 
-  const ReleaseSelectionDialog({required this.releases, required this.title});
+  const ReleaseSelectionDialog({
+    super.key,
+    required this.releases,
+    required this.title,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -43,7 +47,7 @@ class ReleaseSelectionDialog extends ConsumerWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                       side: BorderSide(
-                        color: theme.colorScheme.outline.withOpacity(0.2),
+                        color: theme.colorScheme.outline.withAlpha(51),
                         width: 0.5,
                       ),
                     ),
@@ -66,13 +70,15 @@ class ReleaseSelectionDialog extends ConsumerWidget {
                             children: [
                               _buildInfoChip(
                                 theme,
-                                '${release.quality?.quality?.name ?? 'Unknown'}',
+                                release.quality?.quality?.name ?? 'Unknown',
                                 theme.colorScheme.primary,
                               ),
                               const SizedBox(width: 8),
                               _buildInfoChip(
                                 theme,
-                                '${release.size != null ? _formatSize(release.size!) : 'Unknown'}',
+                                release.size != null
+                                    ? _formatSize(release.size!)
+                                    : 'Unknown',
                                 theme.colorScheme.secondary,
                               ),
                               if (release.seeders != null)
@@ -128,7 +134,7 @@ class ReleaseSelectionDialog extends ConsumerWidget {
                                       ),
                                       const SizedBox(width: 4),
                                       Text(
-                                        '${_formatAge(release.ageHours!)}',
+                                        _formatAge(release.ageHours!),
                                         style: theme.textTheme.bodySmall,
                                       ),
                                     ],

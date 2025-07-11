@@ -36,9 +36,7 @@ class OverviewCard extends StatelessWidget {
             const SizedBox(height: 12.0),
             Text(
               overview,
-              style: theme.textTheme.bodyLarge?.copyWith(
-                height: 1.5,
-              ),
+              style: theme.textTheme.bodyLarge?.copyWith(height: 1.5),
             ),
           ],
         ),

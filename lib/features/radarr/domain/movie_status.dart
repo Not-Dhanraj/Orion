@@ -1,7 +1,1 @@
-enum MovieStatus {
-  tba,
-  announced,
-  inCinemas,
-  released,
-  deleted,
-}
+enum MovieStatus { tba, announced, inCinemas, released, deleted }

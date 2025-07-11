@@ -43,8 +43,9 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
               ? IconButton(
                   icon: Icon(
                     Icons.clear,
-                    color:
-                        theme.colorScheme.onSurface.withAlpha(178), // 0.7 opacity
+                    color: theme.colorScheme.onSurface.withAlpha(
+                      178,
+                    ), // 0.7 opacity
                     size: 20,
                   ),
                   onPressed: () {
@@ -55,8 +56,9 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
                 )
               : null,
           filled: true,
-          fillColor:
-              theme.colorScheme.surfaceContainerHighest.withAlpha(76), // 0.3 opacity
+          fillColor: theme.colorScheme.surfaceContainerHighest.withAlpha(
+            76,
+          ), // 0.3 opacity
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide.none,

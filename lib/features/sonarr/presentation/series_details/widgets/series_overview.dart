@@ -21,9 +21,7 @@ class SeriesOverview extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8.0),
-          OverviewCard(
-            overview: overview,
-          ),
+          OverviewCard(overview: overview),
         ],
       ),
     );

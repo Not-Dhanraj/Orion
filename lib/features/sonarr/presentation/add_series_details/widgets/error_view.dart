@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ErrorView extends StatelessWidget {
-  const ErrorView({
-    super.key,
-    required this.error,
-    required this.onTryAgain,
-  });
+  const ErrorView({super.key, required this.error, required this.onTryAgain});
 
   final String? error;
   final VoidCallback onTryAgain;
@@ -17,11 +13,7 @@ class ErrorView extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.error_outline,
-            size: 60,
-            color: theme.colorScheme.error,
-          ),
+          Icon(Icons.error_outline, size: 60, color: theme.colorScheme.error),
           const SizedBox(height: 16),
           Text(
             'Error',

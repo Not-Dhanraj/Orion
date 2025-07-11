@@ -69,8 +69,9 @@ class SeriesInfo extends StatelessWidget {
                         const SizedBox(width: 8),
                         Text(
                           '${series.ratings!.value}/10',
-                          style: theme.textTheme.headlineSmall
-                              ?.copyWith(fontWeight: FontWeight.bold),
+                          style: theme.textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         const SizedBox(width: 4),
                         Text(

@@ -1,6 +1,6 @@
-import 'package:client/features/auth/provider/credentials_provider.dart';
-import 'package:client/features/auth/view/auth_screen.dart';
-import 'package:client/features/settings/provider/theme_provider.dart';
+import 'package:client/features/auth/application/provider/credentials_provider.dart';
+import 'package:client/features/auth/presentation/view/auth_screen.dart';
+import 'package:client/features/settings/application/provider/theme_provider.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

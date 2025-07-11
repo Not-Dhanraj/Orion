@@ -1,4 +1,4 @@
-import 'package:client/features/calendar/models/calendar_item.dart';
+import 'package:client/features/calendar/domain/calendar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

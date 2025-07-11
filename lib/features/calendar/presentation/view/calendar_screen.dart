@@ -1,9 +1,9 @@
 import 'package:client/core/widgets/error_view.dart';
-import 'package:client/features/calendar/models/calendar_item.dart';
-import 'package:client/features/calendar/providers/calendar_provider.dart';
-import 'package:client/features/calendar/providers/calendar_screen_providers.dart';
-import 'package:client/features/calendar/widgets/calendar_view.dart';
-import 'package:client/features/calendar/widgets/episode_dialog.dart';
+import 'package:client/features/calendar/domain/calendar_item.dart';
+import 'package:client/features/calendar/application/providers/calendar_provider.dart';
+import 'package:client/features/calendar/application/providers/calendar_screen_providers.dart';
+import 'package:client/features/calendar/presentation/widgets/calendar_view.dart';
+import 'package:client/features/calendar/presentation/widgets/episode_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

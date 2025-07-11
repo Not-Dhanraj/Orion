@@ -1,7 +1,7 @@
 import 'package:client/core/api/api_client.dart';
 import 'package:client/core/widgets/error_view.dart';
 import 'package:client/core/widgets/media_item_card.dart';
-import 'package:client/features/radarr/view/radarr_detail_screen.dart';
+import 'package:client/features/radarr/presentation/view/radarr_detail_screen.dart';
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

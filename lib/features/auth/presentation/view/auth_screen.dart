@@ -1,5 +1,5 @@
-import 'package:client/features/auth/model/credentials.dart';
-import 'package:client/features/auth/provider/credentials_provider.dart';
+import 'package:client/features/auth/domain/credentials.dart';
+import 'package:client/features/auth/application/provider/credentials_provider.dart';
 import 'package:client/features/home/view/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

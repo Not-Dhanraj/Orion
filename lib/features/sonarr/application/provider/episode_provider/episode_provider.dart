@@ -1,4 +1,4 @@
-import 'package:client/features/sonarr/data/commands_provider/commands_provider.dart';
+import 'package:client/features/sonarr/application/provider/commands_provider/commands_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
 

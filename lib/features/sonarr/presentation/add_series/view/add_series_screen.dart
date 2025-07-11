@@ -1,5 +1,5 @@
-import 'package:client/features/sonarr/data/add_series_provider/add_series_provider.dart';
-import 'package:client/features/sonarr/data/series_provider/series_provider.dart';
+import 'package:client/features/sonarr/application/provider/add_series_provider/add_series_provider.dart';
+import 'package:client/features/sonarr/application/provider/all_series_provider/all_series_provider.dart';
 import 'package:client/features/sonarr/presentation/add_series/widgets/empty_state.dart';
 import 'package:client/features/sonarr/presentation/add_series/widgets/loading_indicator.dart';
 import 'package:client/features/sonarr/presentation/add_series/widgets/no_results.dart';
@@ -61,8 +61,8 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
       if (result == true) {
         if (series.tvdbId != null) {
           notifier.setSeriesAsAdded(series.tvdbId!);
-          // Invalidate the seriesProvider to refresh the list
-          ref.invalidate(seriesProvider);
+          // Invalidate the allSeriesProvider to refresh the list
+          ref.invalidate(allSeriesProvider);
         }
 
         scaffoldMessenger.showSnackBar(

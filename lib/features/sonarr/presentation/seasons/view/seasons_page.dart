@@ -1,5 +1,5 @@
-import 'package:client/features/sonarr/data/episode_provider/episode_provider.dart';
-import 'package:client/features/sonarr/data/series_management_provider/series_management_provider.dart';
+import 'package:client/features/sonarr/application/provider/episode_provider/episode_provider.dart';
+import 'package:client/features/sonarr/application/provider/series_management_provider/series_management_provider.dart';
 import 'package:client/features/sonarr/presentation/shared/widgets/season_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +13,7 @@ class SeasonsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Watch for series updates
-    final seriesAsync = ref.watch(seriesProvider(initialSeries.id!));
+    final seriesAsync = ref.watch(singleSeriesProvider(initialSeries.id!));
 
     // Use the most current series data, falling back to the initial data
     final currentSeries = seriesAsync.value ?? initialSeries;
@@ -32,7 +32,7 @@ class SeasonsPage extends ConsumerWidget {
             tooltip: 'Refresh data',
             onPressed: () {
               // Force refresh of the data
-              ref.invalidate(seriesProvider(initialSeries.id!));
+              ref.invalidate(singleSeriesProvider(initialSeries.id!));
               ref.invalidate(seriesEpisodesProvider(currentSeries.id!));
               ref.invalidate(seriesEpisodeFilesProvider(currentSeries.id!));
             },
@@ -42,7 +42,7 @@ class SeasonsPage extends ConsumerWidget {
       body: RefreshIndicator(
         onRefresh: () async {
           // Pull-to-refresh functionality
-          ref.invalidate(seriesProvider(initialSeries.id!));
+          ref.invalidate(singleSeriesProvider(initialSeries.id!));
           ref.invalidate(seriesEpisodesProvider(currentSeries.id!));
           ref.invalidate(seriesEpisodeFilesProvider(currentSeries.id!));
         },

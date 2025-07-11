@@ -1,8 +1,7 @@
+import 'package:client/features/sonarr/presentation/state/add_series_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:client/core/api/api_client.dart';
-
-import 'package:client/features/sonarr/domain/add_series_state.dart';
 
 class AddSeriesNotifier extends StateNotifier<AddSeriesState> {
   final Ref _ref;

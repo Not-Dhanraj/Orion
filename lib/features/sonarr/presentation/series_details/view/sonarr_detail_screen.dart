@@ -1,6 +1,6 @@
+import 'package:client/features/sonarr/application/provider/series_management_provider/series_management_provider.dart';
 import 'package:client/features/sonarr/application/series_management_service_provider.dart';
 import 'package:client/core/widgets/detail_sliver_app_bar.dart';
-import 'package:client/features/sonarr/data/series_management_provider/series_management_provider.dart';
 import 'package:client/features/sonarr/presentation/series_details/widgets/series_details.dart';
 import 'package:client/features/sonarr/presentation/shared/widgets/series_action_buttons.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +48,7 @@ class SonarrDetailScreen extends ConsumerWidget {
                 icon: const Icon(Icons.refresh),
                 tooltip: 'Refresh series data',
                 onPressed: () {
-                  ref.invalidate(seriesProvider(series.id!));
+                  ref.invalidate(singleSeriesProvider(series.id!));
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Refreshing series data...'),

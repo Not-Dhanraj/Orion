@@ -1,5 +1,5 @@
 import 'package:client/features/sonarr/application/add_series_service.dart';
-import 'package:client/features/sonarr/data/add_series_details_provider/add_series_details_provider.dart';
+import 'package:client/features/sonarr/application/provider/add_series_details_provider/add_series_details_provider.dart';
 import 'package:client/features/sonarr/presentation/add_series_details/widgets/add_series_button.dart';
 import 'package:client/features/sonarr/presentation/add_series_details/widgets/additional_options_card.dart';
 import 'package:client/features/sonarr/presentation/add_series_details/widgets/error_view.dart';
@@ -104,24 +104,21 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
       body: state.isLoading
           ? const LoadingView()
           : state.error != null
-              ? ErrorView(
-                  error: state.error,
-                  onTryAgain: () => ref.refresh(provider),
-                )
-              : SingleChildScrollView(
-                  padding: const EdgeInsets.all(16.0),
-                  child: _buildResponsiveLayout(
-                    context,
-                    [
-                      SeriesHeaderCard(series: series),
-                      SeriesConfigurationCard(series: series),
-                      AdditionalOptionsCard(series: series),
-                      AddSeriesButton(
-                        onPressed: () => addSeriesService.addSeries(context),
-                      ),
-                    ],
-                  ),
+          ? ErrorView(
+              error: state.error,
+              onTryAgain: () => ref.refresh(provider),
+            )
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: _buildResponsiveLayout(context, [
+                SeriesHeaderCard(series: series),
+                SeriesConfigurationCard(series: series),
+                AdditionalOptionsCard(series: series),
+                AddSeriesButton(
+                  onPressed: () => addSeriesService.addSeries(context),
                 ),
+              ]),
+            ),
     );
   }
 }

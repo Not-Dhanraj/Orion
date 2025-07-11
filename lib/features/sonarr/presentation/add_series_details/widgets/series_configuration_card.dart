@@ -1,4 +1,4 @@
-import 'package:client/features/sonarr/data/add_series_details_provider/add_series_details_provider.dart';
+import 'package:client/features/sonarr/application/provider/add_series_details_provider/add_series_details_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
@@ -26,7 +26,9 @@ class SeriesConfigurationCard extends ConsumerWidget {
           Text(
             subtitle,
             style: TextStyle(
-              color: Theme.of(context).colorScheme.onSurface.withAlpha(153), // 0.6 opacity
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withAlpha(153), // 0.6 opacity
               fontSize: 14,
             ),
           ),
@@ -47,9 +49,7 @@ class SeriesConfigurationCard extends ConsumerWidget {
 
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

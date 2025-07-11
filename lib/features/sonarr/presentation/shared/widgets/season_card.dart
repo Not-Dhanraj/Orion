@@ -1,6 +1,6 @@
-import 'package:client/features/sonarr/data/commands_provider/commands_provider.dart';
-import 'package:client/features/sonarr/data/episode_provider/episode_provider.dart';
-import 'package:client/features/sonarr/data/series_management_provider/series_management_provider.dart';
+import 'package:client/features/sonarr/application/provider/commands_provider/commands_provider.dart';
+import 'package:client/features/sonarr/application/provider/episode_provider/episode_provider.dart';
+import 'package:client/features/sonarr/application/provider/series_management_provider/series_management_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
@@ -65,7 +65,7 @@ class _SeasonCardState extends ConsumerState<SeasonCard>
     final theme = Theme.of(context);
 
     // Watch the series data to get real-time updates when changes occur
-    final seriesAsync = ref.watch(seriesProvider(widget.series.id!));
+    final seriesAsync = ref.watch(singleSeriesProvider(widget.series.id!));
 
     // Find the current monitored status of this season
     bool? isSeasonMonitored;

@@ -1,15 +1,14 @@
 import 'package:client/core/api/api_client.dart';
+import 'package:client/features/sonarr/presentation/state/add_series_details_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
-
-import 'package:client/features/sonarr/domain/add_series_details_state.dart';
 
 class AddSeriesDetailsNotifier extends StateNotifier<AddSeriesDetailsState> {
   final Ref _ref;
   final SonarrSeriesLookup _series;
 
   AddSeriesDetailsNotifier(this._ref, this._series)
-      : super(AddSeriesDetailsState()) {
+    : super(AddSeriesDetailsState()) {
     _fetchData();
   }
 
@@ -24,8 +23,9 @@ class AddSeriesDetailsNotifier extends StateNotifier<AddSeriesDetailsState> {
       state = state.copyWith(
         qualityProfiles: qualityProfiles,
         rootFolders: rootFolders,
-        selectedQualityProfileId:
-            qualityProfiles.isNotEmpty ? qualityProfiles.first.id : 1,
+        selectedQualityProfileId: qualityProfiles.isNotEmpty
+            ? qualityProfiles.first.id
+            : 1,
         rootFolderPath: rootFolders.isNotEmpty ? rootFolders.first.path : null,
         selectedSeriesType: _series.seriesType ?? SonarrSeriesType.STANDARD,
       );
@@ -103,6 +103,8 @@ class AddSeriesDetailsNotifier extends StateNotifier<AddSeriesDetailsState> {
 }
 
 final addSeriesDetailsNotifierProvider = StateNotifierProvider.autoDispose
-    .family<AddSeriesDetailsNotifier, AddSeriesDetailsState, SonarrSeriesLookup>(
-  (ref, series) => AddSeriesDetailsNotifier(ref, series),
-);
+    .family<
+      AddSeriesDetailsNotifier,
+      AddSeriesDetailsState,
+      SonarrSeriesLookup
+    >((ref, series) => AddSeriesDetailsNotifier(ref, series));

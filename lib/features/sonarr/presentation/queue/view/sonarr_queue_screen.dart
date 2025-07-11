@@ -1,6 +1,6 @@
 import 'package:client/core/widgets/error_view.dart';
 import 'package:client/core/api/api_client.dart';
-import 'package:client/features/sonarr/data/queue_provider/queue_provider.dart';
+import 'package:client/features/sonarr/application/provider/queue_provider/queue_provider.dart';
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

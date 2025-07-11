@@ -1,5 +1,5 @@
 import 'package:client/core/widgets/error_view.dart';
-import 'package:client/features/sonarr/data/series_provider/series_provider.dart';
+import 'package:client/features/sonarr/application/provider/all_series_provider/all_series_provider.dart';
 import 'package:client/features/sonarr/presentation/add_series/view/add_series_screen.dart';
 import 'package:client/features/sonarr/presentation/queue/view/sonarr_queue_screen.dart';
 import 'package:client/features/sonarr/presentation/series/widgets/series_grid_view.dart';
@@ -11,7 +11,7 @@ class SonarrScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final seriesValue = ref.watch(seriesProvider);
+    final seriesValue = ref.watch(allSeriesProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -44,8 +44,10 @@ class SonarrScreen extends ConsumerWidget {
       body: seriesValue.when(
         data: (series) => SeriesGridView(series: series),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) =>
-            ErrorView(error: err, onRetry: () => ref.refresh(seriesProvider)),
+        error: (err, stack) => ErrorView(
+          error: err,
+          onRetry: () => ref.refresh(allSeriesProvider),
+        ),
       ),
     );
   }

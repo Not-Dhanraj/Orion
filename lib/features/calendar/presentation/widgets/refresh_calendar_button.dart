@@ -1,5 +1,5 @@
 import 'package:client/core/api/api_client.dart';
-import 'package:client/features/sonarr/data/commands_provider/commands_provider.dart';
+import 'package:client/features/sonarr/application/provider/commands_provider/commands_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

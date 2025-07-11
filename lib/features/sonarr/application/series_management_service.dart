@@ -1,7 +1,7 @@
+import 'package:client/features/sonarr/application/provider/series_management_provider/series_management_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
-import 'package:client/features/sonarr/data/series_management_provider/series_management_provider.dart';
 
 class SeriesManagementService {
   final Ref _ref;

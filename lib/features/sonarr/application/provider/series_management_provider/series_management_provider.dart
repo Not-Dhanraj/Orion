@@ -1,19 +1,17 @@
 import 'package:client/core/api/api_client.dart';
-import 'package:client/features/sonarr/data/commands_provider/commands_provider.dart';
-import 'package:client/features/sonarr/data/episode_provider/episode_provider.dart';
-import 'package:client/features/sonarr/data/series_provider/series_provider.dart'
+import 'package:client/features/sonarr/application/provider/commands_provider/commands_provider.dart';
+import 'package:client/features/sonarr/application/provider/episode_provider/episode_provider.dart';
+import 'package:client/features/sonarr/application/provider/all_series_provider/all_series_provider.dart'
     as series_list;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
 
 /// Provider for getting a single series by ID
-final seriesProvider = FutureProvider.autoDispose.family<SonarrSeries, int>((
-  ref,
-  seriesId,
-) async {
-  final sonarrApi = ref.read(sonarrProvider);
-  return await sonarrApi.series.getSeries(seriesId: seriesId);
-});
+final singleSeriesProvider = FutureProvider.autoDispose
+    .family<SonarrSeries, int>((ref, seriesId) async {
+      final sonarrApi = ref.read(sonarrProvider);
+      return await sonarrApi.series.getSeries(seriesId: seriesId);
+    });
 
 /// Notifier to manage series operations like refresh and rescan
 class SeriesManagementNotifier extends StateNotifier<AsyncValue<void>> {
@@ -122,7 +120,7 @@ class SeriesManagementNotifier extends StateNotifier<AsyncValue<void>> {
       final result = await sonarrApi.series.updateSeries(series: series);
 
       // Invalidate the cached series data so it will be re-fetched with the updated values
-      _ref.invalidate(seriesProvider(series.id!));
+      _ref.invalidate(singleSeriesProvider(series.id!));
 
       // Also invalidate the episodes since monitoring status affects them
       _ref.invalidate(seriesEpisodesProvider(series.id!));
@@ -152,13 +150,13 @@ class SeriesManagementNotifier extends StateNotifier<AsyncValue<void>> {
       // If deletion was successful, invalidate all relevant caches
       if (result == true) {
         // Invalidate the single series cache
-        _ref.invalidate(seriesProvider(seriesId));
+        _ref.invalidate(singleSeriesProvider(seriesId));
 
         // Invalidate episodes for this series
         _ref.invalidate(seriesEpisodesProvider(seriesId));
 
         // Invalidate the main series list to refresh the UI
-        _ref.invalidate(series_list.seriesProvider);
+        _ref.invalidate(series_list.allSeriesProvider);
       }
 
       return result;

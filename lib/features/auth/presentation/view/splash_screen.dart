@@ -1,6 +1,6 @@
 import 'package:client/features/auth/application/provider/credentials_provider.dart';
 import 'package:client/features/auth/presentation/view/auth_screen.dart';
-import 'package:client/features/home/view/home_screen.dart';
+import 'package:client/features/home/presentation/view/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -38,11 +38,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
+    return const Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 }
-

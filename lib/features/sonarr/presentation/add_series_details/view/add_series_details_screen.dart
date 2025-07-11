@@ -31,11 +31,11 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: backgroundColor ?? theme.colorScheme.surface.withOpacity(0.8),
+        color: backgroundColor ?? theme.colorScheme.surface.withAlpha(204), // 0.8 opacity
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withAlpha(25), // 0.1 opacity
             spreadRadius: 0,
             blurRadius: 4,
             offset: const Offset(0, 2),
@@ -70,7 +70,7 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
           Text(
             subtitle,
             style: TextStyle(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              color: Theme.of(context).colorScheme.onSurface.withAlpha(153), // 0.6 opacity
               fontSize: 14,
             ),
           ),
@@ -154,7 +154,7 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
 
     final headerCard = Card(
       elevation: 6,
-      shadowColor: Colors.black.withOpacity(0.3),
+      shadowColor: Colors.black.withAlpha(76), // 0.3 opacity
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
       clipBehavior: Clip.antiAlias,
       child: Column(
@@ -170,7 +170,7 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
                       end: Alignment.bottomCenter,
                       colors: [
                         Colors.transparent,
-                        Colors.black.withOpacity(0.8),
+                        Colors.black.withAlpha(204), // 0.8 opacity
                       ],
                       stops: const [0.5, 1.0],
                     ).createShader(rect);
@@ -201,7 +201,7 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
                 Container(
                   height: 220,
                   width: double.infinity,
-                  color: theme.colorScheme.primary.withOpacity(0.2),
+                  color: theme.colorScheme.primary.withAlpha(51), // 0.2 opacity
                   child: Icon(
                     Icons.image_not_supported,
                     size: 80,
@@ -251,7 +251,7 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
                                 color: Colors.white,
                                 shadows: [
                                   Shadow(
-                                    color: Colors.black.withOpacity(0.5),
+                                    color: Colors.black.withAlpha(128), // 0.5 opacity
                                     blurRadius: 2,
                                     offset: const Offset(1, 1),
                                   ),
@@ -670,14 +670,17 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
           gradient: LinearGradient(
             colors: [
               theme.colorScheme.primary,
-              theme.colorScheme.primary.withBlue(
+              Color.fromRGBO(
+                (theme.colorScheme.primary.red),
+                (theme.colorScheme.primary.green),
                 (theme.colorScheme.primary.blue + 40).clamp(0, 255),
+                1,
               ),
             ],
           ),
           boxShadow: [
             BoxShadow(
-              color: theme.colorScheme.primary.withOpacity(0.4),
+              color: theme.colorScheme.primary.withAlpha(102), // 0.4 opacity
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
@@ -686,21 +689,23 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
         child: ElevatedButton(
           onPressed: () async {
             final success = await notifier.addSeries();
-            if (success) {
-              Navigator.of(context).pop(true);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('${series.title} added successfully'),
-                  backgroundColor: Colors.green,
-                ),
-              );
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Failed to add series: ${state.error}'),
-                  backgroundColor: Colors.red,
-                ),
-              );
+            if (context.mounted) {
+              if (success) {
+                Navigator.of(context).pop(true);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('${series.title} added successfully'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Failed to add series: ${state.error}'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
             }
           },
           style: ElevatedButton.styleFrom(
@@ -748,8 +753,10 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
                 icon: Icon(Icons.check, color: theme.colorScheme.primary),
                 onPressed: () async {
                   final success = await notifier.addSeries();
-                  if (success) {
-                    Navigator.of(context).pop(true);
+                  if (context.mounted) {
+                    if (success) {
+                      Navigator.of(context).pop(true);
+                    }
                   }
                 },
                 tooltip: 'Add Series',

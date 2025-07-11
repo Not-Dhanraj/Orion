@@ -47,6 +47,7 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
     }
 
     Future<void> addSeries(SonarrSeriesLookup series) async {
+      final scaffoldMessenger = ScaffoldMessenger.of(context);
       final result = await Navigator.push(
         context,
         MaterialPageRoute(
@@ -59,7 +60,7 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
           notifier.setSeriesAsAdded(series.tvdbId!);
         }
 
-        ScaffoldMessenger.of(context).showSnackBar(
+        scaffoldMessenger.showSnackBar(
           SnackBar(
             content: Text('${series.title} added successfully'),
             behavior: SnackBarBehavior.floating,
@@ -93,7 +94,8 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
                   height: 120,
                   width: 120,
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.primaryContainer.withOpacity(0.2),
+                    color:
+                        theme.colorScheme.primaryContainer.withAlpha(51), // 0.2 opacity
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -115,7 +117,8 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
                 Text(
                   'Enter a title in the search bar above to find shows to add to your library',
                   style: theme.textTheme.bodyLarge?.copyWith(
-                    color: theme.colorScheme.onSurface.withOpacity(0.7),
+                    color:
+                        theme.colorScheme.onSurface.withAlpha(178), // 0.7 opacity
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -149,7 +152,8 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
                   height: 120,
                   width: 120,
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.errorContainer.withOpacity(0.2),
+                    color: theme.colorScheme.errorContainer
+                        .withAlpha(51), // 0.2 opacity
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -171,7 +175,8 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
                 Text(
                   'We couldn\'t find any shows matching "${state.searchTerm}". Try searching with a different term.',
                   style: theme.textTheme.bodyLarge?.copyWith(
-                    color: theme.colorScheme.onSurface.withOpacity(0.7),
+                    color:
+                        theme.colorScheme.onSurface.withAlpha(178), // 0.7 opacity
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -263,7 +268,7 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
                 borderRadius: BorderRadius.circular(7),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.3),
+                    color: Colors.black.withAlpha(76), // 0.3 opacity
                     spreadRadius: 0,
                     blurRadius: 4,
                     offset: const Offset(0, 2),
@@ -303,7 +308,7 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.7),
+                  color: Colors.black.withAlpha(178), // 0.7 opacity
                   borderRadius: BorderRadius.circular(7),
                 ),
                 child: Text(
@@ -323,11 +328,11 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: statusColor.withOpacity(0.9),
+                  color: statusColor.withAlpha(230), // 0.9 opacity
                   borderRadius: BorderRadius.circular(6),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.3),
+                      color: Colors.black.withAlpha(76), // 0.3 opacity
                       blurRadius: 3,
                       offset: const Offset(0, 1),
                     ),
@@ -355,17 +360,18 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
         decoration: InputDecoration(
           hintText: 'Search for a TV show...',
           hintStyle: TextStyle(
-            color: theme.colorScheme.onSurface.withOpacity(0.6),
+            color: theme.colorScheme.onSurface.withAlpha(153), // 0.6 opacity
           ),
           prefixIcon: Icon(
             Icons.search,
-            color: theme.colorScheme.primary.withOpacity(0.7),
+            color: theme.colorScheme.primary.withAlpha(178), // 0.7 opacity
           ),
           suffixIcon: searchController.text.isNotEmpty
               ? IconButton(
                   icon: Icon(
                     Icons.clear,
-                    color: theme.colorScheme.onSurface.withOpacity(0.7),
+                    color:
+                        theme.colorScheme.onSurface.withAlpha(178), // 0.7 opacity
                     size: 20,
                   ),
                   onPressed: () {
@@ -375,7 +381,8 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
                 )
               : null,
           filled: true,
-          fillColor: theme.colorScheme.surfaceVariant.withOpacity(0.3),
+          fillColor:
+              theme.colorScheme.surfaceContainerHighest.withAlpha(76), // 0.3 opacity
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide.none,
@@ -450,7 +457,7 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.03),
+                    color: Colors.black.withAlpha(8), // 0.03 opacity
                     spreadRadius: 0,
                     blurRadius: 3,
                     offset: const Offset(0, 1),
@@ -493,8 +500,8 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
                               vertical: 12,
                             ),
                             decoration: BoxDecoration(
-                              color: theme.colorScheme.surfaceVariant
-                                  .withOpacity(0.7),
+                              color: theme.colorScheme.surfaceContainerHighest
+                                  .withAlpha(178), // 0.7 opacity
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(

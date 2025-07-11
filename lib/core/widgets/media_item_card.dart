@@ -21,7 +21,7 @@ class MediaItemCard extends StatelessWidget {
 
     return Card(
       elevation: 6,
-      shadowColor: Colors.black.withOpacity(0.3),
+      shadowColor: Colors.black.withAlpha(76), // 0.3 opacity
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Stack(
@@ -33,13 +33,13 @@ class MediaItemCard extends StatelessWidget {
               imageUrl: posterUrl!,
               fit: BoxFit.cover,
               placeholder: (context, url) => Container(
-                color: theme.colorScheme.surfaceVariant.withOpacity(0.3),
+                color: theme.colorScheme.surfaceContainerHighest.withAlpha(76), // 0.3 opacity
                 child: const Center(
                   child: CircularProgressIndicator(strokeWidth: 2),
                 ),
               ),
               errorWidget: (context, url, error) => Container(
-                color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
+                color: theme.colorScheme.surfaceContainerHighest.withAlpha(128), // 0.5 opacity
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -61,22 +61,22 @@ class MediaItemCard extends StatelessWidget {
             )
           else
             Container(
-              color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
+              color: theme.colorScheme.surfaceContainerHighest.withAlpha(128), // 0.5 opacity
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.tv,
                     size: 50,
-                    color: theme.colorScheme.onSurfaceVariant.withOpacity(0.6),
+                    color: theme.colorScheme.onSurfaceVariant.withAlpha(153), // 0.6 opacity
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'No Poster\nAvailable',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: theme.colorScheme.onSurfaceVariant.withOpacity(
-                        0.8,
+                      color: theme.colorScheme.onSurfaceVariant.withAlpha(
+                        204, // 0.8 opacity
                       ),
                       fontWeight: FontWeight.w500,
                     ),
@@ -96,8 +96,8 @@ class MediaItemCard extends StatelessWidget {
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
                   colors: [
-                    Colors.black.withOpacity(0.95), // Darker at bottom
-                    Colors.black.withOpacity(0.7),
+                    Colors.black.withAlpha(242), // 0.95 opacity
+                    Colors.black.withAlpha(178), // 0.7 opacity
                     Colors.transparent,
                   ],
                   stops: const [0.0, 0.4, 0.9], // Extended gradient
@@ -127,7 +127,7 @@ class MediaItemCard extends StatelessWidget {
                           status[0].toUpperCase() +
                               status.substring(1).toLowerCase(),
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: Colors.white.withOpacity(0.8),
+                            color: Colors.white.withAlpha(204), // 0.8 opacity
                             fontWeight: FontWeight.w500,
                           ),
                         )
@@ -144,8 +144,8 @@ class MediaItemCard extends StatelessWidget {
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: onTap,
-                  splashColor: theme.colorScheme.primary.withOpacity(0.3),
-                  highlightColor: theme.colorScheme.primary.withOpacity(0.1),
+                  splashColor: theme.colorScheme.primary.withAlpha(76), // 0.3 opacity
+                  highlightColor: theme.colorScheme.primary.withAlpha(25), // 0.1 opacity
                 ),
               ),
             ),

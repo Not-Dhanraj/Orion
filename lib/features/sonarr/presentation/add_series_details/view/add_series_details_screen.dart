@@ -1,3 +1,4 @@
+import 'package:client/features/sonarr/application/add_series_service.dart';
 import 'package:client/features/sonarr/data/add_series_details_provider/add_series_details_provider.dart';
 import 'package:client/features/sonarr/presentation/add_series_details/widgets/add_series_button.dart';
 import 'package:client/features/sonarr/presentation/add_series_details/widgets/additional_options_card.dart';
@@ -75,8 +76,8 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final provider = addSeriesDetailsNotifierProvider(series);
     final state = ref.watch(provider);
-    final notifier = ref.read(provider.notifier);
     final theme = Theme.of(context);
+    final addSeriesService = ref.watch(addSeriesServiceProvider(series));
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
@@ -94,14 +95,7 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
               padding: const EdgeInsets.only(right: 8.0),
               child: IconButton(
                 icon: Icon(Icons.check, color: theme.colorScheme.primary),
-                onPressed: () async {
-                  final success = await notifier.addSeries();
-                  if (context.mounted) {
-                    if (success) {
-                      Navigator.of(context).pop(true);
-                    }
-                  }
-                },
+                onPressed: () => addSeriesService.addSeries(context),
                 tooltip: 'Add Series',
               ),
             ),
@@ -123,27 +117,7 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
                       SeriesConfigurationCard(series: series),
                       AdditionalOptionsCard(series: series),
                       AddSeriesButton(
-                        onPressed: () async {
-                          final success = await notifier.addSeries();
-                          if (context.mounted) {
-                            if (success) {
-                              Navigator.of(context).pop(true);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('${series.title} added successfully'),
-                                  backgroundColor: Colors.green,
-                                ),
-                              );
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Failed to add series: ${state.error}'),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
-                            }
-                          }
-                        },
+                        onPressed: () => addSeriesService.addSeries(context),
                       ),
                     ],
                   ),

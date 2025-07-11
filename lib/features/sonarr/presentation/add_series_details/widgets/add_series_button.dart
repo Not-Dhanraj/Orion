@@ -17,9 +17,10 @@ class AddSeriesButton extends StatelessWidget {
           colors: [
             theme.colorScheme.primary,
             Color.fromRGBO(
-              (theme.colorScheme.primary.red),
-              (theme.colorScheme.primary.green),
-              (theme.colorScheme.primary.blue + 40).clamp(0, 255),
+              (theme.colorScheme.primary.r * 255.0).round() & 0xff,
+              (theme.colorScheme.primary.g * 255.0).round() & 0xff,
+              (((theme.colorScheme.primary.b * 255.0).round() & 0xff) + 40)
+                  .clamp(0, 255),
               1,
             ),
           ],

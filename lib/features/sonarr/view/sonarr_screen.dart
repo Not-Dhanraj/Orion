@@ -39,23 +39,32 @@ class SonarrScreen extends ConsumerWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => const AddSeriesScreen(),
-            ),
+            MaterialPageRoute(builder: (context) => const AddSeriesScreen()),
           );
         },
         child: const Icon(Icons.add),
       ),
       body: seriesValue.when(
         data: (series) {
+          // Calculate number of columns based on screen width
+          final screenWidth = MediaQuery.of(context).size.width;
+          final crossAxisCount = switch (screenWidth) {
+            >= 1400 => 6, // Extra Extra large screens: 6 columns
+            >= 1200 => 5, // Extra large screens: 5 columns
+            >= 900 => 4, // Large screens: 4 columns
+            >= 600 => 3, // Medium screens: 3 columns
+            >= 400 => 2, // Small screens: 2 columns
+            _ => 1, // Extra small screens: 1 column
+          };
+
           return GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: crossAxisCount,
               childAspectRatio: 0.65,
-              crossAxisSpacing: 8,
-              mainAxisSpacing: 8,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
             ),
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(12),
             itemCount: series.length,
             itemBuilder: (context, index) {
               final s = series[index];

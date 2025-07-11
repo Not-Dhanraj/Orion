@@ -223,28 +223,55 @@ class _AddSeriesDetailsScreenState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(flex: 2, child: headerCard),
-          const SizedBox(width: 16),
-          Expanded(flex: 3, child: Column(children: configCards)),
+          const SizedBox(width: 10), // Increased spacing
+          Expanded(
+            flex: 3,
+            child: Column(
+              children: [
+                configCards[0], // First config card
+                const SizedBox(height: 12), // Explicit spacing
+                configCards[1], // Second config card
+                const SizedBox(height: 12), // Explicit spacing
+                configCards[2], // Button
+              ],
+            ),
+          ),
         ],
       );
     }
 
-    // For medium screens, stack everything vertically as well
-    // This avoids content being cramped in the medium-sized screens
+    // For medium screens, show header card full width but config cards in a row
     if (screenWidth > 600) {
       return Column(
         children: [
           headerCard,
-          const SizedBox(height: 16),
-          // Just display the config cards vertically
-          ...configCards,
+          const SizedBox(height: 12), // Increased spacing
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (int i = 0; i < configCards.length - 1; i++) ...[
+                if (i > 0) const SizedBox(width: 16),
+                Expanded(child: configCards[i]),
+              ],
+            ],
+          ),
+          const SizedBox(height: 12), // Increased spacing
+          configCards[configCards.length - 1], // Last card full width;
         ],
       );
     }
 
     // For small screens, stack everything vertically
     return Column(
-      children: [headerCard, const SizedBox(height: 16), ...configCards],
+      children: [
+        headerCard,
+        const SizedBox(height: 12),
+        configCards[0], // First config card
+        const SizedBox(height: 12),
+        configCards[1], // Second config card
+        const SizedBox(height: 12),
+        configCards[2], // Button
+      ],
     );
   }
 
@@ -622,8 +649,6 @@ class _AddSeriesDetailsScreenState
         ),
       ),
 
-      const SizedBox(height: 24),
-
       // Additional Options Card
       Card(
         elevation: 2,
@@ -799,8 +824,6 @@ class _AddSeriesDetailsScreenState
         ),
       ),
 
-      const SizedBox(height: 32),
-
       // Add button
       Container(
         width: double.infinity,
@@ -850,7 +873,6 @@ class _AddSeriesDetailsScreenState
           ),
         ),
       ),
-      const SizedBox(height: 24),
     ];
 
     return Scaffold(

@@ -8,7 +8,7 @@ class SeasonCard extends ConsumerWidget {
   final int seriesId;
   final int seasonNumber;
   final String seasonName;
-  
+
   const SeasonCard({
     super.key,
     required this.seriesId,
@@ -21,7 +21,7 @@ class SeasonCard extends ConsumerWidget {
     final episodeState = ref.watch(episodeNotifierProvider);
     final episodeNotifier = ref.read(episodeNotifierProvider.notifier);
     final theme = Theme.of(context);
-    
+
     return Card(
       elevation: 2,
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -34,13 +34,10 @@ class SeasonCard extends ConsumerWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  seasonName,
-                  style: theme.textTheme.titleLarge,
-                ),
+                Text(seasonName, style: theme.textTheme.titleLarge),
                 ElevatedButton.icon(
                   onPressed: episodeState is AsyncLoading
-                      ? null 
+                      ? null
                       : () async {
                           try {
                             await episodeNotifier.seasonSearch(
@@ -50,7 +47,9 @@ class SeasonCard extends ConsumerWidget {
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text('Searching for $seasonName episodes'),
+                                  content: Text(
+                                    'Searching for $seasonName episodes',
+                                  ),
                                   duration: const Duration(seconds: 2),
                                 ),
                               );
@@ -59,7 +58,9 @@ class SeasonCard extends ConsumerWidget {
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text('Error searching for episodes: $e'),
+                                  content: Text(
+                                    'Error searching for episodes: $e',
+                                  ),
                                   backgroundColor: Colors.red,
                                 ),
                               );
@@ -85,25 +86,23 @@ class SeasonCard extends ConsumerWidget {
       ),
     );
   }
-  
+
   Widget _buildEpisodesList(WidgetRef ref) {
     final episodesAsyncValue = ref.watch(seriesEpisodesProvider(seriesId));
-    
+
     return episodesAsyncValue.when(
       data: (episodes) {
-        final seasonEpisodes = episodes.where(
-          (episode) => episode.seasonNumber == seasonNumber
-        ).toList();
-        
+        final seasonEpisodes = episodes
+            .where((episode) => episode.seasonNumber == seasonNumber)
+            .toList();
+
         if (seasonEpisodes.isEmpty) {
           return const Padding(
             padding: EdgeInsets.symmetric(vertical: 16),
-            child: Center(
-              child: Text('No episodes found for this season'),
-            ),
+            child: Center(child: Text('No episodes found for this season')),
           );
         }
-        
+
         return ListView.separated(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -111,9 +110,7 @@ class SeasonCard extends ConsumerWidget {
           separatorBuilder: (_, __) => const Divider(height: 1),
           itemBuilder: (context, index) {
             final episode = seasonEpisodes[index];
-            return EpisodeListItem(
-              episode: episode,
-            );
+            return EpisodeListItem(episode: episode);
           },
         );
       },
@@ -137,17 +134,14 @@ class SeasonCard extends ConsumerWidget {
 /// A widget that displays episode information
 class EpisodeListItem extends ConsumerWidget {
   final SonarrEpisode episode;
-  
-  const EpisodeListItem({
-    super.key,
-    required this.episode,
-  });
+
+  const EpisodeListItem({super.key, required this.episode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final episodeNotifier = ref.read(episodeNotifierProvider.notifier);
     final theme = Theme.of(context);
-    
+
     return ListTile(
       contentPadding: EdgeInsets.zero,
       title: Text(
@@ -158,8 +152,11 @@ class EpisodeListItem extends ConsumerWidget {
         'Episode ${episode.episodeNumber}${episode.airDate != null ? ' • ${episode.airDate}' : ''}',
         style: theme.textTheme.bodyMedium,
       ),
-      trailing: episode.hasFile == true
-          ? IconButton(
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (episode.hasFile == true)
+            IconButton(
               icon: const Icon(Icons.delete_outline),
               tooltip: 'Delete Episode File',
               onPressed: () async {
@@ -169,7 +166,7 @@ class EpisodeListItem extends ConsumerWidget {
                   builder: (context) => AlertDialog(
                     title: const Text('Delete Episode File'),
                     content: Text(
-                      'Are you sure you want to delete the file for "${episode.title}"?'
+                      'Are you sure you want to delete the file for "${episode.title}"?',
                     ),
                     actions: [
                       TextButton(
@@ -186,10 +183,12 @@ class EpisodeListItem extends ConsumerWidget {
                     ],
                   ),
                 );
-                
+
                 if (confirmed == true && episode.episodeFileId != null) {
                   try {
-                    await episodeNotifier.deleteEpisodeFile(episode.episodeFileId!);
+                    await episodeNotifier.deleteEpisodeFile(
+                      episode.episodeFileId!,
+                    );
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -211,7 +210,46 @@ class EpisodeListItem extends ConsumerWidget {
                 }
               },
             )
-          : const Icon(Icons.get_app, color: Colors.grey),
+          else
+            IconButton(
+              icon: const Icon(Icons.download),
+              tooltip: 'Download Episode',
+              onPressed: () async {
+                try {
+                  if (episode.id == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Cannot download: Missing episode ID'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                    return;
+                  }
+
+                  await episodeNotifier.downloadEpisode(episode.id!);
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Downloading "${episode.title}"'),
+                        backgroundColor: Colors.green,
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Error downloading episode: $e'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                }
+              },
+            ),
+        ],
+      ),
     );
   }
 }

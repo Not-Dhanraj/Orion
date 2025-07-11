@@ -38,6 +38,7 @@ class SeriesManagementNotifier extends StateNotifier<AsyncValue<void>> {
 }
 
 /// Provider for SeriesManagementNotifier
-final seriesManagementProvider = StateNotifierProvider<SeriesManagementNotifier, AsyncValue<void>>(
-  (ref) => SeriesManagementNotifier(ref),
-);
+final seriesManagementProvider =
+    StateNotifierProvider<SeriesManagementNotifier, AsyncValue<void>>(
+      (ref) => SeriesManagementNotifier(ref),
+    );

@@ -14,7 +14,7 @@ class SonarrCommands {
   SonarrCommands(this._ref);
 
   /// Refreshes the specified series to update its information
-  /// 
+  ///
   /// [seriesId] The ID of the series to refresh
   /// Returns a Future with the command response
   Future<SonarrCommand> refreshSeries(int seriesId) async {
@@ -23,7 +23,7 @@ class SonarrCommands {
   }
 
   /// Rescans the disk for the specified series to update file information
-  /// 
+  ///
   /// [seriesId] The ID of the series to rescan
   /// Returns a Future with the command response
   Future<SonarrCommand> rescanSeries(int seriesId) async {
@@ -32,20 +32,20 @@ class SonarrCommands {
   }
 
   /// Initiates a search for all episodes in the specified season
-  /// 
+  ///
   /// [seriesId] The ID of the series
   /// [seasonNumber] The season number to search for
   /// Returns a Future with the command response
   Future<SonarrCommand> seasonSearch(int seriesId, int seasonNumber) async {
     final sonarrApi = _ref.read(sonarrProvider);
     return await sonarrApi.command.seasonSearch(
-      seriesId: seriesId, 
-      seasonNumber: seasonNumber
+      seriesId: seriesId,
+      seasonNumber: seasonNumber,
     );
   }
 
   /// Gets all episodes for a specific series
-  /// 
+  ///
   /// [seriesId] The ID of the series to get episodes for
   /// Returns a Future with a list of episodes
   Future<List<SonarrEpisode>> getSeriesEpisodes(int seriesId) async {
@@ -54,7 +54,7 @@ class SonarrCommands {
   }
 
   /// Updates an episode with new information
-  /// 
+  ///
   /// [episode] The episode object with updated information
   /// Returns a Future with the updated episode
   Future<SonarrEpisode> updateEpisode(SonarrEpisode episode) async {
@@ -63,20 +63,42 @@ class SonarrCommands {
   }
 
   /// Gets all episode files for a specific series
-  /// 
+  ///
   /// [seriesId] The ID of the series to get episode files for
   /// Returns a Future with a list of episode files
   Future<List<SonarrEpisodeFile>> getSeriesEpisodeFiles(int seriesId) async {
     final sonarrApi = _ref.read(sonarrProvider);
-    return await sonarrApi.episodeFile.getSeriesEpisodeFiles(seriesId: seriesId);
+    return await sonarrApi.episodeFile.getSeriesEpisodeFiles(
+      seriesId: seriesId,
+    );
   }
 
   /// Deletes an episode file
-  /// 
+  ///
   /// [episodeFileId] The ID of the episode file to delete
   /// Returns a Future indicating success or failure
   Future<void> deleteEpisodeFile(int episodeFileId) async {
     final sonarrApi = _ref.read(sonarrProvider);
-    return await sonarrApi.episodeFile.deleteEpisodeFile(episodeFileId: episodeFileId);
+    return await sonarrApi.episodeFile.deleteEpisodeFile(
+      episodeFileId: episodeFileId,
+    );
+  }
+
+  /// Initiates a search for a specific episode to download it
+  ///
+  /// [episodeIds] List of episode IDs to search for
+  /// Returns a Future with the command response
+  Future<SonarrCommand> episodeSearch(List<int> episodeIds) async {
+    final sonarrApi = _ref.read(sonarrProvider);
+    return await sonarrApi.command.episodeSearch(episodeIds: episodeIds);
+  }
+
+  /// Initiates a search for a single episode to download it
+  ///
+  /// [episodeId] The ID of the episode to search for
+  /// Returns a Future with the command response
+  Future<SonarrCommand> downloadEpisode(int episodeId) async {
+    final sonarrApi = _ref.read(sonarrProvider);
+    return await sonarrApi.command.episodeSearch(episodeIds: [episodeId]);
   }
 }

@@ -8,7 +8,8 @@ class RefreshCalendarButton extends ConsumerStatefulWidget {
   const RefreshCalendarButton({super.key});
 
   @override
-  ConsumerState<RefreshCalendarButton> createState() => _RefreshCalendarButtonState();
+  ConsumerState<RefreshCalendarButton> createState() =>
+      _RefreshCalendarButtonState();
 }
 
 class _RefreshCalendarButtonState extends ConsumerState<RefreshCalendarButton> {
@@ -40,15 +41,15 @@ class _RefreshCalendarButtonState extends ConsumerState<RefreshCalendarButton> {
                 final sonarrApi = ref.read(sonarrProvider);
                 final series = await sonarrApi.series.getAllSeries();
                 final commands = ref.read(sonarrCommandsProvider);
-                
+
                 // Refresh each series in sequence to avoid overwhelming the API
                 for (final s in series) {
                   if (!mounted) return;
                   if (s.id == null) continue;
-                  
+
                   await commands.refreshSeries(s.id!);
                 }
-                
+
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(

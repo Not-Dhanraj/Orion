@@ -6,13 +6,13 @@ import 'package:sonarr_flutter/sonarr_flutter.dart';
 
 class SeasonsPage extends ConsumerWidget {
   final SonarrSeries series;
-  
+
   const SeasonsPage({super.key, required this.series});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final episodesAsyncValue = ref.watch(seriesEpisodesProvider(series.id!));
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Text('${series.title} - Seasons'),
@@ -21,19 +21,22 @@ class SeasonsPage extends ConsumerWidget {
       body: episodesAsyncValue.when(
         data: (episodes) {
           // Get unique season numbers
-          final seasonNumbers = episodes
-              .map((e) => e.seasonNumber)
-              .toSet()
-              .where((s) => s != null && s > 0) // Filter out specials (season 0)
-              .toList()
-              ..sort(); // Sort seasons
-              
+          final seasonNumbers =
+              episodes
+                  .map((e) => e.seasonNumber)
+                  .toSet()
+                  .where(
+                    (s) => s != null && s > 0,
+                  ) // Filter out specials (season 0)
+                  .toList()
+                ..sort(); // Sort seasons
+
           if (seasonNumbers.isEmpty) {
             return const Center(
               child: Text('No seasons found for this series'),
             );
           }
-          
+
           return ListView.builder(
             itemCount: seasonNumbers.length,
             padding: const EdgeInsets.only(top: 8, bottom: 16),
@@ -47,9 +50,7 @@ class SeasonsPage extends ConsumerWidget {
             },
           );
         },
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
-        ),
+        loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) => Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -68,7 +69,8 @@ class SeasonsPage extends ConsumerWidget {
               ),
               const SizedBox(height: 24),
               ElevatedButton(
-                onPressed: () => ref.refresh(seriesEpisodesProvider(series.id!)),
+                onPressed: () =>
+                    ref.refresh(seriesEpisodesProvider(series.id!)),
                 child: const Text('Try Again'),
               ),
             ],

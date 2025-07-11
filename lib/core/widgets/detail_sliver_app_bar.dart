@@ -7,9 +7,9 @@ class DetailSliverAppBar extends StatelessWidget {
   final List<Widget>? actions;
 
   const DetailSliverAppBar({
-    super.key, 
-    required this.title, 
-    this.fanartUrl, 
+    super.key,
+    required this.title,
+    this.fanartUrl,
     this.actions,
   });
 

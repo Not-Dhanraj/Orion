@@ -36,11 +36,9 @@ class SonarrDetailScreen extends ConsumerWidget {
       body: CustomScrollView(
         slivers: [
           DetailSliverAppBar(
-            title: 'Details', 
+            title: 'Details',
             fanartUrl: fanartUrl,
-            actions: [
-              SeriesActionButtons(series: series),
-            ],
+            actions: [SeriesActionButtons(series: series)],
           ),
           SliverToBoxAdapter(
             child: Container(

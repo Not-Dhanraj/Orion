@@ -6,17 +6,14 @@ import 'package:sonarr_flutter/sonarr_flutter.dart';
 /// A widget that provides actions for managing a series
 class SeriesActionButtons extends ConsumerWidget {
   final SonarrSeries series;
-  
-  const SeriesActionButtons({
-    super.key,
-    required this.series,
-  });
+
+  const SeriesActionButtons({super.key, required this.series});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final seriesManagement = ref.watch(seriesManagementProvider);
     final notifier = ref.read(seriesManagementProvider.notifier);
-    
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -67,7 +64,9 @@ class SeriesActionButtons extends ConsumerWidget {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Rescanning files for: ${series.title}'),
+                            content: Text(
+                              'Rescanning files for: ${series.title}',
+                            ),
                             duration: const Duration(seconds: 2),
                           ),
                         );

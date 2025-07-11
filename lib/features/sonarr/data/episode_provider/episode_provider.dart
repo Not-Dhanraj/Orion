@@ -3,20 +3,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
 
 /// Provider for fetching episodes for a specific series
-final seriesEpisodesProvider = FutureProvider.family<List<SonarrEpisode>, int>(
-  (ref, seriesId) async {
-    final commands = ref.read(sonarrCommandsProvider);
-    return await commands.getSeriesEpisodes(seriesId);
-  },
-);
+final seriesEpisodesProvider = FutureProvider.family<List<SonarrEpisode>, int>((
+  ref,
+  seriesId,
+) async {
+  final commands = ref.read(sonarrCommandsProvider);
+  return await commands.getSeriesEpisodes(seriesId);
+});
 
 /// Provider for fetching episode files for a specific series
-final seriesEpisodeFilesProvider = FutureProvider.family<List<SonarrEpisodeFile>, int>(
-  (ref, seriesId) async {
-    final commands = ref.read(sonarrCommandsProvider);
-    return await commands.getSeriesEpisodeFiles(seriesId);
-  },
-);
+final seriesEpisodeFilesProvider =
+    FutureProvider.family<List<SonarrEpisodeFile>, int>((ref, seriesId) async {
+      final commands = ref.read(sonarrCommandsProvider);
+      return await commands.getSeriesEpisodeFiles(seriesId);
+    });
 
 /// Notifier to manage episode state and operations
 class EpisodeNotifier extends StateNotifier<AsyncValue<void>> {
@@ -64,9 +64,24 @@ class EpisodeNotifier extends StateNotifier<AsyncValue<void>> {
       rethrow;
     }
   }
+
+  /// Initiates a search for a single episode to download it
+  Future<SonarrCommand> downloadEpisode(int episodeId) async {
+    state = const AsyncValue.loading();
+    try {
+      final commands = _ref.read(sonarrCommandsProvider);
+      final result = await commands.downloadEpisode(episodeId);
+      state = const AsyncValue.data(null);
+      return result;
+    } catch (e, stack) {
+      state = AsyncValue.error(e, stack);
+      rethrow;
+    }
+  }
 }
 
 /// Provider for EpisodeNotifier
-final episodeNotifierProvider = StateNotifierProvider<EpisodeNotifier, AsyncValue<void>>(
-  (ref) => EpisodeNotifier(ref),
-);
+final episodeNotifierProvider =
+    StateNotifierProvider<EpisodeNotifier, AsyncValue<void>>(
+      (ref) => EpisodeNotifier(ref),
+    );

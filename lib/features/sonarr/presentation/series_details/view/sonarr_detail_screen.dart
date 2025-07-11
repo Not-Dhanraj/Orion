@@ -1,5 +1,4 @@
 import 'package:client/features/sonarr/application/provider/series_management_provider/series_management_provider.dart';
-import 'package:client/features/sonarr/application/series_management_service_provider.dart';
 import 'package:client/core/widgets/detail_sliver_app_bar.dart';
 import 'package:client/features/sonarr/presentation/series_details/widgets/series_details.dart';
 import 'package:client/features/sonarr/presentation/shared/widgets/series_action_buttons.dart';
@@ -27,6 +26,69 @@ class SonarrDetailScreen extends ConsumerWidget {
       // Ignore if not found
     }
     return null;
+  }
+
+  Future<void> _deleteSeries(
+      BuildContext context, WidgetRef ref, SonarrSeries series) async {
+    final navigator = Navigator.of(context);
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    final seriesManagementNotifier =
+        ref.read(seriesManagementProvider.notifier);
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Series'),
+        content: Text(
+          'Are you sure you want to delete "${series.title}"?\n\nThis will remove the entire series from Sonarr server.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('CANCEL'),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('DELETE'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && series.id != null) {
+      try {
+        final result = await seriesManagementNotifier.deleteSeries(series.id!);
+
+        if (result) {
+          scaffoldMessenger.showSnackBar(
+            SnackBar(
+              content: Text('${series.title} has been deleted'),
+              backgroundColor: Colors.green,
+              duration: const Duration(seconds: 2),
+            ),
+          );
+
+          if (navigator.canPop()) {
+            navigator.pop();
+          }
+        } else {
+          scaffoldMessenger.showSnackBar(
+            SnackBar(
+              content: Text('Failed to delete ${series.title}'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } catch (e) {
+        scaffoldMessenger.showSnackBar(
+          SnackBar(
+            content: Text('Error deleting series: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -60,9 +122,7 @@ class SonarrDetailScreen extends ConsumerWidget {
               IconButton(
                 icon: const Icon(Icons.delete_outline),
                 tooltip: 'Delete Series',
-                onPressed: () => ref
-                    .read(seriesManagementServiceProvider)
-                    .deleteSeries(context, series),
+                onPressed: () => _deleteSeries(context, ref, series),
               ),
               SeriesActionButtons(series: series),
             ],

@@ -1,4 +1,5 @@
 import 'package:client/core/api/api_client.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
 
@@ -29,6 +30,18 @@ class QueueNotifier extends StateNotifier<AsyncValue<void>> {
     } catch (e, stack) {
       state = AsyncValue.error(e, stack);
       rethrow;
+    }
+  }
+
+  /// Refreshes the download queue
+  Future<void> refreshQueue() async {
+    try {
+      final sonarr = _ref.read(sonarrProvider);
+      await sonarr.command.refreshMonitoredDownloads();
+      _ref.invalidate(sonarrQueueProvider);
+    } catch (e) {
+      debugPrint('Error refreshing monitored downloads: $e');
+      // Optionally, handle the error state
     }
   }
 }

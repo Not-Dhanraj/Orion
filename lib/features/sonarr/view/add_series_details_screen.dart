@@ -229,21 +229,15 @@ class _AddSeriesDetailsScreenState
       );
     }
 
-    // For medium screens, show header card full width but config cards in a row
+    // For medium screens, stack everything vertically as well
+    // This avoids content being cramped in the medium-sized screens
     if (screenWidth > 600) {
       return Column(
         children: [
           headerCard,
           const SizedBox(height: 16),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              for (int i = 0; i < configCards.length; i++) ...[
-                if (i > 0) const SizedBox(width: 16),
-                Expanded(child: configCards[i]),
-              ],
-            ],
-          ),
+          // Just display the config cards vertically
+          ...configCards,
         ],
       );
     }
@@ -650,73 +644,154 @@ class _AddSeriesDetailsScreenState
               const SizedBox(height: 8),
 
               // Season Folder
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: double.infinity),
-                child: SwitchListTile(
-                  title: const Text('Use Season Folder'),
-                  subtitle: const Text('Organize episodes into season folders'),
-                  value: _seasonFolder,
-                  activeColor: theme.colorScheme.primary,
-                  onChanged: (value) {
-                    setState(() {
-                      _seasonFolder = value;
-                    });
-                  },
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            'Use Season Folder',
+                            style: TextStyle(fontSize: 16.0),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            'Organize episodes into season folders',
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Switch(
+                      value: _seasonFolder,
+                      activeColor: theme.colorScheme.primary,
+                      onChanged: (value) {
+                        setState(() {
+                          _seasonFolder = value;
+                        });
+                      },
+                    ),
+                  ],
                 ),
               ),
               const Divider(height: 1),
 
               // Monitored
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: double.infinity),
-                child: SwitchListTile(
-                  title: const Text('Monitored'),
-                  subtitle: const Text('Monitor this series for new episodes'),
-                  value: _monitored,
-                  activeColor: theme.colorScheme.primary,
-                  onChanged: (value) {
-                    setState(() {
-                      _monitored = value;
-                    });
-                  },
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text('Monitored', style: TextStyle(fontSize: 16.0)),
+                          SizedBox(height: 4),
+                          Text(
+                            'Monitor this series for new episodes',
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Switch(
+                      value: _monitored,
+                      activeColor: theme.colorScheme.primary,
+                      onChanged: (value) {
+                        setState(() {
+                          _monitored = value;
+                        });
+                      },
+                    ),
+                  ],
                 ),
               ),
               const Divider(height: 1),
 
               // Search Missing Episodes
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: double.infinity),
-                child: SwitchListTile(
-                  title: const Text('Search for Missing Episodes'),
-                  subtitle: const Text(
-                    'Search for all missing episodes when adding the series',
-                  ),
-                  value: _searchForMissingEpisodes,
-                  activeColor: theme.colorScheme.primary,
-                  onChanged: (value) {
-                    setState(() {
-                      _searchForMissingEpisodes = value;
-                    });
-                  },
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            'Search for Missing Episodes',
+                            style: TextStyle(fontSize: 16.0),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            'Search for all missing episodes when adding the series',
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Switch(
+                      value: _searchForMissingEpisodes,
+                      activeColor: theme.colorScheme.primary,
+                      onChanged: (value) {
+                        setState(() {
+                          _searchForMissingEpisodes = value;
+                        });
+                      },
+                    ),
+                  ],
                 ),
               ),
               const Divider(height: 1),
 
               // Search Cutoff Unmet Episodes
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: double.infinity),
-                child: SwitchListTile(
-                  title: const Text('Search Cutoff Unmet Episodes'),
-                  subtitle: const Text(
-                    'Search for episodes that don\'t meet cutoff quality requirements',
-                  ),
-                  value: _searchForCutoffUnmetEpisodes,
-                  activeColor: theme.colorScheme.primary,
-                  onChanged: (value) {
-                    setState(() {
-                      _searchForCutoffUnmetEpisodes = value;
-                    });
-                  },
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            'Search Cutoff Unmet Episodes',
+                            style: TextStyle(fontSize: 16.0),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            'Search for episodes that don\'t meet cutoff quality requirements',
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Switch(
+                      value: _searchForCutoffUnmetEpisodes,
+                      activeColor: theme.colorScheme.primary,
+                      onChanged: (value) {
+                        setState(() {
+                          _searchForCutoffUnmetEpisodes = value;
+                        });
+                      },
+                    ),
+                  ],
                 ),
               ),
             ],

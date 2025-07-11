@@ -3,6 +3,7 @@ import 'package:client/core/widgets/media_item_card.dart';
 import 'package:client/features/sonarr/data/series_provider/series_provider.dart';
 import 'package:client/features/sonarr/presentation/series_details/view/sonarr_detail_screen.dart';
 import 'package:client/features/sonarr/presentation/add_series/view/add_series_screen.dart';
+import 'package:client/features/sonarr/presentation/queue/view/sonarr_queue_screen.dart';
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,7 +31,24 @@ class SonarrScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Sonarr'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('Sonarr'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.download),
+            tooltip: 'Download Queue',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SonarrQueueScreen(),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(

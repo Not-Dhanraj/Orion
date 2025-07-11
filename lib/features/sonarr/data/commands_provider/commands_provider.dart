@@ -169,4 +169,50 @@ class SonarrCommands {
       monitored: monitored,
     );
   }
+
+  /// Gets releases for a specific episode
+  ///
+  /// [episodeId] The ID of the episode to get releases for
+  /// Returns a Future with a list of releases
+  /// Excludes full season releases (where fullSeason is false or null)
+  Future<List<SonarrRelease>> getReleases(int episodeId) async {
+    final sonarrApi = _ref.read(sonarrProvider);
+    final releases = await sonarrApi.release.getReleases(episodeId: episodeId);
+
+    // Filter to only show entries where fullSeason is false or null (individual episodes)
+    return releases.where((release) => release.fullSeason == false).toList();
+  }
+
+  /// Gets releases for a specific season
+  ///
+  /// [seriesId] The ID of the series
+  /// [seasonNumber] The season number to get releases for
+  /// Returns a Future with a list of releases
+  /// Only includes full season releases (where fullSeason is true)
+  Future<List<SonarrRelease>> getSeasonReleases(
+    int seriesId,
+    int seasonNumber,
+  ) async {
+    final sonarrApi = _ref.read(sonarrProvider);
+    final releases = await sonarrApi.release.getSeasonReleases(
+      seriesId: seriesId,
+      seasonNumber: seasonNumber,
+    );
+
+    // Filter to only show entries where fullSeason is true
+    return releases.where((release) => release.fullSeason == true).toList();
+  }
+
+  /// Downloads a specific release
+  ///
+  /// [guid] The guid of the release to download
+  /// [indexerId] The ID of the indexer the release is from
+  /// Returns a Future with the added release response
+  Future<SonarrAddedRelease> downloadRelease({
+    required String guid,
+    required int indexerId,
+  }) async {
+    final sonarrApi = _ref.read(sonarrProvider);
+    return await sonarrApi.release.addRelease(guid: guid, indexerId: indexerId);
+  }
 }

@@ -663,8 +663,10 @@ class SonarrDetailScreen extends ConsumerWidget {
   void _showDeleteSeriesDialog(BuildContext context, WidgetRef ref) async {
     final navigator = Navigator.of(context);
     final scaffoldMessenger = ScaffoldMessenger.of(context);
-    final seriesManagementNotifier = ref.read(seriesManagementProvider.notifier);
-    
+    final seriesManagementNotifier = ref.read(
+      seriesManagementProvider.notifier,
+    );
+
     // Confirm deletion with the user
     final confirmed = await showDialog<bool>(
       context: context,
@@ -692,11 +694,9 @@ class SonarrDetailScreen extends ConsumerWidget {
     if (confirmed == true && series.id != null) {
       // Show loading indicator
       final loadingOverlay = _showLoadingOverlay(context, 'Deleting series...');
-      
+
       try {
-        final result = await seriesManagementNotifier.deleteSeries(
-          series.id!,
-        );
+        final result = await seriesManagementNotifier.deleteSeries(series.id!);
 
         // Hide loading indicator
         loadingOverlay.remove();
@@ -726,7 +726,7 @@ class SonarrDetailScreen extends ConsumerWidget {
       } catch (e) {
         // Hide loading indicator if there's an error
         loadingOverlay.remove();
-        
+
         scaffoldMessenger.showSnackBar(
           SnackBar(
             content: Text('Error deleting series: $e'),
@@ -736,7 +736,7 @@ class SonarrDetailScreen extends ConsumerWidget {
       }
     }
   }
-  
+
   // Helper method to show a loading overlay during deletion process
   OverlayEntry _showLoadingOverlay(BuildContext context, String message) {
     final overlay = Overlay.of(context);
@@ -749,10 +749,7 @@ class SonarrDetailScreen extends ConsumerWidget {
           children: [
             const CircularProgressIndicator(),
             const SizedBox(height: 16),
-            Text(
-              message,
-              style: const TextStyle(color: Colors.white),
-            ),
+            Text(message, style: const TextStyle(color: Colors.white)),
           ],
         ),
       ),

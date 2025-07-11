@@ -570,7 +570,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: b8b948308f3e96482b11b8255d29376cae6a48b1
+      resolved-ref: f7cfe7542df32e8b77f1813c45affd68f743c82f
       url: "https://github.com/Not-Dhanraj/sonarr_flutter.git"
     source: git
     version: "3.0.5"

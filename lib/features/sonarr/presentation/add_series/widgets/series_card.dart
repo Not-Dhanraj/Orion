@@ -114,8 +114,8 @@ class SeriesCard extends StatelessWidget {
           ),
         if (series.status != null)
           Positioned(
-            bottom: 12,
-            right: 11,
+            top: 42,
+            left: 11,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(

@@ -1,4 +1,3 @@
-import 'package:client/features/sonarr/application/add_series_service.dart';
 import 'package:client/features/sonarr/application/provider/add_series_details_provider/add_series_details_provider.dart';
 import 'package:client/features/sonarr/presentation/add_series_details/widgets/add_series_button.dart';
 import 'package:client/features/sonarr/presentation/add_series_details/widgets/additional_options_card.dart';
@@ -14,6 +13,36 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
   final SonarrSeriesLookup series;
 
   const AddSeriesDetailsScreen({super.key, required this.series});
+
+  Future<void> _addSeries(
+      BuildContext context, WidgetRef ref, SonarrSeriesLookup series) async {
+    final provider = addSeriesDetailsNotifierProvider(series);
+    final notifier = ref.read(provider.notifier);
+    final navigator = Navigator.of(context);
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+
+    final success = await notifier.addSeries();
+
+    if (!context.mounted) return;
+
+    if (success) {
+      scaffoldMessenger.showSnackBar(
+        SnackBar(
+          content: Text('${series.title} added successfully'),
+          backgroundColor: Colors.green,
+        ),
+      );
+      navigator.pop(true);
+    } else {
+      final error = ref.read(provider).error;
+      scaffoldMessenger.showSnackBar(
+        SnackBar(
+          content: Text('Failed to add series: $error'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   Widget _buildResponsiveLayout(BuildContext context, List<Widget> children) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -77,7 +106,6 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
     final provider = addSeriesDetailsNotifierProvider(series);
     final state = ref.watch(provider);
     final theme = Theme.of(context);
-    final addSeriesService = ref.watch(addSeriesServiceProvider(series));
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
@@ -95,7 +123,7 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
               padding: const EdgeInsets.only(right: 8.0),
               child: IconButton(
                 icon: Icon(Icons.check, color: theme.colorScheme.primary),
-                onPressed: () => addSeriesService.addSeries(context),
+                onPressed: () => _addSeries(context, ref, series),
                 tooltip: 'Add Series',
               ),
             ),
@@ -104,21 +132,21 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
       body: state.isLoading
           ? const LoadingView()
           : state.error != null
-          ? ErrorView(
-              error: state.error,
-              onTryAgain: () => ref.refresh(provider),
-            )
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: _buildResponsiveLayout(context, [
-                SeriesHeaderCard(series: series),
-                SeriesConfigurationCard(series: series),
-                AdditionalOptionsCard(series: series),
-                AddSeriesButton(
-                  onPressed: () => addSeriesService.addSeries(context),
+              ? ErrorView(
+                  error: state.error,
+                  onTryAgain: () => ref.refresh(provider),
+                )
+              : SingleChildScrollView(
+                  padding: const EdgeInsets.all(16.0),
+                  child: _buildResponsiveLayout(context, [
+                    SeriesHeaderCard(series: series),
+                    SeriesConfigurationCard(series: series),
+                    AdditionalOptionsCard(series: series),
+                    AddSeriesButton(
+                      onPressed: () => _addSeries(context, ref, series),
+                    ),
+                  ]),
                 ),
-              ]),
-            ),
     );
   }
 }

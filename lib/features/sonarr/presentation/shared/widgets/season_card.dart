@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
 
 /// A widget that displays season information and provides actions
-class SeasonCard extends ConsumerWidget {
+class SeasonCard extends ConsumerStatefulWidget {
   final SonarrSeries series;
   final int seasonNumber;
   final String seasonName;
@@ -18,24 +18,34 @@ class SeasonCard extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SeasonCard> createState() => _SeasonCardState();
+}
+
+class _SeasonCardState extends ConsumerState<SeasonCard> {
+  // Track whether the season is expanded or collapsed
+  bool _isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
     final episodeState = ref.watch(episodeNotifierProvider);
     final episodeNotifier = ref.read(episodeNotifierProvider.notifier);
-    final seriesManagementNotifier = ref.read(seriesManagementProvider.notifier);
+    final seriesManagementNotifier = ref.read(
+      seriesManagementProvider.notifier,
+    );
     final theme = Theme.of(context);
-    
+
     // Watch the series data to get real-time updates when changes occur
-    final seriesAsync = ref.watch(seriesProvider(series.id!));
-    
+    final seriesAsync = ref.watch(seriesProvider(widget.series.id!));
+
     // Find the current monitored status of this season
     bool? isSeasonMonitored;
-    
+
     // Use the latest series data if available, otherwise fall back to the passed series
-    final currentSeries = seriesAsync.value ?? series;
-    
+    final currentSeries = seriesAsync.value ?? widget.series;
+
     if (currentSeries.seasons != null) {
       for (final season in currentSeries.seasons!) {
-        if (season.seasonNumber == seasonNumber) {
+        if (season.seasonNumber == widget.seasonNumber) {
           isSeasonMonitored = season.monitored;
           break;
         }
@@ -46,156 +56,210 @@ class SeasonCard extends ConsumerWidget {
       elevation: 2,
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Text(seasonName, style: theme.textTheme.titleLarge),
-                    const SizedBox(width: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: isSeasonMonitored == true ? Colors.green.withOpacity(0.2) : Colors.grey.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: isSeasonMonitored == true ? Colors.green : Colors.grey,
-                          width: 1,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () {
+          setState(() {
+            _isExpanded = !_isExpanded;
+          });
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // First part of the row - Season info with expansion indicator
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Icon(
+                          _isExpanded
+                              ? Icons.keyboard_arrow_down
+                              : Icons.keyboard_arrow_right,
+                          color: theme.colorScheme.primary,
                         ),
-                      ),
-                      child: Text(
-                        isSeasonMonitored == true ? 'Monitored' : 'Not Monitored',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: isSeasonMonitored == true ? Colors.green : Colors.grey,
-                          fontWeight: FontWeight.bold,
+                        const SizedBox(width: 4),
+                        Flexible(
+                          child: Text(
+                            widget.seasonName,
+                            style: theme.textTheme.titleLarge,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      ),
+                        const SizedBox(width: 8),
+                        // Badge for monitoring status - using shorter text for small screens
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 6,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color: isSeasonMonitored == true
+                                ? Colors.green.withOpacity(0.2)
+                                : Colors.grey.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: isSeasonMonitored == true
+                                  ? Colors.green
+                                  : Colors.grey,
+                              width: 1,
+                            ),
+                          ),
+                          child: Text(
+                            isSeasonMonitored == true ? 'M' : 'UM',
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: isSeasonMonitored == true
+                                  ? Colors.green
+                                  : Colors.grey,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    // Monitor/unmonitor dropdown for the entire season
-                    PopupMenuButton<bool>(
-                      icon: Icon(
-                        isSeasonMonitored == true ? Icons.visibility : Icons.visibility_off,
-                        color: isSeasonMonitored == true
-                            ? Colors.green
-                            : Colors.grey,
-                        size: 28,
-                      ),
-                      tooltip: 'Monitor/Unmonitor Season',
-                      onSelected: (bool monitored) async {
-                        try {
-                          await seriesManagementNotifier.setSeasonMonitoring(
+                  ),
+
+                  // Actions - Simplified to a single menu button for all screens
+                  PopupMenuButton<String>(
+                    icon: Icon(
+                      Icons.more_vert,
+                      color: theme.colorScheme.primary,
+                    ),
+                    tooltip: 'Season Actions',
+                    onSelected: (String action) async {
+                      switch (action) {
+                        case 'monitor':
+                          await _toggleMonitoring(
+                            true,
+                            seriesManagementNotifier,
                             currentSeries,
-                            seasonNumber,
-                            monitored,
                           );
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  '$seasonName ${monitored ? 'monitored' : 'unmonitored'}',
-                                ),
-                                duration: const Duration(seconds: 2),
-                              ),
-                            );
-                          }
-                        } catch (e) {
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Error updating season: $e'),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
-                          }
-                        }
-                      },
-                      itemBuilder: (BuildContext context) =>
-                          <PopupMenuEntry<bool>>[
-                            const PopupMenuItem<bool>(
-                              value: true,
-                              child: Row(
-                                children: [
-                                  Icon(Icons.visibility),
-                                  SizedBox(width: 8),
-                                  Text('Monitor Season'),
-                                ],
-                              ),
-                            ),
-                            const PopupMenuItem<bool>(
-                              value: false,
-                              child: Row(
-                                children: [
-                                  Icon(Icons.visibility_off),
-                                  SizedBox(width: 8),
-                                  Text('Unmonitor Season'),
-                                ],
-                              ),
-                            ),
+                          break;
+                        case 'unmonitor':
+                          await _toggleMonitoring(
+                            false,
+                            seriesManagementNotifier,
+                            currentSeries,
+                          );
+                          break;
+                        case 'search':
+                          await _searchSeason(episodeNotifier, currentSeries);
+                          break;
+                      }
+                    },
+                    itemBuilder: (context) => [
+                      const PopupMenuItem(
+                        value: 'monitor',
+                        child: Row(
+                          children: [
+                            Icon(Icons.visibility),
+                            SizedBox(width: 8),
+                            Text('Monitor Season'),
                           ],
-                    ),
-                    const SizedBox(width: 8),
-                    ElevatedButton.icon(
-                      onPressed: episodeState is AsyncLoading
-                          ? null
-                          : () async {
-                              try {
-                                await episodeNotifier.seasonSearch(
-                                  currentSeries.id!,
-                                  seasonNumber,
-                                );
-                                if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Searching for $seasonName episodes',
-                                      ),
-                                      duration: const Duration(seconds: 2),
-                                    ),
-                                  );
-                                }
-                              } catch (e) {
-                                if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Error searching for episodes: $e',
-                                      ),
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
-                                }
-                              }
-                            },
-                      icon: episodeState is AsyncLoading
-                          ? const SizedBox(
-                              width: 16,
-                              height: 16,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : const Icon(Icons.search),
-                      label: const Text('Search'),
-                    ),
-                  ],
-                ),
+                        ),
+                      ),
+                      const PopupMenuItem(
+                        value: 'unmonitor',
+                        child: Row(
+                          children: [
+                            Icon(Icons.visibility_off),
+                            SizedBox(width: 8),
+                            Text('Unmonitor Season'),
+                          ],
+                        ),
+                      ),
+                      const PopupMenuItem(
+                        value: 'search',
+                        child: Row(
+                          children: [
+                            Icon(Icons.search),
+                            SizedBox(width: 8),
+                            Text('Search'),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const Divider(),
+              if (_isExpanded) ...[
+                const SizedBox(height: 8),
+                _buildEpisodesList(ref, currentSeries.id!),
               ],
-            ),
-            const Divider(),
-            const SizedBox(height: 8),
-            _buildEpisodesList(ref, currentSeries.id!),
-          ],
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  // Helper method to toggle season monitoring
+  Future<void> _toggleMonitoring(
+    bool monitored,
+    SeriesManagementNotifier seriesManagementNotifier,
+    SonarrSeries currentSeries,
+  ) async {
+    try {
+      await seriesManagementNotifier.setSeasonMonitoring(
+        currentSeries,
+        widget.seasonNumber,
+        monitored,
+      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              '${widget.seasonName} ${monitored ? 'monitored' : 'unmonitored'}',
+            ),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error updating season: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  // Helper method to search for season episodes
+  Future<void> _searchSeason(
+    EpisodeNotifier episodeNotifier,
+    SonarrSeries currentSeries,
+  ) async {
+    try {
+      await episodeNotifier.seasonSearch(
+        currentSeries.id!,
+        widget.seasonNumber,
+      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Searching for ${widget.seasonName} episodes'),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error searching for episodes: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
   Widget _buildEpisodesList(WidgetRef ref, int seriesId) {
@@ -204,7 +268,7 @@ class SeasonCard extends ConsumerWidget {
     return episodesAsyncValue.when(
       data: (episodes) {
         final seasonEpisodes = episodes
-            .where((episode) => episode.seasonNumber == seasonNumber)
+            .where((episode) => episode.seasonNumber == widget.seasonNumber)
             .toList();
 
         if (seasonEpisodes.isEmpty) {
@@ -258,6 +322,8 @@ class EpisodeListItem extends ConsumerWidget {
       title: Text(
         episode.title ?? 'Unknown Episode',
         style: theme.textTheme.titleMedium,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
       subtitle: Text(
         'Episode ${episode.episodeNumber}${episode.airDate != null ? ' • ${episode.airDate}' : ''}',
@@ -338,6 +404,7 @@ class EpisodeListItem extends ConsumerWidget {
                   try {
                     await episodeNotifier.deleteEpisodeFile(
                       episode.episodeFileId!,
+                      seriesId: episode.seriesId,
                     );
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(

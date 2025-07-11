@@ -1,5 +1,6 @@
 import 'package:client/core/widgets/detail_sliver_app_bar.dart';
 import 'package:client/core/widgets/overview_card.dart';
+import 'package:client/features/sonarr/data/series_management_provider/series_management_provider.dart';
 import 'package:client/features/sonarr/presentation/seasons/view/seasons_page.dart';
 import 'package:client/features/sonarr/presentation/series_details/widgets/series_details.dart';
 import 'package:client/features/sonarr/presentation/series_details/widgets/series_information_card.dart';
@@ -38,7 +39,23 @@ class SonarrDetailScreen extends ConsumerWidget {
           DetailSliverAppBar(
             title: 'Details',
             fanartUrl: fanartUrl,
-            actions: [SeriesActionButtons(series: series)],
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.refresh),
+                tooltip: 'Refresh series data',
+                onPressed: () {
+                  // Refresh series data
+                  ref.invalidate(seriesProvider(series.id!));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Refreshing series data...'),
+                      duration: Duration(seconds: 1),
+                    ),
+                  );
+                },
+              ),
+              SeriesActionButtons(series: series),
+            ],
           ),
           SliverToBoxAdapter(
             child: Container(
@@ -73,7 +90,8 @@ class SonarrDetailScreen extends ConsumerWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SeasonsPage(initialSeries: series),
+                            builder: (context) =>
+                                SeasonsPage(initialSeries: series),
                           ),
                         );
                       },

@@ -3,17 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
 
 /// Provider for fetching episodes for a specific series
-final seriesEpisodesProvider = FutureProvider.family<List<SonarrEpisode>, int>((
-  ref,
-  seriesId,
-) async {
-  final commands = ref.read(sonarrCommandsProvider);
-  return await commands.getSeriesEpisodes(seriesId);
-});
+final seriesEpisodesProvider = FutureProvider.autoDispose
+    .family<List<SonarrEpisode>, int>((ref, seriesId) async {
+      // This will allow the provider to auto-refresh when it's re-created
+      // (which happens when the page is opened)
+      final commands = ref.read(sonarrCommandsProvider);
+      return await commands.getSeriesEpisodes(seriesId);
+    });
 
 /// Provider for fetching episode files for a specific series
-final seriesEpisodeFilesProvider =
-    FutureProvider.family<List<SonarrEpisodeFile>, int>((ref, seriesId) async {
+final seriesEpisodeFilesProvider = FutureProvider.autoDispose
+    .family<List<SonarrEpisodeFile>, int>((ref, seriesId) async {
       final commands = ref.read(sonarrCommandsProvider);
       return await commands.getSeriesEpisodeFiles(seriesId);
     });
@@ -39,11 +39,20 @@ class EpisodeNotifier extends StateNotifier<AsyncValue<void>> {
   }
 
   /// Deletes an episode file
-  Future<void> deleteEpisodeFile(int episodeFileId) async {
+  Future<void> deleteEpisodeFile(int episodeFileId, {int? seriesId}) async {
     state = const AsyncValue.loading();
     try {
       final commands = _ref.read(sonarrCommandsProvider);
       await commands.deleteEpisodeFile(episodeFileId);
+
+      // Invalidate caches to refresh UI
+      if (seriesId != null) {
+        // Refresh the episodes list to reflect the file deletion
+        _ref.invalidate(seriesEpisodesProvider(seriesId));
+        // Also refresh episode files list
+        _ref.invalidate(seriesEpisodeFilesProvider(seriesId));
+      }
+
       state = const AsyncValue.data(null);
     } catch (e, stack) {
       state = AsyncValue.error(e, stack);

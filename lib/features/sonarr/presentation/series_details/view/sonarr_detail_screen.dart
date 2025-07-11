@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:client/core/widgets/detail_sliver_app_bar.dart';
 import 'package:client/core/widgets/overview_card.dart';
 import 'package:client/features/sonarr/data/series_management_provider/series_management_provider.dart';
@@ -9,7 +7,6 @@ import 'package:client/features/sonarr/presentation/shared/widgets/series_action
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
-import 'dart:math';
 
 class SonarrDetailScreen extends ConsumerWidget {
   final SonarrSeries series;
@@ -26,14 +23,6 @@ class SonarrDetailScreen extends ConsumerWidget {
       // Ignore if not found
     }
     return null;
-  }
-
-  String _formatFileSize(int bytes) {
-    if (bytes <= 0) return '0 B';
-
-    const suffixes = ['B', 'KB', 'MB', 'GB', 'TB'];
-    var i = (log(bytes) / log(1024)).floor();
-    return '${(bytes / pow(1024, i)).toStringAsFixed(2)} ${suffixes[i]}';
   }
 
   String _formatDate(DateTime date) {
@@ -83,7 +72,7 @@ class SonarrDetailScreen extends ConsumerWidget {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: theme.colorScheme.shadow.withOpacity(0.1),
+                    color: theme.colorScheme.shadow.withAlpha(25),
                     blurRadius: 10,
                     offset: const Offset(0, -5),
                   ),
@@ -106,8 +95,8 @@ class SonarrDetailScreen extends ConsumerWidget {
                           ),
                           decoration: BoxDecoration(
                             color: isMonitored
-                                ? theme.colorScheme.primary.withOpacity(0.15)
-                                : theme.colorScheme.error.withOpacity(0.15),
+                                ? theme.colorScheme.primary.withAlpha(38)
+                                : theme.colorScheme.error.withAlpha(38),
                             borderRadius: BorderRadius.circular(16),
                           ),
                           child: Row(
@@ -142,9 +131,7 @@ class SonarrDetailScreen extends ConsumerWidget {
                             vertical: 6,
                           ),
                           decoration: BoxDecoration(
-                            color: theme.colorScheme.secondary.withOpacity(
-                              0.15,
-                            ),
+                            color: theme.colorScheme.secondary.withAlpha(38),
                             borderRadius: BorderRadius.circular(16),
                           ),
                           child: Row(
@@ -296,7 +283,7 @@ class SonarrDetailScreen extends ConsumerWidget {
                                       boxShadow: [
                                         BoxShadow(
                                           color: theme.colorScheme.shadow
-                                              .withOpacity(0.1),
+                                              .withAlpha(25),
                                           blurRadius: 4,
                                           offset: const Offset(0, 2),
                                         ),
@@ -328,7 +315,7 @@ class SonarrDetailScreen extends ConsumerWidget {
                                                 color: theme
                                                     .colorScheme
                                                     .onSurface
-                                                    .withOpacity(0.7),
+                                                    .withAlpha(178),
                                               ),
                                         ),
                                       ],
@@ -337,7 +324,9 @@ class SonarrDetailScreen extends ConsumerWidget {
                                   Container(
                                     padding: const EdgeInsets.all(8),
                                     decoration: BoxDecoration(
-                                      color: theme.colorScheme.surfaceVariant,
+                                      color: theme
+                                          .colorScheme
+                                          .surfaceContainerHighest,
                                       shape: BoxShape.circle,
                                     ),
                                     child: Icon(
@@ -352,7 +341,28 @@ class SonarrDetailScreen extends ConsumerWidget {
                                 const Divider(),
                                 const SizedBox(height: 8),
                                 Text(
-                                  '${series.seasons?.length ?? 0} Season${series.seasons!.length > 1 ? 's' : ''} available',
+                                  () {
+                                    // Filter out specials (season number 0)
+                                    final regularSeasons =
+                                        series.seasons
+                                            ?.where(
+                                              (season) =>
+                                                  season.seasonNumber != 0,
+                                            )
+                                            .toList() ??
+                                        [];
+                                    final specialsCount =
+                                        series.seasons!.length -
+                                        regularSeasons.length;
+
+                                    String text =
+                                        '${regularSeasons.length} Season${regularSeasons.length > 1 ? 's' : ''} available';
+                                    if (specialsCount > 0) {
+                                      text +=
+                                          ' (+ $specialsCount Special${specialsCount > 1 ? 's' : ''})';
+                                    }
+                                    return text;
+                                  }(),
                                   style: theme.textTheme.bodyLarge?.copyWith(
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -436,7 +446,7 @@ class SonarrDetailScreen extends ConsumerWidget {
                                     '(${series.ratings!.votes ?? 0} votes)',
                                     style: theme.textTheme.bodyMedium?.copyWith(
                                       color: theme.colorScheme.onSurface
-                                          .withOpacity(0.7),
+                                          .withAlpha(178),
                                     ),
                                   ),
                                 ],
@@ -570,7 +580,7 @@ class SonarrDetailScreen extends ConsumerWidget {
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: theme.colorScheme.shadow.withOpacity(0.1),
+                color: theme.colorScheme.shadow.withAlpha(25),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),
@@ -592,7 +602,7 @@ class SonarrDetailScreen extends ConsumerWidget {
         Text(
           label,
           style: theme.textTheme.bodySmall?.copyWith(
-            color: theme.colorScheme.onSurface.withOpacity(0.7),
+            color: theme.colorScheme.onSurface.withAlpha(178),
           ),
         ),
       ],
@@ -615,7 +625,7 @@ class SonarrDetailScreen extends ConsumerWidget {
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: theme.colorScheme.shadow.withOpacity(0.1),
+                color: theme.colorScheme.shadow.withAlpha(25),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),
@@ -637,7 +647,7 @@ class SonarrDetailScreen extends ConsumerWidget {
         Text(
           label,
           style: theme.textTheme.bodySmall?.copyWith(
-            color: theme.colorScheme.onSurface.withOpacity(0.7),
+            color: theme.colorScheme.onSurface.withAlpha(178),
           ),
         ),
       ],

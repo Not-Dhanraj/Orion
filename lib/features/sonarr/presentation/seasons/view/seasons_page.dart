@@ -78,7 +78,7 @@ class SeasonsPage extends ConsumerWidget {
                   seasonNumber: seasonNumber!,
                   seasonName: seasonNumber == 0
                       ? 'Specials'
-                      : 'Season ${seasonNumber}',
+                      : 'Season $seasonNumber',
                 );
               },
             );

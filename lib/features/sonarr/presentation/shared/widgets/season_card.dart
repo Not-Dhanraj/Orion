@@ -28,7 +28,6 @@ class _SeasonCardState extends ConsumerState<SeasonCard>
 
   // Animation controller for smooth expand/collapse transitions
   late AnimationController _animationController;
-  late Animation<double> _expandAnimation;
 
   @override
   void initState() {
@@ -36,10 +35,6 @@ class _SeasonCardState extends ConsumerState<SeasonCard>
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
-    );
-    _expandAnimation = CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
     );
   }
 
@@ -113,8 +108,8 @@ class _SeasonCardState extends ConsumerState<SeasonCard>
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
           color: isSeasonMonitored == true
-              ? theme.colorScheme.primary.withOpacity(0.2)
-              : Colors.grey.withOpacity(0.1),
+              ? theme.colorScheme.primary.withAlpha(51)
+              : Colors.grey.withAlpha(25),
           width: 1.5,
         ),
       ),
@@ -163,7 +158,7 @@ class _SeasonCardState extends ConsumerState<SeasonCard>
                                   '$downloadedEpisodes/$totalEpisodes episodes',
                                   style: theme.textTheme.bodySmall?.copyWith(
                                     color: theme.textTheme.bodySmall?.color
-                                        ?.withOpacity(0.7),
+                                        ?.withAlpha(178),
                                   ),
                                 ),
                               ],
@@ -179,8 +174,8 @@ class _SeasonCardState extends ConsumerState<SeasonCard>
                           ),
                           decoration: BoxDecoration(
                             color: isSeasonMonitored == true
-                                ? theme.colorScheme.primary.withOpacity(0.15)
-                                : Colors.grey.withOpacity(0.1),
+                                ? theme.colorScheme.primary.withAlpha(38)
+                                : Colors.grey.withAlpha(25),
                             borderRadius: BorderRadius.circular(16),
                           ),
                           child: Row(
@@ -326,7 +321,7 @@ class _SeasonCardState extends ConsumerState<SeasonCard>
                             borderRadius: BorderRadius.circular(4),
                             child: LinearProgressIndicator(
                               value: progressValue,
-                              backgroundColor: Colors.grey.withOpacity(0.2),
+                              backgroundColor: Colors.grey.withAlpha(51),
                               minHeight: 8,
                               color: theme.colorScheme.primary,
                             ),
@@ -365,31 +360,30 @@ class _SeasonCardState extends ConsumerState<SeasonCard>
     SeriesManagementNotifier seriesManagementNotifier,
     SonarrSeries currentSeries,
   ) async {
+    if (!context.mounted) return;
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+
     try {
       await seriesManagementNotifier.setSeasonMonitoring(
         currentSeries,
         widget.seasonNumber,
         monitored,
       );
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              '${widget.seasonName} ${monitored ? 'monitored' : 'unmonitored'}',
-            ),
-            duration: const Duration(seconds: 2),
+      scaffoldMessenger.showSnackBar(
+        SnackBar(
+          content: Text(
+            '${widget.seasonName} ${monitored ? 'monitored' : 'unmonitored'}',
           ),
-        );
-      }
+          duration: const Duration(seconds: 2),
+        ),
+      );
     } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error updating season: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+      scaffoldMessenger.showSnackBar(
+        SnackBar(
+          content: Text('Error updating season: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -398,28 +392,27 @@ class _SeasonCardState extends ConsumerState<SeasonCard>
     EpisodeNotifier episodeNotifier,
     SonarrSeries currentSeries,
   ) async {
+    if (!context.mounted) return;
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+
     try {
       await episodeNotifier.seasonSearch(
         currentSeries.id!,
         widget.seasonNumber,
       );
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Searching for ${widget.seasonName} episodes'),
-            duration: const Duration(seconds: 2),
-          ),
-        );
-      }
+      scaffoldMessenger.showSnackBar(
+        SnackBar(
+          content: Text('Searching for ${widget.seasonName} episodes'),
+          duration: const Duration(seconds: 2),
+        ),
+      );
     } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error searching for episodes: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+      scaffoldMessenger.showSnackBar(
+        SnackBar(
+          content: Text('Error searching for episodes: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -441,7 +434,7 @@ class _SeasonCardState extends ConsumerState<SeasonCard>
                   Icon(
                     Icons.video_library_outlined,
                     size: 40,
-                    color: Colors.grey.withOpacity(0.5),
+                    color: Colors.grey.withAlpha(128),
                   ),
                   const SizedBox(height: 8),
                   const Text('No episodes found for this season'),
@@ -472,7 +465,7 @@ class _SeasonCardState extends ConsumerState<SeasonCard>
               separatorBuilder: (context, index) => Divider(
                 height: 1,
                 indent: 48,
-                color: Colors.grey.withOpacity(0.2),
+                color: Colors.grey.withAlpha(51),
               ),
               itemBuilder: (context, index) {
                 final episode = seasonEpisodes[index];
@@ -540,31 +533,30 @@ class EpisodeListItem extends ConsumerWidget {
             ? 'Unmonitor Episode'
             : 'Monitor Episode',
         onPressed: () async {
+          if (!context.mounted) return;
+          final scaffoldMessenger = ScaffoldMessenger.of(context);
+
           try {
             final isCurrentlyMonitored = episode.monitored ?? false;
             await episodeNotifier.toggleEpisodeMonitored(
               episode,
               !isCurrentlyMonitored,
             );
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    '${episode.title} ${isCurrentlyMonitored ? 'unmonitored' : 'monitored'}',
-                  ),
-                  duration: const Duration(seconds: 2),
+            scaffoldMessenger.showSnackBar(
+              SnackBar(
+                content: Text(
+                  '${episode.title} ${isCurrentlyMonitored ? 'unmonitored' : 'monitored'}',
                 ),
-              );
-            }
+                duration: const Duration(seconds: 2),
+              ),
+            );
           } catch (e) {
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Error updating monitoring status: $e'),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            }
+            scaffoldMessenger.showSnackBar(
+              SnackBar(
+                content: Text('Error updating monitoring status: $e'),
+                backgroundColor: Colors.red,
+              ),
+            );
           }
         },
       ),
@@ -576,9 +568,12 @@ class EpisodeListItem extends ConsumerWidget {
               icon: const Icon(Icons.delete_outline),
               tooltip: 'Delete Episode File',
               onPressed: () async {
+                if (!context.mounted) return;
+                final scaffoldMessenger = ScaffoldMessenger.of(context);
+                final navigator = Navigator.of(context);
+
                 // Confirm deletion
                 final confirmed = await showDialog<bool>(
-                  context: context,
                   builder: (context) => AlertDialog(
                     title: const Text('Delete Episode File'),
                     content: Text(
@@ -586,18 +581,19 @@ class EpisodeListItem extends ConsumerWidget {
                     ),
                     actions: [
                       TextButton(
-                        onPressed: () => Navigator.of(context).pop(false),
+                        onPressed: () => navigator.pop(false),
                         child: const Text('CANCEL'),
                       ),
                       TextButton(
-                        onPressed: () => Navigator.of(context).pop(true),
-                        child: const Text('DELETE'),
                         style: TextButton.styleFrom(
                           foregroundColor: Colors.red,
                         ),
+                        onPressed: () => navigator.pop(true),
+                        child: const Text('DELETE'),
                       ),
                     ],
                   ),
+                  context: context,
                 );
 
                 if (confirmed == true && episode.episodeFileId != null) {
@@ -606,23 +602,19 @@ class EpisodeListItem extends ConsumerWidget {
                       episode.episodeFileId!,
                       seriesId: episode.seriesId,
                     );
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Episode file deleted'),
-                          duration: Duration(seconds: 2),
-                        ),
-                      );
-                    }
+                    scaffoldMessenger.showSnackBar(
+                      const SnackBar(
+                        content: Text('Episode file deleted'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
                   } catch (e) {
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Error deleting file: $e'),
-                          backgroundColor: Colors.red,
-                        ),
-                      );
-                    }
+                    scaffoldMessenger.showSnackBar(
+                      SnackBar(
+                        content: Text('Error deleting file: $e'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
                   }
                 }
               },
@@ -632,9 +624,12 @@ class EpisodeListItem extends ConsumerWidget {
               icon: const Icon(Icons.download),
               tooltip: 'Download Episode',
               onPressed: () async {
+                if (!context.mounted) return;
+                final scaffoldMessenger = ScaffoldMessenger.of(context);
+
                 try {
                   if (episode.id == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
+                    scaffoldMessenger.showSnackBar(
                       const SnackBar(
                         content: Text('Cannot download: Missing episode ID'),
                         backgroundColor: Colors.red,
@@ -644,24 +639,20 @@ class EpisodeListItem extends ConsumerWidget {
                   }
 
                   await episodeNotifier.downloadEpisode(episode.id!);
-                  if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Downloading "${episode.title}"'),
-                        backgroundColor: Colors.green,
-                        duration: const Duration(seconds: 2),
-                      ),
-                    );
-                  }
+                  scaffoldMessenger.showSnackBar(
+                    SnackBar(
+                      content: Text('Downloading "${episode.title}"'),
+                      backgroundColor: Colors.green,
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
                 } catch (e) {
-                  if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Error downloading episode: $e'),
-                        backgroundColor: Colors.red,
-                      ),
-                    );
-                  }
+                  scaffoldMessenger.showSnackBar(
+                    SnackBar(
+                      content: Text('Error downloading episode: $e'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
                 }
               },
             ),

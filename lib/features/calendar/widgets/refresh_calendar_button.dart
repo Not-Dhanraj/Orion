@@ -32,6 +32,9 @@ class _RefreshCalendarButtonState extends ConsumerState<RefreshCalendarButton> {
       onPressed: _isRefreshing
           ? null
           : () async {
+              if (!mounted) return;
+              final scaffoldMessenger = ScaffoldMessenger.of(context);
+
               setState(() {
                 _isRefreshing = true;
               });
@@ -50,23 +53,19 @@ class _RefreshCalendarButtonState extends ConsumerState<RefreshCalendarButton> {
                   await commands.refreshSeries(s.id!);
                 }
 
-                if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Refreshing all series'),
-                      duration: Duration(seconds: 2),
-                    ),
-                  );
-                }
+                scaffoldMessenger.showSnackBar(
+                  const SnackBar(
+                    content: Text('Refreshing all series'),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
               } catch (e) {
-                if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Error refreshing series: $e'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
+                scaffoldMessenger.showSnackBar(
+                  SnackBar(
+                    content: Text('Error refreshing series: $e'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
               } finally {
                 if (mounted) {
                   setState(() {

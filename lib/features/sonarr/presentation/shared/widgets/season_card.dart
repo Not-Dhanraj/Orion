@@ -21,13 +21,47 @@ class SeasonCard extends ConsumerStatefulWidget {
   ConsumerState<SeasonCard> createState() => _SeasonCardState();
 }
 
-class _SeasonCardState extends ConsumerState<SeasonCard> {
+class _SeasonCardState extends ConsumerState<SeasonCard>
+    with SingleTickerProviderStateMixin {
   // Track whether the season is expanded or collapsed
   bool _isExpanded = false;
 
+  // Animation controller for smooth expand/collapse transitions
+  late AnimationController _animationController;
+  late Animation<double> _expandAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    _expandAnimation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _toggleExpanded() {
+    setState(() {
+      _isExpanded = !_isExpanded;
+      if (_isExpanded) {
+        _animationController.forward();
+      } else {
+        _animationController.reverse();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final episodeState = ref.watch(episodeNotifierProvider);
     final episodeNotifier = ref.read(episodeNotifierProvider.notifier);
     final seriesManagementNotifier = ref.read(
       seriesManagementProvider.notifier,
@@ -52,17 +86,41 @@ class _SeasonCardState extends ConsumerState<SeasonCard> {
       }
     }
 
+    // Calculate episode statistics for this season if available
+    int totalEpisodes = 0;
+    int downloadedEpisodes = 0;
+    final episodesAsyncValue = ref.watch(
+      seriesEpisodesProvider(currentSeries.id!),
+    );
+    if (episodesAsyncValue.hasValue) {
+      final seasonEpisodes = episodesAsyncValue.value!
+          .where((episode) => episode.seasonNumber == widget.seasonNumber)
+          .toList();
+      totalEpisodes = seasonEpisodes.length;
+      downloadedEpisodes = seasonEpisodes
+          .where((e) => e.hasFile == true)
+          .length;
+    }
+
+    final progressValue = totalEpisodes > 0
+        ? downloadedEpisodes / totalEpisodes
+        : 0.0;
+
     return Card(
-      elevation: 2,
+      elevation: 4,
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          color: isSeasonMonitored == true
+              ? theme.colorScheme.primary.withOpacity(0.2)
+              : Colors.grey.withOpacity(0.1),
+          width: 1.5,
+        ),
+      ),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: () {
-          setState(() {
-            _isExpanded = !_isExpanded;
-          });
-        },
+        onTap: _toggleExpanded,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -75,61 +133,99 @@ class _SeasonCardState extends ConsumerState<SeasonCard> {
                   Expanded(
                     child: Row(
                       children: [
-                        Icon(
-                          _isExpanded
-                              ? Icons.keyboard_arrow_down
-                              : Icons.keyboard_arrow_right,
-                          color: theme.colorScheme.primary,
-                        ),
-                        const SizedBox(width: 4),
-                        Flexible(
-                          child: Text(
-                            widget.seasonName,
-                            style: theme.textTheme.titleLarge,
-                            overflow: TextOverflow.ellipsis,
+                        // Animated rotation for the expansion icon
+                        RotationTransition(
+                          turns: Tween(
+                            begin: 0.0,
+                            end: 0.25,
+                          ).animate(_animationController),
+                          child: Icon(
+                            Icons.keyboard_arrow_right,
+                            color: theme.colorScheme.primary,
+                            size: 28,
                           ),
                         ),
                         const SizedBox(width: 8),
-                        // Badge for monitoring status - using shorter text for small screens
+                        Flexible(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.seasonName,
+                                style: theme.textTheme.titleLarge?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              if (totalEpisodes > 0) ...[
+                                const SizedBox(height: 4),
+                                Text(
+                                  '$downloadedEpisodes/$totalEpisodes episodes',
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: theme.textTheme.bodySmall?.color
+                                        ?.withOpacity(0.7),
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        // Enhanced badge for monitoring status
                         Container(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 6,
-                            vertical: 2,
+                            horizontal: 8,
+                            vertical: 3,
                           ),
                           decoration: BoxDecoration(
                             color: isSeasonMonitored == true
-                                ? Colors.green.withOpacity(0.2)
-                                : Colors.grey.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: isSeasonMonitored == true
-                                  ? Colors.green
-                                  : Colors.grey,
-                              width: 1,
-                            ),
+                                ? theme.colorScheme.primary.withOpacity(0.15)
+                                : Colors.grey.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(16),
                           ),
-                          child: Text(
-                            isSeasonMonitored == true ? 'M' : 'UM',
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: isSeasonMonitored == true
-                                  ? Colors.green
-                                  : Colors.grey,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                isSeasonMonitored == true
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: isSeasonMonitored == true
+                                    ? theme.colorScheme.primary
+                                    : Colors.grey,
+                                size: 14,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                isSeasonMonitored == true
+                                    ? 'Monitored'
+                                    : 'Unmonitored',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: isSeasonMonitored == true
+                                      ? theme.colorScheme.primary
+                                      : Colors.grey,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
                   ),
 
-                  // Actions - Simplified to a single menu button for all screens
+                  // Actions - Enhanced with better styling
                   PopupMenuButton<String>(
                     icon: Icon(
-                      Icons.more_vert,
+                      Icons.more_horiz,
                       color: theme.colorScheme.primary,
                     ),
                     tooltip: 'Season Actions',
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    position: PopupMenuPosition.under,
                     onSelected: (String action) async {
                       switch (action) {
                         case 'monitor':
@@ -152,33 +248,45 @@ class _SeasonCardState extends ConsumerState<SeasonCard> {
                       }
                     },
                     itemBuilder: (context) => [
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 'monitor',
                         child: Row(
                           children: [
-                            Icon(Icons.visibility),
-                            SizedBox(width: 8),
-                            Text('Monitor Season'),
+                            Icon(
+                              Icons.visibility,
+                              color: theme.colorScheme.primary,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 12),
+                            const Text('Monitor Season'),
                           ],
                         ),
                       ),
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 'unmonitor',
                         child: Row(
                           children: [
-                            Icon(Icons.visibility_off),
-                            SizedBox(width: 8),
-                            Text('Unmonitor Season'),
+                            Icon(
+                              Icons.visibility_off,
+                              color: Colors.grey.shade600,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 12),
+                            const Text('Unmonitor Season'),
                           ],
                         ),
                       ),
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 'search',
                         child: Row(
                           children: [
-                            Icon(Icons.search),
-                            SizedBox(width: 8),
-                            Text('Search'),
+                            Icon(
+                              Icons.search,
+                              color: theme.colorScheme.secondary,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 12),
+                            const Text('Search'),
                           ],
                         ),
                       ),
@@ -186,11 +294,64 @@ class _SeasonCardState extends ConsumerState<SeasonCard> {
                   ),
                 ],
               ),
-              const Divider(),
-              if (_isExpanded) ...[
-                const SizedBox(height: 8),
-                _buildEpisodesList(ref, currentSeries.id!),
+              // Season progress indicator
+              if (totalEpisodes > 0) ...[
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Progress',
+                                style: theme.textTheme.bodyMedium,
+                              ),
+                              Text(
+                                '${(progressValue * 100).toInt()}%',
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: progressValue > 0
+                                      ? theme.colorScheme.primary
+                                      : theme.textTheme.bodyMedium?.color,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(4),
+                            child: LinearProgressIndicator(
+                              value: progressValue,
+                              backgroundColor: Colors.grey.withOpacity(0.2),
+                              minHeight: 8,
+                              color: theme.colorScheme.primary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ],
+              const Divider(height: 24),
+              // Episodes list with animated expansion
+              AnimatedCrossFade(
+                firstChild: const SizedBox.shrink(),
+                secondChild: Column(
+                  children: [
+                    const SizedBox(height: 8),
+                    _buildEpisodesList(ref, currentSeries.id!),
+                  ],
+                ),
+                crossFadeState: _isExpanded
+                    ? CrossFadeState.showSecond
+                    : CrossFadeState.showFirst,
+                duration: const Duration(milliseconds: 300),
+              ),
             ],
           ),
         ),
@@ -272,21 +433,53 @@ class _SeasonCardState extends ConsumerState<SeasonCard> {
             .toList();
 
         if (seasonEpisodes.isEmpty) {
-          return const Padding(
-            padding: EdgeInsets.symmetric(vertical: 16),
-            child: Center(child: Text('No episodes found for this season')),
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Center(
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.video_library_outlined,
+                    size: 40,
+                    color: Colors.grey.withOpacity(0.5),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text('No episodes found for this season'),
+                ],
+              ),
+            ),
           );
         }
 
-        return ListView.separated(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: seasonEpisodes.length,
-          separatorBuilder: (_, __) => const Divider(height: 1),
-          itemBuilder: (context, index) {
-            final episode = seasonEpisodes[index];
-            return EpisodeListItem(episode: episode);
-          },
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12, left: 4),
+              child: Text(
+                'Episodes',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+            ),
+            ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: seasonEpisodes.length,
+              separatorBuilder: (context, index) => Divider(
+                height: 1,
+                indent: 48,
+                color: Colors.grey.withOpacity(0.2),
+              ),
+              itemBuilder: (context, index) {
+                final episode = seasonEpisodes[index];
+                return EpisodeListItem(episode: episode);
+              },
+            ),
+          ],
         );
       },
       loading: () => const Center(
@@ -297,9 +490,16 @@ class _SeasonCardState extends ConsumerState<SeasonCard> {
       ),
       error: (error, stack) => Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Text(
-          'Error loading episodes: $error',
-          style: const TextStyle(color: Colors.red),
+        child: Column(
+          children: [
+            Icon(Icons.error_outline, color: Colors.red.shade300, size: 40),
+            const SizedBox(height: 8),
+            Text(
+              'Error loading episodes: $error',
+              style: TextStyle(color: Colors.red.shade800),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
     );

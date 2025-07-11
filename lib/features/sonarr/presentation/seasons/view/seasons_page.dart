@@ -48,14 +48,16 @@ class SeasonsPage extends ConsumerWidget {
         },
         child: episodesAsyncValue.when(
           data: (episodes) {
-            // Get unique season numbers
+            // Get unique season numbers including specials (season 0)
             final seasonNumbers =
                 episodes
                     .map((e) => e.seasonNumber)
                     .toSet()
                     .where(
-                      (s) => s != null && s > 0,
-                    ) // Filter out specials (season 0)
+                      (s) =>
+                          s !=
+                          null, // Include all seasons including specials (season 0)
+                    )
                     .toList()
                   ..sort(); // Sort seasons
 
@@ -70,10 +72,13 @@ class SeasonsPage extends ConsumerWidget {
               padding: const EdgeInsets.only(top: 8, bottom: 16),
               itemBuilder: (context, index) {
                 final seasonNumber = seasonNumbers[index];
+                // Use "Specials" for season 0, regular season name otherwise
                 return SeasonCard(
                   series: currentSeries,
                   seasonNumber: seasonNumber!,
-                  seasonName: 'Season ${seasonNumber}',
+                  seasonName: seasonNumber == 0
+                      ? 'Specials'
+                      : 'Season ${seasonNumber}',
                 );
               },
             );

@@ -1,148 +1,20 @@
-import 'package:client/core/api/api_client.dart';
+import 'package:client/features/sonarr/provider/add_series_details_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'dart:ui';
 
-class AddSeriesDetailsScreen extends ConsumerStatefulWidget {
+class AddSeriesDetailsScreen extends ConsumerWidget {
   final SonarrSeriesLookup series;
 
   const AddSeriesDetailsScreen({super.key, required this.series});
 
-  @override
-  ConsumerState<AddSeriesDetailsScreen> createState() =>
-      _AddSeriesDetailsScreenState();
-}
-
-class _AddSeriesDetailsScreenState
-    extends ConsumerState<AddSeriesDetailsScreen> {
-  bool _isLoading = false;
-  String? _error;
-
-  // Quality profiles
-  List<SonarrQualityProfile> _qualityProfiles = [];
-  int _selectedQualityProfileId = 1;
-
-  // Root folder
-  String? _rootFolderPath;
-  List<SonarrRootFolder> _rootFolders = [];
-
-  // Series options
-  SonarrMonitorType _selectedMonitorType = SonarrMonitorType.FUTURE;
-  SonarrSeriesType _selectedSeriesType = SonarrSeriesType.STANDARD;
-  bool _seasonFolder = true;
-  bool _monitored = true;
-  bool _searchForMissingEpisodes = false;
-  bool _searchForCutoffUnmetEpisodes = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchData();
-  }
-
-  Future<void> _fetchData() async {
-    setState(() {
-      _isLoading = true;
-      _error = null;
-    });
-
-    try {
-      final sonarr = ref.read(sonarrProvider);
-
-      // Fetch quality profiles
-      final qualityProfiles = await sonarr.profile.getQualityProfiles();
-
-      // Fetch root folders
-      final rootFolders = await sonarr.rootFolder.getRootFolders();
-
-      setState(() {
-        _qualityProfiles = qualityProfiles;
-        _rootFolders = rootFolders;
-
-        if (qualityProfiles.isNotEmpty) {
-          _selectedQualityProfileId = qualityProfiles.first.id!;
-        }
-
-        if (rootFolders.isNotEmpty) {
-          _rootFolderPath = rootFolders.first.path;
-        }
-
-        // Set the series type from lookup
-        _selectedSeriesType =
-            widget.series.seriesType ?? SonarrSeriesType.STANDARD;
-      });
-    } catch (e) {
-      setState(() {
-        _error = e.toString();
-      });
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-  Future<void> _addSeries() async {
-    if (_rootFolderPath == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Root folder path is required')),
-      );
-      return;
-    }
-
-    setState(() {
-      _isLoading = true;
-      _error = null;
-    });
-
-    try {
-      final sonarr = ref.read(sonarrProvider);
-
-      await sonarr.series.addSeries(
-        tvdbId: widget.series.tvdbId!,
-        monitorMode: _selectedMonitorType,
-        qualityProfileId: _selectedQualityProfileId,
-        title: widget.series.title!,
-        images: widget.series.images!,
-        seasons: widget.series.seasons!,
-        seriesType: _selectedSeriesType,
-        rootFolderPath: _rootFolderPath!,
-        seasonFolder: _seasonFolder,
-        monitored: _monitored,
-        searchForMissingEpisodes: _searchForMissingEpisodes,
-        searchForCutoffUnmetEpisodes: _searchForCutoffUnmetEpisodes,
-      );
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${widget.series.title} added successfully')),
-        );
-        Navigator.of(context).pop(true); // Return true to indicate success
-      }
-    } catch (e) {
-      setState(() {
-        _error = e.toString();
-      });
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Failed to add series: $_error')));
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
-  }
-
   String? _getPosterUrl() {
-    if (widget.series.images == null || widget.series.images!.isEmpty) {
+    if (series.images == null || series.images!.isEmpty) {
       return null;
     }
     try {
-      return widget.series.images!
+      return series.images!
           .firstWhere((image) => image.coverType == 'poster')
           .remoteUrl;
     } catch (e) {
@@ -181,6 +53,7 @@ class _AddSeriesDetailsScreenState
   }
 
   Widget _buildFormField({
+    required BuildContext context,
     required String title,
     required Widget child,
     String? subtitle,
@@ -209,7 +82,6 @@ class _AddSeriesDetailsScreenState
     );
   }
 
-  // Calculate layout based on screen size
   Widget _buildResponsiveLayout(
     BuildContext context,
     Widget headerCard,
@@ -217,22 +89,21 @@ class _AddSeriesDetailsScreenState
   ) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    // For larger screens, show cards side by side
     if (screenWidth > 900) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(flex: 2, child: headerCard),
-          const SizedBox(width: 10), // Increased spacing
+          const SizedBox(width: 10),
           Expanded(
             flex: 3,
             child: Column(
               children: [
-                configCards[0], // First config card
-                const SizedBox(height: 12), // Explicit spacing
-                configCards[1], // Second config card
-                const SizedBox(height: 12), // Explicit spacing
-                configCards[2], // Button
+                configCards[0],
+                const SizedBox(height: 12),
+                configCards[1],
+                const SizedBox(height: 12),
+                configCards[2],
               ],
             ),
           ),
@@ -240,12 +111,11 @@ class _AddSeriesDetailsScreenState
       );
     }
 
-    // For medium screens, show header card full width but config cards in a row
     if (screenWidth > 600) {
       return Column(
         children: [
           headerCard,
-          const SizedBox(height: 12), // Increased spacing
+          const SizedBox(height: 12),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -255,28 +125,30 @@ class _AddSeriesDetailsScreenState
               ],
             ],
           ),
-          const SizedBox(height: 12), // Increased spacing
-          configCards[configCards.length - 1], // Last card full width;
+          const SizedBox(height: 12),
+          configCards[configCards.length - 1],
         ],
       );
     }
 
-    // For small screens, stack everything vertically
     return Column(
       children: [
         headerCard,
         const SizedBox(height: 12),
-        configCards[0], // First config card
+        configCards[0],
         const SizedBox(height: 12),
-        configCards[1], // Second config card
+        configCards[1],
         const SizedBox(height: 12),
-        configCards[2], // Button
+        configCards[2],
       ],
     );
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final provider = addSeriesDetailsNotifierProvider(series);
+    final state = ref.watch(provider);
+    final notifier = ref.read(provider.notifier);
     final theme = Theme.of(context);
     final posterUrl = _getPosterUrl();
 
@@ -290,7 +162,6 @@ class _AddSeriesDetailsScreenState
         children: [
           Stack(
             children: [
-              // Background image
               if (posterUrl != null)
                 ShaderMask(
                   shaderCallback: (rect) {
@@ -306,8 +177,7 @@ class _AddSeriesDetailsScreenState
                   },
                   blendMode: BlendMode.srcOver,
                   child: CachedNetworkImage(
-                    imageUrl:
-                        widget.series.images!
+                    imageUrl: series.images!
                             .firstWhere(
                               (image) => image.coverType == 'banner',
                               orElse: () => SonarrSeriesImage(remoteUrl: null),
@@ -338,8 +208,6 @@ class _AddSeriesDetailsScreenState
                     color: theme.colorScheme.primary,
                   ),
                 ),
-
-              // Content overlay
               Positioned(
                 bottom: 0,
                 left: 0,
@@ -349,7 +217,6 @@ class _AddSeriesDetailsScreenState
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      // Poster thumbnail
                       if (posterUrl != null)
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8.0),
@@ -373,13 +240,12 @@ class _AddSeriesDetailsScreenState
                           ),
                         ),
                       const SizedBox(width: 16),
-                      // Series info
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              widget.series.title ?? 'Unknown Title',
+                              series.title ?? 'Unknown Title',
                               style: theme.textTheme.headlineSmall?.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
@@ -395,17 +261,17 @@ class _AddSeriesDetailsScreenState
                             const SizedBox(height: 8),
                             _buildInfoChip(
                               theme,
-                              'Year: ${widget.series.year ?? 'Unknown'}',
+                              'Year: ${series.year ?? 'Unknown'}',
                             ),
                             const SizedBox(height: 4),
                             _buildInfoChip(
                               theme,
-                              'Network: ${widget.series.network ?? 'Unknown'}',
+                              'Network: ${series.network ?? 'Unknown'}',
                             ),
                             const SizedBox(height: 4),
                             _buildInfoChip(
                               theme,
-                              'Status: ${widget.series.status ?? 'Unknown'}',
+                              'Status: ${series.status ?? 'Unknown'}',
                             ),
                           ],
                         ),
@@ -416,8 +282,6 @@ class _AddSeriesDetailsScreenState
               ),
             ],
           ),
-
-          // Description
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -431,7 +295,7 @@ class _AddSeriesDetailsScreenState
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  widget.series.overview ?? 'No description available',
+                  series.overview ?? 'No description available',
                   style: theme.textTheme.bodyMedium,
                 ),
               ],
@@ -442,7 +306,6 @@ class _AddSeriesDetailsScreenState
     );
 
     final configCards = [
-      // Configuration Card
       Card(
         elevation: 2,
         shape: RoundedRectangleBorder(
@@ -460,9 +323,8 @@ class _AddSeriesDetailsScreenState
                 ),
               ),
               const SizedBox(height: 16),
-
-              // Quality Profile
               _buildFormField(
+                context: context,
                 title: 'Quality Profile',
                 child: DropdownButtonFormField<int>(
                   decoration: InputDecoration(
@@ -477,23 +339,22 @@ class _AddSeriesDetailsScreenState
                     ),
                   ),
                   isExpanded: true,
-                  value: _selectedQualityProfileId,
-                  items: _qualityProfiles.map((profile) {
+                  value: state.selectedQualityProfileId,
+                  items: state.qualityProfiles.map((profile) {
                     return DropdownMenuItem<int>(
                       value: profile.id,
                       child: Text(profile.name ?? 'Unknown'),
                     );
                   }).toList(),
                   onChanged: (value) {
-                    setState(() {
-                      _selectedQualityProfileId = value!;
-                    });
+                    if (value != null) {
+                      notifier.setSelectedQualityProfileId(value);
+                    }
                   },
                 ),
               ),
-
-              // Root Folder
               _buildFormField(
+                context: context,
                 title: 'Root Folder',
                 child: DropdownButtonFormField<String>(
                   decoration: InputDecoration(
@@ -508,23 +369,20 @@ class _AddSeriesDetailsScreenState
                     ),
                   ),
                   isExpanded: true,
-                  value: _rootFolderPath,
-                  items: _rootFolders.map((folder) {
+                  value: state.rootFolderPath,
+                  items: state.rootFolders.map((folder) {
                     return DropdownMenuItem<String>(
                       value: folder.path,
                       child: Text(folder.path ?? 'Unknown'),
                     );
                   }).toList(),
                   onChanged: (value) {
-                    setState(() {
-                      _rootFolderPath = value;
-                    });
+                    notifier.setRootFolderPath(value);
                   },
                 ),
               ),
-
-              // Monitor Type
               _buildFormField(
+                context: context,
                 title: 'Monitor',
                 child: DropdownButtonFormField<SonarrMonitorType>(
                   decoration: InputDecoration(
@@ -539,7 +397,7 @@ class _AddSeriesDetailsScreenState
                     ),
                   ),
                   isExpanded: true,
-                  value: _selectedMonitorType,
+                  value: state.selectedMonitorType,
                   items: const [
                     DropdownMenuItem<SonarrMonitorType>(
                       value: SonarrMonitorType.UNKNOWN,
@@ -599,15 +457,14 @@ class _AddSeriesDetailsScreenState
                     ),
                   ],
                   onChanged: (value) {
-                    setState(() {
-                      _selectedMonitorType = value!;
-                    });
+                    if (value != null) {
+                      notifier.setSelectedMonitorType(value);
+                    }
                   },
                 ),
               ),
-
-              // Series Type
               _buildFormField(
+                context: context,
                 title: 'Series Type',
                 child: DropdownButtonFormField<SonarrSeriesType>(
                   decoration: InputDecoration(
@@ -622,7 +479,7 @@ class _AddSeriesDetailsScreenState
                     ),
                   ),
                   isExpanded: true,
-                  value: _selectedSeriesType,
+                  value: state.selectedSeriesType,
                   items: const [
                     DropdownMenuItem<SonarrSeriesType>(
                       value: SonarrSeriesType.STANDARD,
@@ -638,9 +495,9 @@ class _AddSeriesDetailsScreenState
                     ),
                   ],
                   onChanged: (value) {
-                    setState(() {
-                      _selectedSeriesType = value!;
-                    });
+                    if (value != null) {
+                      notifier.setSelectedSeriesType(value);
+                    }
                   },
                 ),
               ),
@@ -648,8 +505,6 @@ class _AddSeriesDetailsScreenState
           ),
         ),
       ),
-
-      // Additional Options Card
       Card(
         elevation: 2,
         shape: RoundedRectangleBorder(
@@ -667,17 +522,15 @@ class _AddSeriesDetailsScreenState
                 ),
               ),
               const SizedBox(height: 8),
-
-              // Season Folder
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(
+                    const Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           Text(
                             'Use Season Folder',
                             style: TextStyle(fontSize: 16.0),
@@ -694,29 +547,25 @@ class _AddSeriesDetailsScreenState
                       ),
                     ),
                     Switch(
-                      value: _seasonFolder,
+                      value: state.seasonFolder,
                       activeColor: theme.colorScheme.primary,
                       onChanged: (value) {
-                        setState(() {
-                          _seasonFolder = value;
-                        });
+                        notifier.setSeasonFolder(value);
                       },
                     ),
                   ],
                 ),
               ),
               const Divider(height: 1),
-
-              // Monitored
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(
+                    const Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           Text('Monitored', style: TextStyle(fontSize: 16.0)),
                           SizedBox(height: 4),
                           Text(
@@ -730,29 +579,25 @@ class _AddSeriesDetailsScreenState
                       ),
                     ),
                     Switch(
-                      value: _monitored,
+                      value: state.monitored,
                       activeColor: theme.colorScheme.primary,
                       onChanged: (value) {
-                        setState(() {
-                          _monitored = value;
-                        });
+                        notifier.setMonitored(value);
                       },
                     ),
                   ],
                 ),
               ),
               const Divider(height: 1),
-
-              // Search Missing Episodes
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(
+                    const Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           Text(
                             'Search for Missing Episodes',
                             style: TextStyle(fontSize: 16.0),
@@ -769,29 +614,25 @@ class _AddSeriesDetailsScreenState
                       ),
                     ),
                     Switch(
-                      value: _searchForMissingEpisodes,
+                      value: state.searchForMissingEpisodes,
                       activeColor: theme.colorScheme.primary,
                       onChanged: (value) {
-                        setState(() {
-                          _searchForMissingEpisodes = value;
-                        });
+                        notifier.setSearchForMissingEpisodes(value);
                       },
                     ),
                   ],
                 ),
               ),
               const Divider(height: 1),
-
-              // Search Cutoff Unmet Episodes
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(
+                    const Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           Text(
                             'Search Cutoff Unmet Episodes',
                             style: TextStyle(fontSize: 16.0),
@@ -808,12 +649,10 @@ class _AddSeriesDetailsScreenState
                       ),
                     ),
                     Switch(
-                      value: _searchForCutoffUnmetEpisodes,
+                      value: state.searchForCutoffUnmetEpisodes,
                       activeColor: theme.colorScheme.primary,
                       onChanged: (value) {
-                        setState(() {
-                          _searchForCutoffUnmetEpisodes = value;
-                        });
+                        notifier.setSearchForCutoffUnmetEpisodes(value);
                       },
                     ),
                   ],
@@ -823,8 +662,6 @@ class _AddSeriesDetailsScreenState
           ),
         ),
       ),
-
-      // Add button
       Container(
         width: double.infinity,
         height: 55,
@@ -847,7 +684,25 @@ class _AddSeriesDetailsScreenState
           ],
         ),
         child: ElevatedButton(
-          onPressed: _addSeries,
+          onPressed: () async {
+            final success = await notifier.addSeries();
+            if (success) {
+              Navigator.of(context).pop(true);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('${series.title} added successfully'),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Failed to add series: ${state.error}'),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
@@ -879,25 +734,30 @@ class _AddSeriesDetailsScreenState
       backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
         title: Text(
-          widget.series.title ?? 'Add Series',
+          series.title ?? 'Add Series',
           style: const TextStyle(fontWeight: FontWeight.bold),
           overflow: TextOverflow.ellipsis,
         ),
         elevation: 0,
         centerTitle: true,
         actions: [
-          if (!_isLoading)
+          if (!state.isLoading)
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
               child: IconButton(
                 icon: Icon(Icons.check, color: theme.colorScheme.primary),
-                onPressed: _addSeries,
+                onPressed: () async {
+                  final success = await notifier.addSeries();
+                  if (success) {
+                    Navigator.of(context).pop(true);
+                  }
+                },
                 tooltip: 'Add Series',
               ),
             ),
         ],
       ),
-      body: _isLoading
+      body: state.isLoading
           ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -911,42 +771,42 @@ class _AddSeriesDetailsScreenState
                 ],
               ),
             )
-          : _error != null
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.error_outline,
-                    size: 60,
-                    color: theme.colorScheme.error,
+          : state.error != null
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.error_outline,
+                        size: 60,
+                        color: theme.colorScheme.error,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Error',
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          color: theme.colorScheme.error,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        state.error ?? 'Unknown error',
+                        style: theme.textTheme.bodyLarge,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 24),
+                      ElevatedButton.icon(
+                        icon: const Icon(Icons.refresh),
+                        label: const Text('Try Again'),
+                        onPressed: () => ref.refresh(provider),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Error',
-                    style: theme.textTheme.headlineSmall?.copyWith(
-                      color: theme.colorScheme.error,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    _error ?? 'Unknown error',
-                    style: theme.textTheme.bodyLarge,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 24),
-                  ElevatedButton.icon(
-                    icon: const Icon(Icons.refresh),
-                    label: const Text('Try Again'),
-                    onPressed: _fetchData,
-                  ),
-                ],
-              ),
-            )
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: _buildResponsiveLayout(context, headerCard, configCards),
-            ),
+                )
+              : SingleChildScrollView(
+                  padding: const EdgeInsets.all(16.0),
+                  child: _buildResponsiveLayout(context, headerCard, configCards),
+                ),
     );
   }
 }

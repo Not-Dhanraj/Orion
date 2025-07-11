@@ -1,16 +1,11 @@
-import 'package:client/core/api/api_client.dart';
 import 'package:client/core/widgets/error_view.dart';
 import 'package:client/core/widgets/media_item_card.dart';
+import 'package:client/features/sonarr/provider/series_provider.dart';
 import 'package:client/features/sonarr/view/add_series_screen.dart';
 import 'package:client/features/sonarr/view/sonarr_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
-
-final seriesProvider = FutureProvider<List<SonarrSeries>>((ref) async {
-  final sonarr = ref.watch(sonarrProvider);
-  return await sonarr.series.getAllSeries();
-});
 
 class SonarrScreen extends ConsumerWidget {
   const SonarrScreen({super.key});

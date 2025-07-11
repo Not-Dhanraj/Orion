@@ -35,46 +35,107 @@ class SeasonCard extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(seasonName, style: theme.textTheme.titleLarge),
-                ElevatedButton.icon(
-                  onPressed: episodeState is AsyncLoading
-                      ? null
-                      : () async {
-                          try {
-                            await episodeNotifier.seasonSearch(
-                              seriesId,
-                              seasonNumber,
+                Row(
+                  children: [
+                    // Monitor/unmonitor dropdown for the entire season
+                    PopupMenuButton<bool>(
+                      icon: const Icon(Icons.visibility),
+                      tooltip: 'Monitor/Unmonitor Season',
+                      onSelected: (bool monitored) async {
+                        try {
+                          await episodeNotifier.toggleSeasonMonitored(
+                            seriesId,
+                            seasonNumber,
+                            monitored,
+                          );
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  '$seasonName ${monitored ? 'monitored' : 'unmonitored'}',
+                                ),
+                                duration: const Duration(seconds: 2),
+                              ),
                             );
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    'Searching for $seasonName episodes',
-                                  ),
-                                  duration: const Duration(seconds: 2),
-                                ),
-                              );
-                            }
-                          } catch (e) {
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    'Error searching for episodes: $e',
-                                  ),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
-                            }
                           }
-                        },
-                  icon: episodeState is AsyncLoading
-                      ? const SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : const Icon(Icons.search),
-                  label: const Text('Search'),
+                        } catch (e) {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Error updating season: $e'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        }
+                      },
+                      itemBuilder: (BuildContext context) =>
+                          <PopupMenuEntry<bool>>[
+                            const PopupMenuItem<bool>(
+                              value: true,
+                              child: Row(
+                                children: [
+                                  Icon(Icons.visibility),
+                                  SizedBox(width: 8),
+                                  Text('Monitor Season'),
+                                ],
+                              ),
+                            ),
+                            const PopupMenuItem<bool>(
+                              value: false,
+                              child: Row(
+                                children: [
+                                  Icon(Icons.visibility_off),
+                                  SizedBox(width: 8),
+                                  Text('Unmonitor Season'),
+                                ],
+                              ),
+                            ),
+                          ],
+                    ),
+                    const SizedBox(width: 8),
+                    ElevatedButton.icon(
+                      onPressed: episodeState is AsyncLoading
+                          ? null
+                          : () async {
+                              try {
+                                await episodeNotifier.seasonSearch(
+                                  seriesId,
+                                  seasonNumber,
+                                );
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Searching for $seasonName episodes',
+                                      ),
+                                      duration: const Duration(seconds: 2),
+                                    ),
+                                  );
+                                }
+                              } catch (e) {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Error searching for episodes: $e',
+                                      ),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
+                              }
+                            },
+                      icon: episodeState is AsyncLoading
+                          ? const SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Icon(Icons.search),
+                      label: const Text('Search'),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -151,6 +212,44 @@ class EpisodeListItem extends ConsumerWidget {
       subtitle: Text(
         'Episode ${episode.episodeNumber}${episode.airDate != null ? ' • ${episode.airDate}' : ''}',
         style: theme.textTheme.bodyMedium,
+      ),
+      leading: IconButton(
+        icon: Icon(
+          episode.monitored == true ? Icons.visibility : Icons.visibility_off,
+          color: episode.monitored == true
+              ? theme.colorScheme.primary
+              : Colors.grey,
+        ),
+        tooltip: episode.monitored == true
+            ? 'Unmonitor Episode'
+            : 'Monitor Episode',
+        onPressed: () async {
+          try {
+            await episodeNotifier.toggleEpisodeMonitored(
+              episode,
+              !(episode.monitored ?? false),
+            );
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    '${episode.title} ${episode.monitored == true ? 'unmonitored' : 'monitored'}',
+                  ),
+                  duration: const Duration(seconds: 2),
+                ),
+              );
+            }
+          } catch (e) {
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Error updating monitoring status: $e'),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+          }
+        },
       ),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,

@@ -3,6 +3,7 @@ import 'package:client/core/widgets/media_item_card.dart';
 import 'package:client/features/sonarr/data/series_provider/series_provider.dart';
 import 'package:client/features/sonarr/presentation/series_details/view/sonarr_detail_screen.dart';
 import 'package:client/features/sonarr/presentation/add_series/view/add_series_screen.dart';
+import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
@@ -75,10 +76,18 @@ class SonarrScreen extends ConsumerWidget {
                       ),
                     );
                   },
-                  child: MediaItemCard(
-                    title: s.title ?? 'Unknown Title',
-                    status: s.status?.toString() ?? 'Unknown Status',
-                    posterUrl: posterUrl,
+                  child: Entry.offset(
+                    yOffset: 100,
+                    duration: const Duration(milliseconds: 300),
+                    child: Entry.opacity(
+                      duration: const Duration(milliseconds: 300),
+
+                      child: MediaItemCard(
+                        title: s.title ?? 'Unknown Title',
+                        status: s.status?.toString() ?? 'Unknown Status',
+                        posterUrl: posterUrl,
+                      ),
+                    ),
                   ),
                 ),
               );

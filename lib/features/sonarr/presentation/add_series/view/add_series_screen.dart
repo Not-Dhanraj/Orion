@@ -5,6 +5,7 @@ import 'package:client/features/sonarr/presentation/add_series/widgets/no_result
 import 'package:client/features/sonarr/presentation/add_series/widgets/search_bar.dart';
 import 'package:client/features/sonarr/presentation/add_series/widgets/series_card.dart';
 import 'package:client/features/sonarr/presentation/add_series_details/view/add_series_details_screen.dart';
+import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
@@ -83,7 +84,10 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Series', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Add Series',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -102,42 +106,66 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
               child: state.isLoading
                   ? LoadingIndicator(searchTerm: state.searchTerm)
                   : !state.isSearched
-                      ? EmptyState(onStartTyping: () => focusNode.requestFocus())
-                      : state.searchResults.isEmpty
-                          ? NoResults(
-                              searchTerm: state.searchTerm,
-                              onClear: () {
-                                notifier.clearSearch();
-                                focusNode.requestFocus();
-                              },
-                              onTryAgain: () => notifier.searchSeries(searchController.text),
-                            )
-                          : RefreshIndicator(
-                              onRefresh: () => notifier.searchSeries(searchController.text),
-                              child: Scrollbar(
-                                controller: scrollController,
-                                child: GridView.builder(
-                                  controller: scrollController,
-                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: calculateCrossAxisCount(context),
-                                    childAspectRatio: 0.65,
-                                    crossAxisSpacing: MediaQuery.of(context).size.width > 600 ? 16 : 12,
-                                    mainAxisSpacing: MediaQuery.of(context).size.width > 600 ? 20 : 16,
-                                  ),
-                                  padding: EdgeInsets.all(MediaQuery.of(context).size.width > 600 ? 20.0 : 16.0),
-                                  itemCount: state.searchResults.length,
-                                  itemBuilder: (context, index) {
-                                    final series = state.searchResults[index];
-                                    final isInLibrary = state.existingSeriesMap[series.tvdbId] ?? false;
-                                    return SeriesCard(
-                                      series: series,
-                                      isInLibrary: isInLibrary,
-                                      onAdd: () => addSeries(series),
-                                    );
-                                  },
+                  ? EmptyState(onStartTyping: () => focusNode.requestFocus())
+                  : state.searchResults.isEmpty
+                  ? NoResults(
+                      searchTerm: state.searchTerm,
+                      onClear: () {
+                        notifier.clearSearch();
+                        focusNode.requestFocus();
+                      },
+                      onTryAgain: () =>
+                          notifier.searchSeries(searchController.text),
+                    )
+                  : RefreshIndicator(
+                      onRefresh: () =>
+                          notifier.searchSeries(searchController.text),
+                      child: Scrollbar(
+                        controller: scrollController,
+                        child: GridView.builder(
+                          controller: scrollController,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: calculateCrossAxisCount(
+                                  context,
+                                ),
+                                childAspectRatio: 0.65,
+                                crossAxisSpacing:
+                                    MediaQuery.of(context).size.width > 600
+                                    ? 16
+                                    : 12,
+                                mainAxisSpacing:
+                                    MediaQuery.of(context).size.width > 600
+                                    ? 20
+                                    : 16,
+                              ),
+                          padding: EdgeInsets.all(
+                            MediaQuery.of(context).size.width > 600
+                                ? 20.0
+                                : 16.0,
+                          ),
+                          itemCount: state.searchResults.length,
+                          itemBuilder: (context, index) {
+                            final series = state.searchResults[index];
+                            final isInLibrary =
+                                state.existingSeriesMap[series.tvdbId] ?? false;
+                            return Entry.offset(
+                              yOffset: 100,
+                              duration: const Duration(milliseconds: 300),
+                              child: Entry.opacity(
+                                duration: const Duration(milliseconds: 300),
+
+                                child: SeriesCard(
+                                  series: series,
+                                  isInLibrary: isInLibrary,
+                                  onAdd: () => addSeries(series),
                                 ),
                               ),
-                            ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
             ),
           ],
         ),

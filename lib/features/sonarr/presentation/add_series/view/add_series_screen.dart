@@ -1,6 +1,6 @@
 import 'package:client/core/widgets/media_item_card.dart';
-import 'package:client/features/sonarr/provider/add_series_provider.dart';
-import 'package:client/features/sonarr/view/add_series_details_screen.dart';
+import 'package:client/features/sonarr/data/add_series_provider/add_series_provider.dart';
+import 'package:client/features/sonarr/presentation/add_series_details/view/add_series_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';

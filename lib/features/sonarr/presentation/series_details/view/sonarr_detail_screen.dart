@@ -1,7 +1,7 @@
 import 'package:client/core/widgets/detail_sliver_app_bar.dart';
 import 'package:client/core/widgets/overview_card.dart';
-import 'package:client/features/sonarr/view/widgets/series_details.dart';
-import 'package:client/features/sonarr/view/widgets/series_information_card.dart';
+import 'package:client/features/sonarr/presentation/series_details/widgets/series_details.dart';
+import 'package:client/features/sonarr/presentation/series_details/widgets/series_information_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';

@@ -1,7 +1,7 @@
 import 'package:client/features/home/provider/home_providers.dart';
 import 'package:client/features/radarr/view/radarr_screen.dart';
 import 'package:client/features/settings/view/settings_screen.dart';
-import 'package:client/features/sonarr/view/sonarr_screen.dart';
+import 'package:client/features/sonarr/presentation/series/view/sonarr_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/calendar/view/calendar_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

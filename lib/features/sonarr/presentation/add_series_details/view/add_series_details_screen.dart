@@ -1,4 +1,4 @@
-import 'package:client/features/sonarr/provider/add_series_details_provider.dart';
+import 'package:client/features/sonarr/data/add_series_details_provider/add_series_details_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';

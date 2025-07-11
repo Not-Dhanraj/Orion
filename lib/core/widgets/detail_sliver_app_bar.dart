@@ -4,8 +4,14 @@ import 'package:flutter/material.dart';
 class DetailSliverAppBar extends StatelessWidget {
   final String title;
   final String? fanartUrl;
+  final List<Widget>? actions;
 
-  const DetailSliverAppBar({super.key, required this.title, this.fanartUrl});
+  const DetailSliverAppBar({
+    super.key, 
+    required this.title, 
+    this.fanartUrl, 
+    this.actions,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +20,7 @@ class DetailSliverAppBar extends StatelessWidget {
       expandedHeight: 250.0,
       pinned: true,
       backgroundColor: theme.colorScheme.surface,
+      actions: actions,
       flexibleSpace: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           // Calculate the collapse ratio

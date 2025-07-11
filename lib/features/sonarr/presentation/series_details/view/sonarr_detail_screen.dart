@@ -1,7 +1,9 @@
 import 'package:client/core/widgets/detail_sliver_app_bar.dart';
 import 'package:client/core/widgets/overview_card.dart';
+import 'package:client/features/sonarr/presentation/seasons/view/seasons_page.dart';
 import 'package:client/features/sonarr/presentation/series_details/widgets/series_details.dart';
 import 'package:client/features/sonarr/presentation/series_details/widgets/series_information_card.dart';
+import 'package:client/features/sonarr/presentation/shared/widgets/series_action_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
@@ -33,7 +35,13 @@ class SonarrDetailScreen extends ConsumerWidget {
       backgroundColor: theme.colorScheme.surface,
       body: CustomScrollView(
         slivers: [
-          DetailSliverAppBar(title: 'Details', fanartUrl: fanartUrl),
+          DetailSliverAppBar(
+            title: 'Details', 
+            fanartUrl: fanartUrl,
+            actions: [
+              SeriesActionButtons(series: series),
+            ],
+          ),
           SliverToBoxAdapter(
             child: Container(
               decoration: BoxDecoration(
@@ -59,6 +67,26 @@ class SonarrDetailScreen extends ConsumerWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: SeriesInformationCard(series: series),
                   ),
+                  const SizedBox(height: 16.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SeasonsPage(series: series),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.view_list),
+                      label: const Text('View Seasons & Episodes'),
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 50),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24.0),
                   const SizedBox(height: 24.0),
                 ],
               ),

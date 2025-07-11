@@ -49,23 +49,22 @@ class RadarrScreen extends ConsumerWidget {
             itemBuilder: (context, index) {
               final m = movies[index];
               final posterUrl = getPosterUrl(m);
-              return Hero(
-                tag: m.id!,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => RadarrDetailScreen(movie: m),
-                      ),
-                    );
-                  },
-                  child: Entry.offset(
-                    yOffset: 100,
-                    duration: const Duration(milliseconds: 300),
-                    child: Entry.opacity(
-                      duration: const Duration(milliseconds: 300),
-
+              return Entry.offset(
+                yOffset: 100,
+                duration: const Duration(milliseconds: 300),
+                child: Entry.opacity(
+                  duration: const Duration(milliseconds: 300),
+                  child: Hero(
+                    tag: m.id!,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RadarrDetailScreen(movie: m),
+                          ),
+                        );
+                      },
                       child: MediaItemCard(
                         title: m.title ?? 'No Title',
                         status: m.status?.name ?? 'No Status',

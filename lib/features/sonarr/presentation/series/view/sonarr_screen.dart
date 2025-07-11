@@ -65,23 +65,23 @@ class SonarrScreen extends ConsumerWidget {
             itemBuilder: (context, index) {
               final s = series[index];
               final posterUrl = getPosterUrl(s);
-              return Hero(
-                tag: s.id!,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SonarrDetailScreen(series: s),
-                      ),
-                    );
-                  },
-                  child: Entry.offset(
-                    yOffset: 100,
-                    duration: const Duration(milliseconds: 300),
-                    child: Entry.opacity(
-                      duration: const Duration(milliseconds: 300),
-
+              return Entry.offset(
+                yOffset: 100,
+                duration: const Duration(milliseconds: 300),
+                child: Entry.opacity(
+                  duration: const Duration(milliseconds: 300),
+                  // hero under entry fo fix retriggering animation twice
+                  child: Hero(
+                    tag: s.id!,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SonarrDetailScreen(series: s),
+                          ),
+                        );
+                      },
                       child: MediaItemCard(
                         title: s.title ?? 'Unknown Title',
                         status: s.status?.toString() ?? 'Unknown Status',

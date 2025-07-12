@@ -1,8 +1,10 @@
 import 'package:client/core/widgets/detail_sliver_app_bar.dart';
 import 'package:client/features/radarr/application/provider/movie_management_provider/movie_details_provider.dart';
 import 'package:client/features/radarr/application/provider/movie_management_provider/delete_movie_provider.dart';
+import 'package:client/features/radarr/application/provider/movie_management_provider/update_movie_provider.dart';
+import 'package:client/features/radarr/application/provider/movie_management_provider/movie_release_provider.dart';
 import 'package:client/features/radarr/presentation/movie_edit/view/movie_edit_screen.dart';
-import 'package:client/features/radarr/presentation/shared/widgets/movie_action_buttons.dart';
+import 'package:client/features/radarr/presentation/shared/widgets/release_selection_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr_flutter/radarr_flutter.dart';
@@ -87,6 +89,42 @@ class RadarrDetailScreen extends ConsumerWidget {
     }
   }
 
+  Widget _buildActionButton(
+    BuildContext context,
+    WidgetRef ref, {
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback onPressed,
+  }) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: color.withAlpha(20),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: color.withAlpha(100), width: 1),
+          ),
+          child: IconButton(
+            onPressed: onPressed,
+            icon: Icon(icon, color: color),
+            iconSize: 24,
+            padding: const EdgeInsets.all(12),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          label,
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+            color: color,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
@@ -103,31 +141,7 @@ class RadarrDetailScreen extends ConsumerWidget {
           DetailSliverAppBar(
             title: 'Details',
             fanartUrl: backdropUrl,
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.edit),
-                tooltip: 'Edit Movie',
-                onPressed: () async {
-                  final result = await Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => MovieEditScreen(movie: movie),
-                    ),
-                  );
-
-                  // If changes were made and saved successfully
-                  if (result == true && movie.id != null) {
-                    // Invalidate provider to refresh the movie data
-                    ref.invalidate(movieDetailsProvider(movie.id!));
-                  }
-                },
-              ),
-              IconButton(
-                icon: const Icon(Icons.delete_outline),
-                tooltip: 'Delete Movie',
-                onPressed: () => _deleteMovie(context, ref, movie),
-              ),
-              MovieActionButtons(movie: movie),
-            ],
+            actions: [],
           ),
 
           SliverToBoxAdapter(
@@ -167,10 +181,194 @@ class RadarrDetailScreen extends ConsumerWidget {
 
                   const SizedBox(height: 24),
 
-                  // Overview - now in a card like series detail
+                  // Action buttons card
                   Entry.opacity(
                     duration: const Duration(milliseconds: 500),
                     delay: const Duration(milliseconds: 100),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Card(
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Actions',
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildActionButton(
+                                    context,
+                                    ref,
+                                    icon: Icons.edit,
+                                    label: 'Edit',
+                                    color: theme.colorScheme.primary,
+                                    onPressed: () async {
+                                      final result = await Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => MovieEditScreen(movie: movie),
+                                        ),
+                                      );
+
+                                      // If changes were made and saved successfully
+                                      if (result == true && movie.id != null) {
+                                        // Invalidate provider to refresh the movie data
+                                        ref.invalidate(movieDetailsProvider(movie.id!));
+                                      }
+                                    },
+                                  ),
+                                  _buildActionButton(
+                                    context,
+                                    ref,
+                                    icon: Icons.delete_outline,
+                                    label: 'Delete',
+                                    color: Colors.red,
+                                    onPressed: () => _deleteMovie(context, ref, movie),
+                                  ),
+                                  _buildActionButton(
+                                    context,
+                                    ref,
+                                    icon: Icons.refresh,
+                                    label: 'Refresh',
+                                    color: theme.colorScheme.secondary,
+                                    onPressed: () async {
+                                      try {
+                                        // Update movie with refreshMetadata flag
+                                        final Map<String, dynamic> movieData = movie.toJson();
+                                        movieData['refreshMetadata'] = true;
+                                        final updatedMovie = RadarrMovie.fromJson(movieData);
+
+                                        // Update the movie
+                                        await ref.read(updateMovieProvider(updatedMovie).future);
+
+                                        // Refresh local data by invalidating the provider
+                                        if (movie.id != null) {
+                                          ref.invalidate(movieDetailsProvider(movie.id!));
+                                        }
+
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: Text('Refreshing movie: ${movie.title}'),
+                                              duration: const Duration(seconds: 2),
+                                            ),
+                                          );
+                                        }
+                                      } catch (e) {
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: Text('Error refreshing movie: $e'),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                        }
+                                      }
+                                    },
+                                  ),
+                                  _buildActionButton(
+                                    context,
+                                    ref,
+                                    icon: Icons.search,
+                                    label: 'Search',
+                                    color: theme.colorScheme.tertiary,
+                                    onPressed: () async {
+                                      if (movie.id == null) {
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                              content: Text('Cannot search: Missing movie ID'),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                        }
+                                        return;
+                                      }
+
+                                      try {
+                                        // Show loading dialog
+                                        if (context.mounted) {
+                                          showDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            builder: (context) =>
+                                                const Center(child: CircularProgressIndicator()),
+                                          );
+                                        }
+
+                                        // Get releases for this movie
+                                        final releases = await ref.read(
+                                          movieReleaseProvider(movie.id!).future,
+                                        );
+
+                                        // Close loading dialog
+                                        if (context.mounted) {
+                                          Navigator.of(context).pop();
+                                        }
+
+                                        if (releases.isEmpty) {
+                                          if (context.mounted) {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              const SnackBar(
+                                                content: Text('No releases found for this movie'),
+                                                duration: Duration(seconds: 2),
+                                              ),
+                                            );
+                                          }
+                                          return;
+                                        }
+
+                                        // Show release selection dialog
+                                        if (context.mounted) {
+                                          await showDialog(
+                                            context: context,
+                                            builder: (context) => ReleaseSelectionDialog(
+                                              releases: releases,
+                                              title: 'Releases for ${movie.title ?? "Movie"}',
+                                            ),
+                                          );
+                                        }
+                                      } catch (e) {
+                                        if (context.mounted) {
+                                          Navigator.of(
+                                            context,
+                                          ).pop(); // Close loading dialog if still showing
+
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: Text('Error fetching releases: $e'),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                        }
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Overview - now in a card like series detail
+                  Entry.opacity(
+                    duration: const Duration(milliseconds: 550),
+                    delay: const Duration(milliseconds: 150),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: MovieOverview(movie: movie),

@@ -6,14 +6,12 @@ import 'package:client/features/radarr/presentation/shared/widgets/movie_action_
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr_flutter/radarr_flutter.dart';
-import 'package:client/features/radarr/presentation/movie_details/widgets/movie_info.dart';
 import 'package:client/features/radarr/presentation/movie_details/widgets/movie_media_info.dart';
 import 'package:client/features/radarr/presentation/movie_details/widgets/movie_overview.dart';
 import 'package:client/features/radarr/presentation/movie_details/widgets/movie_status_indicators.dart';
-import 'package:client/features/radarr/presentation/movie_details/widgets/movie_credits.dart';
 import 'package:entry/entry.dart';
-import 'package:client/features/radarr/application/provider/movie_management_provider/movie_credits_provider.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:client/features/radarr/presentation/movie_details/widgets/movie_details.dart';
+import 'package:client/features/radarr/presentation/movie_details/widgets/movie_info_widget.dart';
 
 class RadarrDetailScreen extends ConsumerWidget {
   final RadarrMovie movie;
@@ -64,7 +62,7 @@ class RadarrDetailScreen extends ConsumerWidget {
     if (confirmed == true && movie.id != null) {
       try {
         await ref.read(deleteMovieProvider(movie.id!).future);
-        
+
         scaffoldMessenger.showSnackBar(
           SnackBar(
             content: Text('${movie.title} has been deleted'),
@@ -92,14 +90,9 @@ class RadarrDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final textTheme = theme.textTheme;
 
     final posterUrl = _getImageUrl(movie);
     final backdropUrl = _getImageUrl(movie, coverType: 'fanart');
-
-    // Watch for movie credits
-    final creditsAsyncValue = ref.watch(movieCreditsProvider(movie.id!));
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
@@ -156,81 +149,12 @@ class RadarrDetailScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Main movie details card - poster and basic info
-                  Card(
-                    margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                    elevation: 4,
-                    shadowColor: colorScheme.shadow.withOpacity(0.2),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Poster with shadow
-                          Entry.opacity(
-                            duration: const Duration(milliseconds: 400),
-                            child: Container(
-                              width: 120,
-                              height: 180,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.3),
-                                    blurRadius: 8.0,
-                                    offset: const Offset(0, 4),
-                                  ),
-                                ],
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(12.0),
-                                child: Hero(
-                                  tag: movie.id!,
-                                  child: posterUrl != null
-                                      ? Image.network(
-                                          posterUrl,
-                                          fit: BoxFit.cover,
-                                          errorBuilder: (context, error, stackTrace) => Container(
-                                            color: colorScheme.surfaceVariant,
-                                            child: Center(
-                                              child: Icon(
-                                                Icons.movie,
-                                                size: 40,
-                                                color: colorScheme.onSurfaceVariant,
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                      : Container(
-                                          color: colorScheme.surfaceVariant,
-                                          child: Center(
-                                            child: Icon(
-                                              Icons.movie,
-                                              size: 40,
-                                              color: colorScheme.onSurfaceVariant,
-                                            ),
-                                          ),
-                                        ),
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          const SizedBox(width: 16),
-
-                          // Movie info (year, runtime, etc.)
-                          Expanded(
-                            child: Entry.opacity(
-                              duration: const Duration(milliseconds: 400),
-                              child: MovieInfo(movie: movie),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  // Main movie details card with poster, title, alternate title, genre, rating
+                  Entry.opacity(
+                    duration: const Duration(milliseconds: 400),
+                    child: MovieDetails(movie: movie, posterUrl: posterUrl),
                   ),
-                  
+
                   // Status indicators
                   Entry.opacity(
                     duration: const Duration(milliseconds: 450),
@@ -243,7 +167,7 @@ class RadarrDetailScreen extends ConsumerWidget {
 
                   const SizedBox(height: 24),
 
-                  // Overview
+                  // Overview - now in a card like series detail
                   Entry.opacity(
                     duration: const Duration(milliseconds: 500),
                     delay: const Duration(milliseconds: 100),
@@ -267,40 +191,13 @@ class RadarrDetailScreen extends ConsumerWidget {
 
                   const SizedBox(height: 24),
 
-                  // Credits section
+                  // Movie Info with year, runtime and rating
                   Entry.opacity(
                     duration: const Duration(milliseconds: 600),
                     delay: const Duration(milliseconds: 200),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: creditsAsyncValue.when(
-                        data: (credits) => MovieCredits(credits: credits),
-                        loading: () => Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Credits', style: textTheme.titleLarge),
-                            const SizedBox(height: 16),
-                            const Center(
-                              child: SizedBox(
-                                width: 30,
-                                height: 30,
-                                child: CircularProgressIndicator(strokeWidth: 2),
-                              ),
-                            ),
-                          ],
-                        ),
-                        error: (_, __) => Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Credits', style: textTheme.titleLarge),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Failed to load credits',
-                              style: TextStyle(color: colorScheme.error),
-                            ),
-                          ],
-                        ),
-                      ),
+                      child: MovieInfoWidget(movie: movie),
                     ),
                   ),
 
@@ -308,33 +205,20 @@ class RadarrDetailScreen extends ConsumerWidget {
 
                   // Media Info
                   Entry.opacity(
-                    duration: const Duration(milliseconds: 650),
-                    delay: const Duration(milliseconds: 250),
+                    duration: const Duration(milliseconds: 700),
+                    delay: const Duration(milliseconds: 300),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: MovieMediaInfo(movie: movie),
                     ),
                   ),
-                  
+
                   const SizedBox(height: 32.0),
                 ],
               ),
             ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MovieEditScreen(movie: movie),
-            ),
-          );
-        },
-        backgroundColor: colorScheme.primaryContainer,
-        foregroundColor: colorScheme.onPrimaryContainer,
-        child: const Icon(Icons.edit),
       ),
     );
   }

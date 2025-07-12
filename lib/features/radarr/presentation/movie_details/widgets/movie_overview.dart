@@ -15,66 +15,111 @@ class _MovieOverviewState extends State<MovieOverview> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final colorScheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
 
-    final overview = widget.movie.overview;
+    final overview = widget.movie.overview ?? 'No overview available';
 
-    if (overview == null || overview.isEmpty) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Overview', style: textTheme.titleLarge),
-          const SizedBox(height: 8),
-          Text(
-            'No overview available',
-            style: textTheme.bodyMedium?.copyWith(
-              color: colorScheme.onSurfaceVariant,
-              fontStyle: FontStyle.italic,
+    return Card(
+      margin: EdgeInsets.zero,
+      elevation: 3,
+      shadowColor: theme.colorScheme.shadow.withOpacity(0.2),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(
+                    Icons.description_outlined,
+                    color: theme.colorScheme.onPrimaryContainer,
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: 12.0),
+                Text(
+                  'Overview',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      );
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Overview', style: textTheme.titleLarge),
-        const SizedBox(height: 8),
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              _expanded = !_expanded;
-            });
-          },
-          child: AnimatedCrossFade(
-            firstChild: Text(
-              overview,
-              style: textTheme.bodyMedium,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
+            const SizedBox(height: 16.0),
+            GestureDetector(
+              onTap: () {
+                if (overview.length > 150) {
+                  setState(() {
+                    _expanded = !_expanded;
+                  });
+                }
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    overview,
+                    style: theme.textTheme.bodyLarge?.copyWith(height: 1.5),
+                    maxLines: _expanded ? null : 5,
+                    overflow: _expanded
+                        ? TextOverflow.visible
+                        : TextOverflow.ellipsis,
+                  ),
+                  if (overview.length > 150 && !_expanded) ...[
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Show more',
+                          style: textTheme.labelMedium?.copyWith(
+                            color: theme.colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_drop_down,
+                          color: theme.colorScheme.primary,
+                          size: 20,
+                        ),
+                      ],
+                    ),
+                  ],
+                  if (_expanded) ...[
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Show less',
+                          style: textTheme.labelMedium?.copyWith(
+                            color: theme.colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_drop_up,
+                          color: theme.colorScheme.primary,
+                          size: 20,
+                        ),
+                      ],
+                    ),
+                  ],
+                ],
+              ),
             ),
-            secondChild: Text(overview, style: textTheme.bodyMedium),
-            crossFadeState: _expanded
-                ? CrossFadeState.showSecond
-                : CrossFadeState.showFirst,
-            duration: const Duration(milliseconds: 300),
-          ),
+          ],
         ),
-        if (overview.length > 150)
-          TextButton(
-            onPressed: () {
-              setState(() {
-                _expanded = !_expanded;
-              });
-            },
-            style: TextButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 0),
-            ),
-            child: Text(_expanded ? 'Show less' : 'Read more'),
-          ),
-      ],
+      ),
     );
   }
 }

@@ -1,9 +1,12 @@
 import 'package:client/core/widgets/error_view.dart';
 import 'package:client/features/calendar/domain/calendar_item.dart';
+import 'package:client/features/calendar/application/providers/combined_calendar_provider.dart';
 import 'package:client/features/calendar/application/providers/calendar_provider.dart';
+import 'package:client/features/radarr/application/provider/calendar_provider/radarr_calendar_provider.dart';
 import 'package:client/features/calendar/application/providers/calendar_screen_providers.dart';
 import 'package:client/features/calendar/application/providers/calendar_preferences_provider.dart';
 import 'package:client/features/calendar/presentation/widgets/calendar_stats_card.dart';
+import 'package:client/features/calendar/presentation/widgets/calendar_source_stats.dart';
 import 'package:client/features/calendar/presentation/widgets/calendar_view.dart';
 import 'package:client/features/calendar/presentation/widgets/day_events_bottomsheet.dart';
 import 'package:client/features/calendar/presentation/widgets/week_view_card.dart';
@@ -39,6 +42,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen>
   void _refreshCalendarData() {
     // Force refresh calendar data
     ref.invalidate(sonarrCalendarProvider);
+    ref.invalidate(radarrCalendarProvider);
+    ref.invalidate(combinedCalendarProvider);
   }
 
   @override
@@ -68,14 +73,14 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen>
     // Update previous index
     _previousNavIndex = currentNavIndex;
 
-    final calendar = ref.watch(sonarrCalendarProvider);
+    final calendar = ref.watch(combinedCalendarProvider);
     final selectedDay = ref.watch(selectedDayProvider);
     final focusedDay = ref.watch(focusedDayProvider);
     final preferences = ref.watch(calendarPreferencesProvider);
 
     List<CalendarItem> getEventsForDay(DateTime day) {
       final normalizedDay = DateTime(day.year, day.month, day.day);
-      final allEvents = ref.watch(sonarrCalendarProvider).asData?.value ?? [];
+      final allEvents = ref.watch(combinedCalendarProvider).asData?.value ?? [];
 
       final eventMap = <DateTime, List<CalendarItem>>{};
       for (final item in allEvents) {
@@ -242,7 +247,54 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen>
                         if (preferences.showStats)
                           Entry.opacity(
                             duration: const Duration(milliseconds: 300),
-                            child: CalendarStatsCard(events: items),
+                            child: Column(
+                              children: [
+                                CalendarStatsCard(events: items),
+                                const SizedBox(height: 8),
+                                // Separate stats for Sonarr and Radarr
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Consumer(
+                                        builder: (context, ref, _) {
+                                          final sonarrEvents = ref.watch(
+                                            sonarrCalendarProvider,
+                                          );
+                                          return sonarrEvents.when(
+                                            data: (items) =>
+                                                CalendarSourceStats(
+                                                  events: items,
+                                                  title: 'TV Shows',
+                                                ),
+                                            loading: () => const SizedBox(),
+                                            error: (_, __) => const SizedBox(),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Consumer(
+                                        builder: (context, ref, _) {
+                                          final radarrEvents = ref.watch(
+                                            radarrCalendarProvider,
+                                          );
+                                          return radarrEvents.when(
+                                            data: (items) =>
+                                                CalendarSourceStats(
+                                                  events: items,
+                                                  title: 'Movies',
+                                                ),
+                                            loading: () => const SizedBox(),
+                                            error: (_, __) => const SizedBox(),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                       ],
                     );
@@ -251,7 +303,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen>
                       const Center(child: CircularProgressIndicator()),
                   error: (err, stack) => ErrorView(
                     error: err,
-                    onRetry: () => ref.refresh(sonarrCalendarProvider),
+                    onRetry: () => _refreshCalendarData(),
                   ),
                 ),
               ),

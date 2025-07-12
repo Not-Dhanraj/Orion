@@ -74,20 +74,6 @@ class EpisodeNotifier extends StateNotifier<AsyncValue<void>> {
     }
   }
 
-  /// Initiates a search for a single episode to download it
-  Future<SonarrCommand> downloadEpisode(int episodeId) async {
-    state = const AsyncValue.loading();
-    try {
-      final commands = _ref.read(sonarrCommandsProvider);
-      final result = await commands.downloadEpisode(episodeId);
-      state = const AsyncValue.data(null);
-      return result;
-    } catch (e, stack) {
-      state = AsyncValue.error(e, stack);
-      rethrow;
-    }
-  }
-
   /// Toggle monitoring status for a specific episode
   Future<void> toggleEpisodeMonitored(
     SonarrEpisode episode,

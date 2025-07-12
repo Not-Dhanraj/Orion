@@ -84,24 +84,6 @@ class SonarrCommands {
     );
   }
 
-  /// Initiates a search for a specific episode to download it
-  ///
-  /// [episodeIds] List of episode IDs to search for
-  /// Returns a Future with the command response
-  Future<SonarrCommand> episodeSearch(List<int> episodeIds) async {
-    final sonarrApi = _ref.read(sonarrProvider);
-    return await sonarrApi.command.episodeSearch(episodeIds: episodeIds);
-  }
-
-  /// Initiates a search for a single episode to download it
-  ///
-  /// [episodeId] The ID of the episode to search for
-  /// Returns a Future with the command response
-  Future<SonarrCommand> downloadEpisode(int episodeId) async {
-    final sonarrApi = _ref.read(sonarrProvider);
-    return await sonarrApi.command.episodeSearch(episodeIds: [episodeId]);
-  }
-
   /// Sets monitoring status for a specific episode
   ///
   /// [episode] The episode to update

@@ -17,9 +17,6 @@ class EpisodeListItem extends ConsumerWidget {
     final theme = Theme.of(context);
 
     return InkWell(
-      onLongPress: episode.hasFile != true && episode.id != null
-          ? () => _showEpisodeReleases(context, ref, episode.id!)
-          : null,
       borderRadius: BorderRadius.circular(8),
       splashColor: theme.colorScheme.primary.withAlpha(25),
       highlightColor: theme.colorScheme.primary.withAlpha(12),
@@ -38,27 +35,6 @@ class EpisodeListItem extends ConsumerWidget {
               'Episode ${episode.episodeNumber}${episode.airDate != null ? ' • ${episode.airDate}' : ''}',
               style: theme.textTheme.bodyMedium,
             ),
-            if (episode.hasFile != true)
-              Padding(
-                padding: const EdgeInsets.only(top: 4.0),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.touch_app,
-                      size: 14,
-                      color: theme.colorScheme.secondary.withAlpha(178),
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Long press to view available releases',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        fontStyle: FontStyle.italic,
-                        color: theme.colorScheme.secondary.withAlpha(178),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
           ],
         ),
         leading: IconButton(
@@ -160,41 +136,11 @@ class EpisodeListItem extends ConsumerWidget {
                 },
               )
             else
-              // Show download options if episode is not downloaded
-              PopupMenuButton<String>(
-                tooltip: 'Download Options',
+              // Show release selection button for episodes that aren't downloaded
+              IconButton(
                 icon: const Icon(Icons.download),
-                itemBuilder: (context) => [
-                  PopupMenuItem<String>(
-                    value: 'auto',
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.smart_button,
-                          color: Theme.of(context).colorScheme.primary,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 12),
-                        const Text('Auto Download'),
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem<String>(
-                    value: 'manual',
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.list_alt,
-                          color: Theme.of(context).colorScheme.secondary,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 12),
-                        const Text('Choose Release'),
-                      ],
-                    ),
-                  ),
-                ],
-                onSelected: (value) async {
+                tooltip: 'Choose Release',
+                onPressed: () async {
                   if (!context.mounted) return;
                   final scaffoldMessenger = ScaffoldMessenger.of(context);
 
@@ -209,20 +155,7 @@ class EpisodeListItem extends ConsumerWidget {
                   }
 
                   try {
-                    if (value == 'auto') {
-                      await episodeNotifier.downloadEpisode(episode.id!);
-                      scaffoldMessenger.showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            'Searching "${episode.title}". Please check queue after few seconds',
-                          ),
-                          backgroundColor: Colors.green,
-                          duration: const Duration(seconds: 2),
-                        ),
-                      );
-                    } else if (value == 'manual') {
-                      await _showEpisodeReleases(context, ref, episode.id!);
-                    }
+                    await _showEpisodeReleases(context, ref, episode.id!);
                   } catch (e) {
                     scaffoldMessenger.showSnackBar(
                       SnackBar(

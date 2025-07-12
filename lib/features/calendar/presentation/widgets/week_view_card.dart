@@ -126,7 +126,7 @@ class _DayItem extends StatelessWidget {
         decoration: BoxDecoration(
           color: isToday
               ? colorScheme.primaryContainer.withOpacity(0.7)
-              : colorScheme.surfaceVariant.withOpacity(0.4),
+              : colorScheme.surfaceContainerHighest.withOpacity(0.4),
           borderRadius: BorderRadius.circular(12),
           border: isToday
               ? Border.all(color: colorScheme.primary, width: 1.5)

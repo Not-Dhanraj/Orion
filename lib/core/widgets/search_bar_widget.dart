@@ -8,12 +8,12 @@ class SearchBarWidget extends StatefulWidget {
   final VoidCallback? onFilterTap;
 
   const SearchBarWidget({
-    Key? key,
+    super.key,
     required this.onSearch,
     this.hintText = 'Search...',
     this.autoFocus = false,
     this.onFilterTap,
-  }) : super(key: key);
+  });
 
   @override
   State<SearchBarWidget> createState() => _SearchBarWidgetState();
@@ -55,7 +55,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
         vertical: AppStyles.spacingS,
       ),
       decoration: BoxDecoration(
-        color: colorScheme.surfaceVariant.withOpacity(0.5),
+        color: colorScheme.surfaceContainerHighest.withOpacity(0.5),
         borderRadius: BorderRadius.circular(AppStyles.borderRadiusL),
         border: Border.all(
           color: colorScheme.outlineVariant.withOpacity(0.2),

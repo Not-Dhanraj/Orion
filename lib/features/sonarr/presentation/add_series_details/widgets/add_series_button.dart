@@ -10,16 +10,16 @@ class AddSeriesButton extends StatelessWidget {
     final theme = Theme.of(context);
     return Container(
       width: double.infinity,
-      height: 55,
+      height: 60,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         gradient: LinearGradient(
           colors: [
             theme.colorScheme.primary,
             Color.fromRGBO(
-              (theme.colorScheme.primary.r * 255.0).round() & 0xff,
-              (theme.colorScheme.primary.g * 255.0).round() & 0xff,
-              (((theme.colorScheme.primary.b * 255.0).round() & 0xff) + 40)
+              (theme.colorScheme.primary.red * 255.0).round(),
+              (theme.colorScheme.primary.green * 255.0).round(),
+              (((theme.colorScheme.primary.blue * 255.0).round()) + 40)
                   .clamp(0, 255),
               1,
             ),
@@ -27,9 +27,10 @@ class AddSeriesButton extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: theme.colorScheme.primary.withAlpha(102), // 0.4 opacity
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+            color: theme.colorScheme.primary.withAlpha(120),
+            blurRadius: 12,
+            offset: const Offset(0, 5),
+            spreadRadius: 1,
           ),
         ],
       ),
@@ -39,21 +40,25 @@ class AddSeriesButton extends StatelessWidget {
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
           ),
+          padding: const EdgeInsets.symmetric(vertical: 16),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.add, size: 20),
-            const SizedBox(width: 8),
+            const Icon(
+              Icons.add_circle_outline,
+              size: 22,
+            ),
+            const SizedBox(width: 12),
             Text(
-              'ADD SERIES',
+              'ADD SERIES TO LIBRARY',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: theme.colorScheme.onPrimary,
-                letterSpacing: 1,
+                letterSpacing: 1.2,
               ),
             ),
           ],

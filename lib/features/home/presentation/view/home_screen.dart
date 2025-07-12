@@ -97,7 +97,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   end: Alignment.bottomRight,
                   colors: [
                     colorScheme.primary.withOpacity(0.05),
-                    colorScheme.background.withOpacity(0.01),
+                    colorScheme.surface.withOpacity(0.01),
                   ],
                 ),
               ),
@@ -117,8 +117,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           navigationBarTheme: NavigationBarThemeData(
-            labelTextStyle: MaterialStateProperty.resolveWith((states) {
-              if (states.contains(MaterialState.selected)) {
+            labelTextStyle: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.selected)) {
                 return TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,

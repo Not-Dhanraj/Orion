@@ -72,8 +72,8 @@ class _RadarrScreenState extends ConsumerState<RadarrScreen> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              colorScheme.surfaceVariant.withOpacity(0.3),
-              colorScheme.background,
+              colorScheme.surfaceContainerHighest.withOpacity(0.3),
+              colorScheme.surface,
             ],
             stops: const [0.0, 0.3],
           ),

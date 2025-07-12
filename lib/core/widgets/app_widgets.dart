@@ -11,7 +11,7 @@ class AppCard extends StatelessWidget {
   final BorderRadius? borderRadius;
 
   const AppCard({
-    Key? key,
+    super.key,
     required this.child,
     this.padding,
     this.margin,
@@ -19,7 +19,7 @@ class AppCard extends StatelessWidget {
     this.elevation,
     this.onTap,
     this.borderRadius,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +61,7 @@ class AppButton extends StatelessWidget {
   final double? height;
 
   const AppButton({
-    Key? key,
+    super.key,
     required this.text,
     this.onPressed,
     this.isLoading = false,
@@ -69,7 +69,7 @@ class AppButton extends StatelessWidget {
     this.style,
     this.width,
     this.height,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +127,7 @@ class AppTextField extends StatelessWidget {
   final Function(String)? onChanged;
 
   const AppTextField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.label,
     this.hint,
@@ -139,7 +139,7 @@ class AppTextField extends StatelessWidget {
     this.readOnly = false,
     this.onTap,
     this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -168,11 +168,11 @@ class SectionHeader extends StatelessWidget {
   final VoidCallback? onTap;
 
   const SectionHeader({
-    Key? key,
+    super.key,
     required this.title,
     this.trailing,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -215,12 +215,12 @@ class EmptyStateWidget extends StatelessWidget {
   final String? actionLabel;
 
   const EmptyStateWidget({
-    Key? key,
+    super.key,
     required this.message,
     this.icon = Icons.info_outline,
     this.onActionPressed,
     this.actionLabel,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -262,7 +262,7 @@ class EmptyStateWidget extends StatelessWidget {
 class LoadingIndicator extends StatelessWidget {
   final String? message;
 
-  const LoadingIndicator({Key? key, this.message}) : super(key: key);
+  const LoadingIndicator({super.key, this.message});
 
   @override
   Widget build(BuildContext context) {

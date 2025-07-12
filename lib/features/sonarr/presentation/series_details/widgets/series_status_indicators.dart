@@ -83,7 +83,7 @@ class SeriesStatusIndicators extends StatelessWidget {
         decoration: BoxDecoration(
           color: active
               ? color.withOpacity(0.12)
-              : theme.colorScheme.surfaceVariant,
+              : theme.colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: active ? color.withOpacity(0.5) : Colors.transparent,

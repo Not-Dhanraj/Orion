@@ -91,9 +91,7 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
           'Add Series',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        centerTitle: true,
         elevation: 0,
-        scrolledUnderElevation: 0,
       ),
       body: SafeArea(
         child: Column(

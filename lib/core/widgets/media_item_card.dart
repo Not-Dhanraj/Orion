@@ -40,7 +40,7 @@ class MediaItemCard extends StatelessWidget {
               imageUrl: posterUrl!,
               fit: BoxFit.cover,
               placeholder: (context, url) => Container(
-                color: colorScheme.surfaceVariant.withOpacity(0.3),
+                color: colorScheme.surfaceContainerHighest.withOpacity(0.3),
                 child: Center(
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
@@ -49,7 +49,7 @@ class MediaItemCard extends StatelessWidget {
                 ),
               ),
               errorWidget: (context, url, error) => Container(
-                color: colorScheme.surfaceVariant.withOpacity(0.5),
+                color: colorScheme.surfaceContainerHighest.withOpacity(0.5),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -77,8 +77,8 @@ class MediaItemCard extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    colorScheme.surfaceVariant.withOpacity(0.5),
-                    colorScheme.surfaceVariant.withOpacity(0.7),
+                    colorScheme.surfaceContainerHighest.withOpacity(0.5),
+                    colorScheme.surfaceContainerHighest.withOpacity(0.7),
                   ],
                 ),
               ),

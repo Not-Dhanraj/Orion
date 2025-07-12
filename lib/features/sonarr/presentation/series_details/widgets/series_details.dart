@@ -46,7 +46,7 @@ class SeriesDetails extends StatelessWidget {
                           imageUrl: posterUrl!,
                           fit: BoxFit.cover,
                           placeholder: (context, url) => Container(
-                            color: theme.colorScheme.surfaceVariant,
+                            color: theme.colorScheme.surfaceContainerHighest,
                             child: Center(
                               child: CircularProgressIndicator(
                                 color: theme.colorScheme.primary,
@@ -55,7 +55,7 @@ class SeriesDetails extends StatelessWidget {
                             ),
                           ),
                           errorWidget: (context, url, error) => Container(
-                            color: theme.colorScheme.surfaceVariant,
+                            color: theme.colorScheme.surfaceContainerHighest,
                             child: const Icon(Icons.error),
                           ),
                         ),
@@ -82,7 +82,7 @@ class SeriesDetails extends StatelessWidget {
                             vertical: 4.0,
                           ),
                           decoration: BoxDecoration(
-                            color: theme.colorScheme.surfaceVariant,
+                            color: theme.colorScheme.surfaceContainerHighest,
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                           child: Text(

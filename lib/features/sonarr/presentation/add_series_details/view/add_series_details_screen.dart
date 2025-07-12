@@ -1,7 +1,7 @@
+import 'package:client/core/widgets/error_view.dart';
 import 'package:client/features/sonarr/application/provider/add_series_details_provider/add_series_details_provider.dart';
 import 'package:client/features/sonarr/presentation/add_series_details/widgets/add_series_button.dart';
 import 'package:client/features/sonarr/presentation/add_series_details/widgets/additional_options_card.dart';
-import 'package:client/features/sonarr/presentation/add_series_details/widgets/error_view.dart';
 import 'package:client/features/sonarr/presentation/add_series_details/widgets/loading_view.dart';
 import 'package:client/features/sonarr/presentation/add_series_details/widgets/series_configuration_card.dart';
 import 'package:client/features/sonarr/presentation/add_series_details/widgets/series_header_card.dart';
@@ -15,7 +15,10 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
   const AddSeriesDetailsScreen({super.key, required this.series});
 
   Future<void> _addSeries(
-      BuildContext context, WidgetRef ref, SonarrSeriesLookup series) async {
+    BuildContext context,
+    WidgetRef ref,
+    SonarrSeriesLookup series,
+  ) async {
     final provider = addSeriesDetailsNotifierProvider(series);
     final notifier = ref.read(provider.notifier);
     final navigator = Navigator.of(context);
@@ -132,21 +135,21 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
       body: state.isLoading
           ? const LoadingView()
           : state.error != null
-              ? ErrorView(
-                  error: state.error,
-                  onTryAgain: () => ref.refresh(provider),
-                )
-              : SingleChildScrollView(
-                  padding: const EdgeInsets.all(16.0),
-                  child: _buildResponsiveLayout(context, [
-                    SeriesHeaderCard(series: series),
-                    SeriesConfigurationCard(series: series),
-                    AdditionalOptionsCard(series: series),
-                    AddSeriesButton(
-                      onPressed: () => _addSeries(context, ref, series),
-                    ),
-                  ]),
+          ? ErrorView(
+              error: state.error ?? 'Unknown error',
+              onRetry: () => ref.refresh(provider),
+            )
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: _buildResponsiveLayout(context, [
+                SeriesHeaderCard(series: series),
+                SeriesConfigurationCard(series: series),
+                AdditionalOptionsCard(series: series),
+                AddSeriesButton(
+                  onPressed: () => _addSeries(context, ref, series),
                 ),
+              ]),
+            ),
     );
   }
 }

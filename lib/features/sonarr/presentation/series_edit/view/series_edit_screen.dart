@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/core/widgets/detail_sliver_app_bar.dart';
+import 'package:client/features/sonarr/application/provider/quality_profiles_provider/quality_profiles_provider.dart';
 import 'package:client/features/sonarr/application/provider/series_management_provider/series_management_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -205,7 +206,7 @@ class _SeriesEditScreenState extends ConsumerState<SeriesEditScreen> {
   }
 }
 
-class SeriesEditForm extends StatelessWidget {
+class SeriesEditForm extends ConsumerWidget {
   final SonarrSeries series;
   final Function(SonarrSeries) onSeriesChanged;
 
@@ -228,10 +229,13 @@ class SeriesEditForm extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final posterUrl = _getImageUrl(series);
     final fanartUrl = _getImageUrl(series, coverType: 'fanart');
+
+    // Watch quality profiles
+    final qualityProfilesAsync = ref.watch(qualityProfilesProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -400,6 +404,25 @@ class SeriesEditForm extends StatelessWidget {
             child: _buildSeriesTypeDropdown(),
           ),
         ),
+        const SizedBox(height: 24.0),
+
+        // Quality Profile Section
+        _buildSectionHeader(context, 'Quality Profile', Icons.high_quality),
+        const SizedBox(height: 12.0),
+        Card(
+          elevation: 1,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0),
+            side: BorderSide(
+              color: theme.colorScheme.outline.withOpacity(0.1),
+              width: 1,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: _buildQualityProfileDropdown(qualityProfilesAsync),
+          ),
+        ),
         const SizedBox(height: 32.0),
       ],
     );
@@ -507,5 +530,103 @@ class SeriesEditForm extends StatelessWidget {
 
     // Handle any future types that might be added
     return type.toString().split('.').last;
+  }
+
+  Widget _buildQualityProfileDropdown(
+    AsyncValue<List<SonarrQualityProfile>> qualityProfilesAsync,
+  ) {
+    return qualityProfilesAsync.when(
+      data: (profiles) {
+        // Ensure the current quality profile ID is in the list, otherwise use the first one
+        final currentQualityProfileId = series.qualityProfileId;
+        bool containsCurrentProfile = profiles.any(
+          (p) => p.id == currentQualityProfileId,
+        );
+        int selectedValue =
+            containsCurrentProfile && currentQualityProfileId != null
+            ? currentQualityProfileId
+            : (profiles.isNotEmpty ? profiles.first.id! : 1);
+
+        return DropdownButtonFormField<int>(
+          value: selectedValue,
+          decoration: const InputDecoration(
+            labelText: 'Quality Profile',
+            border: OutlineInputBorder(),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 16.0,
+            ),
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            hintText: 'Select quality profile',
+          ),
+          items: profiles.map((profile) {
+            return DropdownMenuItem(
+              value: profile.id!,
+              child: Row(
+                children: [
+                  const Icon(Icons.high_quality),
+                  const SizedBox(width: 12.0),
+                  Flexible(
+                    child: Text(
+                      profile.name ?? 'Unknown Profile',
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+          onChanged: (value) {
+            if (value != null) {
+              onSeriesChanged(series..qualityProfileId = value);
+            }
+          },
+          icon: const Icon(Icons.arrow_drop_down_circle),
+          isExpanded: true,
+        );
+      },
+      loading: () => const Center(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: CircularProgressIndicator(strokeWidth: 2),
+        ),
+      ),
+      error: (error, stackTrace) => Builder(
+        builder: (context) => Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Error loading quality profiles',
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+              const SizedBox(height: 4.0),
+              Text(
+                error.toString(),
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Theme.of(context).colorScheme.error.withOpacity(0.8),
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 12.0),
+              OutlinedButton.icon(
+                icon: const Icon(Icons.refresh),
+                label: const Text('Retry'),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Theme.of(context).colorScheme.primary,
+                ),
+                onPressed: () => {
+                  // This will cause the build method to be called again, refreshing the provider
+                  (context as Element).markNeedsBuild(),
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

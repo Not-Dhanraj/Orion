@@ -26,6 +26,7 @@ class SeasonCard extends ConsumerStatefulWidget {
 class _SeasonCardState extends ConsumerState<SeasonCard>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  late String _seasonId;
 
   @override
   void initState() {
@@ -34,6 +35,8 @@ class _SeasonCardState extends ConsumerState<SeasonCard>
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
+    // Create a unique identifier for this season
+    _seasonId = '${widget.series.id}_${widget.seasonNumber}';
   }
 
   @override
@@ -44,7 +47,7 @@ class _SeasonCardState extends ConsumerState<SeasonCard>
 
   @override
   Widget build(BuildContext context) {
-    final isExpanded = ref.watch(seasonCardControllerProvider);
+    final isExpanded = ref.watch(seasonCardControllerProvider(_seasonId));
     final seriesAsync = ref.watch(singleSeriesProvider(widget.series.id!));
     final currentSeries = seriesAsync.value ?? widget.series;
     final isSeasonMonitored = _isSeasonMonitored(currentSeries);
@@ -64,7 +67,7 @@ class _SeasonCardState extends ConsumerState<SeasonCard>
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () {
-          ref.read(seasonCardControllerProvider.notifier).toggleExpanded();
+          ref.read(seasonCardControllerProvider(_seasonId).notifier).toggleExpanded();
           if (isExpanded) {
             _animationController.reverse();
           } else {

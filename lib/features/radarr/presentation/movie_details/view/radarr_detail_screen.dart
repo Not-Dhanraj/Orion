@@ -300,102 +300,131 @@ class RadarrDetailScreen extends ConsumerWidget {
                                       }
                                     },
                                   ),
-                                  _buildActionButton(
-                                    context,
-                                    ref,
-                                    icon: Icons.search,
-                                    label: 'Search',
-                                    color: theme.colorScheme.tertiary,
-                                    onPressed: () async {
-                                      if (movie.id == null) {
-                                        if (context.mounted) {
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).showSnackBar(
-                                            const SnackBar(
-                                              content: Text(
-                                                'Cannot search: Missing movie ID',
-                                              ),
-                                              backgroundColor: Colors.red,
-                                            ),
-                                          );
-                                        }
-                                        return;
-                                      }
-
-                                      try {
-                                        // Show loading dialog
-                                        if (context.mounted) {
-                                          showDialog(
-                                            context: context,
-                                            barrierDismissible: false,
-                                            builder: (context) => const Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            ),
-                                          );
-                                        }
-
-                                        // Get releases for this movie
-                                        final releases = await ref.read(
-                                          movieReleaseProvider(
-                                            movie.id!,
-                                          ).future,
-                                        );
-
-                                        // Close loading dialog
-                                        if (context.mounted) {
-                                          Navigator.of(context).pop();
-                                        }
-
-                                        if (releases.isEmpty) {
-                                          if (context.mounted) {
-                                            ScaffoldMessenger.of(
-                                              context,
-                                            ).showSnackBar(
-                                              const SnackBar(
-                                                content: Text(
-                                                  'No releases found for this movie',
+                                  // Show either "Downloaded" or "Search" based on hasFile status
+                                  movie.hasFile == true
+                                      ? _buildActionButton(
+                                          context,
+                                          ref,
+                                          icon: Icons.download_done,
+                                          label: 'Done',
+                                          color: Colors.green,
+                                          onPressed: () {
+                                            if (context.mounted) {
+                                              ScaffoldMessenger.of(
+                                                context,
+                                              ).showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    '${movie.title} is already downloaded',
+                                                  ),
+                                                  backgroundColor: Colors.green,
+                                                  duration: const Duration(
+                                                    seconds: 2,
+                                                  ),
                                                 ),
-                                                duration: Duration(seconds: 2),
-                                              ),
-                                            );
-                                          }
-                                          return;
-                                        }
+                                              );
+                                            }
+                                          },
+                                        )
+                                      : _buildActionButton(
+                                          context,
+                                          ref,
+                                          icon: Icons.search,
+                                          label: 'Search',
+                                          color: theme.colorScheme.tertiary,
+                                          onPressed: () async {
+                                            if (movie.id == null) {
+                                              if (context.mounted) {
+                                                ScaffoldMessenger.of(
+                                                  context,
+                                                ).showSnackBar(
+                                                  const SnackBar(
+                                                    content: Text(
+                                                      'Cannot search: Missing movie ID',
+                                                    ),
+                                                    backgroundColor: Colors.red,
+                                                  ),
+                                                );
+                                              }
+                                              return;
+                                            }
 
-                                        // Show release selection dialog
-                                        if (context.mounted) {
-                                          await showDialog(
-                                            context: context,
-                                            builder: (context) =>
-                                                ReleaseSelectionDialog(
-                                                  releases: releases,
-                                                  title:
-                                                      'Releases for ${movie.title ?? "Movie"}',
-                                                ),
-                                          );
-                                        }
-                                      } catch (e) {
-                                        if (context.mounted) {
-                                          Navigator.of(
-                                            context,
-                                          ).pop(); // Close loading dialog if still showing
+                                            try {
+                                              // Show loading dialog
+                                              if (context.mounted) {
+                                                showDialog(
+                                                  context: context,
+                                                  barrierDismissible: false,
+                                                  builder: (context) =>
+                                                      const Center(
+                                                        child:
+                                                            CircularProgressIndicator(),
+                                                      ),
+                                                );
+                                              }
 
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                'Error fetching releases: $e',
-                                              ),
-                                              backgroundColor: Colors.red,
-                                            ),
-                                          );
-                                        }
-                                      }
-                                    },
-                                  ),
+                                              // Get releases for this movie
+                                              final releases = await ref.read(
+                                                movieReleaseProvider(
+                                                  movie.id!,
+                                                ).future,
+                                              );
+
+                                              // Close loading dialog
+                                              if (context.mounted) {
+                                                Navigator.of(context).pop();
+                                              }
+
+                                              if (releases.isEmpty) {
+                                                if (context.mounted) {
+                                                  ScaffoldMessenger.of(
+                                                    context,
+                                                  ).showSnackBar(
+                                                    const SnackBar(
+                                                      content: Text(
+                                                        'No releases found for this movie',
+                                                      ),
+                                                      duration: Duration(
+                                                        seconds: 2,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
+                                                return;
+                                              }
+
+                                              // Show release selection dialog
+                                              if (context.mounted) {
+                                                await showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      ReleaseSelectionDialog(
+                                                        releases: releases,
+                                                        title:
+                                                            'Releases for ${movie.title ?? "Movie"}',
+                                                      ),
+                                                );
+                                              }
+                                            } catch (e) {
+                                              if (context.mounted) {
+                                                Navigator.of(
+                                                  context,
+                                                ).pop(); // Close loading dialog if still showing
+
+                                                ScaffoldMessenger.of(
+                                                  context,
+                                                ).showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                      'Error fetching releases: $e',
+                                                    ),
+                                                    backgroundColor: Colors.red,
+                                                  ),
+                                                );
+                                              }
+                                            }
+                                          },
+                                        ),
                                 ],
                               ),
                             ],

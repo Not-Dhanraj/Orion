@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:radarr_flutter/radarr_flutter.dart';
 
 import 'package:client/features/radarr/data/radarr_repository.dart';
-import 'package:client/features/radarr/domain/movie.dart';
 
 final radarrServiceProvider = Provider<RadarrService>((ref) {
   return RadarrService(ref);
@@ -12,7 +12,7 @@ class RadarrService {
 
   final Ref _ref;
 
-  Future<List<Movie>> getMovies() {
+  Future<List<RadarrMovie>> getMovies() {
     return _ref.read(radarrRepositoryProvider).getMovies();
   }
 }

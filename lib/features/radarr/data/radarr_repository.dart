@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:radarr_flutter/radarr_flutter.dart';
 
 import 'package:client/core/api/api_client.dart';
-import 'package:client/features/radarr/domain/movie.dart';
 
 final radarrRepositoryProvider = Provider<RadarrRepository>((ref) {
   return RadarrRepository(ref);
@@ -12,9 +12,8 @@ class RadarrRepository {
 
   final Ref _ref;
 
-  Future<List<Movie>> getMovies() async {
+  Future<List<RadarrMovie>> getMovies() async {
     final radarr = _ref.read(radarrProvider);
-    final movies = await radarr.movie.getAll();
-    return movies.map((movie) => Movie.fromJson(movie.toJson())).toList();
+    return await radarr.movie.getAll();
   }
 }

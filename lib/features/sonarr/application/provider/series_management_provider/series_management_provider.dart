@@ -133,6 +133,25 @@ class SeriesManagementNotifier extends StateNotifier<AsyncValue<void>> {
     }
   }
 
+  /// Updates a series with new information
+  Future<SonarrSeries> updateSeries(SonarrSeries series) async {
+    state = const AsyncValue.loading();
+    try {
+      final sonarrApi = _ref.read(sonarrProvider);
+
+      // Update the series using the API
+      final result = await sonarrApi.series.updateSeries(series: series);
+      // Invalidate the cached series data so it will be re-fetched with the updated values
+      _ref.invalidate(singleSeriesProvider(series.id!));
+
+      state = const AsyncValue.data(null);
+      return result;
+    } catch (e, stack) {
+      state = AsyncValue.error(e, stack);
+      rethrow;
+    }
+  }
+
   /// Deletes a series from Sonarr and updates the UI
   ///
   /// Returns true if deletion was successful, false otherwise

@@ -1,6 +1,7 @@
 import 'package:client/features/sonarr/application/provider/series_management_provider/series_management_provider.dart';
 import 'package:client/core/widgets/detail_sliver_app_bar.dart';
 import 'package:client/features/sonarr/presentation/series_details/widgets/series_details.dart';
+import 'package:client/features/sonarr/presentation/series_edit/view/series_edit_screen.dart';
 import 'package:client/features/sonarr/presentation/shared/widgets/series_action_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,11 +30,15 @@ class SonarrDetailScreen extends ConsumerWidget {
   }
 
   Future<void> _deleteSeries(
-      BuildContext context, WidgetRef ref, SonarrSeries series) async {
+    BuildContext context,
+    WidgetRef ref,
+    SonarrSeries series,
+  ) async {
     final navigator = Navigator.of(context);
     final scaffoldMessenger = ScaffoldMessenger.of(context);
-    final seriesManagementNotifier =
-        ref.read(seriesManagementProvider.notifier);
+    final seriesManagementNotifier = ref.read(
+      seriesManagementProvider.notifier,
+    );
 
     final confirmed = await showDialog<bool>(
       context: context,
@@ -117,6 +122,23 @@ class SonarrDetailScreen extends ConsumerWidget {
                       duration: Duration(seconds: 1),
                     ),
                   );
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.edit),
+                tooltip: 'Edit Series',
+                onPressed: () async {
+                  final result = await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => SeriesEditScreen(series: series),
+                    ),
+                  );
+
+                  // If changes were made and saved successfully
+                  if (result == true) {
+                    // Invalidate provider to refresh the series data
+                    ref.invalidate(singleSeriesProvider(series.id!));
+                  }
                 },
               ),
               IconButton(

@@ -4,6 +4,7 @@ import 'package:client/features/radarr/application/provider/add_movie_provider/r
 import 'package:client/features/radarr/application/provider/add_movie_provider/language_profiles_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:radarr_flutter/radarr_flutter.dart';
 
 class AddMovieDetailsScreen extends ConsumerStatefulWidget {
   final dynamic movieLookup;
@@ -17,9 +18,9 @@ class AddMovieDetailsScreen extends ConsumerStatefulWidget {
 
 class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
   bool _monitored = true;
-  dynamic _selectedQualityProfile;
-  dynamic _selectedRootFolder;
-  dynamic _selectedLanguageProfile;
+  RadarrQualityProfile? _selectedQualityProfile;
+  RadarrRootFolder? _selectedRootFolder;
+  RadarrLanguage? _selectedLanguageProfile;
   String _minimumAvailability = 'announced'; // Default value
   bool _isSubmitting = false;
 
@@ -28,13 +29,16 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
+    // Convert the dynamic movieLookup to a RadarrMovie for type safety
+    final typedMovie = RadarrMovie.fromJson(widget.movieLookup);
+
     final qualityProfilesAsync = ref.watch(qualityProfilesProvider);
     final rootFoldersAsync = ref.watch(rootFoldersProvider);
     final languageProfilesAsync = ref.watch(languageProfilesProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add ${widget.movieLookup['title'] ?? 'Movie'}'),
+        title: Text('Add ${typedMovie.title ?? 'Movie'}'),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -55,7 +59,7 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Poster
-                      _getMoviePoster(widget.movieLookup),
+                      _getPosterFromTypedMovie(typedMovie),
                       const SizedBox(width: 16),
 
                       // Movie info
@@ -64,19 +68,18 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              widget.movieLookup['title'] ?? 'Unknown',
+                              typedMovie.title ?? 'Unknown',
                               style: textTheme.titleMedium,
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              widget.movieLookup['year']?.toString() ??
-                                  'Unknown year',
+                              typedMovie.year?.toString() ?? 'Unknown year',
                               style: textTheme.bodyMedium,
                             ),
-                            if (widget.movieLookup['overview'] != null) ...[
+                            if (typedMovie.overview != null) ...[
                               const SizedBox(height: 8),
                               Text(
-                                widget.movieLookup['overview'],
+                                typedMovie.overview!,
                                 style: textTheme.bodySmall,
                                 maxLines: 3,
                                 overflow: TextOverflow.ellipsis,
@@ -115,7 +118,7 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
                     _selectedQualityProfile = profiles.first;
                   }
 
-                  return DropdownButtonFormField<dynamic>(
+                  return DropdownButtonFormField<RadarrQualityProfile>(
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -125,7 +128,7 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
                     items: profiles.map((profile) {
                       return DropdownMenuItem(
                         value: profile,
-                        child: Text(profile['name']),
+                        child: Text(profile.name ?? 'Unknown'),
                       );
                     }).toList(),
                     onChanged: (value) {
@@ -150,7 +153,7 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
                     _selectedRootFolder = folders.first;
                   }
 
-                  return DropdownButtonFormField<dynamic>(
+                  return DropdownButtonFormField<RadarrRootFolder>(
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -160,7 +163,7 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
                     items: folders.map((folder) {
                       return DropdownMenuItem(
                         value: folder,
-                        child: Text(folder['path']),
+                        child: Text(folder.path ?? 'Unknown'),
                       );
                     }).toList(),
                     onChanged: (value) {
@@ -189,7 +192,7 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
                       children: [
                         Text('Language Profile', style: textTheme.titleSmall),
                         const SizedBox(height: 8),
-                        DropdownButtonFormField<dynamic>(
+                        DropdownButtonFormField<RadarrLanguage>(
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -199,7 +202,7 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
                           items: profiles.map((profile) {
                             return DropdownMenuItem(
                               value: profile,
-                              child: Text(profile['name']),
+                              child: Text(profile.name ?? 'Unknown'),
                             );
                           }).toList(),
                           onChanged: (value) {
@@ -277,12 +280,28 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
 
                           try {
                             final addMovieNotifier = ref.read(addMovieProvider);
+                            // Convert string availability to RadarrAvailability
+                            RadarrAvailability availability;
+                            switch (_minimumAvailability) {
+                              case 'announced':
+                                availability = RadarrAvailability.ANNOUNCED;
+                                break;
+                              case 'inCinemas':
+                                availability = RadarrAvailability.IN_CINEMAS;
+                                break;
+                              case 'released':
+                                availability = RadarrAvailability.RELEASED;
+                                break;
+                              default:
+                                availability = RadarrAvailability.ANNOUNCED;
+                            }
+
                             await addMovieNotifier.addMovie(
-                              movie: widget.movieLookup,
-                              rootFolder: _selectedRootFolder,
+                              movie: typedMovie,
+                              rootFolder: _selectedRootFolder!,
                               monitored: _monitored,
-                              minimumAvailability: _minimumAvailability,
-                              qualityProfile: _selectedQualityProfile,
+                              minimumAvailability: availability,
+                              qualityProfile: _selectedQualityProfile!,
                             );
 
                             if (mounted) {
@@ -322,17 +341,15 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
     );
   }
 
-  Widget _getMoviePoster(dynamic movie) {
+  Widget _getPosterFromTypedMovie(RadarrMovie movie) {
     String? posterUrl;
     try {
-      if (movie['images'] != null) {
-        final images = movie['images'] as List;
-        final poster = images.firstWhere(
-          (image) => image['coverType'] == 'poster',
-          orElse: () => null,
-        );
-        if (poster != null && poster['remoteUrl'] != null) {
-          posterUrl = poster['remoteUrl'];
+      if (movie.images != null && movie.images!.isNotEmpty) {
+        for (final image in movie.images!) {
+          if (image.coverType == 'poster' && image.remoteUrl != null) {
+            posterUrl = image.remoteUrl;
+            break;
+          }
         }
       }
     } catch (e) {

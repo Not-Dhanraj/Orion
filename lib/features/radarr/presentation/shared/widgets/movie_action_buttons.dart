@@ -27,10 +27,9 @@ class MovieActionButtons extends ConsumerWidget {
             OutlinedButton.icon(
               onPressed: () async {
                 // Create a copy of the movie with toggled monitored status
-                final updatedMovie = {
-                  ...movie.toJson(),
-                  'monitored': !(movie.monitored ?? false),
-                };
+                final Map<String, dynamic> movieData = movie.toJson();
+                movieData['monitored'] = !(movie.monitored ?? false);
+                final updatedMovie = RadarrMovie.fromJson(movieData);
 
                 // Show loading indicator
                 ScaffoldMessenger.of(context).showSnackBar(

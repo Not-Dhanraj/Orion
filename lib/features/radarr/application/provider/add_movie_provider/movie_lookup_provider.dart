@@ -1,8 +1,8 @@
 import 'package:client/core/api/api_client.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:radarr_flutter/radarr_flutter.dart' as radarr;
+import 'package:radarr_flutter/radarr_flutter.dart';
 
-final movieLookupProvider = FutureProvider.family<List<dynamic>, String>((
+final movieLookupProvider = FutureProvider.family<List<RadarrMovie>, String>((
   ref,
   term,
 ) async {

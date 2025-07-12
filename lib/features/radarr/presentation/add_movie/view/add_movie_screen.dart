@@ -2,6 +2,7 @@ import 'package:client/features/radarr/application/provider/add_movie_provider/m
 import 'package:client/features/radarr/presentation/add_movie/view/add_movie_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:radarr_flutter/radarr_flutter.dart';
 
 class AddMovieScreen extends ConsumerStatefulWidget {
   const AddMovieScreen({super.key});
@@ -62,6 +63,16 @@ class _AddMovieScreenState extends ConsumerState<AddMovieScreen> {
                 setState(() {
                   _searchQuery = value;
                 });
+
+                // Show a snackbar to indicate search is in progress
+                if (value.isNotEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Searching for movies...'),
+                      duration: Duration(seconds: 1),
+                    ),
+                  );
+                }
               },
             ),
           ),
@@ -95,20 +106,39 @@ class _AddMovieScreenState extends ConsumerState<AddMovieScreen> {
                           final movie = movies[index];
                           return ListTile(
                             leading: _getMoviePoster(movie),
-                            title: Text(movie['title'] ?? 'Unknown'),
+                            title: Text(movie.title ?? 'Unknown'),
                             subtitle: Text(
-                              movie['year']?.toString() ?? 'Unknown year',
+                              movie.year?.toString() ?? 'Unknown year',
                             ),
                             trailing: IconButton(
                               icon: const Icon(Icons.add),
                               onPressed: () async {
+                                // Convert RadarrMovie to r backward compatibility
+                                final movieMap = {
+                                  'title': movie.title,
+                                  'year': movie.year,
+                                  'overview': movie.overview,
+                                  'images': movie.images
+                                      ?.map(
+                                        (img) => {
+                                          'coverType': img.coverType,
+                                          'remoteUrl': img.remoteUrl,
+                                        },
+                                      )
+                                      .toList(),
+                                  'tmdbId': movie.tmdbId,
+                                  'imdbId': movie.imdbId,
+                                  'id': movie.id,
+                                };
+
                                 // Navigate to add movie details screen
                                 final result = await Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => AddMovieDetailsScreen(
-                                      movieLookup: movie,
+                                      movieLookup: movieMap,
                                     ),
+                                    fullscreenDialog: true,
                                   ),
                                 );
 
@@ -117,7 +147,7 @@ class _AddMovieScreenState extends ConsumerState<AddMovieScreen> {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                        '${movie['title']} added successfully',
+                                        '${movie.title} added successfully',
                                       ),
                                     ),
                                   );
@@ -143,17 +173,15 @@ class _AddMovieScreenState extends ConsumerState<AddMovieScreen> {
     );
   }
 
-  Widget _getMoviePoster(dynamic movie) {
+  Widget _getMoviePoster(RadarrMovie movie) {
     String? posterUrl;
     try {
-      if (movie['images'] != null) {
-        final images = movie['images'] as List;
-        final poster = images.firstWhere(
-          (image) => image['coverType'] == 'poster',
-          orElse: () => null,
-        );
-        if (poster != null && poster['remoteUrl'] != null) {
-          posterUrl = poster['remoteUrl'];
+      if (movie.images != null && movie.images!.isNotEmpty) {
+        for (final image in movie.images!) {
+          if (image.coverType == 'poster') {
+            posterUrl = image.remoteUrl;
+            break;
+          }
         }
       }
     } catch (e) {

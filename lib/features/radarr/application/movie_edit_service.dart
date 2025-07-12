@@ -7,7 +7,7 @@ class MovieEditService {
 
   MovieEditService(this.radarrApi);
 
-  Future<void> updateMovie(dynamic movie) async {
+  Future<void> updateMovie(RadarrMovie movie) async {
     await radarrApi.movie.update(movie: movie);
   }
 

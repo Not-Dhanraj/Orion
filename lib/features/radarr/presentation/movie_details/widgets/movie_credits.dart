@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:radarr_flutter/radarr_flutter.dart';
 
 class MovieCredits extends StatelessWidget {
-  final dynamic credits;
+  final List<RadarrMovieCredits> credits;
 
   const MovieCredits({super.key, required this.credits});
 
@@ -11,8 +12,12 @@ class MovieCredits extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     // Extract cast and crew from the credits
-    final List<dynamic> cast = credits['cast'] ?? [];
-    final List<dynamic> crew = credits['crew'] ?? [];
+    final castCredits = credits
+        .where((credit) => credit.type == 'cast')
+        .toList();
+    final crewCredits = credits
+        .where((credit) => credit.type == 'crew')
+        .toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,19 +26,21 @@ class MovieCredits extends StatelessWidget {
         const SizedBox(height: 8),
 
         // Cast section
-        if (cast.isNotEmpty) ...[
+        if (castCredits.isNotEmpty) ...[
           Text('Cast', style: textTheme.titleMedium),
           const SizedBox(height: 8),
           SizedBox(
             height: 120,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: cast.length > 10
+              itemCount: castCredits.length > 10
                   ? 10
-                  : cast.length, // Show only the first 10 cast members
+                  : castCredits.length, // Show only the first 10 cast members
               itemBuilder: (context, index) {
-                final person = cast[index];
-                final imageUrl = person['images']?[0]?['url'];
+                final person = castCredits[index];
+                final imageUrl = person.images?.isNotEmpty == true
+                    ? person.images![0].url
+                    : null;
 
                 return Padding(
                   padding: const EdgeInsets.only(right: 12),
@@ -78,7 +85,7 @@ class MovieCredits extends StatelessWidget {
                       SizedBox(
                         width: 80,
                         child: Text(
-                          person['name'] ?? 'Unknown',
+                          person.personName ?? 'Unknown',
                           style: textTheme.bodySmall,
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis,
@@ -89,7 +96,7 @@ class MovieCredits extends StatelessWidget {
                       SizedBox(
                         width: 80,
                         child: Text(
-                          person['character'] ?? '',
+                          person.character ?? '',
                           style: textTheme.bodySmall?.copyWith(
                             color: colorScheme.onSurface.withOpacity(0.7),
                             fontSize: 10,
@@ -107,22 +114,25 @@ class MovieCredits extends StatelessWidget {
           ),
         ],
 
-        if (cast.isNotEmpty && crew.isNotEmpty) const SizedBox(height: 16),
+        if (castCredits.isNotEmpty && crewCredits.isNotEmpty)
+          const SizedBox(height: 16),
 
         // Crew section
-        if (crew.isNotEmpty) ...[
+        if (crewCredits.isNotEmpty) ...[
           Text('Crew', style: textTheme.titleMedium),
           const SizedBox(height: 8),
           SizedBox(
             height: 120,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: crew.length > 10
+              itemCount: crewCredits.length > 10
                   ? 10
-                  : crew.length, // Show only the first 10 crew members
+                  : crewCredits.length, // Show only the first 10 crew members
               itemBuilder: (context, index) {
-                final person = crew[index];
-                final imageUrl = person['images']?[0]?['url'];
+                final person = crewCredits[index];
+                final imageUrl = person.images?.isNotEmpty == true
+                    ? person.images![0].url
+                    : null;
 
                 return Padding(
                   padding: const EdgeInsets.only(right: 12),
@@ -167,7 +177,7 @@ class MovieCredits extends StatelessWidget {
                       SizedBox(
                         width: 80,
                         child: Text(
-                          person['name'] ?? 'Unknown',
+                          person.personName ?? 'Unknown',
                           style: textTheme.bodySmall,
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis,
@@ -178,7 +188,7 @@ class MovieCredits extends StatelessWidget {
                       SizedBox(
                         width: 80,
                         child: Text(
-                          person['department'] ?? '',
+                          person.department ?? '',
                           style: textTheme.bodySmall?.copyWith(
                             color: colorScheme.onSurface.withOpacity(0.7),
                             fontSize: 10,
@@ -196,7 +206,7 @@ class MovieCredits extends StatelessWidget {
           ),
         ],
 
-        if (cast.isEmpty && crew.isEmpty)
+        if (castCredits.isEmpty && crewCredits.isEmpty)
           Text('No credits information available', style: textTheme.bodyMedium),
       ],
     );

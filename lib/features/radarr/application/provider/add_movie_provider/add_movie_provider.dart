@@ -1,5 +1,6 @@
 import 'package:client/core/api/api_client.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:radarr_flutter/radarr_flutter.dart';
 
 final addMovieProvider = Provider<AddMovieNotifier>((ref) {
   return AddMovieNotifier(ref);
@@ -10,12 +11,12 @@ class AddMovieNotifier {
 
   final Ref _ref;
 
-  Future<dynamic> addMovie({
-    required dynamic movie,
-    required dynamic rootFolder,
+  Future<RadarrMovie> addMovie({
+    required RadarrMovie movie,
+    required RadarrRootFolder rootFolder,
     required bool monitored,
-    required dynamic minimumAvailability,
-    required dynamic qualityProfile,
+    required RadarrAvailability minimumAvailability,
+    required RadarrQualityProfile qualityProfile,
   }) async {
     final radarr = _ref.read(radarrProvider);
     return await radarr.movie.create(

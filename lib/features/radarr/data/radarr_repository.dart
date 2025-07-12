@@ -37,27 +37,27 @@ class RadarrRepository {
     return await radarr.language.getAll();
   }
 
-  Future<List<dynamic>> getQualityDefinitions() async {
+  Future<List<RadarrQualityDefinition>> getQualityDefinitions() async {
     final radarr = _ref.read(radarrProvider);
     return await radarr.qualityProfile.getDefinitions();
   }
 
-  Future<dynamic> getQueueStatus() async {
+  Future<RadarrQueueStatus> getQueueStatus() async {
     final radarr = _ref.read(radarrProvider);
     return await radarr.queue.getStatus();
   }
 
-  Future<dynamic> getQueue() async {
+  Future<RadarrQueue> getQueue() async {
     final radarr = _ref.read(radarrProvider);
     return await radarr.queue.get();
   }
 
-  Future<List<dynamic>> getReleases(int movieId) async {
+  Future<List<RadarrRelease>> getReleases(int movieId) async {
     final radarr = _ref.read(radarrProvider);
     return await radarr.release.get(movieId: movieId);
   }
 
-  Future<dynamic> getMovieCredits(int movieId) async {
+  Future<List<RadarrMovieCredits>> getMovieCredits(int movieId) async {
     final radarr = _ref.read(radarrProvider);
     return await radarr.credits.get(movieId: movieId);
   }

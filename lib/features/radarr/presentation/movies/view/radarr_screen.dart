@@ -1,6 +1,5 @@
 import 'package:client/core/widgets/error_view.dart';
 import 'package:client/features/radarr/application/provider/all_movies_provider/all_movies_provider.dart';
-import 'package:client/features/radarr/presentation/movie_details/view/radarr_detail_screen.dart';
 import 'package:client/features/radarr/presentation/queue/view/radarr_queue_screen.dart';
 import 'package:client/features/radarr/presentation/movies/widgets/movies_grid_view.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +27,7 @@ class RadarrScreen extends ConsumerWidget {
         elevation: 0,
         scrolledUnderElevation: 2,
         actions: [
+          // Download Queue
           IconButton(
             icon: const Icon(Icons.download),
             tooltip: 'Download Queue',
@@ -40,6 +40,7 @@ class RadarrScreen extends ConsumerWidget {
               );
             },
           ),
+          // Add Movie
         ],
       ),
 

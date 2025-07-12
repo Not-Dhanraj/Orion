@@ -18,11 +18,11 @@ class RadarrService {
   }
 
   Future<RadarrMovie> addMovie({
-    required dynamic movie,
-    required dynamic rootFolder,
+    required RadarrMovie movie,
+    required RadarrRootFolder rootFolder,
     required bool monitored,
-    required dynamic minimumAvailability,
-    required dynamic qualityProfile,
+    required RadarrAvailability minimumAvailability,
+    required RadarrQualityProfile qualityProfile,
   }) async {
     final radarr = _ref.read(radarrProvider);
     return await radarr.movie.create(
@@ -39,7 +39,7 @@ class RadarrService {
     await radarr.movie.delete(movieId: movieId);
   }
 
-  Future<RadarrMovie> updateMovie(dynamic movie) async {
+  Future<RadarrMovie> updateMovie(RadarrMovie movie) async {
     final radarr = _ref.read(radarrProvider);
     return await radarr.movie.update(movie: movie);
   }
@@ -54,7 +54,7 @@ class RadarrService {
     await radarr.queue.delete(id: id);
   }
 
-  Future<dynamic> getMovieCredits(int movieId) async {
+  Future<List<RadarrMovieCredits>> getMovieCredits(int movieId) async {
     final radarr = _ref.read(radarrProvider);
     return await radarr.credits.get(movieId: movieId);
   }

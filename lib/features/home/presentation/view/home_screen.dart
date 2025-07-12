@@ -1,6 +1,6 @@
 import 'package:client/core/presentaion/styles/app_styles.dart';
 import 'package:client/features/home/application/provider/home_providers.dart';
-import 'package:client/features/radarr/presentation/view/radarr_screen.dart';
+import 'package:client/features/radarr/presentation/movies/view/radarr_screen.dart';
 import 'package:client/features/settings/presentation/view/settings_screen.dart';
 import 'package:client/features/sonarr/presentation/series/view/sonarr_screen.dart';
 import 'package:flutter/material.dart';

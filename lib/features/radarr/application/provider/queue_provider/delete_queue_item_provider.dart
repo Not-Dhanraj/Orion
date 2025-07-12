@@ -1,7 +1,7 @@
 import 'package:client/core/api/api_client.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final deleteQueueItemProvider = FutureProvider.family<dynamic, int>((
+final deleteQueueItemProvider = FutureProvider.family<void, int>((
   ref,
   id,
 ) async {

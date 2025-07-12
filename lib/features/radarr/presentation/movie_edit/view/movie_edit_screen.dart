@@ -131,14 +131,22 @@ class _MovieEditScreenState extends ConsumerState<MovieEditScreen> {
     ).showSnackBar(const SnackBar(content: Text('Saving changes...')));
 
     try {
+      // Get original movie data as a Map
+      Map<String, dynamic> movieData = widget.movie.toJson();
+
+      // Update specific fields
+      movieData['monitored'] = _monitored;
+      movieData['path'] = _pathController.text;
+      movieData['minimumAvailability'] = _minimumAvailabilityController.text;
+
+      // Only add qualityProfileId if valid
+      final qualityProfileId = int.tryParse(_qualityProfileController.text);
+      if (qualityProfileId != null) {
+        movieData['qualityProfileId'] = qualityProfileId;
+      }
+
       // Create updated movie object
-      final updatedMovie = {
-        ...widget.movie.toJson(), // Assuming there's a toJson method
-        'monitored': _monitored,
-        'path': _pathController.text,
-        'minimumAvailability': _minimumAvailabilityController.text,
-        'qualityProfileId': int.tryParse(_qualityProfileController.text),
-      };
+      final updatedMovie = RadarrMovie.fromJson(movieData);
 
       // Update movie
       await ref.read(updateMovieProvider(updatedMovie).future);

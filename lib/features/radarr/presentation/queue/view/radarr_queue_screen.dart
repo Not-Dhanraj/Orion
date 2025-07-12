@@ -4,6 +4,7 @@ import 'package:client/features/radarr/application/provider/queue_provider/delet
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:radarr_flutter/radarr_flutter.dart';
 
 class RadarrQueueScreen extends ConsumerWidget {
   const RadarrQueueScreen({super.key});
@@ -24,8 +25,8 @@ class RadarrQueueScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.refresh),
             tooltip: 'Refresh',
-            onPressed: () {
-              ref.refresh(queueProvider);
+            onPressed: () async {
+              await ref.refresh(queueProvider).value;
             },
           ),
         ],
@@ -44,9 +45,9 @@ class RadarrQueueScreen extends ConsumerWidget {
         ),
         child: queueData.when(
           data: (queueItems) {
-            final records = queueItems['records'] as List?;
+            final records = queueItems.records ?? [];
 
-            if (records == null || records.isEmpty) {
+            if (records.isEmpty) {
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -79,25 +80,31 @@ class RadarrQueueScreen extends ConsumerWidget {
           error: (error, stack) => ErrorView(
             error: error,
             customMessage: 'Failed to load queue',
-            onRetry: () => ref.refresh(queueProvider),
+            onRetry: () async {
+              await ref.refresh(queueProvider).value;
+            },
           ),
         ),
       ),
     );
   }
 
-  Widget _buildQueueItem(BuildContext context, WidgetRef ref, dynamic item) {
+  Widget _buildQueueItem(
+    BuildContext context,
+    WidgetRef ref,
+    RadarrQueueRecord item,
+  ) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
-    final title = item['title'] ?? 'Unknown';
-    final quality = item['quality']?['quality']?['name'] ?? 'Unknown';
-    final status = item['status'] ?? 'Unknown';
-    final timeLeft = item['timeleft'] ?? 'Unknown';
-    final size = item['size'] ?? 0;
+    final title = item.title ?? 'Unknown';
+    final quality = item.quality?.quality?.name ?? 'Unknown';
+    final status = (item.status ?? 'Unknown').toString();
+    final timeLeft = item.timeLeft ?? 'Unknown';
+    final size = item.size ?? 0;
     final sizeFormatted = _formatFileSize(size);
-    final progress = item['sizeleft'] != null && size > 0
-        ? (size - item['sizeleft']) / size
+    final progress = item.sizeLeft != null && size > 0
+        ? (size - item.sizeLeft!) / size
         : 0.0;
     final progressPercent = (progress * 100).toStringAsFixed(1);
 
@@ -187,7 +194,7 @@ class RadarrQueueScreen extends ConsumerWidget {
                   icon: const Icon(Icons.delete_outline),
                   tooltip: 'Remove from queue',
                   onPressed: () {
-                    final id = item['id'];
+                    final id = item.id;
                     if (id != null) {
                       _showDeleteConfirmation(context, ref, id, title);
                     }
@@ -263,7 +270,7 @@ class RadarrQueueScreen extends ConsumerWidget {
                 await ref.read(deleteQueueItemProvider(id).future);
 
                 // Refresh queue and show success message
-                ref.refresh(queueProvider);
+                await ref.refresh(queueProvider).value;
 
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Item removed from queue')),
@@ -282,7 +289,7 @@ class RadarrQueueScreen extends ConsumerWidget {
     );
   }
 
-  String _formatFileSize(int bytes) {
+  String _formatFileSize(num bytes) {
     if (bytes < 1024) return '$bytes B';
     if (bytes < 1024 * 1024) return '${(bytes / 1024).toStringAsFixed(1)} KB';
     if (bytes < 1024 * 1024 * 1024)

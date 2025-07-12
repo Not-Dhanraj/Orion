@@ -6,5 +6,5 @@ final deleteMovieProvider = FutureProvider.family<void, int>((
   movieId,
 ) async {
   final radarrApi = ref.watch(radarrProvider);
-  return await radarrApi.movie.delete(movieId: movieId);
+  return await radarrApi.movie.delete(movieId: movieId, deleteFiles: true);
 });

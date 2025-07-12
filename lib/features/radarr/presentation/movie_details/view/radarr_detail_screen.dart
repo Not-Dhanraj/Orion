@@ -45,7 +45,7 @@ class RadarrDetailScreen extends ConsumerWidget {
       builder: (context) => AlertDialog(
         title: const Text('Delete Movie'),
         content: Text(
-          'Are you sure you want to delete "${movie.title}"?\n\nThis will remove the movie from Radarr server.',
+          'Are you sure you want to delete "${movie.title}"?\n\nThis will remove the movie as well as any downloads of this movie from server.',
         ),
         actions: [
           TextButton(

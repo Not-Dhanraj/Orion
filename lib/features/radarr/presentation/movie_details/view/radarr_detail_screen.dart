@@ -179,18 +179,6 @@ class RadarrDetailScreen extends ConsumerWidget {
 
                   const SizedBox(height: 24),
 
-                  // Action buttons
-                  Entry.opacity(
-                    duration: const Duration(milliseconds: 550),
-                    delay: const Duration(milliseconds: 150),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: MovieActionButtons(movie: movie),
-                    ),
-                  ),
-
-                  const SizedBox(height: 24),
-
                   // Movie Info with year, runtime and rating
                   Entry.opacity(
                     duration: const Duration(milliseconds: 600),

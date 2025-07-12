@@ -50,8 +50,8 @@ class SeriesGridView extends StatelessWidget {
         16,
         16,
         16,
-        80,
-      ), // Add bottom padding for FloatingActionButton
+        100,
+      ), // Add extra bottom padding for FloatingActionButton and navigation bar
       itemCount: sortedSeries.length,
       itemBuilder: (context, index) {
         final s = sortedSeries[index];

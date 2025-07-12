@@ -23,7 +23,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  
+
   // Previous navigation index to detect when we navigate to calendar tab
   int? _previousNavIndex;
 
@@ -35,7 +35,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen>
       _refreshCalendarData();
     });
   }
-  
+
   void _refreshCalendarData() {
     // Force refresh calendar data
     ref.invalidate(sonarrCalendarProvider);
@@ -45,18 +45,21 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen>
   void dispose() {
     // Clean up resources when screen is disposed
     super.dispose();
-  }  @override
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context); // Required for AutomaticKeepAliveClientMixin
-    
+
     // Watch for navigation changes to detect when calendar tab is selected
     final currentNavIndex = ref.watch(homeScreenIndexProvider);
-    
+
     // Calendar tab index is 2 (third position)
     const calendarTabIndex = 2;
-    
+
     // Check if we just navigated to the calendar tab
-    if (_previousNavIndex != currentNavIndex && currentNavIndex == calendarTabIndex) {
+    if (_previousNavIndex != currentNavIndex &&
+        currentNavIndex == calendarTabIndex) {
       // Refresh data when the Calendar tab is selected
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _refreshCalendarData();
@@ -64,7 +67,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen>
     }
     // Update previous index
     _previousNavIndex = currentNavIndex;
-    
+
     final calendar = ref.watch(sonarrCalendarProvider);
     final selectedDay = ref.watch(selectedDayProvider);
     final focusedDay = ref.watch(focusedDayProvider);

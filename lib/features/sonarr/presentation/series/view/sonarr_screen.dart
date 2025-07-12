@@ -41,59 +41,68 @@ class SonarrScreen extends ConsumerWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (_, __, ___) => const AddSeriesScreen(),
-              transitionsBuilder: (_, animation, __, child) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: SlideTransition(
-                    position: Tween<Offset>(
-                      begin: const Offset(0, 0.25),
-                      end: Offset.zero,
-                    ).animate(animation),
-                    child: child,
+
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  colorScheme.surfaceVariant.withOpacity(0.3),
+                  colorScheme.background,
+                ],
+                stops: const [0.0, 0.3],
+              ),
+            ),
+            child: SafeArea(
+              child: seriesValue.when(
+                data: (series) => SeriesGridView(series: series),
+                loading: () => Center(
+                  child: CircularProgressIndicator(color: colorScheme.primary),
+                ),
+                error: (err, stack) => ErrorView(
+                  error: err,
+                  customMessage: 'Failed to load TV shows',
+                  onRetry: () => ref.refresh(allSeriesProvider),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: kBottomNavigationBarHeight * 1.4,
+            right: 12,
+            child: FloatingActionButton.extended(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (_, __, ___) => const AddSeriesScreen(),
+                    transitionsBuilder: (_, animation, __, child) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: SlideTransition(
+                          position: Tween<Offset>(
+                            begin: const Offset(0, 0.25),
+                            end: Offset.zero,
+                          ).animate(animation),
+                          child: child,
+                        ),
+                      );
+                    },
+                    transitionDuration: const Duration(milliseconds: 250),
                   ),
                 );
               },
-              transitionDuration: const Duration(milliseconds: 250),
-            ),
-          );
-        },
-        backgroundColor: colorScheme.primary,
-        foregroundColor: colorScheme.onPrimary,
-        elevation: 6,
-        icon: const Icon(Icons.add),
-        label: const Text("Add Series"),
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              colorScheme.surfaceVariant.withOpacity(0.3),
-              colorScheme.background,
-            ],
-            stops: const [0.0, 0.3],
-          ),
-        ),
-        child: SafeArea(
-          child: seriesValue.when(
-            data: (series) => SeriesGridView(series: series),
-            loading: () => Center(
-              child: CircularProgressIndicator(color: colorScheme.primary),
-            ),
-            error: (err, stack) => ErrorView(
-              error: err,
-              customMessage: 'Failed to load TV shows',
-              onRetry: () => ref.refresh(allSeriesProvider),
+              backgroundColor: colorScheme.primary,
+              foregroundColor: colorScheme.onPrimary,
+              elevation: 6,
+              icon: const Icon(Icons.add),
+              label: const Text("Add Series"),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

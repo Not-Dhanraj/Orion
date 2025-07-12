@@ -715,10 +715,11 @@ packages:
   radarr_flutter:
     dependency: "direct main"
     description:
-      name: radarr_flutter
-      sha256: "2b59e9180fbe864ebfbe531fa38132ba91d96112f0e028fd6d5429bca947d4a5"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: "74acda00009d8b0106a73ec5e7110de95429e044"
+      url: "https://github.com/Not-Dhanraj/radarr_flutter.git"
+    source: git
     version: "3.0.1"
   riverpod:
     dependency: transitive

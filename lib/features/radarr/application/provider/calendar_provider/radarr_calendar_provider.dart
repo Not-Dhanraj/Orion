@@ -5,35 +5,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final radarrCalendarProvider = FutureProvider<List<CalendarItem>>((ref) async {
   final radarrApi = ref.watch(radarrProvider);
 
-  // Get all movies
-  final movies = await radarrApi.movie.getAll();
-
-  // Filter movies that have a digital or physical release date in the future
-  // or have been recently released (within last 30 days)
+  // Define the date range for the calendar
+  // Getting 30 days before and 60 days ahead for a good range
   final now = DateTime.now();
-  final thirtyDaysAgo = now.subtract(const Duration(days: 30));
-  final sixtyDaysAhead = now.add(const Duration(days: 60));
+  final start = now.subtract(const Duration(days: 30));
+  final end = now.add(const Duration(days: 120));
 
-  final relevantMovies = movies.where((movie) {
-    // Check dates - assuming these are already DateTime objects in the API
-    final physicalReleaseDate = movie.physicalRelease;
-    final digitalReleaseDate = movie.digitalRelease;
-    final inTheaterDate = movie.inCinemas;
-
-    // Check if any release date is within our timeframe
-    return (physicalReleaseDate != null &&
-            physicalReleaseDate.isAfter(thirtyDaysAgo) &&
-            physicalReleaseDate.isBefore(sixtyDaysAhead)) ||
-        (digitalReleaseDate != null &&
-            digitalReleaseDate.isAfter(thirtyDaysAgo) &&
-            digitalReleaseDate.isBefore(sixtyDaysAhead)) ||
-        (inTheaterDate != null &&
-            inTheaterDate.isAfter(thirtyDaysAgo) &&
-            inTheaterDate.isBefore(sixtyDaysAhead));
-  }).toList();
+  // Get calendar movies using the new API method
+  final calendarMovies = await radarrApi.calendar.getCalendar(
+    start: start,
+    end: end,
+  );
 
   // Convert to calendar items
-  return relevantMovies.map((movie) {
+  return calendarMovies.map((movie) {
     // Choose the most relevant date
     DateTime? mostRelevantDate;
     String subtitle = 'Unknown Release';

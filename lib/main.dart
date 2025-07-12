@@ -91,18 +91,20 @@ class MyApp extends ConsumerWidget {
         home: const SplashScreen(),
         debugShowCheckedModeBanner: false,
         builder: (buildContext, widget) {
-          return ConnectivityWidgetWrapper(
-            disableInteraction: false,
-            height: 56,
-            decoration: BoxDecoration(
-              color: Theme.of(buildContext).colorScheme.errorContainer,
+          return Material(
+            child: ConnectivityWidgetWrapper(
+              disableInteraction: false,
+              height: 56,
+              decoration: BoxDecoration(
+                color: Theme.of(buildContext).colorScheme.errorContainer,
+              ),
+              message: "No Internet Connection",
+              messageStyle: TextStyle(
+                color: Theme.of(buildContext).colorScheme.onErrorContainer,
+                fontSize: 14,
+              ),
+              child: widget!,
             ),
-            message: "No Internet Connection",
-            messageStyle: TextStyle(
-              color: Theme.of(buildContext).colorScheme.onErrorContainer,
-              fontSize: 14,
-            ),
-            child: widget!,
           );
         },
       ),

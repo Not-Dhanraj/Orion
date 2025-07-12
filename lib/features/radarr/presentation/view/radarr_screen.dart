@@ -1,7 +1,6 @@
 import 'package:client/core/api/api_client.dart';
 import 'package:client/core/widgets/error_view.dart';
 import 'package:client/core/widgets/media_item_card.dart';
-import 'package:client/core/widgets/search_bar_widget.dart';
 import 'package:client/features/radarr/presentation/view/radarr_detail_screen.dart';
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +20,6 @@ class RadarrScreen extends ConsumerStatefulWidget {
 }
 
 class _RadarrScreenState extends ConsumerState<RadarrScreen> {
-  String _searchQuery = '';
-
   @override
   Widget build(BuildContext context) {
     final moviesValue = ref.watch(moviesProvider);
@@ -82,140 +79,83 @@ class _RadarrScreenState extends ConsumerState<RadarrScreen> {
           ),
         ),
         child: SafeArea(
-          child: Column(
-            children: [
-              // Add search bar
-              SearchBarWidget(
-                hintText: 'Search movies...',
-                onSearch: (query) {
-                  setState(() {
-                    _searchQuery = query.toLowerCase();
-                  });
-                },
-                onFilterTap: () {
-                  // Filter functionality could be added here
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Filter functionality coming soon!'),
+          child: moviesValue.when(
+            data: (movies) {
+              // Sort movies
+              final sortedMovies = [...movies]
+                ..sort((a, b) => (a.title ?? '').compareTo(b.title ?? ''));
+
+              if (sortedMovies.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.movie_outlined,
+                        size: 64,
+                        color: colorScheme.onSurfaceVariant.withOpacity(0.5),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'No movies found',
+                        style: TextStyle(
+                          color: colorScheme.onSurfaceVariant,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              return GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.65,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 16,
+                ),
+                padding: const EdgeInsets.all(16),
+                itemCount: sortedMovies.length,
+                itemBuilder: (context, index) {
+                  final m = sortedMovies[index];
+                  final posterUrl = getPosterUrl(m);
+
+                  return Entry.offset(
+                    yOffset: 100,
+                    duration: const Duration(milliseconds: 300),
+                    child: Entry.opacity(
+                      duration: const Duration(milliseconds: 300),
+                      child: Hero(
+                        tag: m.id!,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    RadarrDetailScreen(movie: m),
+                              ),
+                            );
+                          },
+                          child: MediaItemCard(
+                            title: m.title ?? 'No Title',
+                            status: m.status?.name ?? 'No Status',
+                            posterUrl: posterUrl,
+                          ),
+                        ),
+                      ),
                     ),
                   );
                 },
-              ),
-
-              // Movie grid
-              Expanded(
-                child: moviesValue.when(
-                  data: (movies) {
-                    // Sort and filter movies
-                    final filteredMovies = _searchQuery.isEmpty
-                        ? movies
-                        : movies
-                              .where(
-                                (movie) =>
-                                    movie.title?.toLowerCase().contains(
-                                          _searchQuery,
-                                        ) ==
-                                        true ||
-                                    movie.overview?.toLowerCase().contains(
-                                          _searchQuery,
-                                        ) ==
-                                        true,
-                              )
-                              .toList();
-
-                    final sortedMovies = [
-                      ...filteredMovies,
-                    ]..sort((a, b) => (a.title ?? '').compareTo(b.title ?? ''));
-
-                    if (sortedMovies.isEmpty) {
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.search_off,
-                              size: 64,
-                              color: colorScheme.onSurfaceVariant.withOpacity(
-                                0.5,
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              'No movies found',
-                              style: TextStyle(
-                                color: colorScheme.onSurfaceVariant,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            if (_searchQuery.isNotEmpty) ...[
-                              const SizedBox(height: 8),
-                              Text(
-                                'Try a different search term',
-                                style: TextStyle(
-                                  color: colorScheme.onSurfaceVariant
-                                      .withOpacity(0.7),
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ],
-                        ),
-                      );
-                    }
-
-                    return GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 0.65,
-                            crossAxisSpacing: 12,
-                            mainAxisSpacing: 16,
-                          ),
-                      padding: const EdgeInsets.all(16),
-                      itemCount: sortedMovies.length,
-                      itemBuilder: (context, index) {
-                        final m = sortedMovies[index];
-                        final posterUrl = getPosterUrl(m);
-
-                        return Entry.offset(
-                          yOffset: 100,
-                          duration: const Duration(milliseconds: 300),
-                          child: Entry.opacity(
-                            duration: const Duration(milliseconds: 300),
-                            child: Hero(
-                              tag: m.id!,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          RadarrDetailScreen(movie: m),
-                                    ),
-                                  );
-                                },
-                                child: MediaItemCard(
-                                  title: m.title ?? 'No Title',
-                                  status: m.status?.name ?? 'No Status',
-                                  posterUrl: posterUrl,
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                  error: (err, stack) => ErrorView(
-                    error: err,
-                    onRetry: () => ref.refresh(moviesProvider),
-                  ),
-                ),
-              ),
-            ],
+              );
+            },
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (err, stack) => ErrorView(
+              error: err,
+              onRetry: () => ref.refresh(moviesProvider),
+            ),
           ),
         ),
       ),

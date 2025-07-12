@@ -1,17 +1,16 @@
 import 'package:client/core/widgets/error_view.dart';
-import 'package:client/core/widgets/search_bar_widget.dart';
 import 'package:client/features/calendar/domain/calendar_item.dart';
 import 'package:client/features/calendar/application/providers/calendar_provider.dart';
 import 'package:client/features/calendar/application/providers/calendar_screen_providers.dart';
+import 'package:client/features/calendar/application/providers/calendar_preferences_provider.dart';
 import 'package:client/features/calendar/presentation/widgets/calendar_stats_card.dart';
 import 'package:client/features/calendar/presentation/widgets/calendar_view.dart';
 import 'package:client/features/calendar/presentation/widgets/day_events_bottomsheet.dart';
 import 'package:client/features/calendar/presentation/widgets/week_view_card.dart';
+import 'package:client/features/home/application/provider/home_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:entry/entry.dart';
-
-enum CalendarViewMode { month, week, both }
 
 class CalendarScreen extends ConsumerStatefulWidget {
   const CalendarScreen({super.key});
@@ -20,38 +19,63 @@ class CalendarScreen extends ConsumerStatefulWidget {
   ConsumerState<CalendarScreen> createState() => _CalendarScreenState();
 }
 
-class _CalendarScreenState extends ConsumerState<CalendarScreen> {
-  String _searchQuery = '';
-  bool _showStats = true;
-  CalendarViewMode _viewMode = CalendarViewMode.both;
+class _CalendarScreenState extends ConsumerState<CalendarScreen>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+  
+  // Previous navigation index to detect when we navigate to calendar tab
+  int? _previousNavIndex;
 
   @override
+  void initState() {
+    super.initState();
+    // Refresh calendar data when screen is initially created
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _refreshCalendarData();
+    });
+  }
+  
+  void _refreshCalendarData() {
+    // Force refresh calendar data
+    ref.invalidate(sonarrCalendarProvider);
+  }
+
+  @override
+  void dispose() {
+    // Clean up resources when screen is disposed
+    super.dispose();
+  }  @override
   Widget build(BuildContext context) {
+    super.build(context); // Required for AutomaticKeepAliveClientMixin
+    
+    // Watch for navigation changes to detect when calendar tab is selected
+    final currentNavIndex = ref.watch(homeScreenIndexProvider);
+    
+    // Calendar tab index is 2 (third position)
+    const calendarTabIndex = 2;
+    
+    // Check if we just navigated to the calendar tab
+    if (_previousNavIndex != currentNavIndex && currentNavIndex == calendarTabIndex) {
+      // Refresh data when the Calendar tab is selected
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _refreshCalendarData();
+      });
+    }
+    // Update previous index
+    _previousNavIndex = currentNavIndex;
+    
     final calendar = ref.watch(sonarrCalendarProvider);
     final selectedDay = ref.watch(selectedDayProvider);
     final focusedDay = ref.watch(focusedDayProvider);
+    final preferences = ref.watch(calendarPreferencesProvider);
 
     List<CalendarItem> getEventsForDay(DateTime day) {
       final normalizedDay = DateTime(day.year, day.month, day.day);
       final allEvents = ref.watch(sonarrCalendarProvider).asData?.value ?? [];
 
-      // Filter events by search query if present
-      final filteredEvents = _searchQuery.isEmpty
-          ? allEvents
-          : allEvents
-                .where(
-                  (item) =>
-                      item.title.toLowerCase().contains(
-                        _searchQuery.toLowerCase(),
-                      ) ||
-                      item.subtitle.toLowerCase().contains(
-                        _searchQuery.toLowerCase(),
-                      ),
-                )
-                .toList();
-
       final eventMap = <DateTime, List<CalendarItem>>{};
-      for (final item in filteredEvents) {
+      for (final item in allEvents) {
         if (item.date != null) {
           final date = DateTime(
             item.date!.year,
@@ -95,9 +119,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             icon: const Icon(Icons.calendar_view_month),
             tooltip: 'Change view',
             onSelected: (CalendarViewMode value) {
-              setState(() {
-                _viewMode = value;
-              });
+              ref.read(calendarPreferencesProvider.notifier).setViewMode(value);
             },
             itemBuilder: (context) => [
               const PopupMenuItem(
@@ -116,13 +138,15 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           ),
           IconButton(
             icon: Icon(
-              _showStats ? Icons.view_agenda : Icons.analytics_outlined,
+              preferences.showStats
+                  ? Icons.view_agenda
+                  : Icons.analytics_outlined,
             ),
-            tooltip: _showStats ? 'Hide stats' : 'Show stats',
+            tooltip: preferences.showStats ? 'Hide stats' : 'Show stats',
             onPressed: () {
-              setState(() {
-                _showStats = !_showStats;
-              });
+              ref
+                  .read(calendarPreferencesProvider.notifier)
+                  .setShowStats(!preferences.showStats);
             },
           ),
         ],
@@ -130,7 +154,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Refresh calendar data
-          final _ = ref.refresh(sonarrCalendarProvider);
+          _refreshCalendarData();
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(const SnackBar(content: Text('Calendar refreshed')));
@@ -155,76 +179,39 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              // Search bar
-              SearchBarWidget(
-                hintText: 'Search episodes...',
-                onSearch: (query) {
-                  setState(() {
-                    _searchQuery = query;
-                  });
-                },
-              ),
-
               // Calendar content
               Expanded(
                 child: calendar.when(
                   data: (items) {
-                    // If searching and no results in entire calendar
-                    if (_searchQuery.isNotEmpty &&
-                        !items.any(
-                          (item) =>
-                              item.title.toLowerCase().contains(
-                                _searchQuery.toLowerCase(),
-                              ) ||
-                              item.subtitle.toLowerCase().contains(
-                                _searchQuery.toLowerCase(),
-                              ),
-                        )) {
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.search_off,
-                              size: 64,
-                              color: colorScheme.onSurfaceVariant.withOpacity(
-                                0.5,
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              'No events found',
-                              style: TextStyle(
-                                color: colorScheme.onSurfaceVariant,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Try a different search term',
-                              style: TextStyle(
-                                color: colorScheme.onSurfaceVariant.withOpacity(
-                                  0.7,
-                                ),
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-
                     return ListView(
                       padding: const EdgeInsets.only(bottom: 80),
                       children: [
-                        // Calendar stats
-                        if (_showStats && _searchQuery.isEmpty)
-                          CalendarStatsCard(events: items),
+                        // Month calendar - Now at the top
+                        if (preferences.viewMode == CalendarViewMode.month ||
+                            preferences.viewMode == CalendarViewMode.both)
+                          Entry.opacity(
+                            duration: const Duration(milliseconds: 300),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                              ),
+                              child: CalendarView(
+                                focusedDay: focusedDay,
+                                selectedDay: selectedDay,
+                                getEventsForDay: getEventsForDay,
+                                onDaySelected: onDaySelected,
+                                onPageChanged: (newFocusedDay) =>
+                                    ref
+                                            .read(focusedDayProvider.notifier)
+                                            .state =
+                                        newFocusedDay,
+                              ),
+                            ),
+                          ),
 
-                        // Week view
-                        if (_viewMode == CalendarViewMode.week ||
-                            _viewMode == CalendarViewMode.both)
+                        // Week view - Now in the middle
+                        if (preferences.viewMode == CalendarViewMode.week ||
+                            preferences.viewMode == CalendarViewMode.both)
                           Entry.opacity(
                             duration: const Duration(milliseconds: 300),
                             child: WeekViewCard(
@@ -245,27 +232,11 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                             ),
                           ),
 
-                        // Month calendar
-                        if (_viewMode == CalendarViewMode.month ||
-                            _viewMode == CalendarViewMode.both)
+                        // Calendar stats - Now at the bottom
+                        if (preferences.showStats)
                           Entry.opacity(
                             duration: const Duration(milliseconds: 300),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0,
-                              ),
-                              child: CalendarView(
-                                focusedDay: focusedDay,
-                                selectedDay: selectedDay,
-                                getEventsForDay: getEventsForDay,
-                                onDaySelected: onDaySelected,
-                                onPageChanged: (newFocusedDay) =>
-                                    ref
-                                            .read(focusedDayProvider.notifier)
-                                            .state =
-                                        newFocusedDay,
-                              ),
-                            ),
+                            child: CalendarStatsCard(events: items),
                           ),
                       ],
                     );

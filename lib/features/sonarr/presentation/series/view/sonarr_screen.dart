@@ -41,7 +41,7 @@ class SonarrScreen extends ConsumerWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.push(
             context,
@@ -63,10 +63,11 @@ class SonarrScreen extends ConsumerWidget {
             ),
           );
         },
-        backgroundColor: colorScheme.primaryContainer,
-        foregroundColor: colorScheme.onPrimaryContainer,
-        elevation: 4,
-        child: const Icon(Icons.add),
+        backgroundColor: colorScheme.primary,
+        foregroundColor: colorScheme.onPrimary,
+        elevation: 6,
+        icon: const Icon(Icons.add),
+        label: const Text("Add Series"),
       ),
       body: Container(
         decoration: BoxDecoration(

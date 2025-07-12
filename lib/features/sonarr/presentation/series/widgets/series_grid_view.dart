@@ -46,7 +46,12 @@ class SeriesGridView extends StatelessWidget {
         crossAxisSpacing: 14,
         mainAxisSpacing: 16,
       ),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(
+        16,
+        16,
+        16,
+        80,
+      ), // Add bottom padding for FloatingActionButton
       itemCount: sortedSeries.length,
       itemBuilder: (context, index) {
         final s = sortedSeries[index];

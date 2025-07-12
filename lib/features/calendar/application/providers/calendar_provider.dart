@@ -3,6 +3,7 @@ import 'package:client/features/calendar/domain/calendar_item.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart' as sonarr;
 
+// Auto-refresh calendar data after specific amount of time has passed 
 final sonarrCalendarProvider = FutureProvider<List<CalendarItem>>((ref) async {
   final sonarrApi = ref.watch(sonarrProvider);
   final start = DateTime.now().subtract(const Duration(days: 30));

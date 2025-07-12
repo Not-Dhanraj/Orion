@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class AuthScreenHelper {
   static String? validateUrl(String? value) {
     if (value == null || value.isEmpty) {

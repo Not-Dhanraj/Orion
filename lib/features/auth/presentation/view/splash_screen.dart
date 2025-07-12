@@ -4,7 +4,6 @@ import 'package:client/features/auth/presentation/view/auth_screen.dart';
 import 'package:client/features/home/presentation/view/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});

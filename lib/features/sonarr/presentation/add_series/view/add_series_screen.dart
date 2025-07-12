@@ -86,17 +86,17 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
     }
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight),
-        child: Builder(
-          builder: (context) => AppBar(
-            title: const Text(
-              'Add Series',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            elevation: 0,
-          ),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const BackButtonIcon(),
+          onPressed: () => Navigator.of(context).pop(),
+          tooltip: null, // Disable the tooltip to prevent the layout error
         ),
+        title: const Text(
+          'Add Series',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        elevation: 0,
       ),
       body: SafeArea(
         child: Column(

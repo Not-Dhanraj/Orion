@@ -8,56 +8,48 @@ class MovieStatusIndicators extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final bool isMonitored = movie.monitored ?? false;
+    final bool hasFile = movie.hasFile ?? false;
 
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: [
-        // Monitored status
-        _buildStatusChip(
-          context,
-          label: movie.monitored == true ? 'Monitored' : 'Unmonitored',
-          backgroundColor: movie.monitored == true
-              ? colorScheme.primaryContainer
-              : colorScheme.errorContainer,
-          textColor: movie.monitored == true
-              ? colorScheme.onPrimaryContainer
-              : colorScheme.onErrorContainer,
-          icon: movie.monitored == true
-              ? Icons.visibility
-              : Icons.visibility_off,
+    return Card(
+      margin: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+      elevation: 2,
+      shadowColor: theme.colorScheme.shadow.withOpacity(0.1),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildStatusIndicator(
+              context,
+              isMonitored ? 'Monitored' : 'Not Monitored',
+              isMonitored ? Icons.visibility : Icons.visibility_off,
+              isMonitored ? Colors.green : Colors.grey,
+              isMonitored,
+            ),
+            const SizedBox(width: 16),
+            _buildStatusIndicator(
+              context,
+              _getStatusLabel(movie.status),
+              _getStatusIcon(movie.status),
+              _getStatusColor(theme, movie.status),
+              true,
+            ),
+            if (hasFile) ...[
+              const SizedBox(width: 16),
+              _buildStatusIndicator(
+                context,
+                'Available',
+                Icons.check_circle,
+                Colors.green,
+                true,
+              ),
+            ],
+          ],
         ),
-
-        // Movie status
-        _buildStatusChip(
-          context,
-          label: _getStatusLabel(movie.status),
-          backgroundColor: _getStatusColor(movie.status, colorScheme),
-          textColor: _getStatusTextColor(movie.status, colorScheme),
-          icon: _getStatusIcon(movie.status),
-        ),
-
-        // Availability
-        if (movie.hasFile == true)
-          _buildStatusChip(
-            context,
-            label: 'Available',
-            backgroundColor: colorScheme.tertiaryContainer,
-            textColor: colorScheme.onTertiaryContainer,
-            icon: Icons.check_circle,
-          ),
-
-        // Quality profile
-        if (movie.qualityProfileId != null)
-          _buildStatusChip(
-            context,
-            label: 'Quality: ${movie.qualityProfileId}',
-            backgroundColor: colorScheme.surfaceVariant,
-            textColor: colorScheme.onSurfaceVariant,
-            icon: Icons.high_quality,
-          ),
-      ],
+      ),
     );
   }
 
@@ -78,37 +70,20 @@ class MovieStatusIndicators extends StatelessWidget {
     }
   }
 
-  Color _getStatusColor(Object? status, ColorScheme colorScheme) {
-    if (status == null) return colorScheme.surfaceVariant;
+  Color _getStatusColor(ThemeData theme, Object? status) {
+    if (status == null) return theme.colorScheme.tertiary;
 
     switch (status.toString()) {
       case 'released':
-        return Colors.green.withOpacity(0.2);
+        return Colors.green;
       case 'inCinemas':
-        return Colors.orange.withOpacity(0.2);
+        return Colors.orange;
       case 'announced':
-        return Colors.blue.withOpacity(0.2);
+        return Colors.blue;
       case 'deleted':
-        return colorScheme.errorContainer;
+        return Colors.red;
       default:
-        return colorScheme.surfaceVariant;
-    }
-  }
-
-  Color _getStatusTextColor(Object? status, ColorScheme colorScheme) {
-    if (status == null) return colorScheme.onSurfaceVariant;
-
-    switch (status.toString()) {
-      case 'released':
-        return Colors.green.shade800;
-      case 'inCinemas':
-        return Colors.orange.shade800;
-      case 'announced':
-        return Colors.blue.shade800;
-      case 'deleted':
-        return colorScheme.onErrorContainer;
-      default:
-        return colorScheme.onSurfaceVariant;
+        return theme.colorScheme.tertiary;
     }
   }
 
@@ -129,20 +104,52 @@ class MovieStatusIndicators extends StatelessWidget {
     }
   }
 
-  Widget _buildStatusChip(
-    BuildContext context, {
-    required String label,
-    required Color backgroundColor,
-    required Color textColor,
-    required IconData icon,
-  }) {
-    return Chip(
-      backgroundColor: backgroundColor,
-      labelStyle: TextStyle(color: textColor),
-      avatar: Icon(icon, color: textColor, size: 16),
-      label: Text(label),
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      visualDensity: VisualDensity.compact,
+  Widget _buildStatusIndicator(
+    BuildContext context,
+    String label,
+    IconData icon,
+    Color color,
+    bool active,
+  ) {
+    final theme = Theme.of(context);
+
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+        decoration: BoxDecoration(
+          color: active
+              ? color.withOpacity(0.12)
+              : theme.colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: active ? color.withOpacity(0.5) : Colors.transparent,
+            width: 1.5,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 18,
+              color: active ? color : theme.colorScheme.onSurfaceVariant,
+            ),
+            const SizedBox(width: 6),
+            Flexible(
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: active ? color : theme.colorScheme.onSurfaceVariant,
+                ),
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

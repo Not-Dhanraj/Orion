@@ -36,8 +36,7 @@ class MoviesGridView extends StatelessWidget {
     };
 
     // Sort movies alphabetically by title
-    final sortedMovies = [...movies]
-      ..sort((a, b) => (a.title ?? '').compareTo(b.title ?? ''));
+    final sortedMovies = movies;
 
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -89,15 +88,15 @@ class MoviesGridView extends StatelessWidget {
 
   // Get a readable status from movie object
   String _getMovieStatus(RadarrMovie movie) {
-    if (movie.status == 'released') {
+    if (movie.status == RadarrAvailability.RELEASED) {
       return 'Released';
-    } else if (movie.status == 'inCinemas') {
+    } else if (movie.status == RadarrAvailability.IN_CINEMAS) {
       return 'In Cinemas';
-    } else if (movie.status == 'announced') {
+    } else if (movie.status == RadarrAvailability.ANNOUNCED) {
       return 'Announced';
-    } else if (movie.status == 'tba') {
+    } else if (movie.status == RadarrAvailability.TBA) {
       return 'TBA';
     }
-    return 'Unknown';
+    return 'Deleted';
   }
 }

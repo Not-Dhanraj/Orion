@@ -1,24 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:radarr_flutter/radarr_flutter.dart';
 
-class MovieOverview extends StatefulWidget {
+class MovieOverview extends StatelessWidget {
   final RadarrMovie movie;
 
   const MovieOverview({super.key, required this.movie});
 
   @override
-  State<MovieOverview> createState() => _MovieOverviewState();
-}
-
-class _MovieOverviewState extends State<MovieOverview> {
-  bool _expanded = false;
-
-  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
-
-    final overview = widget.movie.overview ?? 'No overview available';
+    final overview = movie.overview ?? 'No overview available';
 
     return Card(
       margin: EdgeInsets.zero,
@@ -55,67 +46,9 @@ class _MovieOverviewState extends State<MovieOverview> {
               ],
             ),
             const SizedBox(height: 16.0),
-            GestureDetector(
-              onTap: () {
-                if (overview.length > 150) {
-                  setState(() {
-                    _expanded = !_expanded;
-                  });
-                }
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    overview,
-                    style: theme.textTheme.bodyLarge?.copyWith(height: 1.5),
-                    maxLines: _expanded ? null : 5,
-                    overflow: _expanded
-                        ? TextOverflow.visible
-                        : TextOverflow.ellipsis,
-                  ),
-                  if (overview.length > 150 && !_expanded) ...[
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Show more',
-                          style: textTheme.labelMedium?.copyWith(
-                            color: theme.colorScheme.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Icon(
-                          Icons.arrow_drop_down,
-                          color: theme.colorScheme.primary,
-                          size: 20,
-                        ),
-                      ],
-                    ),
-                  ],
-                  if (_expanded) ...[
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Show less',
-                          style: textTheme.labelMedium?.copyWith(
-                            color: theme.colorScheme.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Icon(
-                          Icons.arrow_drop_up,
-                          color: theme.colorScheme.primary,
-                          size: 20,
-                        ),
-                      ],
-                    ),
-                  ],
-                ],
-              ),
+            Text(
+              overview,
+              style: theme.textTheme.bodyLarge?.copyWith(height: 1.5),
             ),
           ],
         ),

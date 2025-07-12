@@ -160,7 +160,7 @@ class RadarrDetailScreen extends ConsumerWidget {
                     duration: const Duration(milliseconds: 450),
                     delay: const Duration(milliseconds: 50),
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
+                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                       child: MovieStatusIndicators(movie: movie),
                     ),
                   ),

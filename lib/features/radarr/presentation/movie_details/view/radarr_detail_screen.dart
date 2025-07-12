@@ -205,7 +205,8 @@ class RadarrDetailScreen extends ConsumerWidget {
                               ),
                               const SizedBox(height: 16),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   _buildActionButton(
                                     context,
@@ -214,16 +215,20 @@ class RadarrDetailScreen extends ConsumerWidget {
                                     label: 'Edit',
                                     color: theme.colorScheme.primary,
                                     onPressed: () async {
-                                      final result = await Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => MovieEditScreen(movie: movie),
-                                        ),
-                                      );
+                                      final result = await Navigator.of(context)
+                                          .push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MovieEditScreen(movie: movie),
+                                            ),
+                                          );
 
                                       // If changes were made and saved successfully
                                       if (result == true && movie.id != null) {
                                         // Invalidate provider to refresh the movie data
-                                        ref.invalidate(movieDetailsProvider(movie.id!));
+                                        ref.invalidate(
+                                          movieDetailsProvider(movie.id!),
+                                        );
                                       }
                                     },
                                   ),
@@ -233,7 +238,8 @@ class RadarrDetailScreen extends ConsumerWidget {
                                     icon: Icons.delete_outline,
                                     label: 'Delete',
                                     color: Colors.red,
-                                    onPressed: () => _deleteMovie(context, ref, movie),
+                                    onPressed: () =>
+                                        _deleteMovie(context, ref, movie),
                                   ),
                                   _buildActionButton(
                                     context,
@@ -244,31 +250,49 @@ class RadarrDetailScreen extends ConsumerWidget {
                                     onPressed: () async {
                                       try {
                                         // Update movie with refreshMetadata flag
-                                        final Map<String, dynamic> movieData = movie.toJson();
+                                        final Map<String, dynamic> movieData =
+                                            movie.toJson();
                                         movieData['refreshMetadata'] = true;
-                                        final updatedMovie = RadarrMovie.fromJson(movieData);
+                                        final updatedMovie =
+                                            RadarrMovie.fromJson(movieData);
 
                                         // Update the movie
-                                        await ref.read(updateMovieProvider(updatedMovie).future);
+                                        await ref.read(
+                                          updateMovieProvider(
+                                            updatedMovie,
+                                          ).future,
+                                        );
 
                                         // Refresh local data by invalidating the provider
                                         if (movie.id != null) {
-                                          ref.invalidate(movieDetailsProvider(movie.id!));
+                                          ref.invalidate(
+                                            movieDetailsProvider(movie.id!),
+                                          );
                                         }
 
                                         if (context.mounted) {
-                                          ScaffoldMessenger.of(context).showSnackBar(
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
                                             SnackBar(
-                                              content: Text('Refreshing movie: ${movie.title}'),
-                                              duration: const Duration(seconds: 2),
+                                              content: Text(
+                                                'Refreshing movie: ${movie.title}',
+                                              ),
+                                              duration: const Duration(
+                                                seconds: 2,
+                                              ),
                                             ),
                                           );
                                         }
                                       } catch (e) {
                                         if (context.mounted) {
-                                          ScaffoldMessenger.of(context).showSnackBar(
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
                                             SnackBar(
-                                              content: Text('Error refreshing movie: $e'),
+                                              content: Text(
+                                                'Error refreshing movie: $e',
+                                              ),
                                               backgroundColor: Colors.red,
                                             ),
                                           );
@@ -285,9 +309,13 @@ class RadarrDetailScreen extends ConsumerWidget {
                                     onPressed: () async {
                                       if (movie.id == null) {
                                         if (context.mounted) {
-                                          ScaffoldMessenger.of(context).showSnackBar(
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
                                             const SnackBar(
-                                              content: Text('Cannot search: Missing movie ID'),
+                                              content: Text(
+                                                'Cannot search: Missing movie ID',
+                                              ),
                                               backgroundColor: Colors.red,
                                             ),
                                           );
@@ -301,14 +329,18 @@ class RadarrDetailScreen extends ConsumerWidget {
                                           showDialog(
                                             context: context,
                                             barrierDismissible: false,
-                                            builder: (context) =>
-                                                const Center(child: CircularProgressIndicator()),
+                                            builder: (context) => const Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            ),
                                           );
                                         }
 
                                         // Get releases for this movie
                                         final releases = await ref.read(
-                                          movieReleaseProvider(movie.id!).future,
+                                          movieReleaseProvider(
+                                            movie.id!,
+                                          ).future,
                                         );
 
                                         // Close loading dialog
@@ -318,9 +350,13 @@ class RadarrDetailScreen extends ConsumerWidget {
 
                                         if (releases.isEmpty) {
                                           if (context.mounted) {
-                                            ScaffoldMessenger.of(context).showSnackBar(
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
                                               const SnackBar(
-                                                content: Text('No releases found for this movie'),
+                                                content: Text(
+                                                  'No releases found for this movie',
+                                                ),
                                                 duration: Duration(seconds: 2),
                                               ),
                                             );
@@ -332,10 +368,12 @@ class RadarrDetailScreen extends ConsumerWidget {
                                         if (context.mounted) {
                                           await showDialog(
                                             context: context,
-                                            builder: (context) => ReleaseSelectionDialog(
-                                              releases: releases,
-                                              title: 'Releases for ${movie.title ?? "Movie"}',
-                                            ),
+                                            builder: (context) =>
+                                                ReleaseSelectionDialog(
+                                                  releases: releases,
+                                                  title:
+                                                      'Releases for ${movie.title ?? "Movie"}',
+                                                ),
                                           );
                                         }
                                       } catch (e) {
@@ -344,9 +382,13 @@ class RadarrDetailScreen extends ConsumerWidget {
                                             context,
                                           ).pop(); // Close loading dialog if still showing
 
-                                          ScaffoldMessenger.of(context).showSnackBar(
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
                                             SnackBar(
-                                              content: Text('Error fetching releases: $e'),
+                                              content: Text(
+                                                'Error fetching releases: $e',
+                                              ),
                                               backgroundColor: Colors.red,
                                             ),
                                           );

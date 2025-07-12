@@ -2,7 +2,6 @@ import 'package:client/features/sonarr/application/provider/series_management_pr
 import 'package:client/core/widgets/detail_sliver_app_bar.dart';
 import 'package:client/features/sonarr/presentation/series_details/widgets/series_details.dart';
 import 'package:client/features/sonarr/presentation/series_edit/view/series_edit_screen.dart';
-import 'package:client/features/sonarr/presentation/shared/widgets/series_action_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
@@ -100,6 +99,42 @@ class SonarrDetailScreen extends ConsumerWidget {
     }
   }
 
+  Widget _buildActionButton(
+    BuildContext context,
+    WidgetRef ref, {
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback onPressed,
+  }) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: color.withAlpha(20),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: color.withAlpha(100), width: 1),
+          ),
+          child: IconButton(
+            onPressed: onPressed,
+            icon: Icon(icon, color: color),
+            iconSize: 24,
+            padding: const EdgeInsets.all(12),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          label,
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+            color: color,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var theme = Theme.of(context);
@@ -114,31 +149,7 @@ class SonarrDetailScreen extends ConsumerWidget {
           DetailSliverAppBar(
             title: 'Details',
             fanartUrl: fanartUrl,
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.edit),
-                tooltip: 'Edit Series',
-                onPressed: () async {
-                  final result = await Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => SeriesEditScreen(series: series),
-                    ),
-                  );
-
-                  // If changes were made and saved successfully
-                  if (result == true) {
-                    // Invalidate provider to refresh the series data
-                    ref.invalidate(singleSeriesProvider(series.id!));
-                  }
-                },
-              ),
-              IconButton(
-                icon: const Icon(Icons.delete_outline),
-                tooltip: 'Delete Series',
-                onPressed: () => _deleteSeries(context, ref, series),
-              ),
-              SeriesActionButtons(series: series),
-            ],
+            actions: [],
           ),
           SliverToBoxAdapter(
             child: Container(
@@ -169,9 +180,189 @@ class SonarrDetailScreen extends ConsumerWidget {
                     child: SeriesStatusIndicators(series: series),
                   ),
                   const SizedBox(height: 24.0),
+
+                  // Action buttons card
                   Entry.opacity(
                     duration: const Duration(milliseconds: 500),
                     delay: const Duration(milliseconds: 100),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Card(
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Actions',
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildActionButton(
+                                    context,
+                                    ref,
+                                    icon: Icons.edit,
+                                    label: 'Edit',
+                                    color: theme.colorScheme.primary,
+                                    onPressed: () async {
+                                      final result = await Navigator.of(context)
+                                          .push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SeriesEditScreen(
+                                                    series: series,
+                                                  ),
+                                            ),
+                                          );
+
+                                      // If changes were made and saved successfully
+                                      if (result == true) {
+                                        // Invalidate provider to refresh the series data
+                                        ref.invalidate(
+                                          singleSeriesProvider(series.id!),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                  _buildActionButton(
+                                    context,
+                                    ref,
+                                    icon: Icons.delete_outline,
+                                    label: 'Delete',
+                                    color: Colors.red,
+                                    onPressed: () =>
+                                        _deleteSeries(context, ref, series),
+                                  ),
+                                  _buildActionButton(
+                                    context,
+                                    ref,
+                                    icon: Icons.refresh,
+                                    label: 'Refresh',
+                                    color: theme.colorScheme.secondary,
+                                    onPressed: () async {
+                                      final seriesManagement = ref.watch(
+                                        seriesManagementProvider,
+                                      );
+                                      final notifier = ref.read(
+                                        seriesManagementProvider.notifier,
+                                      );
+
+                                      if (seriesManagement is! AsyncLoading) {
+                                        try {
+                                          // Refresh metadata from Sonarr API
+                                          await notifier.refreshSeries(
+                                            series.id!,
+                                          );
+
+                                          // Refresh local data by invalidating the provider
+                                          ref.invalidate(
+                                            singleSeriesProvider(series.id!),
+                                          );
+
+                                          if (context.mounted) {
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'Refreshing series: ${series.title}',
+                                                ),
+                                                duration: const Duration(
+                                                  seconds: 2,
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        } catch (e) {
+                                          if (context.mounted) {
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'Error refreshing series: $e',
+                                                ),
+                                                backgroundColor: Colors.red,
+                                              ),
+                                            );
+                                          }
+                                        }
+                                      }
+                                    },
+                                  ),
+                                  _buildActionButton(
+                                    context,
+                                    ref,
+                                    icon: Icons.folder,
+                                    label: 'Rescan',
+                                    color: theme.colorScheme.tertiary,
+                                    onPressed: () async {
+                                      final seriesManagement = ref.watch(
+                                        seriesManagementProvider,
+                                      );
+                                      final notifier = ref.read(
+                                        seriesManagementProvider.notifier,
+                                      );
+
+                                      if (seriesManagement is! AsyncLoading) {
+                                        try {
+                                          await notifier.rescanSeries(
+                                            series.id!,
+                                          );
+                                          if (context.mounted) {
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'Rescanning files for: ${series.title}',
+                                                ),
+                                                duration: const Duration(
+                                                  seconds: 2,
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        } catch (e) {
+                                          if (context.mounted) {
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'Error rescanning series: $e',
+                                                ),
+                                                backgroundColor: Colors.red,
+                                              ),
+                                            );
+                                          }
+                                        }
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24.0),
+
+                  Entry.opacity(
+                    duration: const Duration(milliseconds: 550),
+                    delay: const Duration(milliseconds: 150),
                     child: SeriesOverview(
                       overview: series.overview ?? 'No plot summary available.',
                     ),

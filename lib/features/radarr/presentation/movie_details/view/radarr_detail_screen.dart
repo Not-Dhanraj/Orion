@@ -63,29 +63,19 @@ class RadarrDetailScreen extends ConsumerWidget {
 
     if (confirmed == true && movie.id != null) {
       try {
-        final result = await ref.read(deleteMovieProvider(movie.id!).future);
+        await ref.read(deleteMovieProvider(movie.id!).future);
+        
+        scaffoldMessenger.showSnackBar(
+          SnackBar(
+            content: Text('${movie.title} has been deleted'),
+            backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
+            duration: const Duration(seconds: 2),
+          ),
+        );
 
-        if (result) {
-          scaffoldMessenger.showSnackBar(
-            SnackBar(
-              content: Text('${movie.title} has been deleted'),
-              backgroundColor: Colors.green,
-              behavior: SnackBarBehavior.floating,
-              duration: const Duration(seconds: 2),
-            ),
-          );
-
-          if (navigator.canPop()) {
-            navigator.pop();
-          }
-        } else {
-          scaffoldMessenger.showSnackBar(
-            SnackBar(
-              content: Text('Failed to delete ${movie.title}'),
-              backgroundColor: Colors.red,
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
+        if (navigator.canPop()) {
+          navigator.pop();
         }
       } catch (e) {
         scaffoldMessenger.showSnackBar(
@@ -138,84 +128,117 @@ class RadarrDetailScreen extends ConsumerWidget {
                   }
                 },
               ),
+              IconButton(
+                icon: const Icon(Icons.delete_outline),
+                tooltip: 'Delete Movie',
+                onPressed: () => _deleteMovie(context, ref, movie),
+              ),
               MovieActionButtons(movie: movie),
             ],
           ),
 
           SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surface,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(24.0),
+                  topRight: Radius.circular(24.0),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: theme.colorScheme.shadow.withAlpha(25),
+                    blurRadius: 10,
+                    offset: const Offset(0, -5),
+                  ),
+                ],
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Main information section
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Poster
-                      Entry.opacity(
-                        duration: const Duration(milliseconds: 500),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: SizedBox(
-                            width: 120,
-                            height: 180,
-                            child: Hero(
-                              tag: movie.id!,
-                              child: posterUrl != null
-                                  ? Image.network(
-                                      posterUrl,
-                                      fit: BoxFit.cover,
-                                      errorBuilder:
-                                          (context, error, stackTrace) =>
-                                              Container(
-                                                color:
-                                                    colorScheme.surfaceVariant,
-                                                child: Center(
-                                                  child: Icon(
-                                                    Icons.movie,
-                                                    size: 40,
-                                                    color: colorScheme
-                                                        .onSurfaceVariant,
-                                                  ),
-                                                ),
+                  // Main movie details card - poster and basic info
+                  Card(
+                    margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                    elevation: 4,
+                    shadowColor: colorScheme.shadow.withOpacity(0.2),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Poster with shadow
+                          Entry.opacity(
+                            duration: const Duration(milliseconds: 400),
+                            child: Container(
+                              width: 120,
+                              height: 180,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.3),
+                                    blurRadius: 8.0,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12.0),
+                                child: Hero(
+                                  tag: movie.id!,
+                                  child: posterUrl != null
+                                      ? Image.network(
+                                          posterUrl,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (context, error, stackTrace) => Container(
+                                            color: colorScheme.surfaceVariant,
+                                            child: Center(
+                                              child: Icon(
+                                                Icons.movie,
+                                                size: 40,
+                                                color: colorScheme.onSurfaceVariant,
                                               ),
-                                    )
-                                  : Container(
-                                      color: colorScheme.surfaceVariant,
-                                      child: Center(
-                                        child: Icon(
-                                          Icons.movie,
-                                          size: 40,
-                                          color: colorScheme.onSurfaceVariant,
+                                            ),
+                                          ),
+                                        )
+                                      : Container(
+                                          color: colorScheme.surfaceVariant,
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.movie,
+                                              size: 40,
+                                              color: colorScheme.onSurfaceVariant,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
 
-                      const SizedBox(width: 16),
+                          const SizedBox(width: 16),
 
-                      // Movie info (year, runtime, etc.)
-                      Expanded(
-                        child: Entry.opacity(
-                          duration: const Duration(milliseconds: 500),
-                          delay: const Duration(milliseconds: 200),
-                          child: MovieInfo(movie: movie),
-                        ),
+                          // Movie info (year, runtime, etc.)
+                          Expanded(
+                            child: Entry.opacity(
+                              duration: const Duration(milliseconds: 400),
+                              child: MovieInfo(movie: movie),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-
-                  const SizedBox(height: 24),
-
+                  
                   // Status indicators
                   Entry.opacity(
-                    duration: const Duration(milliseconds: 500),
-                    delay: const Duration(milliseconds: 300),
-                    child: MovieStatusIndicators(movie: movie),
+                    duration: const Duration(milliseconds: 450),
+                    delay: const Duration(milliseconds: 50),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
+                      child: MovieStatusIndicators(movie: movie),
+                    ),
                   ),
 
                   const SizedBox(height: 24),
@@ -223,51 +246,60 @@ class RadarrDetailScreen extends ConsumerWidget {
                   // Overview
                   Entry.opacity(
                     duration: const Duration(milliseconds: 500),
-                    delay: const Duration(milliseconds: 400),
-                    child: MovieOverview(movie: movie),
+                    delay: const Duration(milliseconds: 100),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: MovieOverview(movie: movie),
+                    ),
                   ),
 
                   const SizedBox(height: 24),
 
                   // Action buttons
                   Entry.opacity(
-                    duration: const Duration(milliseconds: 500),
-                    delay: const Duration(milliseconds: 500),
-                    child: MovieActionButtons(movie: movie),
+                    duration: const Duration(milliseconds: 550),
+                    delay: const Duration(milliseconds: 150),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: MovieActionButtons(movie: movie),
+                    ),
                   ),
 
                   const SizedBox(height: 24),
 
                   // Credits section
                   Entry.opacity(
-                    duration: const Duration(milliseconds: 500),
-                    delay: const Duration(milliseconds: 600),
-                    child: creditsAsyncValue.when(
-                      data: (credits) => MovieCredits(credits: credits),
-                      loading: () => Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Credits', style: textTheme.titleLarge),
-                          const SizedBox(height: 16),
-                          const Center(
-                            child: SizedBox(
-                              width: 30,
-                              height: 30,
-                              child: CircularProgressIndicator(strokeWidth: 2),
+                    duration: const Duration(milliseconds: 600),
+                    delay: const Duration(milliseconds: 200),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: creditsAsyncValue.when(
+                        data: (credits) => MovieCredits(credits: credits),
+                        loading: () => Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Credits', style: textTheme.titleLarge),
+                            const SizedBox(height: 16),
+                            const Center(
+                              child: SizedBox(
+                                width: 30,
+                                height: 30,
+                                child: CircularProgressIndicator(strokeWidth: 2),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      error: (_, __) => Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Credits', style: textTheme.titleLarge),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Failed to load credits',
-                            style: TextStyle(color: colorScheme.error),
-                          ),
-                        ],
+                          ],
+                        ),
+                        error: (_, __) => Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Credits', style: textTheme.titleLarge),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Failed to load credits',
+                              style: TextStyle(color: colorScheme.error),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -276,10 +308,15 @@ class RadarrDetailScreen extends ConsumerWidget {
 
                   // Media Info
                   Entry.opacity(
-                    duration: const Duration(milliseconds: 500),
-                    delay: const Duration(milliseconds: 700),
-                    child: MovieMediaInfo(movie: movie),
+                    duration: const Duration(milliseconds: 650),
+                    delay: const Duration(milliseconds: 250),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: MovieMediaInfo(movie: movie),
+                    ),
                   ),
+                  
+                  const SizedBox(height: 32.0),
                 ],
               ),
             ),

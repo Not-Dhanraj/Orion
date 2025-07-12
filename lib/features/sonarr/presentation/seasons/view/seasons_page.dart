@@ -9,20 +9,20 @@ class SeasonsPage extends ConsumerWidget {
   final SonarrSeries initialSeries;
 
   const SeasonsPage({super.key, required this.initialSeries});
-  
+
   // Helper method to check for network-related errors
   bool _isNetworkError(Object? error) {
     if (error == null) return false;
-    
+
     final errorString = error.toString().toLowerCase();
-    return errorString.contains('connection error') || 
-           errorString.contains('socket') || 
-           errorString.contains('network') ||
-           errorString.contains('timeout') ||
-           errorString.contains('failed host lookup') ||
-           errorString.contains('no address') ||
-           errorString.contains('connection refused') ||
-           (errorString.contains('dio') && errorString.contains('error'));
+    return errorString.contains('connection error') ||
+        errorString.contains('socket') ||
+        errorString.contains('network') ||
+        errorString.contains('timeout') ||
+        errorString.contains('failed host lookup') ||
+        errorString.contains('no address') ||
+        errorString.contains('connection refused') ||
+        (errorString.contains('dio') && errorString.contains('error'));
   }
 
   @override
@@ -34,7 +34,7 @@ class SeasonsPage extends ConsumerWidget {
     if (seriesAsync.hasError) {
       final error = seriesAsync.error;
       final bool isConnectionError = error != null && _isNetworkError(error);
-                                   
+
       return Scaffold(
         appBar: AppBar(
           title: Text('${initialSeries.title} - Seasons'),
@@ -45,8 +45,16 @@ class SeasonsPage extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               isConnectionError
-                  ? const Icon(Icons.signal_wifi_off, size: 48, color: Colors.grey)
-                  : const Icon(Icons.error_outline, size: 48, color: Colors.red),
+                  ? const Icon(
+                      Icons.signal_wifi_off,
+                      size: 48,
+                      color: Colors.grey,
+                    )
+                  : const Icon(
+                      Icons.error_outline,
+                      size: 48,
+                      color: Colors.red,
+                    ),
               const SizedBox(height: 16),
               Text(
                 isConnectionError ? 'Connection Error' : 'Error Loading Data',
@@ -182,7 +190,9 @@ class SeasonsPage extends ConsumerWidget {
                     // Invalidate all providers to ensure fresh data
                     ref.invalidate(singleSeriesProvider(initialSeries.id!));
                     ref.invalidate(seriesEpisodesProvider(currentSeries.id!));
-                    ref.invalidate(seriesEpisodeFilesProvider(currentSeries.id!));
+                    ref.invalidate(
+                      seriesEpisodeFilesProvider(currentSeries.id!),
+                    );
                   },
                   child: const Text('Try Again'),
                 ),

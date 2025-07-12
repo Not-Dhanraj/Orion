@@ -13,10 +13,19 @@ class SonarrScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final seriesValue = ref.watch(allSeriesProvider);
 
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text('Sonarr'),
+        title: const Text(
+          'TV Shows',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 2,
         actions: [
           IconButton(
             icon: const Icon(Icons.download),
@@ -36,17 +45,53 @@ class SonarrScreen extends ConsumerWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const AddSeriesScreen()),
+            PageRouteBuilder(
+              pageBuilder: (_, __, ___) => const AddSeriesScreen(),
+              transitionsBuilder: (_, animation, __, child) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: SlideTransition(
+                    position: Tween<Offset>(
+                      begin: const Offset(0, 0.25),
+                      end: Offset.zero,
+                    ).animate(animation),
+                    child: child,
+                  ),
+                );
+              },
+              transitionDuration: const Duration(milliseconds: 250),
+            ),
           );
         },
+        backgroundColor: colorScheme.primaryContainer,
+        foregroundColor: colorScheme.onPrimaryContainer,
+        elevation: 4,
         child: const Icon(Icons.add),
       ),
-      body: seriesValue.when(
-        data: (series) => SeriesGridView(series: series),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => ErrorView(
-          error: err,
-          onRetry: () => ref.refresh(allSeriesProvider),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              colorScheme.surfaceVariant.withOpacity(0.3),
+              colorScheme.background,
+            ],
+            stops: const [0.0, 0.3],
+          ),
+        ),
+        child: SafeArea(
+          child: seriesValue.when(
+            data: (series) => SeriesGridView(series: series),
+            loading: () => Center(
+              child: CircularProgressIndicator(color: colorScheme.primary),
+            ),
+            error: (err, stack) => ErrorView(
+              error: err,
+              customMessage: 'Failed to load TV shows',
+              onRetry: () => ref.refresh(allSeriesProvider),
+            ),
+          ),
         ),
       ),
     );

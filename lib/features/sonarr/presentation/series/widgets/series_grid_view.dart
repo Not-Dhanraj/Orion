@@ -35,23 +35,29 @@ class SeriesGridView extends StatelessWidget {
       _ => 1,
     };
 
+    // Sort series alphabetically by title
+    final sortedSeries = [...series]
+      ..sort((a, b) => (a.title ?? '').compareTo(b.title ?? ''));
+
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: crossAxisCount,
         childAspectRatio: 0.65,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
+        crossAxisSpacing: 14,
+        mainAxisSpacing: 16,
       ),
-      padding: const EdgeInsets.all(12),
-      itemCount: series.length,
+      padding: const EdgeInsets.all(16),
+      itemCount: sortedSeries.length,
       itemBuilder: (context, index) {
-        final s = series[index];
+        final s = sortedSeries[index];
         final posterUrl = _getPosterUrl(s);
+        // Staggered animation effect for items
         return Entry.offset(
-          yOffset: 100,
-          duration: const Duration(milliseconds: 300),
+          yOffset: 50,
+          xOffset: index.isEven ? -10 : 10,
+          duration: Duration(milliseconds: 300 + (index % 5) * 50),
           child: Entry.opacity(
-            duration: const Duration(milliseconds: 300),
+            duration: Duration(milliseconds: 300 + (index % 5) * 50),
             child: Hero(
               tag: s.id!,
               child: GestureDetector(

@@ -1,6 +1,7 @@
 import 'package:client/core/api/api_client.dart';
 import 'package:client/core/widgets/error_view.dart';
 import 'package:client/core/widgets/media_item_card.dart';
+import 'package:client/core/widgets/search_bar_widget.dart';
 import 'package:client/features/radarr/presentation/view/radarr_detail_screen.dart';
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
@@ -12,11 +13,18 @@ final moviesProvider = FutureProvider<List<RadarrMovie>>((ref) async {
   return await radarr.movie.getAll();
 });
 
-class RadarrScreen extends ConsumerWidget {
+class RadarrScreen extends ConsumerStatefulWidget {
   const RadarrScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<RadarrScreen> createState() => _RadarrScreenState();
+}
+
+class _RadarrScreenState extends ConsumerState<RadarrScreen> {
+  String _searchQuery = '';
+
+  @override
+  Widget build(BuildContext context) {
     final moviesValue = ref.watch(moviesProvider);
 
     String? getPosterUrl(RadarrMovie movie) {
@@ -33,53 +41,183 @@ class RadarrScreen extends ConsumerWidget {
       return null;
     }
 
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Radarr'), centerTitle: true),
-      body: moviesValue.when(
-        data: (movies) {
-          return GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 0.65,
-              crossAxisSpacing: 8,
-              mainAxisSpacing: 8,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: const Text(
+          'Movies',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 2,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Add movie functionality could be added here
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Add movie functionality coming soon!'),
             ),
-            padding: const EdgeInsets.all(8),
-            itemCount: movies.length,
-            itemBuilder: (context, index) {
-              final m = movies[index];
-              final posterUrl = getPosterUrl(m);
-              return Entry.offset(
-                yOffset: 100,
-                duration: const Duration(milliseconds: 300),
-                child: Entry.opacity(
-                  duration: const Duration(milliseconds: 300),
-                  child: Hero(
-                    tag: m.id!,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RadarrDetailScreen(movie: m),
+          );
+        },
+        backgroundColor: colorScheme.primaryContainer,
+        foregroundColor: colorScheme.onPrimaryContainer,
+        elevation: 4,
+        child: const Icon(Icons.add),
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              colorScheme.surfaceVariant.withOpacity(0.3),
+              colorScheme.background,
+            ],
+            stops: const [0.0, 0.3],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Add search bar
+              SearchBarWidget(
+                hintText: 'Search movies...',
+                onSearch: (query) {
+                  setState(() {
+                    _searchQuery = query.toLowerCase();
+                  });
+                },
+                onFilterTap: () {
+                  // Filter functionality could be added here
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Filter functionality coming soon!'),
+                    ),
+                  );
+                },
+              ),
+
+              // Movie grid
+              Expanded(
+                child: moviesValue.when(
+                  data: (movies) {
+                    // Sort and filter movies
+                    final filteredMovies = _searchQuery.isEmpty
+                        ? movies
+                        : movies
+                              .where(
+                                (movie) =>
+                                    movie.title?.toLowerCase().contains(
+                                          _searchQuery,
+                                        ) ==
+                                        true ||
+                                    movie.overview?.toLowerCase().contains(
+                                          _searchQuery,
+                                        ) ==
+                                        true,
+                              )
+                              .toList();
+
+                    final sortedMovies = [
+                      ...filteredMovies,
+                    ]..sort((a, b) => (a.title ?? '').compareTo(b.title ?? ''));
+
+                    if (sortedMovies.isEmpty) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.search_off,
+                              size: 64,
+                              color: colorScheme.onSurfaceVariant.withOpacity(
+                                0.5,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              'No movies found',
+                              style: TextStyle(
+                                color: colorScheme.onSurfaceVariant,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            if (_searchQuery.isNotEmpty) ...[
+                              const SizedBox(height: 8),
+                              Text(
+                                'Try a different search term',
+                                style: TextStyle(
+                                  color: colorScheme.onSurfaceVariant
+                                      .withOpacity(0.7),
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      );
+                    }
+
+                    return GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.65,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 16,
+                          ),
+                      padding: const EdgeInsets.all(16),
+                      itemCount: sortedMovies.length,
+                      itemBuilder: (context, index) {
+                        final m = sortedMovies[index];
+                        final posterUrl = getPosterUrl(m);
+
+                        return Entry.offset(
+                          yOffset: 100,
+                          duration: const Duration(milliseconds: 300),
+                          child: Entry.opacity(
+                            duration: const Duration(milliseconds: 300),
+                            child: Hero(
+                              tag: m.id!,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          RadarrDetailScreen(movie: m),
+                                    ),
+                                  );
+                                },
+                                child: MediaItemCard(
+                                  title: m.title ?? 'No Title',
+                                  status: m.status?.name ?? 'No Status',
+                                  posterUrl: posterUrl,
+                                ),
+                              ),
+                            ),
                           ),
                         );
                       },
-                      child: MediaItemCard(
-                        title: m.title ?? 'No Title',
-                        status: m.status?.name ?? 'No Status',
-                        posterUrl: posterUrl,
-                      ),
-                    ),
+                    );
+                  },
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (err, stack) => ErrorView(
+                    error: err,
+                    onRetry: () => ref.refresh(moviesProvider),
                   ),
                 ),
-              );
-            },
-          );
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) =>
-            ErrorView(error: err, onRetry: () => ref.refresh(moviesProvider)),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

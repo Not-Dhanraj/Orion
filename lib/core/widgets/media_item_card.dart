@@ -18,12 +18,19 @@ class MediaItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Card(
-      elevation: 6,
-      shadowColor: Colors.black.withAlpha(76), // 0.3 opacity
+      elevation: 4,
+      shadowColor: colorScheme.shadow.withOpacity(0.3),
       clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(
+          color: colorScheme.outlineVariant.withOpacity(0.1),
+          width: 0.5,
+        ),
+      ),
       child: Stack(
         fit: StackFit.expand,
         children: [
@@ -33,30 +40,30 @@ class MediaItemCard extends StatelessWidget {
               imageUrl: posterUrl!,
               fit: BoxFit.cover,
               placeholder: (context, url) => Container(
-                color: theme.colorScheme.surfaceContainerHighest.withAlpha(
-                  76,
-                ), // 0.3 opacity
-                child: const Center(
-                  child: CircularProgressIndicator(strokeWidth: 2),
+                color: colorScheme.surfaceVariant.withOpacity(0.3),
+                child: Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: colorScheme.primary,
+                  ),
                 ),
               ),
               errorWidget: (context, url, error) => Container(
-                color: theme.colorScheme.surfaceContainerHighest.withAlpha(
-                  128,
-                ), // 0.5 opacity
+                color: colorScheme.surfaceVariant.withOpacity(0.5),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
-                      Icons.broken_image,
+                      Icons.broken_image_rounded,
                       size: 50,
-                      color: theme.colorScheme.onSurfaceVariant,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                     const SizedBox(height: 8),
                     Text(
                       'Image Error',
                       style: TextStyle(
-                        color: theme.colorScheme.onSurfaceVariant,
+                        color: colorScheme.onSurfaceVariant,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
@@ -65,28 +72,32 @@ class MediaItemCard extends StatelessWidget {
             )
           else
             Container(
-              color: theme.colorScheme.surfaceContainerHighest.withAlpha(
-                128,
-              ), // 0.5 opacity
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    colorScheme.surfaceVariant.withOpacity(0.5),
+                    colorScheme.surfaceVariant.withOpacity(0.7),
+                  ],
+                ),
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
-                    Icons.tv,
+                    Icons.movie_outlined,
                     size: 50,
-                    color: theme.colorScheme.onSurfaceVariant.withAlpha(
-                      153,
-                    ), // 0.6 opacity
+                    color: colorScheme.onSurfaceVariant.withOpacity(0.6),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'No Poster\nAvailable',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: theme.colorScheme.onSurfaceVariant.withAlpha(
-                        204, // 0.8 opacity
-                      ),
+                      color: colorScheme.onSurfaceVariant.withOpacity(0.8),
                       fontWeight: FontWeight.w500,
+                      fontSize: 14,
                     ),
                   ),
                 ],
@@ -104,19 +115,14 @@ class MediaItemCard extends StatelessWidget {
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
                   colors: [
-                    Colors.black.withAlpha(242), // 0.95 opacity
-                    Colors.black.withAlpha(178), // 0.7 opacity
+                    Colors.black.withOpacity(0.95),
+                    Colors.black.withOpacity(0.7),
                     Colors.transparent,
                   ],
-                  stops: const [0.0, 0.4, 0.9], // Extended gradient
+                  stops: const [0.0, 0.5, 0.95],
                 ),
               ),
-              padding: const EdgeInsets.fromLTRB(
-                8,
-                48,
-                12,
-                8,
-              ), // Extended top padding to avoid overlap
+              padding: const EdgeInsets.fromLTRB(12, 48, 12, 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
@@ -125,42 +131,83 @@ class MediaItemCard extends StatelessWidget {
                     title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.titleMedium?.copyWith(
+                    style: const TextStyle(
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 3.0,
+                          color: Colors.black54,
+                          offset: Offset(0, 1),
+                        ),
+                      ],
                     ),
                   ),
-                  status.isNotEmpty
-                      ? Text(
-                          status[0].toUpperCase() +
-                              status.substring(1).toLowerCase(),
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: Colors.white.withAlpha(204), // 0.8 opacity
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      : const SizedBox.shrink(),
+                  const SizedBox(height: 4),
+                  if (status.isNotEmpty)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 3,
+                      ),
+                      decoration: BoxDecoration(
+                        color:
+                            status.toLowerCase() == 'continuing' ||
+                                status.toLowerCase() == 'released'
+                            ? Colors.green.withOpacity(0.7)
+                            : Colors.orange.withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        status[0].toUpperCase() +
+                            status.substring(1).toLowerCase(),
+                        style: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
           ),
 
-          // Make the card tappable
+          // Make the card tappable with better visual feedback
           if (onTap != null)
             Positioned.fill(
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: onTap,
-                  splashColor: theme.colorScheme.primary.withAlpha(
-                    76,
-                  ), // 0.3 opacity
-                  highlightColor: theme.colorScheme.primary.withAlpha(
-                    25,
-                  ), // 0.1 opacity
+                  splashColor: colorScheme.primary.withOpacity(0.3),
+                  highlightColor: colorScheme.primary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(16),
                 ),
               ),
             ),
+
+          // Quality badge in top-right corner
+          Positioned(
+            top: 8,
+            right: 8,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.6),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.2),
+                  width: 0.5,
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [const Icon(Icons.hd, color: Colors.white, size: 16)],
+              ),
+            ),
+          ),
         ],
       ),
     );

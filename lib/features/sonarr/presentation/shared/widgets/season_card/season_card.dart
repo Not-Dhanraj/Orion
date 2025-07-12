@@ -67,7 +67,9 @@ class _SeasonCardState extends ConsumerState<SeasonCard>
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () {
-          ref.read(seasonCardControllerProvider(_seasonId).notifier).toggleExpanded();
+          ref
+              .read(seasonCardControllerProvider(_seasonId).notifier)
+              .toggleExpanded();
           if (isExpanded) {
             _animationController.reverse();
           } else {

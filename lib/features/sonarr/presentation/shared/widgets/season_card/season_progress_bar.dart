@@ -19,14 +19,16 @@ class SeasonProgressBar extends ConsumerWidget {
 
     return episodesAsyncValue.when(
       data: (episodes) {
-        final seasonEpisodes =
-            episodes.where((e) => e.seasonNumber == seasonNumber).toList();
+        final seasonEpisodes = episodes
+            .where((e) => e.seasonNumber == seasonNumber)
+            .toList();
         final totalEpisodes = seasonEpisodes.length;
         if (totalEpisodes == 0) {
           return const SizedBox.shrink();
         }
-        final downloadedEpisodes =
-            seasonEpisodes.where((e) => e.hasFile == true).length;
+        final downloadedEpisodes = seasonEpisodes
+            .where((e) => e.hasFile == true)
+            .length;
         final progressValue = downloadedEpisodes / totalEpisodes;
 
         return Padding(
@@ -37,7 +39,7 @@ class SeasonProgressBar extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Progress', style: theme.textTheme.bodyMedium),
+                  Text('Downloads', style: theme.textTheme.bodyMedium),
                   Text(
                     '${(progressValue * 100).toInt()}%',
                     style: theme.textTheme.bodyMedium?.copyWith(

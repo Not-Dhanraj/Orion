@@ -116,7 +116,7 @@ class _QueueItemProgress extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Progress', style: theme.textTheme.bodyMedium),
+            Text('Downloads', style: theme.textTheme.bodyMedium),
             Text(
               '${(progress * 100).toInt()}%',
               style: theme.textTheme.bodyMedium?.copyWith(

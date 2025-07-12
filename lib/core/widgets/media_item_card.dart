@@ -189,25 +189,6 @@ class MediaItemCard extends StatelessWidget {
             ),
 
           // Quality badge in top-right corner
-          Positioned(
-            top: 8,
-            right: 8,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.6),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: Colors.white.withOpacity(0.2),
-                  width: 0.5,
-                ),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [const Icon(Icons.hd, color: Colors.white, size: 16)],
-              ),
-            ),
-          ),
         ],
       ),
     );

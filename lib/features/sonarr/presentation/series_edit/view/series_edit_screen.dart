@@ -1,9 +1,9 @@
-import 'package:client/core/widgets/detail_sliver_app_bar.dart';
 import 'package:client/features/sonarr/presentation/series_edit/controller/series_edit_controller.dart';
 import 'package:client/features/sonarr/presentation/series_edit/widgets/monitoring_options.dart';
 import 'package:client/features/sonarr/presentation/series_edit/widgets/quality_profile_dropdown.dart';
 import 'package:client/features/sonarr/presentation/series_edit/widgets/series_edit_header.dart';
 import 'package:client/features/sonarr/presentation/series_edit/widgets/series_type_dropdown.dart';
+import 'package:client/features/sonarr/presentation/shared/widgets/safe_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
@@ -79,11 +79,15 @@ class SeriesEditScreen extends ConsumerWidget {
       },
       child: Scaffold(
         backgroundColor: theme.colorScheme.surface,
-        body: CustomScrollView(
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            DetailSliverAppBar(
-              title: 'Edit Series',
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(kToolbarHeight),
+          child: Builder(
+            builder: (context) => AppBar(
+              title: const Text(
+                'Edit Series',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              elevation: 0,
               actions: [
                 state.isLoading
                     ? Container(
@@ -97,74 +101,75 @@ class SeriesEditScreen extends ConsumerWidget {
                     : AnimatedOpacity(
                         opacity: state.hasChanges ? 1.0 : 0.6,
                         duration: const Duration(milliseconds: 200),
-                        child: ElevatedButton.icon(
-                          icon: const Icon(Icons.save_outlined),
-                          label: const Text('SAVE'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: state.hasChanges
-                                ? theme.colorScheme.primaryContainer
-                                : theme.colorScheme.primaryContainer.withAlpha(
-                                    178,
-                                  ),
-                            foregroundColor:
-                                theme.colorScheme.onPrimaryContainer,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: ElevatedButton.icon(
+                            icon: const Icon(Icons.save_outlined),
+                            label: const Text('SAVE'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: state.hasChanges
+                                  ? theme.colorScheme.primary
+                                  : theme.colorScheme.primary.withAlpha(180),
+                              foregroundColor: theme.colorScheme.onPrimary,
+                              elevation: 2,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
+                            ),
+                            onPressed: state.hasChanges
+                                ? () => _saveSeries(context, ref)
+                                : null,
                           ),
-                          onPressed: state.hasChanges
-                              ? () => _saveSeries(context, ref)
-                              : null,
                         ),
                       ),
-                const SizedBox(width: 16),
               ],
             ),
-            SliverToBoxAdapter(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.surface,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(24.0),
-                    topRight: Radius.circular(24.0),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: theme.colorScheme.shadow.withAlpha(25),
-                      blurRadius: 10,
-                      offset: const Offset(0, -5),
-                    ),
-                  ],
+          ),
+        ),
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24.0),
+              color: theme.colorScheme.surface,
+              boxShadow: [
+                BoxShadow(
+                  color: theme.colorScheme.shadow.withAlpha(10),
+                  blurRadius: 6,
+                  spreadRadius: 2,
+                  offset: const Offset(0, 2),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 8.0,
-                  ),
-                  child: state.isLoading
-                      ? const Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(32.0),
-                            child: Column(
-                              children: [
-                                CircularProgressIndicator(),
-                                SizedBox(height: 16),
-                                Text('Saving changes...'),
-                              ],
-                            ),
-                          ),
-                        )
-                      : SeriesEditForm(
-                          series: state.series,
-                          onSeriesChanged: (updatedSeries) {
-                            ref
-                                .read(
-                                  seriesEditControllerProvider(series).notifier,
-                                )
-                                .updateSeries(updatedSeries);
-                          },
-                        ),
-                ),
-              ),
+              ],
             ),
-          ],
+            padding: const EdgeInsets.fromLTRB(
+              16.0, // left
+              20.0, // top
+              16.0, // right
+              16.0, // bottom
+            ),
+            child: state.isLoading
+                ? const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(32.0),
+                      child: Column(
+                        children: [
+                          CircularProgressIndicator(),
+                          SizedBox(height: 16),
+                          Text('Saving changes...'),
+                        ],
+                      ),
+                    ),
+                  )
+                : SeriesEditForm(
+                    series: state.series,
+                    onSeriesChanged: (updatedSeries) {
+                      ref
+                          .read(seriesEditControllerProvider(series).notifier)
+                          .updateSeries(updatedSeries);
+                    },
+                  ),
+          ),
         ),
       ),
     );
@@ -186,23 +191,58 @@ class SeriesEditForm extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SeriesEditHeader(series: series),
-        const SizedBox(height: 24.0),
-        _buildSectionHeader(context, 'Monitoring Options', Icons.visibility),
-        const SizedBox(height: 12.0),
-        MonitoringOptions(series: series, onSeriesChanged: onSeriesChanged),
-        const SizedBox(height: 24.0),
-        _buildSectionHeader(context, 'Series Type', Icons.category),
-        const SizedBox(height: 12.0),
-        SeriesTypeDropdown(series: series, onSeriesChanged: onSeriesChanged),
-        const SizedBox(height: 24.0),
-        _buildSectionHeader(context, 'Quality Profile', Icons.high_quality),
-        const SizedBox(height: 12.0),
-        QualityProfileDropdown(
-          series: series,
-          onSeriesChanged: onSeriesChanged,
+        // Use SafeEntry for header animation
+        SafeEntry(
+          key: ValueKey('series_edit_header_${series.id}'),
+          duration: const Duration(milliseconds: 350),
+          yOffset: 40.0,
+          opacity: 0.0,
+          curve: Curves.easeOutCubic,
+          child: SeriesEditHeader(series: series),
         ),
-        const SizedBox(height: 32.0),
+        const SizedBox(height: 28.0),
+
+        // Monitoring section
+        SafeEntry(
+          key: const ValueKey('monitoring_section'),
+          duration: const Duration(milliseconds: 400),
+          yOffset: 30.0,
+          opacity: 0.0,
+          curve: Curves.easeOutCubic,
+          child: MonitoringOptions(
+            series: series,
+            onSeriesChanged: onSeriesChanged,
+          ),
+        ),
+        const SizedBox(height: 16.0),
+
+        // Series Type section
+        SafeEntry(
+          key: const ValueKey('series_type_section'),
+          duration: const Duration(milliseconds: 450),
+          yOffset: 30.0,
+          opacity: 0.0,
+          curve: Curves.easeOutCubic,
+          child: SeriesTypeDropdown(
+            series: series,
+            onSeriesChanged: onSeriesChanged,
+          ),
+        ),
+        const SizedBox(height: 16.0),
+
+        // Quality Profile section
+        SafeEntry(
+          key: const ValueKey('quality_profile_section'),
+          duration: const Duration(milliseconds: 500),
+          yOffset: 30.0,
+          opacity: 0.0,
+          curve: Curves.easeOutCubic,
+          child: QualityProfileDropdown(
+            series: series,
+            onSeriesChanged: onSeriesChanged,
+          ),
+        ),
+        const SizedBox(height: 40.0),
       ],
     );
   }
@@ -213,17 +253,54 @@ class SeriesEditForm extends StatelessWidget {
     IconData icon,
   ) {
     final theme = Theme.of(context);
-    return Row(
-      children: [
-        Icon(icon, size: 18, color: theme.colorScheme.primary),
-        const SizedBox(width: 8.0),
-        Text(
-          title,
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainer.withOpacity(0.7),
+        borderRadius: BorderRadius.circular(16.0),
+        border: Border.all(
+          color: theme.colorScheme.outlineVariant.withOpacity(0.3),
+          width: 1.0,
         ),
-      ],
+        boxShadow: [
+          BoxShadow(
+            color: theme.colorScheme.shadow.withAlpha(15),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primaryContainer,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: theme.colorScheme.shadow.withAlpha(30),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Icon(
+              icon,
+              size: 20,
+              color: theme.colorScheme.onPrimaryContainer,
+            ),
+          ),
+          const SizedBox(width: 16.0),
+          Text(
+            title,
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              letterSpacing: 0.2,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

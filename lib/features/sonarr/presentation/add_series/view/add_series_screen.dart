@@ -6,7 +6,7 @@ import 'package:client/features/sonarr/presentation/add_series/widgets/no_result
 import 'package:client/features/sonarr/presentation/add_series/widgets/search_bar.dart';
 import 'package:client/features/sonarr/presentation/add_series/widgets/series_card.dart';
 import 'package:client/features/sonarr/presentation/add_series_details/view/add_series_details_screen.dart';
-import 'package:entry/entry.dart';
+import 'package:client/features/sonarr/presentation/shared/widgets/safe_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
@@ -86,12 +86,17 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Add Series',
-          style: TextStyle(fontWeight: FontWeight.bold),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: Builder(
+          builder: (context) => AppBar(
+            title: const Text(
+              'Add Series',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            elevation: 0,
+          ),
         ),
-        elevation: 0,
       ),
       body: SafeArea(
         child: Column(
@@ -150,17 +155,18 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
                             final series = state.searchResults[index];
                             final isInLibrary =
                                 state.existingSeriesMap[series.tvdbId] ?? false;
-                            return Entry.offset(
-                              yOffset: 100,
-                              duration: const Duration(milliseconds: 300),
-                              child: Entry.opacity(
-                                duration: const Duration(milliseconds: 300),
 
-                                child: SeriesCard(
-                                  series: series,
-                                  isInLibrary: isInLibrary,
-                                  onAdd: () => addSeries(series),
-                                ),
+                            // Use our SafeEntry widget to prevent animation/layout issues
+                            return SafeEntry(
+                              key: ValueKey('series_${series.tvdbId}_$index'),
+                              yOffset: 100,
+                              opacity:
+                                  0.0, // Start fully transparent and fade in
+                              duration: const Duration(milliseconds: 300),
+                              child: SeriesCard(
+                                series: series,
+                                isInLibrary: isInLibrary,
+                                onAdd: () => addSeries(series),
                               ),
                             );
                           },

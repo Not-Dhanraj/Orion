@@ -112,19 +112,6 @@ class SonarrDetailScreen extends ConsumerWidget {
             fanartUrl: fanartUrl,
             actions: [
               IconButton(
-                icon: const Icon(Icons.refresh),
-                tooltip: 'Refresh series data',
-                onPressed: () {
-                  ref.invalidate(singleSeriesProvider(series.id!));
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Refreshing series data...'),
-                      duration: Duration(seconds: 1),
-                    ),
-                  );
-                },
-              ),
-              IconButton(
                 icon: const Icon(Icons.edit),
                 tooltip: 'Edit Series',
                 onPressed: () async {

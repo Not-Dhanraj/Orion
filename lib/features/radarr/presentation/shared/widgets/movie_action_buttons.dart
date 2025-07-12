@@ -1,6 +1,8 @@
 import 'package:client/features/radarr/application/provider/movie_management_provider/movie_details_provider.dart';
 import 'package:client/features/radarr/application/provider/movie_management_provider/update_movie_provider.dart';
 import 'package:client/features/radarr/application/provider/movie_management_provider/delete_movie_provider.dart';
+import 'package:client/features/radarr/application/provider/movie_management_provider/movie_release_provider.dart';
+import 'package:client/features/radarr/presentation/shared/widgets/release_selection_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr_flutter/radarr_flutter.dart';
@@ -61,28 +63,70 @@ class MovieActionButtons extends ConsumerWidget {
           message: 'Search for Movie',
           child: IconButton(
             onPressed: () async {
-              try {
-                // Create a copy of the movie with search flag
-                final Map<String, dynamic> movieData = movie.toJson();
-                movieData['searchForMovie'] = true;
-                final updatedMovie = RadarrMovie.fromJson(movieData);
-
-                // Trigger search
-                await ref.read(updateMovieProvider(updatedMovie).future);
-
+              if (movie.id == null) {
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Searching for ${movie.title}'),
-                      duration: const Duration(seconds: 2),
+                    const SnackBar(
+                      content: Text('Cannot search: Missing movie ID'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+                return;
+              }
+
+              try {
+                // Show loading dialog
+                if (context.mounted) {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) =>
+                        const Center(child: CircularProgressIndicator()),
+                  );
+                }
+
+                // Get releases for this movie
+                final releases = await ref.read(
+                  movieReleaseProvider(movie.id!).future,
+                );
+
+                // Close loading dialog
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
+
+                if (releases.isEmpty) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('No releases found for this movie'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                  }
+                  return;
+                }
+
+                // Show release selection dialog
+                if (context.mounted) {
+                  await showDialog(
+                    context: context,
+                    builder: (context) => ReleaseSelectionDialog(
+                      releases: releases,
+                      title: 'Releases for ${movie.title ?? "Movie"}',
                     ),
                   );
                 }
               } catch (e) {
                 if (context.mounted) {
+                  Navigator.of(
+                    context,
+                  ).pop(); // Close loading dialog if still showing
+
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Error searching for movie: $e'),
+                      content: Text('Error fetching releases: $e'),
                       backgroundColor: Colors.red,
                     ),
                   );

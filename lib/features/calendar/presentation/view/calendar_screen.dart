@@ -154,19 +154,22 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen>
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Refresh calendar data
-          _refreshCalendarData();
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('Calendar refreshed')));
-        },
-        backgroundColor: colorScheme.primaryContainer,
-        foregroundColor: colorScheme.onPrimaryContainer,
-        elevation: 4,
-        child: const Icon(Icons.refresh),
-      ),
+      // floatingActionButton: Hero(
+      //   tag: 'calendar_fab', // Unique hero tag for this FAB
+      //   child: FloatingActionButton(
+      //     onPressed: () {
+      //       // Refresh calendar data
+      //       _refreshCalendarData();
+      //       ScaffoldMessenger.of(
+      //         context,
+      //       ).showSnackBar(const SnackBar(content: Text('Calendar refreshed')));
+      //     },
+      //     backgroundColor: colorScheme.primaryContainer,
+      //     foregroundColor: colorScheme.onPrimaryContainer,
+      //     elevation: 4,
+      //     child: const Icon(Icons.refresh),
+      //   ),
+      // ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

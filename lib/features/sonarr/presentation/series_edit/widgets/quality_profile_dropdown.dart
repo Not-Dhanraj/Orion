@@ -23,7 +23,7 @@ class QualityProfileDropdown extends ConsumerWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
         side: BorderSide(
-          color: theme.colorScheme.outline.withOpacity(0.1),
+          color: theme.colorScheme.outline.withAlpha(25),
           width: 1,
         ),
       ),
@@ -98,7 +98,7 @@ class QualityProfileDropdown extends ConsumerWidget {
                   error.toString(),
                   style: TextStyle(
                     fontSize: 12,
-                    color: theme.colorScheme.error.withOpacity(0.8),
+                    color: theme.colorScheme.error.withAlpha(204),
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,

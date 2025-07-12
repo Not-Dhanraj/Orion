@@ -32,7 +32,7 @@ class SeriesEditHeader extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
         side: BorderSide(
-          color: theme.colorScheme.outlineVariant.withOpacity(0.2),
+          color: theme.colorScheme.outlineVariant.withAlpha(51),
           width: 1,
         ),
       ),
@@ -43,7 +43,7 @@ class SeriesEditHeader extends StatelessWidget {
                   image: CachedNetworkImageProvider(fanartUrl),
                   fit: BoxFit.cover,
                   colorFilter: ColorFilter.mode(
-                    theme.colorScheme.surface.withOpacity(0.85),
+                    theme.colorScheme.surface.withAlpha(217),
                     BlendMode.srcOver,
                   ),
                 ),
@@ -64,9 +64,7 @@ class SeriesEditHeader extends StatelessWidget {
                         decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
-                              color: theme.colorScheme.shadow.withOpacity(
-                                0.3,
-                              ),
+                              color: theme.colorScheme.shadow.withAlpha(76),
                               blurRadius: 8,
                               offset: const Offset(0, 3),
                             ),
@@ -88,7 +86,7 @@ class SeriesEditHeader extends StatelessWidget {
                           errorWidget: (context, url, error) => Container(
                             width: 100,
                             height: 150,
-                            color: theme.colorScheme.surfaceVariant,
+                            color: theme.colorScheme.surfaceContainerHighest,
                             child: const Icon(
                               Icons.image_not_supported,
                               size: 30,
@@ -99,7 +97,7 @@ class SeriesEditHeader extends StatelessWidget {
                     : Container(
                         width: 100,
                         height: 150,
-                        color: theme.colorScheme.surfaceVariant,
+                        color: theme.colorScheme.surfaceContainerHighest,
                         child: const Icon(Icons.movie, size: 30),
                       ),
               ),

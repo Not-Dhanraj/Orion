@@ -13,64 +13,29 @@ class SeriesEditScreen extends ConsumerWidget {
 
   const SeriesEditScreen({super.key, required this.series});
 
-  Future<bool> _onWillPop(BuildContext context, WidgetRef ref) async {
-    final hasChanges =
-        ref.read(seriesEditControllerProvider(series)).hasChanges;
-    if (!hasChanges) {
-      return true;
-    }
-
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Discard Changes?'),
-        content: const Text(
-          'You have unsaved changes that will be lost if you leave this screen.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('STAY'),
-          ),
-          TextButton(
-            style: TextButton.styleFrom(
-              foregroundColor: Theme.of(context).colorScheme.error,
-            ),
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('DISCARD'),
-          ),
-        ],
-      ),
-    );
-
-    return result ?? false;
-  }
-
   Future<void> _saveSeries(BuildContext context, WidgetRef ref) async {
     try {
       await ref
           .read(seriesEditControllerProvider(series).notifier)
           .saveSeries();
 
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${series.title} has been updated'),
-            backgroundColor: Colors.green,
-            duration: const Duration(seconds: 2),
-          ),
-        );
-        Navigator.of(context).pop(true);
-      }
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${series.title} has been updated'),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Navigator.of(context).pop(true);
     } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error updating series: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error updating series: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -79,8 +44,39 @@ class SeriesEditScreen extends ConsumerWidget {
     final theme = Theme.of(context);
     final state = ref.watch(seriesEditControllerProvider(series));
 
-    return WillPopScope(
-      onWillPop: () => _onWillPop(context, ref),
+    return PopScope(
+      canPop: !state.hasChanges,
+      onPopInvoked: (bool didPop) {
+        if (didPop) {
+          return;
+        }
+        showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Discard Changes?'),
+            content: const Text(
+              'You have unsaved changes that will be lost if you leave this screen.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('STAY'),
+              ),
+              TextButton(
+                style: TextButton.styleFrom(
+                  foregroundColor: Theme.of(context).colorScheme.error,
+                ),
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text('DISCARD'),
+              ),
+            ],
+          ),
+        ).then((result) {
+          if (result ?? false) {
+            Navigator.of(context).pop();
+          }
+        });
+      },
       child: Scaffold(
         backgroundColor: theme.colorScheme.surface,
         body: CustomScrollView(
@@ -107,8 +103,9 @@ class SeriesEditScreen extends ConsumerWidget {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: state.hasChanges
                                 ? theme.colorScheme.primaryContainer
-                                : theme.colorScheme.primaryContainer
-                                    .withOpacity(0.7),
+                                : theme.colorScheme.primaryContainer.withAlpha(
+                                    178,
+                                  ),
                             foregroundColor:
                                 theme.colorScheme.onPrimaryContainer,
                           ),
@@ -158,8 +155,9 @@ class SeriesEditScreen extends ConsumerWidget {
                           series: state.series,
                           onSeriesChanged: (updatedSeries) {
                             ref
-                                .read(seriesEditControllerProvider(series)
-                                    .notifier)
+                                .read(
+                                  seriesEditControllerProvider(series).notifier,
+                                )
                                 .updateSeries(updatedSeries);
                           },
                         ),

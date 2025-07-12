@@ -31,19 +31,6 @@ class SonarrCommands {
     return await sonarrApi.command.rescanSeries(seriesId: seriesId);
   }
 
-  /// Initiates a search for all episodes in the specified season
-  ///
-  /// [seriesId] The ID of the series
-  /// [seasonNumber] The season number to search for
-  /// Returns a Future with the command response
-  Future<SonarrCommand> seasonSearch(int seriesId, int seasonNumber) async {
-    final sonarrApi = _ref.read(sonarrProvider);
-    return await sonarrApi.command.seasonSearch(
-      seriesId: seriesId,
-      seasonNumber: seasonNumber,
-    );
-  }
-
   /// Gets all episodes for a specific series
   ///
   /// [seriesId] The ID of the series to get episodes for

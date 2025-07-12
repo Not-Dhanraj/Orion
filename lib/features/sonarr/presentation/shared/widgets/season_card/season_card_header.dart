@@ -74,7 +74,6 @@ class SeasonCardHeader extends ConsumerWidget {
           seasonNumber: seasonNumber,
           onToggleMonitoring: (monitored) =>
               _toggleMonitoring(monitored, seasonService, series, context),
-          onSearch: () => _searchSeason(seasonService, series, context),
           onShowReleases: () =>
               _showSeasonReleases(context, ref, series.id!, seasonNumber),
         ),
@@ -109,33 +108,6 @@ class SeasonCardHeader extends ConsumerWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error updating season: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
-  }
-
-  Future<void> _searchSeason(
-    SeasonService seasonService,
-    SonarrSeries currentSeries,
-    BuildContext context,
-  ) async {
-    try {
-      await seasonService.searchSeason(currentSeries.id!, seasonNumber);
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Searching for $seasonName episodes'),
-            duration: const Duration(seconds: 2),
-          ),
-        );
-      }
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error searching for episodes: $e'),
             backgroundColor: Colors.red,
           ),
         );

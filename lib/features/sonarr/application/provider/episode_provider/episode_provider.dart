@@ -60,20 +60,6 @@ class EpisodeNotifier extends StateNotifier<AsyncValue<void>> {
     }
   }
 
-  /// Initiates a search for all episodes in the specified season
-  Future<SonarrCommand> seasonSearch(int seriesId, int seasonNumber) async {
-    state = const AsyncValue.loading();
-    try {
-      final commands = _ref.read(sonarrCommandsProvider);
-      final result = await commands.seasonSearch(seriesId, seasonNumber);
-      state = const AsyncValue.data(null);
-      return result;
-    } catch (e, stack) {
-      state = AsyncValue.error(e, stack);
-      rethrow;
-    }
-  }
-
   /// Toggle monitoring status for a specific episode
   Future<void> toggleEpisodeMonitored(
     SonarrEpisode episode,

@@ -1,5 +1,4 @@
 import 'package:client/features/sonarr/application/provider/commands_provider/commands_provider.dart';
-import 'package:client/features/sonarr/application/provider/episode_provider/episode_provider.dart';
 import 'package:client/features/sonarr/application/provider/series_management_provider/series_management_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
@@ -21,12 +20,6 @@ class SeasonService {
     await _ref
         .read(seriesManagementProvider.notifier)
         .setSeasonMonitoring(series, seasonNumber, monitored);
-  }
-
-  Future<void> searchSeason(int seriesId, int seasonNumber) async {
-    await _ref
-        .read(episodeNotifierProvider.notifier)
-        .seasonSearch(seriesId, seasonNumber);
   }
 
   Future<List<SonarrRelease>> getSeasonReleases(

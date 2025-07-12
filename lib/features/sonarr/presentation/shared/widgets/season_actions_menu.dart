@@ -5,7 +5,6 @@ class SeasonActionsMenu extends StatelessWidget {
   final SonarrSeries series;
   final int seasonNumber;
   final Function(bool) onToggleMonitoring;
-  final VoidCallback onSearch;
   final VoidCallback onShowReleases;
 
   const SeasonActionsMenu({
@@ -13,7 +12,6 @@ class SeasonActionsMenu extends StatelessWidget {
     required this.series,
     required this.seasonNumber,
     required this.onToggleMonitoring,
-    required this.onSearch,
     required this.onShowReleases,
   });
 
@@ -32,9 +30,6 @@ class SeasonActionsMenu extends StatelessWidget {
             break;
           case 'unmonitor':
             onToggleMonitoring(false);
-            break;
-          case 'search':
-            onSearch();
             break;
           case 'releases':
             onShowReleases();
@@ -63,16 +58,6 @@ class SeasonActionsMenu extends StatelessWidget {
               Icon(Icons.visibility_off, color: Colors.grey.shade600, size: 20),
               const SizedBox(width: 12),
               const Text('Unmonitor Season'),
-            ],
-          ),
-        ),
-        PopupMenuItem(
-          value: 'search',
-          child: Row(
-            children: [
-              Icon(Icons.search, color: theme.colorScheme.secondary, size: 20),
-              const SizedBox(width: 12),
-              const Text('Search'),
             ],
           ),
         ),

@@ -9,85 +9,110 @@ class SeriesInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Series Info',
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8.0),
-          Card(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _buildStatItem(
-                        context,
-                        'Type',
-                        series.seriesType!.value.toString(),
-                        Icons.category,
-                      ),
-                      _buildStatItem(
-                        context,
-                        'Network',
-                        series.network ?? 'Unknown',
-                        Icons.wifi,
-                      ),
-                      _buildStatItem(
-                        context,
-                        'Year',
-                        '${series.year ?? 'N/A'}',
-                        Icons.calendar_today,
-                      ),
-                    ],
+
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      elevation: 3,
+      shadowColor: theme.colorScheme.shadow.withOpacity(0.2),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.tertiaryContainer,
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  const SizedBox(height: 16),
-                  if (series.ratings?.value != null) ...[
-                    const Divider(),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.star_rounded,
-                          color: Colors.amber,
-                          size: 28,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          '${series.ratings!.value}/10',
-                          style: theme.textTheme.headlineSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          '(${series.ratings!.votes ?? 0} votes)',
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurface.withAlpha(178),
-                          ),
-                        ),
-                      ],
+                  child: Icon(
+                    Icons.info_outline,
+                    color: theme.colorScheme.onTertiaryContainer,
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: 12.0),
+                Text(
+                  'Series Info',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildStatItem(
+                  context,
+                  'Type',
+                  series.seriesType?.value.toString() ?? 'Unknown',
+                  Icons.category,
+                ),
+                _buildStatItem(
+                  context,
+                  'Network',
+                  series.network ?? 'Unknown',
+                  Icons.wifi,
+                ),
+                _buildStatItem(
+                  context,
+                  'Year',
+                  '${series.year ?? 'N/A'}',
+                  Icons.calendar_today,
+                ),
+              ],
+            ),
+            if (series.ratings?.value != null) ...[
+              // const SizedBox(height: 24),
+              // const Divider(),
+              const SizedBox(height: 16),
+              Container(
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceVariant.withOpacity(0.4),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                padding: EdgeInsets.symmetric(vertical: 4),
+                margin: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.amber.withOpacity(0.2),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.star_rounded,
+                        color: Colors.amber,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      '${series.ratings!.value}/10',
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      '(${series.ratings!.votes ?? 0} votes)',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
                     ),
                   ],
-                ],
+                ),
               ),
-            ),
-          ),
-        ],
+            ],
+          ],
+        ),
       ),
     );
   }
@@ -108,7 +133,7 @@ class SeriesInfo extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: theme.colorScheme.shadow.withAlpha(25),
+                color: theme.colorScheme.shadow.withAlpha(20),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),
@@ -123,14 +148,14 @@ class SeriesInfo extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           value,
-          style: theme.textTheme.titleLarge?.copyWith(
+          style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),
         Text(
           label,
           style: theme.textTheme.bodySmall?.copyWith(
-            color: theme.colorScheme.onSurface.withAlpha(178),
+            color: theme.colorScheme.onSurfaceVariant,
           ),
         ),
       ],

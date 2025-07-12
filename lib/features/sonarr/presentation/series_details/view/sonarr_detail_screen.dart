@@ -11,6 +11,7 @@ import 'package:client/features/sonarr/presentation/series_details/widgets/serie
 import 'package:client/features/sonarr/presentation/series_details/widgets/series_media_info.dart';
 import 'package:client/features/sonarr/presentation/series_details/widgets/series_overview.dart';
 import 'package:client/features/sonarr/presentation/series_details/widgets/series_status_indicators.dart';
+import 'package:entry/entry.dart';
 
 class SonarrDetailScreen extends ConsumerWidget {
   final SonarrSeries series;
@@ -70,6 +71,7 @@ class SonarrDetailScreen extends ConsumerWidget {
             SnackBar(
               content: Text('${series.title} has been deleted'),
               backgroundColor: Colors.green,
+              behavior: SnackBarBehavior.floating,
               duration: const Duration(seconds: 2),
             ),
           );
@@ -82,6 +84,7 @@ class SonarrDetailScreen extends ConsumerWidget {
             SnackBar(
               content: Text('Failed to delete ${series.title}'),
               backgroundColor: Colors.red,
+              behavior: SnackBarBehavior.floating,
             ),
           );
         }
@@ -90,6 +93,7 @@ class SonarrDetailScreen extends ConsumerWidget {
           SnackBar(
             content: Text('Error deleting series: $e'),
             backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
           ),
         );
       }
@@ -155,18 +159,41 @@ class SonarrDetailScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SeriesDetails(series: series, posterUrl: posterUrl),
-                  SeriesStatusIndicators(series: series),
-                  const SizedBox(height: 24.0),
-                  SeriesOverview(
-                    overview: series.overview ?? 'No plot summary available.',
+                  Entry.opacity(
+                    duration: const Duration(milliseconds: 400),
+                    child: SeriesDetails(series: series, posterUrl: posterUrl),
+                  ),
+                  Entry.opacity(
+                    duration: const Duration(milliseconds: 450),
+                    delay: const Duration(milliseconds: 50),
+                    child: SeriesStatusIndicators(series: series),
                   ),
                   const SizedBox(height: 24.0),
-                  SeriesEpisodes(series: series),
+                  Entry.opacity(
+                    duration: const Duration(milliseconds: 500),
+                    delay: const Duration(milliseconds: 100),
+                    child: SeriesOverview(
+                      overview: series.overview ?? 'No plot summary available.',
+                    ),
+                  ),
                   const SizedBox(height: 24.0),
-                  SeriesInfo(series: series),
+                  Entry.opacity(
+                    duration: const Duration(milliseconds: 550),
+                    delay: const Duration(milliseconds: 150),
+                    child: SeriesEpisodes(series: series),
+                  ),
                   const SizedBox(height: 24.0),
-                  SeriesMediaInfo(series: series),
+                  Entry.opacity(
+                    duration: const Duration(milliseconds: 600),
+                    delay: const Duration(milliseconds: 200),
+                    child: SeriesInfo(series: series),
+                  ),
+                  const SizedBox(height: 24.0),
+                  Entry.opacity(
+                    duration: const Duration(milliseconds: 650),
+                    delay: const Duration(milliseconds: 250),
+                    child: SeriesMediaInfo(series: series),
+                  ),
                   const SizedBox(height: 32.0),
                 ],
               ),

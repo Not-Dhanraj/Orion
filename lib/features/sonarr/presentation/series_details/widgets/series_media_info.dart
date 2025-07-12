@@ -13,63 +13,89 @@ class SeriesMediaInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Media Info',
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
+
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      elevation: 3,
+      shadowColor: theme.colorScheme.shadow.withOpacity(0.2),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.secondaryContainer,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(
+                    Icons.movie_outlined,
+                    color: theme.colorScheme.onSecondaryContainer,
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: 12.0),
+                Text(
+                  'Media Info',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
-          ),
-          const SizedBox(height: 8.0),
-          Card(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
+            const SizedBox(height: 20.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildStatCounter(
+                  context,
+                  'Runtime',
+                  '${series.runtime ?? 0} min',
+                  Icons.timer,
+                ),
+                _buildStatCounter(
+                  context,
+                  'Status',
+                  series.status ?? 'Unknown',
+                  Icons.live_tv,
+                ),
+                _buildStatCounter(
+                  context,
+                  'Quality',
+                  'Profile ${series.qualityProfileId ?? 0}',
+                  Icons.high_quality,
+                ),
+              ],
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
+            const SizedBox(height: 24),
+            Container(
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surfaceVariant.withOpacity(0.4),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _buildStatCounter(
-                        context,
-                        'Runtime',
-                        '${series.runtime ?? 0} min',
-                        Icons.timer,
-                      ),
-                      _buildStatCounter(
-                        context,
-                        'Status',
-                        series.status ?? 'Unknown',
-                        Icons.live_tv,
-                      ),
-                      _buildStatCounter(
-                        context,
-                        'Quality',
-                        'Profile ${series.qualityProfileId ?? 0}',
-                        Icons.high_quality,
-                      ),
-                    ],
-                  ),
                   if (series.firstAired != null) ...[
-                    const SizedBox(height: 16),
-                    const Divider(),
-                    const SizedBox(height: 8),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.event,
-                          color: theme.colorScheme.primary,
-                          size: 20,
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primaryContainer,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.event,
+                            color: theme.colorScheme.onPrimaryContainer,
+                            size: 18,
+                          ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 12),
                         Text(
                           'First aired: ${_formatDate(series.firstAired!)}',
                           style: theme.textTheme.bodyLarge?.copyWith(
@@ -80,16 +106,22 @@ class SeriesMediaInfo extends StatelessWidget {
                     ),
                   ],
                   if (series.airTime != null && series.airTime!.isNotEmpty) ...[
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 16),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.access_time,
-                          color: theme.colorScheme.primary,
-                          size: 20,
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primaryContainer,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.access_time,
+                            color: theme.colorScheme.onPrimaryContainer,
+                            size: 18,
+                          ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 12),
                         Text(
                           'Air time: ${series.airTime}',
                           style: theme.textTheme.bodyLarge?.copyWith(
@@ -102,8 +134,8 @@ class SeriesMediaInfo extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -124,7 +156,7 @@ class SeriesMediaInfo extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: theme.colorScheme.shadow.withAlpha(25),
+                color: theme.colorScheme.shadow.withAlpha(20),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),
@@ -139,14 +171,14 @@ class SeriesMediaInfo extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           value,
-          style: theme.textTheme.titleLarge?.copyWith(
+          style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),
         Text(
           label,
           style: theme.textTheme.bodySmall?.copyWith(
-            color: theme.colorScheme.onSurface.withAlpha(178),
+            color: theme.colorScheme.onSurfaceVariant,
           ),
         ),
       ],

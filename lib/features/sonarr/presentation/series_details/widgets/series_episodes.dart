@@ -10,106 +10,101 @@ class SeriesEpisodes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.tv_rounded,
-                color: theme.colorScheme.primary,
-                size: 24,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                'Episodes',
-                style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12.0),
-          Card(
-            elevation: 3,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
+
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      elevation: 3,
+      shadowColor: theme.colorScheme.shadow.withOpacity(0.2),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SeasonsPage(initialSeries: series),
             ),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(16),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SeasonsPage(initialSeries: series),
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.secondaryContainer,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: theme.colorScheme.shadow.withOpacity(0.15),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      Icons.video_library_rounded,
+                      color: theme.colorScheme.onSecondaryContainer,
+                      size: 24,
+                    ),
                   ),
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    Row(
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.primaryContainer,
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: theme.colorScheme.shadow.withAlpha(25),
-                                blurRadius: 4,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: Icon(
-                            Icons.video_library,
-                            color: theme.colorScheme.onPrimaryContainer,
+                        Text(
+                          'View Seasons & Episodes',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: theme.colorScheme.onSurface,
                           ),
                         ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'View Seasons & Episodes',
-                                style: theme.textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                'Browse all episodes by season',
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.colorScheme.onSurface.withAlpha(
-                                    178,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.surfaceContainerHighest,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            Icons.chevron_right,
-                            color: theme.colorScheme.primary,
+                        const SizedBox(height: 4),
+                        Text(
+                          'Browse all episodes by season',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ],
                     ),
-                    if (series.seasons?.isNotEmpty == true) ...[
-                      const SizedBox(height: 12),
-                      const Divider(),
-                      const SizedBox(height: 8),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primaryContainer.withOpacity(
+                        0.6,
+                      ),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.chevron_right,
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                ],
+              ),
+              if (series.seasons?.isNotEmpty == true) ...[
+                const SizedBox(height: 16),
+                Container(
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.surfaceVariant.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: 6),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.folder,
+                        size: 18,
+                        color: theme.colorScheme.primary,
+                      ),
+                      const SizedBox(width: 8),
                       Text(
                         () {
                           final regularSeasons =
@@ -130,15 +125,16 @@ class SeriesEpisodes extends StatelessWidget {
                         }(),
                         style: theme.textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.w500,
+                          color: theme.colorScheme.onSurface,
                         ),
                       ),
                     ],
-                  ],
+                  ),
                 ),
-              ),
-            ),
+              ],
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

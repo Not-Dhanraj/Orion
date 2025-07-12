@@ -11,64 +11,103 @@ class SeriesStatusIndicators extends StatelessWidget {
     final theme = Theme.of(context);
     final bool isMonitored = series.monitored ?? false;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: isMonitored
-                  ? theme.colorScheme.primary.withAlpha(38)
-                  : theme.colorScheme.error.withAlpha(38),
-              borderRadius: BorderRadius.circular(16),
+    return Card(
+      margin: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+      elevation: 2,
+      shadowColor: theme.colorScheme.shadow.withOpacity(0.1),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildStatusIndicator(
+              context,
+              isMonitored ? 'Monitored' : 'Not Monitored',
+              isMonitored ? Icons.visibility : Icons.visibility_off,
+              isMonitored ? Colors.green : Colors.grey,
+              isMonitored,
             ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  isMonitored ? Icons.visibility : Icons.visibility_off,
-                  size: 16,
-                  color: isMonitored
-                      ? theme.colorScheme.primary
-                      : theme.colorScheme.error,
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  isMonitored ? 'Monitored' : 'Not Monitored',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: isMonitored
-                        ? theme.colorScheme.primary
-                        : theme.colorScheme.error,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+            const SizedBox(width: 16),
+            _buildStatusIndicator(
+              context,
+              series.status ?? 'Unknown',
+              _getStatusIcon(series.status),
+              _getStatusColor(theme, series.status),
+              true,
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Color _getStatusColor(ThemeData theme, String? status) {
+    if (status == null) return theme.colorScheme.tertiary;
+
+    switch (status.toLowerCase()) {
+      case 'continuing':
+        return Colors.green;
+      case 'ended':
+        return Colors.orange;
+      default:
+        return theme.colorScheme.tertiary;
+    }
+  }
+
+  IconData _getStatusIcon(String? status) {
+    if (status == null) return Icons.help_outline;
+
+    switch (status.toLowerCase()) {
+      case 'continuing':
+        return Icons.play_circle_outline;
+      case 'ended':
+        return Icons.check_circle_outline;
+      default:
+        return Icons.tv;
+    }
+  }
+
+  Widget _buildStatusIndicator(
+    BuildContext context,
+    String label,
+    IconData icon,
+    Color color,
+    bool active,
+  ) {
+    final theme = Theme.of(context);
+
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+        decoration: BoxDecoration(
+          color: active
+              ? color.withOpacity(0.12)
+              : theme.colorScheme.surfaceVariant,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: active ? color.withOpacity(0.5) : Colors.transparent,
+            width: 1.5,
           ),
-          const SizedBox(width: 8),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.secondary.withAlpha(38),
-              borderRadius: BorderRadius.circular(16),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 18,
+              color: active ? color : theme.colorScheme.onSurfaceVariant,
             ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.tv, size: 16, color: theme.colorScheme.secondary),
-                const SizedBox(width: 4),
-                Text(
-                  series.status ?? 'Unknown',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.secondary,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: theme.textTheme.labelLarge?.copyWith(
+                color: active ? color : theme.colorScheme.onSurfaceVariant,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

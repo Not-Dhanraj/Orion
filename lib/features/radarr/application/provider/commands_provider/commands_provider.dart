@@ -6,5 +6,27 @@ final radarrRefreshCommandProvider = FutureProvider.autoDispose<RadarrCommand>((
   ref,
 ) async {
   final radarrApi = ref.watch(radarrProvider);
+
   return await radarrApi.command.refreshMonitoredDownloads();
 });
+
+// System Status Provider
+final radarrSystemStatusProvider =
+    FutureProvider.autoDispose<RadarrSystemStatus>((ref) async {
+      final radarrApi = ref.watch(radarrProvider);
+      return await radarrApi.system.status();
+    });
+
+// Health Check Provider
+final radarrHealthCheckProvider =
+    FutureProvider.autoDispose<List<RadarrHealthCheck>>((ref) async {
+      final radarrApi = ref.watch(radarrProvider);
+      return await radarrApi.healthCheck.get();
+    });
+
+// Disk Space Provider
+final radarrDiskSpaceProvider =
+    FutureProvider.autoDispose<List<RadarrDiskSpace>>((ref) async {
+      final radarrApi = ref.watch(radarrProvider);
+      return await radarrApi.fileSystem.getDiskSpace();
+    });

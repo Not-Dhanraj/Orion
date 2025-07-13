@@ -2,6 +2,14 @@ import 'package:client/core/api/api_client.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
 
+// System Status Provider
+final sonarrSystemStatusProvider = FutureProvider.autoDispose<SonarrStatus>((
+  ref,
+) async {
+  final sonarrApi = ref.watch(sonarrProvider);
+  return await sonarrApi.system.getStatus();
+});
+
 /// Provider for Sonarr command operations
 final sonarrCommandsProvider = Provider<SonarrCommands>((ref) {
   return SonarrCommands(ref);
@@ -163,6 +171,7 @@ class SonarrCommands {
     int seasonNumber,
   ) async {
     final sonarrApi = _ref.read(sonarrProvider);
+
     final releases = await sonarrApi.release.getSeasonReleases(
       seriesId: seriesId,
       seasonNumber: seasonNumber,

@@ -139,7 +139,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: CachedNetworkImage(
-                                imageUrl: 'https://cdn-icons-png.flaticon.com/512/5806/5806967.png',
+                                imageUrl:
+                                    'https://cdn-icons-png.flaticon.com/512/5806/5806967.png',
                                 width: 60,
                                 height: 60,
                                 fit: BoxFit.contain,
@@ -152,9 +153,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                             ),
                           ),
                         ),
-                        
+
                         const SizedBox(height: 32),
-                        
+
                         // App Title
                         Text(
                           'arr',
@@ -172,9 +173,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                             ],
                           ),
                         ),
-                        
+
                         const SizedBox(height: 12),
-                        
+
                         // Subtitle
                         Text(
                           'Sonarr & Radarr Manager',
@@ -185,9 +186,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                             letterSpacing: 0.5,
                           ),
                         ),
-                        
+
                         const SizedBox(height: 60),
-                        
+
                         // Modern Loading Indicator
                         Container(
                           width: 60,
@@ -212,9 +213,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                             ),
                           ),
                         ),
-                        
+
                         const SizedBox(height: 24),
-                        
+
                         // Loading Text
                         Text(
                           'Loading...',

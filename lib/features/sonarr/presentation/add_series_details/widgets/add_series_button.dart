@@ -19,8 +19,10 @@ class AddSeriesButton extends StatelessWidget {
             Color.fromRGBO(
               (theme.colorScheme.primary.red * 255.0).round(),
               (theme.colorScheme.primary.green * 255.0).round(),
-              (((theme.colorScheme.primary.blue * 255.0).round()) + 40)
-                  .clamp(0, 255),
+              (((theme.colorScheme.primary.blue * 255.0).round()) + 40).clamp(
+                0,
+                255,
+              ),
               1,
             ),
           ],
@@ -47,10 +49,7 @@ class AddSeriesButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.add_circle_outline,
-              size: 22,
-            ),
+            const Icon(Icons.add_circle_outline, size: 22),
             const SizedBox(width: 12),
             Text(
               'ADD SERIES TO LIBRARY',

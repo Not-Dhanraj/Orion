@@ -5,14 +5,14 @@ import 'package:sonarr_flutter/sonarr_flutter.dart';
 
 final seriesEditControllerProvider = StateNotifierProvider.autoDispose
     .family<SeriesEditController, SeriesEditState, SonarrSeries>((ref, series) {
-  return SeriesEditController(ref, series);
-});
+      return SeriesEditController(ref, series);
+    });
 
 class SeriesEditController extends StateNotifier<SeriesEditState> {
   final Ref _ref;
 
   SeriesEditController(this._ref, SonarrSeries series)
-      : super(SeriesEditState(series: series));
+    : super(SeriesEditState(series: series));
 
   void updateSeries(SonarrSeries series) {
     state = state.copyWith(series: series, hasChanges: true);

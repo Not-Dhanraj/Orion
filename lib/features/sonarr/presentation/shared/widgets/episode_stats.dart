@@ -6,7 +6,11 @@ class EpisodeStats extends ConsumerWidget {
   final int seriesId;
   final int seasonNumber;
 
-  const EpisodeStats({super.key, required this.seriesId, required this.seasonNumber});
+  const EpisodeStats({
+    super.key,
+    required this.seriesId,
+    required this.seasonNumber,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,11 +19,13 @@ class EpisodeStats extends ConsumerWidget {
 
     return episodesAsyncValue.when(
       data: (episodes) {
-        final seasonEpisodes =
-            episodes.where((e) => e.seasonNumber == seasonNumber).toList();
+        final seasonEpisodes = episodes
+            .where((e) => e.seasonNumber == seasonNumber)
+            .toList();
         final totalEpisodes = seasonEpisodes.length;
-        final downloadedEpisodes =
-            seasonEpisodes.where((e) => e.hasFile == true).length;
+        final downloadedEpisodes = seasonEpisodes
+            .where((e) => e.hasFile == true)
+            .length;
 
         if (totalEpisodes == 0) {
           return const SizedBox.shrink();

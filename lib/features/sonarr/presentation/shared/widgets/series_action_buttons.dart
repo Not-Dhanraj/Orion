@@ -26,10 +26,10 @@ class SeriesActionButtons extends ConsumerWidget {
                     try {
                       // Refresh metadata from Sonarr API
                       await notifier.refreshSeries(series.id!);
-                      
+
                       // Refresh local data by invalidating the provider
                       ref.invalidate(singleSeriesProvider(series.id!));
-                      
+
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

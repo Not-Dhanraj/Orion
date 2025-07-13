@@ -53,9 +53,7 @@ class SonarrScreen extends ConsumerWidget {
                   loading: () => const CustomScrollView(
                     slivers: [
                       SliverFillRemaining(
-                        child: Center(
-                          child: CircularProgressIndicator(),
-                        ),
+                        child: Center(child: CircularProgressIndicator()),
                       ),
                     ],
                   ),

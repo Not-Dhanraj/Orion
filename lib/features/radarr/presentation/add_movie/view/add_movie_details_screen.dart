@@ -132,8 +132,7 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
             setState(() => _selectedLanguageProfile = value),
         onMinimumAvailabilityChanged: (value) =>
             setState(() => _minimumAvailability = value),
-        onMonitorTypeChanged: (value) =>
-            setState(() => _monitorType = value),
+        onMonitorTypeChanged: (value) => setState(() => _monitorType = value),
       ),
     ];
 

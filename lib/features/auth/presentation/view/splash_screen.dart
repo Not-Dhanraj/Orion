@@ -2,8 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/features/auth/application/provider/credentials_provider.dart';
 import 'package:client/features/auth/presentation/view/auth_screen.dart';
 import 'package:client/features/home/presentation/view/home_screen.dart';
+import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -81,65 +83,153 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
 
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
             colors: [
-              colorScheme.primary.withOpacity(0.8),
-              colorScheme.primary,
-              colorScheme.primaryContainer,
+              theme.colorScheme.primary.withAlpha(230),
+              theme.colorScheme.primary,
+              theme.colorScheme.primaryContainer.withAlpha(180),
             ],
+            stops: const [0.0, 0.6, 1.0],
           ),
         ),
-        child: Center(
-          child: AnimatedBuilder(
-            animation: _animationController,
-            builder: (context, child) {
-              return FadeTransition(
-                opacity: _fadeAnimation,
-                child: ScaleTransition(
-                  scale: _scaleAnimation,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Logo - Using SvgPicture to load the logo
-                      SizedBox(
-                        width: 120,
-                        height: 120,
-                        child: CachedNetworkImage(
-                          imageUrl:
-                              'https://cdn-icons-png.flaticon.com/512/5806/5806967.png',
+        child: SafeArea(
+          child: Center(
+            child: AnimatedBuilder(
+              animation: _animationController,
+              builder: (context, child) {
+                return FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: ScaleTransition(
+                    scale: _scaleAnimation,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Modern Logo Container
+                        Container(
+                          width: 140,
+                          height: 140,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withAlpha(25),
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(
+                              color: Colors.white.withAlpha(100),
+                              width: 2,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withAlpha(50),
+                                blurRadius: 20,
+                                offset: const Offset(0, 10),
+                              ),
+                            ],
+                          ),
+                          child: Center(
+                            child: Container(
+                              width: 80,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: CachedNetworkImage(
+                                imageUrl: 'https://cdn-icons-png.flaticon.com/512/5806/5806967.png',
+                                width: 60,
+                                height: 60,
+                                fit: BoxFit.contain,
+                                errorWidget: (context, url, error) => Icon(
+                                  Icons.movie,
+                                  size: 60,
+                                  color: theme.colorScheme.primary,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 24),
-                      Text(
-                        'arr',
-                        style: TextStyle(
-                          color: colorScheme.onPrimary,
-                          fontSize: 36,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.2,
+                        
+                        const SizedBox(height: 32),
+                        
+                        // App Title
+                        Text(
+                          'arr',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 48,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 2.0,
+                            shadows: [
+                              Shadow(
+                                color: Colors.black.withAlpha(100),
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 40),
-                      SizedBox(
-                        width: 48,
-                        height: 48,
-                        child: CircularProgressIndicator(
-                          color: colorScheme.onPrimary.withOpacity(0.8),
-                          strokeWidth: 3,
+                        
+                        const SizedBox(height: 12),
+                        
+                        // Subtitle
+                        Text(
+                          'Sonarr & Radarr Manager',
+                          style: TextStyle(
+                            color: Colors.white.withAlpha(220),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 0.5,
+                          ),
                         ),
-                      ),
-                    ],
+                        
+                        const SizedBox(height: 60),
+                        
+                        // Modern Loading Indicator
+                        Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withAlpha(25),
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(
+                              color: Colors.white.withAlpha(100),
+                              width: 1,
+                            ),
+                          ),
+                          child: Center(
+                            child: SizedBox(
+                              width: 32,
+                              height: 32,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2.5,
+                                backgroundColor: Colors.white.withAlpha(80),
+                              ),
+                            ),
+                          ),
+                        ),
+                        
+                        const SizedBox(height: 24),
+                        
+                        // Loading Text
+                        Text(
+                          'Loading...',
+                          style: TextStyle(
+                            color: Colors.white.withAlpha(180),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       ),

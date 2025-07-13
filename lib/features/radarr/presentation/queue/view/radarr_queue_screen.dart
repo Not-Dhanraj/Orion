@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:client/core/widgets/error_view.dart';
 import 'package:client/features/radarr/application/provider/queue_provider/queue_provider.dart';
+import 'package:client/features/radarr/application/provider/queue_provider/delete_queue_item_provider.dart';
 import 'package:client/features/radarr/presentation/queue/widgets/queue_item_card.dart';
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class _RadarrQueueScreenState extends ConsumerState<RadarrQueueScreen> {
   void _setupRefreshTimer() {
     _refreshTimer = Timer.periodic(const Duration(seconds: 4), (_) {
       if (mounted) {
-        ref.invalidate(queueProvider);
+        ref.read(radarrQueueNotifierProvider.notifier).refreshQueue();
       }
     });
   }
@@ -44,9 +45,8 @@ class _RadarrQueueScreenState extends ConsumerState<RadarrQueueScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Download Queue'), centerTitle: true),
       body: RefreshIndicator(
-        onRefresh: () async {
-          await ref.refresh(queueProvider).value;
-        },
+        onRefresh: () =>
+            ref.read(radarrQueueNotifierProvider.notifier).refreshQueue(),
         child: queueData.when(
           data: (queueItems) {
             final records = queueItems.records ?? [];

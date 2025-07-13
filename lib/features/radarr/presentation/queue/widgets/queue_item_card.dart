@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr_flutter/radarr_flutter.dart';
 
 import 'package:client/features/radarr/application/provider/queue_provider/delete_queue_item_provider.dart';
-import 'package:client/features/radarr/application/provider/queue_provider/queue_provider.dart';
 
 class QueueItemCard extends ConsumerWidget {
   final RadarrQueueRecord queueItem;
@@ -316,24 +315,9 @@ class _ActionsMenu extends ConsumerWidget {
     if (id == null) return;
 
     try {
-      // Show loading indicator
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            blacklist
-                ? 'Removing and blacklisting...'
-                : 'Removing from queue...',
-          ),
-          duration: const Duration(seconds: 1),
-        ),
-      );
-      final deleteQueueItem = DeleteQueueItem(id: id, blacklist: blacklist);
-      // Delete queue item (Note: blacklist functionality may need to be implemented in the provider)
-      await ref.read(deleteQueueItemProvider(deleteQueueItem).future);
-
-      // Refresh queue
-      await ref.refresh(queueProvider).value;
-
+      await ref
+          .read(radarrQueueNotifierProvider.notifier)
+          .deleteQueueItem(id, blacklist: blacklist);
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

@@ -14,16 +14,24 @@ class AddSeriesNotifier extends StateNotifier<AddSeriesState> {
     }
 
     // Update searchTerm immediately when search begins
-    state = state.copyWith(isLoading: true, isSearched: true, searchTerm: term);
+    state = state.copyWith(
+      isLoading: true, 
+      isSearched: true, 
+      searchTerm: term,
+      error: null, // Clear any previous errors
+    );
 
     final sonarr = _ref.read(sonarrProvider);
 
     try {
       final results = await sonarr.seriesLookup.getSeriesLookup(term: term);
-      state = state.copyWith(searchResults: results);
+      state = state.copyWith(searchResults: results, error: null);
       await _checkExistingSeries();
     } catch (e) {
-      // Handle error appropriately
+      state = state.copyWith(
+        searchResults: [],
+        error: e.toString(),
+      );
     } finally {
       state = state.copyWith(isLoading: false);
     }
@@ -58,6 +66,7 @@ class AddSeriesNotifier extends StateNotifier<AddSeriesState> {
       isSearched: false,
       isLoading: false,
       searchTerm: "",
+      error: null,
     );
   }
 

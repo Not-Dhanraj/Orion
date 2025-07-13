@@ -14,7 +14,8 @@ class UnifiedQueueItem {
   final double? size;
   final double? sizeLeft;
   final QueueItemType type;
-  final dynamic originalItem; // Store the original item for type-specific operations
+  final dynamic
+  originalItem; // Store the original item for type-specific operations
 
   UnifiedQueueItem({
     required this.id,
@@ -34,7 +35,7 @@ class UnifiedQueueItem {
     final size = sonarrItem.size ?? 0;
     final sizeLeft = sonarrItem.sizeLeft ?? 0;
     final progress = size > 0 ? (size - sizeLeft) / size : 0.0;
-    
+
     return UnifiedQueueItem(
       id: sonarrItem.id?.toString() ?? '',
       title: sonarrItem.title ?? 'Unknown Title',
@@ -54,7 +55,7 @@ class UnifiedQueueItem {
     final size = radarrItem.size ?? 0;
     final sizeLeft = radarrItem.sizeLeft ?? 0;
     final progress = size > 0 ? (size - sizeLeft) / size : 0.0;
-    
+
     return UnifiedQueueItem(
       id: radarrItem.id?.toString() ?? '',
       title: radarrItem.title ?? 'Unknown Title',

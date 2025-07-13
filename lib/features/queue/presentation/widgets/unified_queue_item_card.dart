@@ -42,14 +42,16 @@ class _QueueItemHeader extends ConsumerWidget {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: queueItem.type == QueueItemType.sonarr 
+            color: queueItem.type == QueueItemType.sonarr
                 ? Colors.blue.withOpacity(0.1)
                 : Colors.orange.withOpacity(0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(
             queueItem.type == QueueItemType.sonarr ? Icons.tv : Icons.movie,
-            color: queueItem.type == QueueItemType.sonarr ? Colors.blue : Colors.orange,
+            color: queueItem.type == QueueItemType.sonarr
+                ? Colors.blue
+                : Colors.orange,
           ),
         ),
         const SizedBox(width: 16),
@@ -229,7 +231,7 @@ class _TypeBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isTV = type == QueueItemType.sonarr;
-    
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       decoration: BoxDecoration(

@@ -19,14 +19,14 @@ class AddSeriesScreen extends ConsumerStatefulWidget {
 }
 
 class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
-  late final TextEditingController searchController;
-  final scrollController = ScrollController();
-  final focusNode = FocusNode();
+  late final TextEditingController _searchController;
+  final _scrollController = ScrollController();
+  final _focusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    searchController = TextEditingController();
+    _searchController = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(addSeriesNotifierProvider.notifier).clearSearch();
     });
@@ -34,9 +34,9 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
 
   @override
   void dispose() {
-    searchController.dispose();
-    scrollController.dispose();
-    focusNode.dispose();
+    _searchController.dispose();
+    _scrollController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -45,20 +45,25 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
     final state = ref.watch(addSeriesNotifierProvider);
     final notifier = ref.read(addSeriesNotifierProvider.notifier);
 
-    if (searchController.text != state.searchTerm && state.searchTerm.isEmpty) {
-      searchController.text = state.searchTerm;
+    if (_searchController.text != state.searchTerm &&
+        state.searchTerm.isEmpty) {
+      _searchController.text = state.searchTerm;
     }
 
     Future<void> addSeries(SonarrSeriesLookup series) async {
       final scaffoldMessenger = ScaffoldMessenger.of(context);
+
+      // Navigate to add series details screen
       final result = await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => AddSeriesDetailsScreen(series: series),
+          fullscreenDialog: true,
         ),
       );
 
-      if (result == true) {
+      // If series was added successfully, show feedback
+      if (result == true && mounted) {
         if (series.tvdbId != null) {
           notifier.setSeriesAsAdded(series.tvdbId!);
           // Invalidate the allSeriesProvider to refresh the list
@@ -104,32 +109,61 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
             SearchBarWidget(
               onSearch: (query) => notifier.searchSeries(query),
               onClear: () => notifier.clearSearch(),
-              searchController: searchController,
-              focusNode: focusNode,
+              searchController: _searchController,
+              focusNode: _focusNode,
               isLoading: state.isLoading,
             ),
             Expanded(
               child: state.isLoading
                   ? LoadingIndicator(searchTerm: state.searchTerm)
                   : !state.isSearched
-                  ? EmptyState(onStartTyping: () => focusNode.requestFocus())
+                  ? EmptyState(onStartTyping: () => _focusNode.requestFocus())
+                  : state.error != null
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.error_outline,
+                            size: 64,
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'Error: ${state.error}',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: () {
+                              notifier.searchSeries(_searchController.text);
+                            },
+                            child: const Text('Retry'),
+                          ),
+                        ],
+                      ),
+                    )
                   : state.searchResults.isEmpty
                   ? NoResults(
                       searchTerm: state.searchTerm,
                       onClear: () {
                         notifier.clearSearch();
-                        focusNode.requestFocus();
+                        _focusNode.requestFocus();
                       },
                       onTryAgain: () =>
-                          notifier.searchSeries(searchController.text),
+                          notifier.searchSeries(_searchController.text),
                     )
                   : RefreshIndicator(
-                      onRefresh: () =>
-                          notifier.searchSeries(searchController.text),
+                      onRefresh: () async {
+                        notifier.searchSeries(_searchController.text);
+                      },
                       child: Scrollbar(
-                        controller: scrollController,
+                        controller: _scrollController,
                         child: GridView.builder(
-                          controller: scrollController,
+                          controller: _scrollController,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: calculateCrossAxisCount(

@@ -6,6 +6,7 @@ class AddSeriesState {
   final bool isSearched;
   final Map<int, bool> existingSeriesMap;
   final String searchTerm;
+  final String? error;
 
   AddSeriesState({
     this.searchResults = const [],
@@ -13,6 +14,7 @@ class AddSeriesState {
     this.isSearched = false,
     this.existingSeriesMap = const {},
     this.searchTerm = "",
+    this.error,
   });
 
   AddSeriesState copyWith({
@@ -21,6 +23,7 @@ class AddSeriesState {
     bool? isSearched,
     Map<int, bool>? existingSeriesMap,
     String? searchTerm,
+    String? error,
   }) {
     return AddSeriesState(
       searchResults: searchResults ?? this.searchResults,
@@ -28,6 +31,7 @@ class AddSeriesState {
       isSearched: isSearched ?? this.isSearched,
       existingSeriesMap: existingSeriesMap ?? this.existingSeriesMap,
       searchTerm: searchTerm ?? this.searchTerm,
+      error: error ?? this.error,
     );
   }
 }

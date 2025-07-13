@@ -11,7 +11,8 @@ class CombinedQueueScreen extends ConsumerStatefulWidget {
   const CombinedQueueScreen({super.key});
 
   @override
-  ConsumerState<CombinedQueueScreen> createState() => _CombinedQueueScreenState();
+  ConsumerState<CombinedQueueScreen> createState() =>
+      _CombinedQueueScreenState();
 }
 
 class _CombinedQueueScreenState extends ConsumerState<CombinedQueueScreen>
@@ -44,7 +45,7 @@ class _CombinedQueueScreenState extends ConsumerState<CombinedQueueScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context); // Required for AutomaticKeepAliveClientMixin
-    
+
     final queueValue = ref.watch(combinedQueueProvider);
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -107,9 +108,13 @@ class _CombinedQueueScreenState extends ConsumerState<CombinedQueueScreen>
                         return Entry.offset(
                           yOffset: 50,
                           xOffset: index.isEven ? -10 : 10,
-                          duration: Duration(milliseconds: 300 + (index % 5) * 50),
+                          duration: Duration(
+                            milliseconds: 300 + (index % 5) * 50,
+                          ),
                           child: Entry.opacity(
-                            duration: Duration(milliseconds: 300 + (index % 5) * 50),
+                            duration: Duration(
+                              milliseconds: 300 + (index % 5) * 50,
+                            ),
                             child: UnifiedQueueItemCard(queueItem: queueItem),
                           ),
                         );
@@ -117,7 +122,9 @@ class _CombinedQueueScreenState extends ConsumerState<CombinedQueueScreen>
                     );
                   },
                   loading: () => Center(
-                    child: CircularProgressIndicator(color: colorScheme.primary),
+                    child: CircularProgressIndicator(
+                      color: colorScheme.primary,
+                    ),
                   ),
                   error: (err, stack) => ErrorView(
                     error: err,
@@ -225,19 +232,12 @@ class _EmptyQueueServiceCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.withAlpha(26),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: color.withAlpha(51),
-          width: 1,
-        ),
+        border: Border.all(color: color.withAlpha(51), width: 1),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            icon,
-            color: color,
-            size: 20,
-          ),
+          Icon(icon, color: color, size: 20),
           const SizedBox(width: 8),
           Text(
             label,

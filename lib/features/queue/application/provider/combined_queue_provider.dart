@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Provider for fetching combined Sonarr and Radarr queues
-final combinedQueueProvider = FutureProvider<List<UnifiedQueueItem>>((ref) async {
+final combinedQueueProvider = FutureProvider<List<UnifiedQueueItem>>((
+  ref,
+) async {
   final List<UnifiedQueueItem> combinedQueue = [];
 
   // Try to fetch Sonarr queue
@@ -81,7 +83,10 @@ class CombinedQueueNotifier extends StateNotifier<AsyncValue<void>> {
   }
 
   /// Deletes a queue item based on its type
-  Future<void> deleteQueueItem(UnifiedQueueItem item, {bool blacklist = false}) async {
+  Future<void> deleteQueueItem(
+    UnifiedQueueItem item, {
+    bool blacklist = false,
+  }) async {
     state = const AsyncValue.loading();
     try {
       if (item.type == QueueItemType.sonarr) {
@@ -114,5 +119,5 @@ class CombinedQueueNotifier extends StateNotifier<AsyncValue<void>> {
 /// Provider for CombinedQueueNotifier
 final combinedQueueNotifierProvider =
     StateNotifierProvider<CombinedQueueNotifier, AsyncValue<void>>(
-  (ref) => CombinedQueueNotifier(ref),
-);
+      (ref) => CombinedQueueNotifier(ref),
+    );

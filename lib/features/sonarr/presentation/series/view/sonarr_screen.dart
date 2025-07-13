@@ -1,7 +1,6 @@
 import 'package:client/core/widgets/error_view.dart';
 import 'package:client/features/sonarr/application/provider/all_series_provider/all_series_provider.dart';
 import 'package:client/features/sonarr/presentation/add_series/view/add_series_screen.dart';
-import 'package:client/features/sonarr/presentation/queue/view/sonarr_queue_screen.dart';
 import 'package:client/features/sonarr/presentation/series/widgets/series_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,20 +25,6 @@ class SonarrScreen extends ConsumerWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         scrolledUnderElevation: 2,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.download),
-            tooltip: 'Download Queue',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SonarrQueueScreen(),
-                ),
-              );
-            },
-          ),
-        ],
       ),
 
       body: Stack(

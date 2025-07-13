@@ -58,93 +58,97 @@ class CalendarStatsCard extends StatelessWidget {
       child: Entry.opacity(
         duration: const Duration(milliseconds: 400),
         child: Card(
-        margin: const EdgeInsets.all(8.0),
-        elevation: 1,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(Icons.insights, color: colorScheme.primary, size: 20),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Calendar Overview',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: colorScheme.primary,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  _StatItem(
-                    label: 'Today',
-                    count: todayEvents.length,
-                    icon: Icons.today,
-                    color: colorScheme.primary,
-                  ),
-                  _StatItem(
-                    label: 'This Week',
-                    count: thisWeekEvents.length,
-                    icon: Icons.calendar_view_week,
-                    color: colorScheme.secondary,
-                  ),
-                  _StatItem(
-                    label: 'This Month',
-                    count: thisMonthEvents.length,
-                    icon: Icons.calendar_month,
-                    color: colorScheme.tertiary,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              const Divider(),
-              const SizedBox(height: 12),
-              if (todayEvents.isNotEmpty) ...[
-                Text(
-                  'Coming Today:',
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: colorScheme.onSurfaceVariant,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                ...todayEvents.take(3).map((e) => _UpcomingEventItem(event: e)),
-                if (todayEvents.length > 3)
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      '+${todayEvents.length - 3} more today',
-                      style: TextStyle(
+          margin: const EdgeInsets.all(8.0),
+          elevation: 1,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.insights, color: colorScheme.primary, size: 20),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Calendar Overview',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
                         color: colorScheme.primary,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12,
                       ),
                     ),
-                  ),
-              ] else ...[
-                Text(
-                  'Next Upcoming:',
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: colorScheme.onSurfaceVariant,
-                  ),
+                  ],
                 ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    _StatItem(
+                      label: 'Today',
+                      count: todayEvents.length,
+                      icon: Icons.today,
+                      color: colorScheme.primary,
+                    ),
+                    _StatItem(
+                      label: 'This Week',
+                      count: thisWeekEvents.length,
+                      icon: Icons.calendar_view_week,
+                      color: colorScheme.secondary,
+                    ),
+                    _StatItem(
+                      label: 'This Month',
+                      count: thisMonthEvents.length,
+                      icon: Icons.calendar_month,
+                      color: colorScheme.tertiary,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                const Divider(),
+                const SizedBox(height: 12),
+                if (todayEvents.isNotEmpty) ...[
+                  Text(
+                    'Coming Today:',
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  ...todayEvents
+                      .take(3)
+                      .map((e) => _UpcomingEventItem(event: e)),
+                  if (todayEvents.length > 3)
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        '+${todayEvents.length - 3} more today',
+                        style: TextStyle(
+                          color: colorScheme.primary,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                ] else ...[
+                  Text(
+                    'Next Upcoming:',
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  ...events
+                      .where((e) => e.date != null && e.date!.isAfter(now))
+                      .take(2)
+                      .map((e) => _UpcomingEventItem(event: e)),
+                ],
                 const SizedBox(height: 8),
-                ...events
-                    .where((e) => e.date != null && e.date!.isAfter(now))
-                    .take(2)
-                    .map((e) => _UpcomingEventItem(event: e)),
               ],
-              const SizedBox(height: 8),
-            ],
+            ),
           ),
-        ),
         ),
       ),
     );

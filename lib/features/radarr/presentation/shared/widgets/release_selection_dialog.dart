@@ -135,223 +135,229 @@ class ReleaseSelectionDialog extends ConsumerWidget {
                       delay: delay,
                       curve: Curves.easeOutCubic,
                       child: Card(
-                      margin: const EdgeInsets.only(bottom: 12.0),
-                      elevation: 3,
-                      shadowColor: theme.colorScheme.shadow.withOpacity(0.3),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(
-                          color: _getReleaseStatusColor(
-                            theme,
-                            release,
-                          ).withAlpha(51),
-                          width: 1.0,
-                        ),
-                      ),
-                      child: ExpansionTile(
-                        tilePadding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
+                        margin: const EdgeInsets.only(bottom: 12.0),
+                        elevation: 3,
+                        shadowColor: theme.colorScheme.shadow.withOpacity(0.3),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
-                        ),
-                        leading: _getReleaseStatusIcon(theme, release),
-                        title: Text(
-                          release.title ?? 'Unknown',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        subtitle: Padding(
-                          padding: const EdgeInsets.only(
-                            top: 12.0,
-                            bottom: 4.0,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Wrap(
-                                spacing: 8,
-                                runSpacing: 8,
-                                children: [
-                                  _buildPrimaryInfoChip(
-                                    theme,
-                                    release.quality?.quality?.name ?? 'Unknown',
-                                    theme.colorScheme.primary,
-                                    icon: Icons.high_quality,
-                                  ),
-                                  _buildPrimaryInfoChip(
-                                    theme,
-                                    release.size != null
-                                        ? _formatSize(release.size!)
-                                        : 'Unknown',
-                                    theme.colorScheme.secondary,
-                                    icon: Icons.data_usage,
-                                  ),
-                                  if (release.ageHours != null)
-                                    _buildPrimaryInfoChip(
-                                      theme,
-                                      _formatAge(release.ageHours!.toInt()),
-                                      theme.colorScheme.tertiary,
-                                      icon: Icons.access_time,
-                                    ),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Wrap(
-                                spacing: 6,
-                                runSpacing: 6,
-                                children: [
-                                  if (release.protocol != null)
-                                    _buildInfoChip(
-                                      theme,
-                                      release.protocol!.name,
-                                      release.protocol!.name.toLowerCase() ==
-                                              'torrent'
-                                          ? Colors.orange.shade700
-                                          : Colors.blue.shade700,
-                                    ),
-                                  if (release.seeders != null)
-                                    _buildInfoChip(
-                                      theme,
-                                      '${release.seeders} seeders',
-                                      Colors.green.shade700,
-                                    ),
-                                  if (release.leechers != null)
-                                    _buildInfoChip(
-                                      theme,
-                                      '${release.leechers} leechers',
-                                      Colors.orange.shade700,
-                                    ),
-                                  if (release.approved == true)
-                                    _buildInfoChip(
-                                      theme,
-                                      'Approved',
-                                      Colors.green,
-                                    )
-                                  else if (release.approved == false)
-                                    _buildInfoChip(
-                                      theme,
-                                      'Rejected',
-                                      Colors.red,
-                                    ),
-                                ],
-                              ),
-                            ],
+                          side: BorderSide(
+                            color: _getReleaseStatusColor(
+                              theme,
+                              release,
+                            ).withAlpha(51),
+                            width: 1.0,
                           ),
                         ),
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                        child: ExpansionTile(
+                          tilePadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          leading: _getReleaseStatusIcon(theme, release),
+                          title: Text(
+                            release.title ?? 'Unknown',
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          subtitle: Padding(
+                            padding: const EdgeInsets.only(
+                              top: 12.0,
+                              bottom: 4.0,
+                            ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Divider(),
-                                const SizedBox(height: 8),
-                                // Additional information
-                                if (release.indexer != null)
-                                  _buildDetailRow(
-                                    theme,
-                                    Icons.source,
-                                    'Indexer',
-                                    release.indexer ?? 'Unknown',
-                                  ),
-                                const SizedBox(height: 8),
-                                if (release.publishDate != null)
-                                  _buildDetailRow(
-                                    theme,
-                                    Icons.calendar_today,
-                                    'Published',
-                                    _formatDateTime(release.publishDate!),
-                                  ),
-                                if (release.seeders != null &&
-                                    release.leechers != null) ...[
-                                  const SizedBox(height: 8),
-                                  _buildDetailRow(
-                                    theme,
-                                    Icons.group,
-                                    'Peers',
-                                    '${release.seeders} seeders, ${release.leechers} leechers',
-                                  ),
-                                ],
-                                const SizedBox(height: 16),
-                                // Rejection information
-                                if (release.rejections != null &&
-                                    release.rejections!.isNotEmpty) ...[
-                                  const SizedBox(height: 16),
-                                  _buildRejectionSection(
-                                    theme,
-                                    release.rejections!,
-                                  ),
-                                ],
-                                const SizedBox(height: 20),
-                                ElevatedButton.icon(
-                                  onPressed: () async {
-                                    Navigator.of(context).pop();
-                                    final scaffoldMessenger =
-                                        ScaffoldMessenger.of(context);
-
-                                    try {
-                                      await ref.read(
-                                        downloadReleaseProvider(
-                                          DownloadReleaseParams(
-                                            guid: release.guid!,
-                                            indexerId: release.indexerId!,
-                                          ),
-                                        ).future,
-                                      );
-
-                                      scaffoldMessenger.showSnackBar(
-                                        SnackBar(
-                                          content: Row(
-                                            children: [
-                                              const Icon(
-                                                Icons.download_done,
-                                                color: Colors.white,
-                                              ),
-                                              const SizedBox(width: 8),
-                                              const Text('Release downloading'),
-                                            ],
-                                          ),
-                                          behavior: SnackBarBehavior.floating,
-                                          duration: const Duration(seconds: 2),
-                                          backgroundColor: Colors.green,
-                                        ),
-                                      );
-                                    } catch (e) {
-                                      scaffoldMessenger.showSnackBar(
-                                        SnackBar(
-                                          content: Text('Error: $e'),
-                                          behavior: SnackBarBehavior.floating,
-                                          backgroundColor: Colors.red,
-                                        ),
-                                      );
-                                    }
-                                  },
-                                  icon: const Icon(Icons.download),
-                                  label: const Text('Download'),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: theme.colorScheme.primary,
-                                    foregroundColor:
-                                        theme.colorScheme.onPrimary,
-                                    minimumSize: const Size(
-                                      double.infinity,
-                                      45,
+                                Wrap(
+                                  spacing: 8,
+                                  runSpacing: 8,
+                                  children: [
+                                    _buildPrimaryInfoChip(
+                                      theme,
+                                      release.quality?.quality?.name ??
+                                          'Unknown',
+                                      theme.colorScheme.primary,
+                                      icon: Icons.high_quality,
                                     ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
+                                    _buildPrimaryInfoChip(
+                                      theme,
+                                      release.size != null
+                                          ? _formatSize(release.size!)
+                                          : 'Unknown',
+                                      theme.colorScheme.secondary,
+                                      icon: Icons.data_usage,
                                     ),
-                                  ),
+                                    if (release.ageHours != null)
+                                      _buildPrimaryInfoChip(
+                                        theme,
+                                        _formatAge(release.ageHours!.toInt()),
+                                        theme.colorScheme.tertiary,
+                                        icon: Icons.access_time,
+                                      ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                Wrap(
+                                  spacing: 6,
+                                  runSpacing: 6,
+                                  children: [
+                                    if (release.protocol != null)
+                                      _buildInfoChip(
+                                        theme,
+                                        release.protocol!.name,
+                                        release.protocol!.name.toLowerCase() ==
+                                                'torrent'
+                                            ? Colors.orange.shade700
+                                            : Colors.blue.shade700,
+                                      ),
+                                    if (release.seeders != null)
+                                      _buildInfoChip(
+                                        theme,
+                                        '${release.seeders} seeders',
+                                        Colors.green.shade700,
+                                      ),
+                                    if (release.leechers != null)
+                                      _buildInfoChip(
+                                        theme,
+                                        '${release.leechers} leechers',
+                                        Colors.orange.shade700,
+                                      ),
+                                    if (release.approved == true)
+                                      _buildInfoChip(
+                                        theme,
+                                        'Approved',
+                                        Colors.green,
+                                      )
+                                    else if (release.approved == false)
+                                      _buildInfoChip(
+                                        theme,
+                                        'Rejected',
+                                        Colors.red,
+                                      ),
+                                  ],
                                 ),
                               ],
                             ),
                           ),
-                        ],
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Divider(),
+                                  const SizedBox(height: 8),
+                                  // Additional information
+                                  if (release.indexer != null)
+                                    _buildDetailRow(
+                                      theme,
+                                      Icons.source,
+                                      'Indexer',
+                                      release.indexer ?? 'Unknown',
+                                    ),
+                                  const SizedBox(height: 8),
+                                  if (release.publishDate != null)
+                                    _buildDetailRow(
+                                      theme,
+                                      Icons.calendar_today,
+                                      'Published',
+                                      _formatDateTime(release.publishDate!),
+                                    ),
+                                  if (release.seeders != null &&
+                                      release.leechers != null) ...[
+                                    const SizedBox(height: 8),
+                                    _buildDetailRow(
+                                      theme,
+                                      Icons.group,
+                                      'Peers',
+                                      '${release.seeders} seeders, ${release.leechers} leechers',
+                                    ),
+                                  ],
+                                  const SizedBox(height: 16),
+                                  // Rejection information
+                                  if (release.rejections != null &&
+                                      release.rejections!.isNotEmpty) ...[
+                                    const SizedBox(height: 16),
+                                    _buildRejectionSection(
+                                      theme,
+                                      release.rejections!,
+                                    ),
+                                  ],
+                                  const SizedBox(height: 20),
+                                  ElevatedButton.icon(
+                                    onPressed: () async {
+                                      Navigator.of(context).pop();
+                                      final scaffoldMessenger =
+                                          ScaffoldMessenger.of(context);
+
+                                      try {
+                                        await ref.read(
+                                          downloadReleaseProvider(
+                                            DownloadReleaseParams(
+                                              guid: release.guid!,
+                                              indexerId: release.indexerId!,
+                                            ),
+                                          ).future,
+                                        );
+
+                                        scaffoldMessenger.showSnackBar(
+                                          SnackBar(
+                                            content: Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.download_done,
+                                                  color: Colors.white,
+                                                ),
+                                                const SizedBox(width: 8),
+                                                const Text(
+                                                  'Release downloading',
+                                                ),
+                                              ],
+                                            ),
+                                            behavior: SnackBarBehavior.floating,
+                                            duration: const Duration(
+                                              seconds: 2,
+                                            ),
+                                            backgroundColor: Colors.green,
+                                          ),
+                                        );
+                                      } catch (e) {
+                                        scaffoldMessenger.showSnackBar(
+                                          SnackBar(
+                                            content: Text('Error: $e'),
+                                            behavior: SnackBarBehavior.floating,
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    icon: const Icon(Icons.download),
+                                    label: const Text('Download'),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          theme.colorScheme.primary,
+                                      foregroundColor:
+                                          theme.colorScheme.onPrimary,
+                                      minimumSize: const Size(
+                                        double.infinity,
+                                        45,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
                     ),
                   );
                 },

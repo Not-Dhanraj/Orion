@@ -3,6 +3,7 @@ import 'package:client/features/home/application/provider/home_providers.dart';
 import 'package:client/features/radarr/presentation/movies/view/radarr_screen.dart';
 import 'package:client/features/settings/presentation/view/settings_screen.dart';
 import 'package:client/features/sonarr/presentation/series/view/sonarr_screen.dart';
+import 'package:client/features/queue/presentation/view/combined_queue_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/calendar/presentation/view/calendar_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,6 +24,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     const SonarrScreen(),
     const RadarrScreen(),
     const CalendarScreen(),
+    const CombinedQueueScreen(),
     const SettingsScreen(),
   ];
 
@@ -41,6 +43,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       icon: Icon(Icons.calendar_today_outlined),
       selectedIcon: Icon(Icons.calendar_today),
       label: 'Calendar',
+    ),
+    NavigationDestination(
+      icon: Icon(Icons.download_outlined),
+      selectedIcon: Icon(Icons.download),
+      label: 'Queue',
     ),
     NavigationDestination(
       icon: Icon(Icons.settings_outlined),

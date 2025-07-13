@@ -1,5 +1,6 @@
 import 'package:client/features/radarr/application/provider/movie_management_provider/update_movie_provider.dart';
 import 'package:client/features/radarr/application/provider/add_movie_provider/quality_profiles_provider.dart';
+import 'package:client/features/radarr/application/provider/all_movies_provider/all_movies_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr_flutter/radarr_flutter.dart';
@@ -783,7 +784,7 @@ class _MovieEditScreenState extends ConsumerState<MovieEditScreen> {
 
     try {
       // Get original movie data as a Map
-      Map<String, dynamic> movieData = widget.movie.toJson();
+      final movieData = widget.movie.toJson();
 
       // Update specific fields
       movieData['monitored'] = _monitored;
@@ -800,6 +801,9 @@ class _MovieEditScreenState extends ConsumerState<MovieEditScreen> {
 
       // Update movie
       await ref.read(updateMovieProvider(updatedMovie).future);
+
+      // Invalidate the all movies provider to refresh the movies list
+      ref.invalidate(allMoviesProvider);
 
       // Show success message and navigate back
       if (mounted) {

@@ -3,6 +3,7 @@ import 'package:client/features/radarr/application/provider/movie_management_pro
 import 'package:client/features/radarr/application/provider/movie_management_provider/delete_movie_provider.dart';
 import 'package:client/features/radarr/application/provider/movie_management_provider/update_movie_provider.dart';
 import 'package:client/features/radarr/application/provider/movie_management_provider/movie_release_provider.dart';
+import 'package:client/features/radarr/application/provider/all_movies_provider/all_movies_provider.dart';
 import 'package:client/features/radarr/presentation/movie_edit/view/movie_edit_screen.dart';
 import 'package:client/features/radarr/presentation/shared/widgets/release_selection_dialog.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +65,9 @@ class RadarrDetailScreen extends ConsumerWidget {
     if (confirmed == true && movie.id != null) {
       try {
         await ref.read(deleteMovieProvider(movie.id!).future);
+
+        // Invalidate the all movies provider to refresh the movies list
+        ref.invalidate(allMoviesProvider);
 
         scaffoldMessenger.showSnackBar(
           SnackBar(
@@ -249,12 +253,10 @@ class RadarrDetailScreen extends ConsumerWidget {
                                     color: theme.colorScheme.secondary,
                                     onPressed: () async {
                                       try {
-                                        // Update movie with refreshMetadata flag
-                                        final Map<String, dynamic> movieData =
-                                            movie.toJson();
-                                        movieData['refreshMetadata'] = true;
-                                        final updatedMovie =
-                                            RadarrMovie.fromJson(movieData);
+                                        // Create a new movie instance with refreshMetadata flag
+                                        final movieJson = movie.toJson();
+                                        movieJson['refreshMetadata'] = true;
+                                        final updatedMovie = RadarrMovie.fromJson(movieJson);
 
                                         // Update the movie
                                         await ref.read(

@@ -2,6 +2,7 @@ import 'package:client/features/radarr/application/provider/add_movie_provider/a
 import 'package:client/features/radarr/application/provider/add_movie_provider/quality_profiles_provider.dart';
 import 'package:client/features/radarr/application/provider/add_movie_provider/root_folders_provider.dart';
 import 'package:client/features/radarr/application/provider/add_movie_provider/language_profiles_provider.dart';
+import 'package:client/features/radarr/application/provider/all_movies_provider/all_movies_provider.dart';
 import 'package:client/features/radarr/presentation/add_movie/widgets/add_movie_button.dart';
 import 'package:client/features/radarr/presentation/add_movie/widgets/movie_configuration_card.dart';
 import 'package:client/features/radarr/presentation/add_movie/widgets/movie_header_card.dart';
@@ -11,7 +12,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr_flutter/radarr_flutter.dart';
 
 class AddMovieDetailsScreen extends ConsumerStatefulWidget {
-  final dynamic movieLookup;
+  final RadarrMovie movieLookup;
 
   const AddMovieDetailsScreen({super.key, required this.movieLookup});
 
@@ -64,8 +65,8 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
     });
 
     // Mark defaults as set if all are loaded
-    if (qualityProfilesAsync.hasValue && 
-        rootFoldersAsync.hasValue && 
+    if (qualityProfilesAsync.hasValue &&
+        rootFoldersAsync.hasValue &&
         languageProfilesAsync.hasValue) {
       _hasSetDefaults = true;
     }
@@ -75,8 +76,8 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
   Widget build(BuildContext context) {
     // Set default values when providers have data
     _setDefaultValues(context, ref);
-    // Convert the dynamic movieLookup to a RadarrMovie for type safety
-    final typedMovie = RadarrMovie.fromJson(widget.movieLookup);
+    // Use the already typed movie
+    final typedMovie = widget.movieLookup;
 
     return Scaffold(
       appBar: AppBar(
@@ -121,10 +122,14 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
         selectedLanguageProfile: _selectedLanguageProfile,
         minimumAvailability: _minimumAvailability,
         onMonitoredChanged: (value) => setState(() => _monitored = value),
-        onQualityProfileChanged: (value) => setState(() => _selectedQualityProfile = value),
-        onRootFolderChanged: (value) => setState(() => _selectedRootFolder = value),
-        onLanguageProfileChanged: (value) => setState(() => _selectedLanguageProfile = value),
-        onMinimumAvailabilityChanged: (value) => setState(() => _minimumAvailability = value),
+        onQualityProfileChanged: (value) =>
+            setState(() => _selectedQualityProfile = value),
+        onRootFolderChanged: (value) =>
+            setState(() => _selectedRootFolder = value),
+        onLanguageProfileChanged: (value) =>
+            setState(() => _selectedLanguageProfile = value),
+        onMinimumAvailabilityChanged: (value) =>
+            setState(() => _minimumAvailability = value),
       ),
     ];
 
@@ -166,14 +171,16 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
           children: children.asMap().entries.map((entry) {
             final index = entry.key;
             final child = entry.value;
-            
+
             return Entry.all(
               duration: const Duration(milliseconds: 400),
               delay: Duration(milliseconds: index * 100),
               curve: Curves.easeOutCubic,
               yOffset: 30,
               child: Padding(
-                padding: EdgeInsets.only(bottom: index < children.length - 1 ? 20 : 0),
+                padding: EdgeInsets.only(
+                  bottom: index < children.length - 1 ? 20 : 0,
+                ),
                 child: child,
               ),
             );
@@ -185,8 +192,8 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
 
   bool _canSubmit() {
     return _selectedQualityProfile != null &&
-           _selectedRootFolder != null &&
-           !_isSubmitting;
+        _selectedRootFolder != null &&
+        !_isSubmitting;
   }
 
   Future<void> _submitMovie() async {
@@ -198,7 +205,7 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
 
     try {
       // Use the movie from the lookup results directly
-      final movieToAdd = RadarrMovie.fromJson(widget.movieLookup);
+      final movieToAdd = widget.movieLookup;
 
       // Convert string availability to RadarrAvailability
       RadarrAvailability availability;
@@ -216,13 +223,18 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
           availability = RadarrAvailability.ANNOUNCED;
       }
 
-      await ref.read(addMovieProvider).addMovie(
-        movie: movieToAdd,
-        rootFolder: _selectedRootFolder!,
-        monitored: _monitored,
-        minimumAvailability: availability,
-        qualityProfile: _selectedQualityProfile!,
-      );
+      await ref
+          .read(addMovieProvider)
+          .addMovie(
+            movie: movieToAdd,
+            rootFolder: _selectedRootFolder!,
+            monitored: _monitored,
+            minimumAvailability: availability,
+            qualityProfile: _selectedQualityProfile!,
+          );
+
+      // Invalidate the all movies provider to refresh the movies list
+      ref.invalidate(allMoviesProvider);
 
       if (mounted) {
         Navigator.of(context).pop(true);

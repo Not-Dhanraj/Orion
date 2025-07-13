@@ -50,30 +50,13 @@ class _AddMovieScreenState extends ConsumerState<AddMovieScreen> {
 
     Future<void> addMovie(RadarrMovie movie) async {
       final scaffoldMessenger = ScaffoldMessenger.of(context);
-      // Convert RadarrMovie to backward compatibility format
-      final movieMap = {
-        'title': movie.title,
-        'year': movie.year,
-        'overview': movie.overview,
-        'images': movie.images
-            ?.map(
-              (img) => {
-                'coverType': img.coverType,
-                'remoteUrl': img.remoteUrl,
-              },
-            )
-            .toList(),
-        'tmdbId': movie.tmdbId,
-        'imdbId': movie.imdbId,
-        'id': movie.id,
-      };
 
       // Navigate to add movie details screen
       final result = await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => AddMovieDetailsScreen(
-            movieLookup: movieMap,
+            movieLookup: movie,
           ),
           fullscreenDialog: true,
         ),

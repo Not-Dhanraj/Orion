@@ -1,5 +1,7 @@
+import 'package:radarr_flutter/radarr_flutter.dart';
+
 class AddMovieState {
-  final List<dynamic> searchResults;
+  final List<RadarrMovie> searchResults;
   final String searchTerm;
   final bool isLoading;
   final bool isSearched;
@@ -16,7 +18,7 @@ class AddMovieState {
   });
 
   AddMovieState copyWith({
-    List<dynamic>? searchResults,
+    List<RadarrMovie>? searchResults,
     String? searchTerm,
     bool? isLoading,
     bool? isSearched,

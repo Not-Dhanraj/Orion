@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:radarr_flutter/radarr_flutter.dart';
 
@@ -53,20 +54,21 @@ class MovieCredits extends StatelessWidget {
                           width: 60,
                           height: 60,
                           child: imageUrl != null
-                              ? Image.network(
-                                  imageUrl,
+                              ? CachedNetworkImage(
+                                  imageUrl: imageUrl,
                                   fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      Container(
-                                        color: colorScheme.surfaceVariant,
-                                        child: Center(
-                                          child: Icon(
-                                            Icons.person,
-                                            size: 30,
-                                            color: colorScheme.onSurfaceVariant,
-                                          ),
+                                  errorWidget: (context, url, error) {
+                                    return Container(
+                                      color: colorScheme.surfaceVariant,
+                                      child: Center(
+                                        child: Icon(
+                                          Icons.person,
+                                          size: 30,
+                                          color: colorScheme.onSurfaceVariant,
                                         ),
                                       ),
+                                    );
+                                  },
                                 )
                               : Container(
                                   color: colorScheme.surfaceVariant,
@@ -145,20 +147,21 @@ class MovieCredits extends StatelessWidget {
                           width: 60,
                           height: 60,
                           child: imageUrl != null
-                              ? Image.network(
-                                  imageUrl,
+                              ? CachedNetworkImage(
+                                  imageUrl: imageUrl,
                                   fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      Container(
-                                        color: colorScheme.surfaceVariant,
-                                        child: Center(
-                                          child: Icon(
-                                            Icons.person,
-                                            size: 30,
-                                            color: colorScheme.onSurfaceVariant,
-                                          ),
+                                  errorWidget: (context, url, error) {
+                                    return Container(
+                                      color: colorScheme.surfaceVariant,
+                                      child: Center(
+                                        child: Icon(
+                                          Icons.person,
+                                          size: 30,
+                                          color: colorScheme.onSurfaceVariant,
                                         ),
                                       ),
+                                    );
+                                  },
                                 )
                               : Container(
                                   color: colorScheme.surfaceVariant,

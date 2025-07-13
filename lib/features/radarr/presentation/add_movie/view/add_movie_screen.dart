@@ -1,5 +1,11 @@
 import 'package:client/features/radarr/application/provider/add_movie_provider/movie_lookup_provider.dart';
 import 'package:client/features/radarr/presentation/add_movie/view/add_movie_details_screen.dart';
+import 'package:client/features/radarr/presentation/add_movie/widgets/empty_state.dart';
+import 'package:client/features/radarr/presentation/add_movie/widgets/loading_indicator.dart';
+import 'package:client/features/radarr/presentation/add_movie/widgets/movie_card.dart';
+import 'package:client/features/radarr/presentation/add_movie/widgets/no_results.dart';
+import 'package:client/features/radarr/presentation/add_movie/widgets/search_bar.dart';
+import 'package:client/features/radarr/presentation/shared/widgets/safe_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr_flutter/radarr_flutter.dart';
@@ -12,193 +18,202 @@ class AddMovieScreen extends ConsumerStatefulWidget {
 }
 
 class _AddMovieScreenState extends ConsumerState<AddMovieScreen> {
-  final _searchController = TextEditingController();
-  String _searchQuery = '';
+  late final TextEditingController _searchController;
+  final _scrollController = ScrollController();
+  final _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController = TextEditingController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(addMovieNotifierProvider.notifier).clearSearch();
+    });
+  }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _scrollController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final movieResults = ref.watch(movieLookupProvider(_searchQuery));
+    final state = ref.watch(addMovieNotifierProvider);
+    final notifier = ref.read(addMovieNotifierProvider.notifier);
+
+    if (_searchController.text != state.searchTerm && state.searchTerm.isEmpty) {
+      _searchController.text = state.searchTerm;
+    }
+
+    Future<void> addMovie(RadarrMovie movie) async {
+      final scaffoldMessenger = ScaffoldMessenger.of(context);
+      // Convert RadarrMovie to backward compatibility format
+      final movieMap = {
+        'title': movie.title,
+        'year': movie.year,
+        'overview': movie.overview,
+        'images': movie.images
+            ?.map(
+              (img) => {
+                'coverType': img.coverType,
+                'remoteUrl': img.remoteUrl,
+              },
+            )
+            .toList(),
+        'tmdbId': movie.tmdbId,
+        'imdbId': movie.imdbId,
+        'id': movie.id,
+      };
+
+      // Navigate to add movie details screen
+      final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AddMovieDetailsScreen(
+            movieLookup: movieMap,
+          ),
+          fullscreenDialog: true,
+        ),
+      );
+
+      // If movie was added successfully, show feedback
+      if (result == true && mounted) {
+        if (movie.tmdbId != null) {
+          notifier.setMovieAsAdded(movie.tmdbId!);
+        }
+        
+        scaffoldMessenger.showSnackBar(
+          SnackBar(
+            content: Text('${movie.title} added successfully'),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    }
+
+    int calculateCrossAxisCount(BuildContext context) {
+      double width = MediaQuery.of(context).size.width;
+      if (width > 1400) return 6;
+      if (width > 1200) return 5;
+      if (width > 900) return 4;
+      if (width > 600) return 3;
+      if (width > 400) return 2;
+      return 1;
+    }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Movie'),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          icon: const BackButtonIcon(),
+          onPressed: () => Navigator.of(context).pop(),
+          tooltip: null, // Disable the tooltip to prevent the layout error
+        ),
+        title: const Text(
+          'Add Movie',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         elevation: 0,
-        scrolledUnderElevation: 2,
       ),
-      body: Column(
-        children: [
-          // Search input
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'Search for movies...',
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                suffixIcon: _searchController.text.isNotEmpty
-                    ? IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {
-                          _searchController.clear();
-                          setState(() {
-                            _searchQuery = '';
-                          });
-                        },
-                      )
-                    : null,
-              ),
-              onSubmitted: (value) {
-                setState(() {
-                  _searchQuery = value;
-                });
-
-                // Show a snackbar to indicate search is in progress
-                if (value.isNotEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Searching for movies...'),
-                      duration: Duration(seconds: 1),
-                    ),
-                  );
-                }
-              },
+      body: SafeArea(
+        child: Column(
+          children: [
+            SearchBarWidget(
+              onSearch: (query) => notifier.searchMovies(query),
+              onClear: () => notifier.clearSearch(),
+              searchController: _searchController,
+              focusNode: _focusNode,
+              isLoading: state.isLoading,
             ),
-          ),
-
-          // Results
-          Expanded(
-            child: _searchQuery.isEmpty
-                ? Center(
-                    child: Text(
-                      'Search for movies to add',
-                      style: TextStyle(color: colorScheme.onSurfaceVariant),
-                    ),
-                  )
-                : movieResults.when(
-                    data: (movies) {
-                      if (movies.isEmpty) {
-                        return Center(
-                          child: Text(
-                            'No movies found',
-                            style: TextStyle(
-                              color: colorScheme.onSurfaceVariant,
-                            ),
+            Expanded(
+              child: state.isLoading
+                  ? LoadingIndicator(searchTerm: state.searchTerm)
+                  : !state.isSearched
+                  ? EmptyState(onStartTyping: () => _focusNode.requestFocus())
+                  : state.error != null
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.error_outline,
+                            size: 64,
+                            color: Theme.of(context).colorScheme.error,
                           ),
-                        );
-                      }
-
-                      return ListView.builder(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        itemCount: movies.length,
-                        itemBuilder: (context, index) {
-                          final movie = movies[index];
-                          return ListTile(
-                            leading: _getMoviePoster(movie),
-                            title: Text(movie.title ?? 'Unknown'),
-                            subtitle: Text(
-                              movie.year?.toString() ?? 'Unknown year',
+                          const SizedBox(height: 16),
+                          Text(
+                            'Error: ${state.error}',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.error,
                             ),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.add),
-                              onPressed: () async {
-                                // Convert RadarrMovie to r backward compatibility
-                                final movieMap = {
-                                  'title': movie.title,
-                                  'year': movie.year,
-                                  'overview': movie.overview,
-                                  'images': movie.images
-                                      ?.map(
-                                        (img) => {
-                                          'coverType': img.coverType,
-                                          'remoteUrl': img.remoteUrl,
-                                        },
-                                      )
-                                      .toList(),
-                                  'tmdbId': movie.tmdbId,
-                                  'imdbId': movie.imdbId,
-                                  'id': movie.id,
-                                };
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: () {
+                              notifier.searchMovies(_searchController.text);
+                            },
+                            child: const Text('Retry'),
+                          ),
+                        ],
+                      ),
+                    )
+                  : state.searchResults.isEmpty
+                  ? NoResults(
+                      searchTerm: state.searchTerm,
+                      onClear: () {
+                        notifier.clearSearch();
+                        _focusNode.requestFocus();
+                      },
+                      onTryAgain: () =>
+                          notifier.searchMovies(_searchController.text),
+                    )
+                  : RefreshIndicator(
+                      onRefresh: () async {
+                        notifier.searchMovies(_searchController.text);
+                      },
+                      child: Scrollbar(
+                        controller: _scrollController,
+                        child: GridView.builder(
+                          controller: _scrollController,
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: calculateCrossAxisCount(context),
+                            childAspectRatio: 0.65,
+                            crossAxisSpacing:
+                                MediaQuery.of(context).size.width > 600 ? 16 : 12,
+                            mainAxisSpacing:
+                                MediaQuery.of(context).size.width > 600 ? 20 : 16,
+                          ),
+                          padding: EdgeInsets.all(
+                            MediaQuery.of(context).size.width > 600 ? 20.0 : 16.0,
+                          ),
+                          itemCount: state.searchResults.length,
+                          itemBuilder: (context, index) {
+                            final movie = state.searchResults[index];
+                            final isInLibrary = state.existingMoviesMap[movie.tmdbId] ?? false;
 
-                                // Navigate to add movie details screen
-                                final result = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AddMovieDetailsScreen(
-                                      movieLookup: movieMap,
-                                    ),
-                                    fullscreenDialog: true,
-                                  ),
-                                );
-
-                                // If movie was added successfully, show feedback
-                                if (result == true && mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        '${movie.title} added successfully',
-                                      ),
-                                    ),
-                                  );
-                                }
-                              },
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    loading: () =>
-                        const Center(child: CircularProgressIndicator()),
-                    error: (error, stack) => Center(
-                      child: Text(
-                        'Error: $error',
-                        style: TextStyle(color: colorScheme.error),
+                            return SafeEntry(
+                              key: ValueKey('movie_${movie.tmdbId}_$index'),
+                              yOffset: 100,
+                              opacity: 0.0,
+                              duration: const Duration(milliseconds: 300),
+                              child: MovieCard(
+                                movie: movie,
+                                isInLibrary: isInLibrary,
+                                onAdd: () => addMovie(movie),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
-                  ),
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
-  }
-
-  Widget _getMoviePoster(RadarrMovie movie) {
-    String? posterUrl;
-    try {
-      if (movie.images != null && movie.images!.isNotEmpty) {
-        for (final image in movie.images!) {
-          if (image.coverType == 'poster') {
-            posterUrl = image.remoteUrl;
-            break;
-          }
-        }
-      }
-    } catch (e) {
-      // Ignore errors
-    }
-
-    return posterUrl != null
-        ? SizedBox(
-            width: 40,
-            height: 60,
-            child: Image.network(
-              posterUrl,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) =>
-                  const Icon(Icons.movie),
-            ),
-          )
-        : const SizedBox(width: 40, height: 60, child: Icon(Icons.movie));
   }
 }

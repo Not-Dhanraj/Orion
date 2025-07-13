@@ -52,9 +52,12 @@ class CalendarStatsCard extends StatelessWidget {
       uniqueSeries.add(event.title);
     }
 
-    return Entry.all(
+    return Entry.offset(
       duration: const Duration(milliseconds: 400),
-      child: Card(
+      yOffset: 20,
+      child: Entry.opacity(
+        duration: const Duration(milliseconds: 400),
+        child: Card(
         margin: const EdgeInsets.all(8.0),
         elevation: 1,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -141,6 +144,7 @@ class CalendarStatsCard extends StatelessWidget {
               const SizedBox(height: 8),
             ],
           ),
+        ),
         ),
       ),
     );

@@ -108,11 +108,16 @@ class ReleaseSelectionDialog extends ConsumerWidget {
                   // Calculate delay for staggered animation
                   final delay = Duration(milliseconds: 30 * index);
 
-                  return Entry.all(
+                  return Entry.offset(
                     duration: const Duration(milliseconds: 300),
                     delay: delay,
                     curve: Curves.easeOutCubic,
-                    child: Card(
+                    yOffset: 30,
+                    child: Entry.opacity(
+                      duration: const Duration(milliseconds: 300),
+                      delay: delay,
+                      curve: Curves.easeOutCubic,
+                      child: Card(
                       margin: const EdgeInsets.only(bottom: 12.0),
                       elevation: 3,
                       shadowColor: theme.colorScheme.shadow.withOpacity(0.3),
@@ -335,6 +340,7 @@ class ReleaseSelectionDialog extends ConsumerWidget {
                           ),
                         ],
                       ),
+                    ),
                     ),
                   );
                 },

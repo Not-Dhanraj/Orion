@@ -142,22 +142,31 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
           children: [
             Expanded(
               flex: 2,
-              child: Entry.all(
+              child: Entry.offset(
                 duration: const Duration(milliseconds: 400),
                 curve: Curves.easeOutCubic,
                 xOffset: -20,
-                child: children[0],
+                child: Entry.opacity(
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.easeOutCubic,
+                  child: children[0],
+                ),
               ),
             ),
             const SizedBox(width: 20),
             Expanded(
               flex: 3,
-              child: Entry.all(
+              child: Entry.offset(
                 duration: const Duration(milliseconds: 450),
                 delay: const Duration(milliseconds: 50),
                 curve: Curves.easeOutCubic,
                 xOffset: 20,
-                child: children[1],
+                child: Entry.opacity(
+                  duration: const Duration(milliseconds: 450),
+                  delay: const Duration(milliseconds: 50),
+                  curve: Curves.easeOutCubic,
+                  child: children[1],
+                ),
               ),
             ),
           ],
@@ -172,16 +181,21 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
             final index = entry.key;
             final child = entry.value;
 
-            return Entry.all(
+            return Entry.offset(
               duration: const Duration(milliseconds: 400),
               delay: Duration(milliseconds: index * 100),
               curve: Curves.easeOutCubic,
               yOffset: 30,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  bottom: index < children.length - 1 ? 20 : 0,
+              child: Entry.opacity(
+                duration: const Duration(milliseconds: 400),
+                delay: Duration(milliseconds: index * 100),
+                curve: Curves.easeOutCubic,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    bottom: index < children.length - 1 ? 20 : 0,
+                  ),
+                  child: child,
                 ),
-                child: child,
               ),
             );
           }).toList(),

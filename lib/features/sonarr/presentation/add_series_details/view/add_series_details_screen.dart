@@ -79,11 +79,15 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
         children: [
           Expanded(
             flex: 2,
-            child: Entry.all(
+            child: Entry.offset(
               duration: const Duration(milliseconds: 400),
               curve: Curves.easeOutCubic,
               xOffset: -20,
-              child: children[0],
+              child: Entry.opacity(
+                duration: const Duration(milliseconds: 400),
+                curve: Curves.easeOutCubic,
+                child: children[0],
+              ),
             ),
           ),
           const SizedBox(width: 20),
@@ -91,20 +95,30 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
             flex: 3,
             child: Column(
               children: [
-                Entry.all(
+                Entry.offset(
                   duration: const Duration(milliseconds: 450),
                   delay: const Duration(milliseconds: 50),
                   curve: Curves.easeOutCubic,
                   xOffset: 20,
-                  child: children[1],
+                  child: Entry.opacity(
+                    duration: const Duration(milliseconds: 450),
+                    delay: const Duration(milliseconds: 50),
+                    curve: Curves.easeOutCubic,
+                    child: children[1],
+                  ),
                 ),
                 const SizedBox(height: 20),
-                Entry.all(
+                Entry.offset(
                   duration: const Duration(milliseconds: 500),
                   delay: const Duration(milliseconds: 100),
                   curve: Curves.easeOutCubic,
                   xOffset: 20,
-                  child: children[2],
+                  child: Entry.opacity(
+                    duration: const Duration(milliseconds: 500),
+                    delay: const Duration(milliseconds: 100),
+                    curve: Curves.easeOutCubic,
+                    child: children[2],
+                  ),
                 ),
               ],
             ),
@@ -117,33 +131,47 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
       // Medium screen layout - Mixed
       return Column(
         children: [
-          Entry.all(
+          Entry.offset(
             duration: const Duration(milliseconds: 400),
             curve: Curves.easeOutCubic,
             yOffset: -20,
-            child: children[0],
+            child: Entry.opacity(
+              duration: const Duration(milliseconds: 400),
+              curve: Curves.easeOutCubic,
+              child: children[0],
+            ),
           ),
           const SizedBox(height: 20),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: Entry.all(
+                child: Entry.offset(
                   duration: const Duration(milliseconds: 450),
                   delay: const Duration(milliseconds: 50),
                   curve: Curves.easeOutCubic,
                   xOffset: -20,
-                  child: children[1],
+                  child: Entry.opacity(
+                    duration: const Duration(milliseconds: 450),
+                    delay: const Duration(milliseconds: 50),
+                    curve: Curves.easeOutCubic,
+                    child: children[1],
+                  ),
                 ),
               ),
               const SizedBox(width: 20),
               Expanded(
-                child: Entry.all(
+                child: Entry.offset(
                   duration: const Duration(milliseconds: 500),
                   delay: const Duration(milliseconds: 100),
                   curve: Curves.easeOutCubic,
                   xOffset: 20,
-                  child: children[2],
+                  child: Entry.opacity(
+                    duration: const Duration(milliseconds: 500),
+                    delay: const Duration(milliseconds: 100),
+                    curve: Curves.easeOutCubic,
+                    child: children[2],
+                  ),
                 ),
               ),
             ],
@@ -155,27 +183,41 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
     // Small screen layout - Single column
     return Column(
       children: [
-        Entry.all(
+        Entry.offset(
           duration: const Duration(milliseconds: 400),
           curve: Curves.easeOutCubic,
           yOffset: -20,
-          child: children[0],
+          child: Entry.opacity(
+            duration: const Duration(milliseconds: 400),
+            curve: Curves.easeOutCubic,
+            child: children[0],
+          ),
         ),
         const SizedBox(height: 20),
-        Entry.all(
+        Entry.offset(
           duration: const Duration(milliseconds: 450),
           delay: const Duration(milliseconds: 50),
           curve: Curves.easeOutCubic,
           yOffset: 20,
-          child: children[1],
+          child: Entry.opacity(
+            duration: const Duration(milliseconds: 450),
+            delay: const Duration(milliseconds: 50),
+            curve: Curves.easeOutCubic,
+            child: children[1],
+          ),
         ),
         const SizedBox(height: 20),
-        Entry.all(
+        Entry.offset(
           duration: const Duration(milliseconds: 500),
           delay: const Duration(milliseconds: 100),
           curve: Curves.easeOutCubic,
           yOffset: 20,
-          child: children[2],
+          child: Entry.opacity(
+            duration: const Duration(milliseconds: 500),
+            delay: const Duration(milliseconds: 100),
+            curve: Curves.easeOutCubic,
+            child: children[2],
+          ),
         ),
       ],
     );

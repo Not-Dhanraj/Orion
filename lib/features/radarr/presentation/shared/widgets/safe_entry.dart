@@ -59,13 +59,17 @@ class SafeEntryState extends State<SafeEntry> with RouteAware {
     }
 
     try {
-      return Entry.all(
+      return Entry.offset(
         duration: widget.duration,
         yOffset: widget.yOffset ?? 0,
         xOffset: widget.xOffset ?? 0,
-        opacity: widget.opacity ?? 0.0,
         curve: widget.curve,
-        child: widget.child,
+        child: Entry.opacity(
+          duration: widget.duration,
+          opacity: widget.opacity ?? 0.0,
+          curve: widget.curve,
+          child: widget.child,
+        ),
       );
     } catch (e) {
       // If Entry fails, fallback to just the child

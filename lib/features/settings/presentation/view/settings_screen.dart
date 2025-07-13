@@ -550,7 +550,7 @@ class SettingsScreen extends ConsumerWidget {
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: kBottomNavigationBarHeight + 20),
               ]),
             ),
           ),

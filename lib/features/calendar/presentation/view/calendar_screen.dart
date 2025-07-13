@@ -6,7 +6,6 @@ import 'package:client/features/radarr/application/provider/calendar_provider/ra
 import 'package:client/features/calendar/application/providers/calendar_screen_providers.dart';
 import 'package:client/features/calendar/application/providers/calendar_preferences_provider.dart';
 import 'package:client/features/calendar/presentation/widgets/calendar_stats_card.dart';
-import 'package:client/features/calendar/presentation/widgets/calendar_source_stats.dart';
 import 'package:client/features/calendar/presentation/widgets/calendar_view.dart';
 import 'package:client/features/calendar/presentation/widgets/day_events_bottomsheet.dart';
 import 'package:client/features/calendar/presentation/widgets/week_view_card.dart';

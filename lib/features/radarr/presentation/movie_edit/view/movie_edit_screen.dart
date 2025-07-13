@@ -28,7 +28,8 @@ class _MovieEditScreenState extends ConsumerState<MovieEditScreen> {
     super.initState();
     _monitored = widget.movie.monitored ?? true;
     _pathController = TextEditingController(text: widget.movie.path ?? '');
-    _minimumAvailability = widget.movie.minimumAvailability ?? RadarrAvailability.ANNOUNCED;
+    _minimumAvailability =
+        widget.movie.minimumAvailability ?? RadarrAvailability.ANNOUNCED;
     _selectedQualityProfileId = widget.movie.qualityProfileId;
 
     // Add listeners to detect changes
@@ -39,7 +40,9 @@ class _MovieEditScreenState extends ConsumerState<MovieEditScreen> {
     final hasChanges =
         _monitored != (widget.movie.monitored ?? true) ||
         _pathController.text != (widget.movie.path ?? '') ||
-        _minimumAvailability != (widget.movie.minimumAvailability ?? RadarrAvailability.ANNOUNCED) ||
+        _minimumAvailability !=
+            (widget.movie.minimumAvailability ??
+                RadarrAvailability.ANNOUNCED) ||
         _selectedQualityProfileId != widget.movie.qualityProfileId;
 
     if (hasChanges != _hasChanges) {

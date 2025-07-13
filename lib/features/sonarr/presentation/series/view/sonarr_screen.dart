@@ -42,15 +42,34 @@ class SonarrScreen extends ConsumerWidget {
               ),
             ),
             child: SafeArea(
-              child: seriesValue.when(
-                data: (series) => SeriesGridView(series: series),
-                loading: () => Center(
-                  child: CircularProgressIndicator(color: colorScheme.primary),
-                ),
-                error: (err, stack) => ErrorView(
-                  error: err,
-                  customMessage: 'Failed to load TV shows',
-                  onRetry: () => ref.refresh(allSeriesProvider),
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  ref.invalidate(allSeriesProvider);
+                  // Wait for the provider to reload
+                  await ref.read(allSeriesProvider.future);
+                },
+                child: seriesValue.when(
+                  data: (series) => SeriesGridView(series: series),
+                  loading: () => const CustomScrollView(
+                    slivers: [
+                      SliverFillRemaining(
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  error: (err, stack) => CustomScrollView(
+                    slivers: [
+                      SliverFillRemaining(
+                        child: ErrorView(
+                          error: err,
+                          customMessage: 'Failed to load TV shows',
+                          onRetry: () => ref.refresh(allSeriesProvider),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

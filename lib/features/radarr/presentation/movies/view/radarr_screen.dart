@@ -42,15 +42,34 @@ class RadarrScreen extends ConsumerWidget {
               ),
             ),
             child: SafeArea(
-              child: moviesValue.when(
-                data: (movies) => MoviesGridView(movies: movies),
-                loading: () => Center(
-                  child: CircularProgressIndicator(color: colorScheme.primary),
-                ),
-                error: (err, stack) => ErrorView(
-                  error: err,
-                  customMessage: 'Failed to load movies',
-                  onRetry: () => ref.refresh(allMoviesProvider),
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  ref.invalidate(allMoviesProvider);
+                  // Wait for the provider to reload
+                  await ref.read(allMoviesProvider.future);
+                },
+                child: moviesValue.when(
+                  data: (movies) => MoviesGridView(movies: movies),
+                  loading: () => const CustomScrollView(
+                    slivers: [
+                      SliverFillRemaining(
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  error: (err, stack) => CustomScrollView(
+                    slivers: [
+                      SliverFillRemaining(
+                        child: ErrorView(
+                          error: err,
+                          customMessage: 'Failed to load movies',
+                          onRetry: () => ref.refresh(allMoviesProvider),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

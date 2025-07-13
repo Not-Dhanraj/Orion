@@ -33,7 +33,7 @@ class EmptyState extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               Text(
-                'Search for your favorite TV shows',
+                'Search for your favorite movies',
                 style: theme.textTheme.headlineSmall?.copyWith(
                   color: theme.colorScheme.onSurface,
                   fontWeight: FontWeight.w600,
@@ -42,7 +42,7 @@ class EmptyState extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                'Enter a title in the search bar above to find shows to add to your library',
+                'Enter a title in the search bar above to find movies to add to your library',
                 style: theme.textTheme.bodyLarge?.copyWith(
                   color: theme.colorScheme.onSurface.withAlpha(
                     178,

@@ -1,4 +1,7 @@
 import 'package:client/features/radarr/application/provider/add_movie_provider/add_movie_provider.dart';
+import 'package:client/features/radarr/application/provider/add_movie_provider/quality_profiles_provider.dart';
+import 'package:client/features/radarr/application/provider/add_movie_provider/root_folders_provider.dart';
+import 'package:client/features/radarr/application/provider/add_movie_provider/language_profiles_provider.dart';
 import 'package:client/features/radarr/presentation/add_movie/widgets/add_movie_button.dart';
 import 'package:client/features/radarr/presentation/add_movie/widgets/movie_configuration_card.dart';
 import 'package:client/features/radarr/presentation/add_movie/widgets/movie_header_card.dart';
@@ -24,9 +27,54 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
   RadarrLanguage? _selectedLanguageProfile;
   String _minimumAvailability = 'announced'; // Default value
   bool _isSubmitting = false;
+  bool _hasSetDefaults = false;
+
+  void _setDefaultValues(BuildContext context, WidgetRef ref) {
+    if (_hasSetDefaults) return;
+
+    final qualityProfilesAsync = ref.watch(qualityProfilesProvider);
+    final rootFoldersAsync = ref.watch(rootFoldersProvider);
+    final languageProfilesAsync = ref.watch(languageProfilesProvider);
+
+    // Set default quality profile
+    qualityProfilesAsync.whenData((profiles) {
+      if (_selectedQualityProfile == null && profiles.isNotEmpty) {
+        setState(() {
+          _selectedQualityProfile = profiles.first;
+        });
+      }
+    });
+
+    // Set default root folder
+    rootFoldersAsync.whenData((folders) {
+      if (_selectedRootFolder == null && folders.isNotEmpty) {
+        setState(() {
+          _selectedRootFolder = folders.first;
+        });
+      }
+    });
+
+    // Set default language profile
+    languageProfilesAsync.whenData((languages) {
+      if (_selectedLanguageProfile == null && languages.isNotEmpty) {
+        setState(() {
+          _selectedLanguageProfile = languages.first;
+        });
+      }
+    });
+
+    // Mark defaults as set if all are loaded
+    if (qualityProfilesAsync.hasValue && 
+        rootFoldersAsync.hasValue && 
+        languageProfilesAsync.hasValue) {
+      _hasSetDefaults = true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    // Set default values when providers have data
+    _setDefaultValues(context, ref);
     // Convert the dynamic movieLookup to a RadarrMovie for type safety
     final typedMovie = RadarrMovie.fromJson(widget.movieLookup);
 

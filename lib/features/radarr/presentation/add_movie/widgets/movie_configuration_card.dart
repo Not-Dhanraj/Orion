@@ -190,31 +190,33 @@ class MovieConfigurationCard extends ConsumerWidget {
                   ),
                 ),
                 child: qualityProfilesAsync.when(
-                  data: (profiles) => DropdownButtonFormField<RadarrQualityProfile>(
-                    decoration: _getDropdownDecoration(theme),
-                    isExpanded: true,
-                    value: selectedQualityProfile,
-                    icon: Icon(
-                      Icons.arrow_drop_down,
-                      color: theme.colorScheme.primary,
-                    ),
-                    items: profiles.map((profile) {
-                      return DropdownMenuItem<RadarrQualityProfile>(
-                        value: profile,
-                        child: Text(
-                          profile.name ?? 'Unknown',
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w500,
-                          ),
+                  data: (profiles) =>
+                      DropdownButtonFormField<RadarrQualityProfile>(
+                        decoration: _getDropdownDecoration(theme),
+                        isExpanded: true,
+                        value: selectedQualityProfile,
+                        icon: Icon(
+                          Icons.arrow_drop_down,
+                          color: theme.colorScheme.primary,
                         ),
-                      );
-                    }).toList(),
-                    onChanged: onQualityProfileChanged,
-                    dropdownColor: theme.colorScheme.surface,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                        items: profiles.map((profile) {
+                          return DropdownMenuItem<RadarrQualityProfile>(
+                            value: profile,
+                            child: Text(
+                              profile.name ?? 'Unknown',
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: onQualityProfileChanged,
+                        dropdownColor: theme.colorScheme.surface,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                   loading: () => const LinearProgressIndicator(),
-                  error: (_, __) => const Text('Failed to load quality profiles'),
+                  error: (_, __) =>
+                      const Text('Failed to load quality profiles'),
                 ),
               ),
             ),
@@ -264,7 +266,7 @@ class MovieConfigurationCard extends ConsumerWidget {
             languageProfilesAsync.when(
               data: (profiles) {
                 if (profiles.isEmpty) return const SizedBox.shrink();
-                
+
                 return _buildFormField(
                   context: context,
                   title: 'Language Profile',

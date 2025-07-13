@@ -32,7 +32,7 @@ class MovieStatusIndicators extends StatelessWidget {
             const SizedBox(width: 16),
             _buildStatusIndicator(
               context,
-              _getStatusLabel(movie.status),
+              _getStatusLabel(movie.status?.value),
               _getStatusIcon(movie.status),
               _getStatusColor(theme, movie.status),
               true,

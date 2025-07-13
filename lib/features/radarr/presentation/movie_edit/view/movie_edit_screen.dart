@@ -783,7 +783,9 @@ class _MovieEditScreenState extends ConsumerState<MovieEditScreen> {
     });
 
     try {
-      // Get original movie data as a Map
+      // Create a new RadarrMovie with updated values
+      // Since RadarrMovie likely doesn't have a copyWith method,
+      // we'll create a modified copy using the JSON approach but only when needed
       final movieData = widget.movie.toJson();
 
       // Update specific fields

@@ -133,8 +133,22 @@ class RadarrDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
-    final posterUrl = _getImageUrl(movie);
-    final backdropUrl = _getImageUrl(movie, coverType: 'fanart');
+    // Watch the movie details provider to get real-time updates
+    final movieAsync = movie.id != null
+        ? ref.watch(movieDetailsProvider(movie.id!))
+        : null;
+
+    // Use the updated movie data if available, otherwise fall back to the original
+    final currentMovie =
+        movieAsync?.when(
+          data: (updatedMovie) => updatedMovie,
+          loading: () => movie,
+          error: (_, __) => movie,
+        ) ??
+        movie;
+
+    final posterUrl = _getImageUrl(currentMovie);
+    final backdropUrl = _getImageUrl(currentMovie, coverType: 'fanart');
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
@@ -170,7 +184,10 @@ class RadarrDetailScreen extends ConsumerWidget {
                   // Main movie details card with poster, title, alternate title, genre, rating
                   Entry.opacity(
                     duration: const Duration(milliseconds: 400),
-                    child: MovieDetails(movie: movie, posterUrl: posterUrl),
+                    child: MovieDetails(
+                      movie: currentMovie,
+                      posterUrl: posterUrl,
+                    ),
                   ),
 
                   // Status indicators
@@ -179,7 +196,7 @@ class RadarrDetailScreen extends ConsumerWidget {
                     delay: const Duration(milliseconds: 50),
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                      child: MovieStatusIndicators(movie: movie),
+                      child: MovieStatusIndicators(movie: currentMovie),
                     ),
                   ),
 
@@ -223,16 +240,22 @@ class RadarrDetailScreen extends ConsumerWidget {
                                           .push(
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  MovieEditScreen(movie: movie),
+                                                  MovieEditScreen(
+                                                    movie: currentMovie,
+                                                  ),
                                             ),
                                           );
 
                                       // If changes were made and saved successfully
-                                      if (result == true && movie.id != null) {
-                                        // Invalidate provider to refresh the movie data
+                                      if (result == true &&
+                                          currentMovie.id != null) {
+                                        // Invalidate providers to refresh the movie data
                                         ref.invalidate(
-                                          movieDetailsProvider(movie.id!),
+                                          movieDetailsProvider(
+                                            currentMovie.id!,
+                                          ),
                                         );
+                                        ref.invalidate(allMoviesProvider);
                                       }
                                     },
                                   ),
@@ -242,8 +265,11 @@ class RadarrDetailScreen extends ConsumerWidget {
                                     icon: Icons.delete_outline,
                                     label: 'Delete',
                                     color: Colors.red,
-                                    onPressed: () =>
-                                        _deleteMovie(context, ref, movie),
+                                    onPressed: () => _deleteMovie(
+                                      context,
+                                      ref,
+                                      currentMovie,
+                                    ),
                                   ),
                                   _buildActionButton(
                                     context,
@@ -253,22 +279,20 @@ class RadarrDetailScreen extends ConsumerWidget {
                                     color: theme.colorScheme.secondary,
                                     onPressed: () async {
                                       try {
-                                        // Create a new movie instance with refreshMetadata flag
-                                        final movieJson = movie.toJson();
-                                        movieJson['refreshMetadata'] = true;
-                                        final updatedMovie = RadarrMovie.fromJson(movieJson);
-
-                                        // Update the movie
+                                        // For refresh action, pass the movie directly
+                                        // The API will handle the refresh metadata internally
                                         await ref.read(
                                           updateMovieProvider(
-                                            updatedMovie,
+                                            currentMovie,
                                           ).future,
                                         );
 
                                         // Refresh local data by invalidating the provider
-                                        if (movie.id != null) {
+                                        if (currentMovie.id != null) {
                                           ref.invalidate(
-                                            movieDetailsProvider(movie.id!),
+                                            movieDetailsProvider(
+                                              currentMovie.id!,
+                                            ),
                                           );
                                         }
 
@@ -278,7 +302,7 @@ class RadarrDetailScreen extends ConsumerWidget {
                                           ).showSnackBar(
                                             SnackBar(
                                               content: Text(
-                                                'Refreshing movie: ${movie.title}',
+                                                'Refreshing movie: ${currentMovie.title}',
                                               ),
                                               duration: const Duration(
                                                 seconds: 2,
@@ -303,7 +327,7 @@ class RadarrDetailScreen extends ConsumerWidget {
                                     },
                                   ),
                                   // Show either "Downloaded" or "Search" based on hasFile status
-                                  movie.hasFile == true
+                                  currentMovie.hasFile == true
                                       ? _buildActionButton(
                                           context,
                                           ref,
@@ -317,7 +341,7 @@ class RadarrDetailScreen extends ConsumerWidget {
                                               ).showSnackBar(
                                                 SnackBar(
                                                   content: Text(
-                                                    '${movie.title} is already downloaded',
+                                                    '${currentMovie.title} is already downloaded',
                                                   ),
                                                   backgroundColor: Colors.green,
                                                   duration: const Duration(
@@ -335,7 +359,7 @@ class RadarrDetailScreen extends ConsumerWidget {
                                           label: 'Search',
                                           color: theme.colorScheme.tertiary,
                                           onPressed: () async {
-                                            if (movie.id == null) {
+                                            if (currentMovie.id == null) {
                                               if (context.mounted) {
                                                 ScaffoldMessenger.of(
                                                   context,
@@ -368,7 +392,7 @@ class RadarrDetailScreen extends ConsumerWidget {
                                               // Get releases for this movie
                                               final releases = await ref.read(
                                                 movieReleaseProvider(
-                                                  movie.id!,
+                                                  currentMovie.id!,
                                                 ).future,
                                               );
 
@@ -403,7 +427,7 @@ class RadarrDetailScreen extends ConsumerWidget {
                                                       ReleaseSelectionDialog(
                                                         releases: releases,
                                                         title:
-                                                            'Releases for ${movie.title ?? "Movie"}',
+                                                            'Releases for ${currentMovie.title ?? "Movie"}',
                                                       ),
                                                 );
                                               }
@@ -444,7 +468,7 @@ class RadarrDetailScreen extends ConsumerWidget {
                     delay: const Duration(milliseconds: 150),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: MovieOverview(movie: movie),
+                      child: MovieOverview(movie: currentMovie),
                     ),
                   ),
 
@@ -456,7 +480,7 @@ class RadarrDetailScreen extends ConsumerWidget {
                     delay: const Duration(milliseconds: 200),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: MovieInfoWidget(movie: movie),
+                      child: MovieInfoWidget(movie: currentMovie),
                     ),
                   ),
 
@@ -468,7 +492,7 @@ class RadarrDetailScreen extends ConsumerWidget {
                     delay: const Duration(milliseconds: 300),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: MovieMediaInfo(movie: movie),
+                      child: MovieMediaInfo(movie: currentMovie),
                     ),
                   ),
 

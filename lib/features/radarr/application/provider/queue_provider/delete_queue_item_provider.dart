@@ -45,5 +45,5 @@ class RadarrQueueNotifier extends StateNotifier<AsyncValue<void>> {
 /// Provider for RadarrQueueNotifier
 final radarrQueueNotifierProvider =
     StateNotifierProvider<RadarrQueueNotifier, AsyncValue<void>>(
-  (ref) => RadarrQueueNotifier(ref),
-);
+      (ref) => RadarrQueueNotifier(ref),
+    );

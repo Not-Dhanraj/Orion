@@ -44,7 +44,8 @@ class _AddMovieScreenState extends ConsumerState<AddMovieScreen> {
     final state = ref.watch(addMovieNotifierProvider);
     final notifier = ref.read(addMovieNotifierProvider.notifier);
 
-    if (_searchController.text != state.searchTerm && state.searchTerm.isEmpty) {
+    if (_searchController.text != state.searchTerm &&
+        state.searchTerm.isEmpty) {
       _searchController.text = state.searchTerm;
     }
 
@@ -55,9 +56,7 @@ class _AddMovieScreenState extends ConsumerState<AddMovieScreen> {
       final result = await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => AddMovieDetailsScreen(
-            movieLookup: movie,
-          ),
+          builder: (context) => AddMovieDetailsScreen(movieLookup: movie),
           fullscreenDialog: true,
         ),
       );
@@ -67,7 +66,7 @@ class _AddMovieScreenState extends ConsumerState<AddMovieScreen> {
         if (movie.tmdbId != null) {
           notifier.setMovieAsAdded(movie.tmdbId!);
         }
-        
+
         scaffoldMessenger.showSnackBar(
           SnackBar(
             content: Text('${movie.title} added successfully'),
@@ -162,21 +161,31 @@ class _AddMovieScreenState extends ConsumerState<AddMovieScreen> {
                         controller: _scrollController,
                         child: GridView.builder(
                           controller: _scrollController,
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: calculateCrossAxisCount(context),
-                            childAspectRatio: 0.65,
-                            crossAxisSpacing:
-                                MediaQuery.of(context).size.width > 600 ? 16 : 12,
-                            mainAxisSpacing:
-                                MediaQuery.of(context).size.width > 600 ? 20 : 16,
-                          ),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: calculateCrossAxisCount(
+                                  context,
+                                ),
+                                childAspectRatio: 0.65,
+                                crossAxisSpacing:
+                                    MediaQuery.of(context).size.width > 600
+                                    ? 16
+                                    : 12,
+                                mainAxisSpacing:
+                                    MediaQuery.of(context).size.width > 600
+                                    ? 20
+                                    : 16,
+                              ),
                           padding: EdgeInsets.all(
-                            MediaQuery.of(context).size.width > 600 ? 20.0 : 16.0,
+                            MediaQuery.of(context).size.width > 600
+                                ? 20.0
+                                : 16.0,
                           ),
                           itemCount: state.searchResults.length,
                           itemBuilder: (context, index) {
                             final movie = state.searchResults[index];
-                            final isInLibrary = state.existingMoviesMap[movie.tmdbId] ?? false;
+                            final isInLibrary =
+                                state.existingMoviesMap[movie.tmdbId] ?? false;
 
                             return SafeEntry(
                               key: ValueKey('movie_${movie.tmdbId}_$index'),

@@ -61,13 +61,9 @@ class MovieActionButtons extends ConsumerWidget {
           color: theme.colorScheme.secondary,
           onPressed: () async {
             try {
-              // Update movie with refreshMetadata flag
-              final movieJson = movie.toJson();
-              movieJson['refreshMetadata'] = true;
-              final updatedMovie = RadarrMovie.fromJson(movieJson);
-
-              // Update the movie
-              await ref.read(updateMovieProvider(updatedMovie).future);
+              // For refresh action, we can pass the movie directly
+              // The API will handle the refresh metadata internally
+              await ref.read(updateMovieProvider(movie).future);
 
               // Refresh local data by invalidating the provider
               if (movie.id != null) {

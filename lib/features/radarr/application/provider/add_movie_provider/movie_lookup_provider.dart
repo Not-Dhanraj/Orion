@@ -14,7 +14,12 @@ class AddMovieNotifier extends StateNotifier<AddMovieState> {
     }
 
     // Update searchTerm immediately when search begins
-    state = state.copyWith(isLoading: true, isSearched: true, searchTerm: term, error: null);
+    state = state.copyWith(
+      isLoading: true,
+      isSearched: true,
+      searchTerm: term,
+      error: null,
+    );
 
     final radarr = _ref.read(radarrProvider);
 
@@ -63,9 +68,10 @@ class AddMovieNotifier extends StateNotifier<AddMovieState> {
   }
 }
 
-final addMovieNotifierProvider = StateNotifierProvider<AddMovieNotifier, AddMovieState>(
-  (ref) => AddMovieNotifier(ref),
-);
+final addMovieNotifierProvider =
+    StateNotifierProvider<AddMovieNotifier, AddMovieState>(
+      (ref) => AddMovieNotifier(ref),
+    );
 
 // Keep the old provider for backward compatibility if needed elsewhere
 final movieLookupProvider = FutureProvider.family<List<RadarrMovie>, String>((

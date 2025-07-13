@@ -13,7 +13,7 @@ class AddMovieButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Container(
       width: double.infinity,
       height: 56,
@@ -74,11 +74,7 @@ class AddMovieButton extends StatelessWidget {
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.add,
-                    color: theme.colorScheme.onPrimary,
-                    size: 24,
-                  ),
+                  Icon(Icons.add, color: theme.colorScheme.onPrimary, size: 24),
                   const SizedBox(width: 8),
                   Text(
                     'Add Movie',

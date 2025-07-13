@@ -717,7 +717,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: f0b883ca6aff4f95e1a4d9698441ff4346d96a5a
+      resolved-ref: "156f9015ca2d0642bf1dc7b0a4aa4cad7cf8bb5c"
       url: "https://github.com/Not-Dhanraj/radarr_flutter.git"
     source: git
     version: "3.0.1"

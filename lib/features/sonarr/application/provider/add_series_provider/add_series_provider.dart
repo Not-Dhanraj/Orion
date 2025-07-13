@@ -15,8 +15,8 @@ class AddSeriesNotifier extends StateNotifier<AddSeriesState> {
 
     // Update searchTerm immediately when search begins
     state = state.copyWith(
-      isLoading: true, 
-      isSearched: true, 
+      isLoading: true,
+      isSearched: true,
       searchTerm: term,
       error: null, // Clear any previous errors
     );
@@ -28,10 +28,7 @@ class AddSeriesNotifier extends StateNotifier<AddSeriesState> {
       state = state.copyWith(searchResults: results, error: null);
       await _checkExistingSeries();
     } catch (e) {
-      state = state.copyWith(
-        searchResults: [],
-        error: e.toString(),
-      );
+      state = state.copyWith(searchResults: [], error: e.toString());
     } finally {
       state = state.copyWith(isLoading: false);
     }

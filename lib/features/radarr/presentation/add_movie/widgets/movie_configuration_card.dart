@@ -13,11 +13,13 @@ class MovieConfigurationCard extends ConsumerWidget {
     required this.selectedRootFolder,
     required this.selectedLanguageProfile,
     required this.minimumAvailability,
+    required this.monitorType,
     required this.onMonitoredChanged,
     required this.onQualityProfileChanged,
     required this.onRootFolderChanged,
     required this.onLanguageProfileChanged,
     required this.onMinimumAvailabilityChanged,
+    required this.onMonitorTypeChanged,
   });
 
   final bool monitored;
@@ -25,11 +27,13 @@ class MovieConfigurationCard extends ConsumerWidget {
   final RadarrRootFolder? selectedRootFolder;
   final RadarrLanguage? selectedLanguageProfile;
   final String minimumAvailability;
+  final RadarrMovieTypes? monitorType;
   final ValueChanged<bool> onMonitoredChanged;
   final ValueChanged<RadarrQualityProfile?> onQualityProfileChanged;
   final ValueChanged<RadarrRootFolder?> onRootFolderChanged;
   final ValueChanged<RadarrLanguage?> onLanguageProfileChanged;
   final ValueChanged<String> onMinimumAvailabilityChanged;
+  final ValueChanged<RadarrMovieTypes?> onMonitorTypeChanged;
 
   InputDecoration _getDropdownDecoration(ThemeData theme) {
     return InputDecoration(
@@ -173,6 +177,44 @@ class MovieConfigurationCard extends ConsumerWidget {
                     ),
                   ),
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                ),
+              ),
+            ),
+            _buildFormField(
+              context: context,
+              title: 'Monitor Type',
+              subtitle: 'What to monitor when adding this movie',
+              icon: Icons.visibility_outlined,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: theme.colorScheme.outline.withAlpha(100),
+                    width: 1,
+                  ),
+                ),
+                child: DropdownButtonFormField<RadarrMovieTypes>(
+                  decoration: _getDropdownDecoration(theme),
+                  isExpanded: true,
+                  value: monitorType,
+                  icon: Icon(
+                    Icons.arrow_drop_down,
+                    color: theme.colorScheme.primary,
+                  ),
+                  items: RadarrMovieTypes.values.map((type) {
+                    return DropdownMenuItem<RadarrMovieTypes>(
+                      value: type,
+                      child: Text(
+                        type.readable ?? type.name,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: onMonitorTypeChanged,
+                  dropdownColor: theme.colorScheme.surface,
+                  borderRadius: BorderRadius.circular(12),
                 ),
               ),
             ),

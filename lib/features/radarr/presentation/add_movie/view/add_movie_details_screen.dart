@@ -27,6 +27,7 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
   RadarrRootFolder? _selectedRootFolder;
   RadarrLanguage? _selectedLanguageProfile;
   String _minimumAvailability = 'announced'; // Default value
+  RadarrMovieTypes? _monitorType = RadarrMovieTypes.MOVIE_ONLY; // Default value
   bool _isSubmitting = false;
   bool _hasSetDefaults = false;
 
@@ -121,6 +122,7 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
         selectedRootFolder: _selectedRootFolder,
         selectedLanguageProfile: _selectedLanguageProfile,
         minimumAvailability: _minimumAvailability,
+        monitorType: _monitorType,
         onMonitoredChanged: (value) => setState(() => _monitored = value),
         onQualityProfileChanged: (value) =>
             setState(() => _selectedQualityProfile = value),
@@ -130,6 +132,8 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
             setState(() => _selectedLanguageProfile = value),
         onMinimumAvailabilityChanged: (value) =>
             setState(() => _minimumAvailability = value),
+        onMonitorTypeChanged: (value) =>
+            setState(() => _monitorType = value),
       ),
     ];
 
@@ -245,6 +249,7 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
             monitored: _monitored,
             minimumAvailability: availability,
             qualityProfile: _selectedQualityProfile!,
+            monitor: _monitorType,
           );
 
       // Invalidate the all movies provider to refresh the movies list

@@ -17,6 +17,7 @@ class AddMovieNotifier {
     required bool monitored,
     required RadarrAvailability minimumAvailability,
     required RadarrQualityProfile qualityProfile,
+    RadarrMovieTypes? monitor,
   }) async {
     final radarr = _ref.read(radarrProvider);
     return await radarr.movie.create(
@@ -25,6 +26,7 @@ class AddMovieNotifier {
       monitored: monitored,
       minimumAvailability: minimumAvailability,
       qualityProfile: qualityProfile,
+      monitor: monitor,
     );
   }
 }

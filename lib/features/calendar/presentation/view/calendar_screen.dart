@@ -250,48 +250,6 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen>
                               children: [
                                 CalendarStatsCard(events: items),
                                 const SizedBox(height: 8),
-                                // Separate stats for Sonarr and Radarr
-                                // Row(
-                                //   children: [
-                                //     Expanded(
-                                //       child: Consumer(
-                                //         builder: (context, ref, _) {
-                                //           final sonarrEvents = ref.watch(
-                                //             sonarrCalendarProvider,
-                                //           );
-                                //           return sonarrEvents.when(
-                                //             data: (items) =>
-                                //                 CalendarSourceStats(
-                                //                   events: items,
-                                //                   title: 'TV Shows',
-                                //                 ),
-                                //             loading: () => const SizedBox(),
-                                //             error: (_, __) => const SizedBox(),
-                                //           );
-                                //         },
-                                //       ),
-                                //     ),
-                                //     const SizedBox(width: 8),
-                                //     Expanded(
-                                //       child: Consumer(
-                                //         builder: (context, ref, _) {
-                                //           final radarrEvents = ref.watch(
-                                //             radarrCalendarProvider,
-                                //           );
-                                //           return radarrEvents.when(
-                                //             data: (items) =>
-                                //                 CalendarSourceStats(
-                                //                   events: items,
-                                //                   title: 'Movies',
-                                //                 ),
-                                //             loading: () => const SizedBox(),
-                                //             error: (_, __) => const SizedBox(),
-                                //           );
-                                //         },
-                                //       ),
-                                //     ),
-                                //   ],
-                                // ),
                               ],
                             ),
                           ),

@@ -89,7 +89,7 @@ class MyApp extends ConsumerWidget {
         darkTheme: darkTheme,
         themeMode: themeSettings.themeMode,
         home: const SplashScreen(),
-        debugShowCheckedModeBanner: false,
+        // debugShowCheckedModeBanner: false,
         builder: (buildContext, widget) {
           return Material(
             child: ConnectivityWidgetWrapper(

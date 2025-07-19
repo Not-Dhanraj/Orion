@@ -1,7 +1,6 @@
 import 'package:client/core/api/api_client.dart';
 import 'package:client/features/radarr/presentation/state/add_movie_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:radarr_flutter/radarr_flutter.dart';
 
 class AddMovieNotifier extends StateNotifier<AddMovieState> {
   final Ref _ref;
@@ -72,15 +71,3 @@ final addMovieNotifierProvider =
     StateNotifierProvider<AddMovieNotifier, AddMovieState>(
       (ref) => AddMovieNotifier(ref),
     );
-
-// Keep the old provider for backward compatibility if needed elsewhere
-final movieLookupProvider = FutureProvider.family<List<RadarrMovie>, String>((
-  ref,
-  term,
-) async {
-  if (term.isEmpty) {
-    return [];
-  }
-  final radarrApi = ref.watch(radarrProvider);
-  return await radarrApi.movieLookup.get(term: term);
-});

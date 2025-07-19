@@ -24,7 +24,6 @@ class SeriesDetails extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final cardCount = _getCardCount(screenWidth);
     final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
 
     // Calculate cache width once
     final cacheWidth = (screenWidth / (cardCount * 1.013)).toInt();

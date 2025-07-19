@@ -283,7 +283,6 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
             : SafeArea(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(20.0),
-                  physics: const BouncingScrollPhysics(),
                   child: _buildResponsiveLayout(context, [
                     SeriesHeaderCard(series: series),
                     SeriesConfigurationCard(series: series),

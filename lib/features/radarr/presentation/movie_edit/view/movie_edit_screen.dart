@@ -313,7 +313,6 @@ class _MovieEditScreenState extends ConsumerState<MovieEditScreen> {
           ),
         ),
         body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24.0),

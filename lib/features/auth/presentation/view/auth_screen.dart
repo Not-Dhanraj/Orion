@@ -373,7 +373,6 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
             )
           : null,
       body: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
         slivers: [
           SliverPadding(
             padding: const EdgeInsets.all(24.0),

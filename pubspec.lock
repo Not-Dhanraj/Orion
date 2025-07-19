@@ -545,13 +545,13 @@ packages:
     source: hosted
     version: "0.11.1"
   meta:
-    dependency: "direct overridden"
+    dependency: "direct main"
     description:
       name: meta
-      sha256: "23f08335362185a5ea2ad3a4e597f1375e78bce8a040df5c600c8d3552ef2394"
+      sha256: e3641ec5d63ebf0d9b41bd43201a66e3fc79a65db5f61fc181f04cd27aab950c
       url: "https://pub.dev"
     source: hosted
-    version: "1.17.0"
+    version: "1.16.0"
   mime:
     dependency: transitive
     description:
@@ -717,7 +717,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "156f9015ca2d0642bf1dc7b0a4aa4cad7cf8bb5c"
+      resolved-ref: dcedc1fda86412fc85bf4ded13adee323805b8b6
       url: "https://github.com/Not-Dhanraj/radarr_flutter.git"
     source: git
     version: "3.0.1"
@@ -835,7 +835,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: f7cfe7542df32e8b77f1813c45affd68f743c82f
+      resolved-ref: "8cdb7d37a69c95062e3d4edd30badbc8fd84ff7e"
       url: "https://github.com/Not-Dhanraj/sonarr_flutter.git"
     source: git
     version: "3.0.5"

@@ -153,7 +153,6 @@ class RadarrDetailScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
       body: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
         slivers: [
           // Backdrop and title area
           DetailSliverAppBar(

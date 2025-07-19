@@ -323,7 +323,6 @@ class SettingsScreen extends ConsumerWidget {
         elevation: 0,
       ),
       body: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
         slivers: [
           SliverPadding(
             padding: const EdgeInsets.all(20.0),

@@ -149,7 +149,6 @@ class _EmptyQueueView extends StatelessWidget {
     final theme = Theme.of(context);
     return Center(
       child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32.0),
           child: Entry.opacity(

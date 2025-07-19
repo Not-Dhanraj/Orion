@@ -144,7 +144,6 @@ class SonarrDetailScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
       body: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
         slivers: [
           DetailSliverAppBar(
             title: 'Details',

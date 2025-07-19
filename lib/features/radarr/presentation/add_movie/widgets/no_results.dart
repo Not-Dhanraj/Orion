@@ -18,7 +18,6 @@ class NoResults extends StatelessWidget {
 
     return Center(
       child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32.0),
           child: Column(

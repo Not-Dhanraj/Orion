@@ -128,7 +128,6 @@ class SeriesEditScreen extends ConsumerWidget {
           ),
         ),
         body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24.0),

@@ -10,7 +10,24 @@ class SeriesDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int _getCardCount(double screenWidth) {
+      return switch (screenWidth) {
+        >= 1400 => 6,
+        >= 1200 => 5,
+        >= 900 => 4,
+        >= 600 => 3,
+        >= 400 => 2,
+        _ => 1,
+      };
+    }
+
+    final screenWidth = MediaQuery.of(context).size.width;
+    final cardCount = _getCardCount(screenWidth);
     final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    // Calculate cache width once
+    final cacheWidth = (screenWidth / (cardCount * 1.013)).toInt();
     return Card(
       margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       elevation: 4,
@@ -43,7 +60,7 @@ class SeriesDetails extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(12.0),
                         child: CachedNetworkImage(
-                          memCacheWidth: 200,
+                          memCacheWidth: cacheWidth,
                           imageUrl: posterUrl!,
                           fit: BoxFit.cover,
                           placeholder: (context, url) => Container(

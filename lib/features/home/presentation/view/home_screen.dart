@@ -88,7 +88,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     }
 
     return Scaffold(
-      extendBody: true, // Let content flow under the navigation bar
       body: Stack(
         children: [
           // Background design element - subtle pattern on top

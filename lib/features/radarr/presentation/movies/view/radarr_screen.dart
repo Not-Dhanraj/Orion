@@ -73,7 +73,7 @@ class RadarrScreen extends ConsumerWidget {
             ),
           ),
           Positioned(
-            bottom: kBottomNavigationBarHeight * 1.4,
+            bottom: 8,
             right: 12,
             child: FloatingActionButton.extended(
               onPressed: () {

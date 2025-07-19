@@ -155,7 +155,7 @@ class _MovieEditScreenState extends ConsumerState<MovieEditScreen> {
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(12.0),
                         child: CachedNetworkImage(
-                          memCacheWidth: 300,
+                          memCacheWidth: 200,
                           imageUrl: posterUrl,
                           fit: BoxFit.cover,
                           placeholder: (context, url) => Container(

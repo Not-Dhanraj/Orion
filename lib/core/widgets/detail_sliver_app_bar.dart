@@ -80,7 +80,7 @@ class DetailSliverAppBar extends StatelessWidget {
               children: [
                 if (fanartUrl != null)
                   CachedNetworkImage(
-                    memCacheWidth: (MediaQuery.of(context).size.width / 0.5)
+                    memCacheWidth: (MediaQuery.of(context).size.width / 1.013)
                         .toInt(),
                     imageUrl: fanartUrl!,
                     fit: BoxFit.cover,

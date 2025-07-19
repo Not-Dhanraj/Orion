@@ -74,7 +74,7 @@ class SeriesEditHeader extends StatelessWidget {
                           width: 100,
                           height: 150,
                           child: CachedNetworkImage(
-                            memCacheWidth: 300,
+                            memCacheWidth: 200,
                             imageUrl: posterUrl,
                             fit: BoxFit.cover,
                             placeholder: (context, url) => Center(

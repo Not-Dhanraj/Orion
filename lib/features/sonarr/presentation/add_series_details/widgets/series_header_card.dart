@@ -161,7 +161,7 @@ class SeriesHeaderCard extends StatelessWidget {
 
     return posterUrl != null
         ? CachedNetworkImage(
-            memCacheWidth: 300,
+            memCacheWidth: 200,
             imageUrl: posterUrl,
             fit: BoxFit.cover,
             errorWidget: (context, error, stackTrace) => Container(

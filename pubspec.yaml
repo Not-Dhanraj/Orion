@@ -41,6 +41,7 @@ dependencies:
   flutter_svg: ^2.2.0
   google_fonts: ^6.1.0
   intl: ^0.20.2
+  meta: 1.16.0
   radarr_flutter:
     git:
       url: https://github.com/Not-Dhanraj/radarr_flutter.git
@@ -49,7 +50,6 @@ dependencies:
     git:
       url: https://github.com/Not-Dhanraj/sonarr_flutter.git
   table_calendar: ^3.2.0
-  meta: '1.16.0'
 
 dev_dependencies:
   build_runner: ^2.4.10

@@ -55,6 +55,7 @@ class MovieCredits extends StatelessWidget {
                           height: 60,
                           child: imageUrl != null
                               ? CachedNetworkImage(
+                                  memCacheWidth: 300,
                                   imageUrl: imageUrl,
                                   fit: BoxFit.cover,
                                   errorWidget: (context, url, error) {
@@ -148,6 +149,7 @@ class MovieCredits extends StatelessWidget {
                           height: 60,
                           child: imageUrl != null
                               ? CachedNetworkImage(
+                                  memCacheWidth: 300,
                                   imageUrl: imageUrl,
                                   fit: BoxFit.cover,
                                   errorWidget: (context, url, error) {

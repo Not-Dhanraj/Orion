@@ -17,6 +17,15 @@ class MediaItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final card_count = switch (screenWidth) {
+      >= 1400 => 6,
+      >= 1200 => 5,
+      >= 900 => 4,
+      >= 600 => 3,
+      >= 400 => 2,
+      _ => 1,
+    };
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
@@ -37,6 +46,7 @@ class MediaItemCard extends StatelessWidget {
           // Poster Image
           if (posterUrl != null)
             CachedNetworkImage(
+              memCacheWidth: (screenWidth / (card_count * 1.23)).toInt(),
               imageUrl: posterUrl!,
               fit: BoxFit.cover,
               placeholder: (context, url) => Container(

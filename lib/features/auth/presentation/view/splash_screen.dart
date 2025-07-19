@@ -2,10 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/features/auth/application/provider/credentials_provider.dart';
 import 'package:client/features/auth/presentation/view/auth_screen.dart';
 import 'package:client/features/home/presentation/view/home_screen.dart';
-import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -139,6 +137,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: CachedNetworkImage(
+                                memCacheWidth: 300,
                                 imageUrl:
                                     'https://cdn-icons-png.flaticon.com/512/5806/5806967.png',
                                 width: 60,

@@ -43,6 +43,7 @@ class MovieDetails extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(12.0),
                         child: CachedNetworkImage(
+                          memCacheWidth: 300,
                           imageUrl: posterUrl!,
                           fit: BoxFit.cover,
                           placeholder: (context, url) => Container(

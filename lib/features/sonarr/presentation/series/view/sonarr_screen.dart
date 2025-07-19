@@ -29,45 +29,32 @@ class SonarrScreen extends ConsumerWidget {
 
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  colorScheme.surfaceContainerHighest.withOpacity(0.3),
-                  colorScheme.surface,
-                ],
-                stops: const [0.0, 0.3],
-              ),
-            ),
-            child: SafeArea(
-              child: RefreshIndicator(
-                onRefresh: () async {
-                  ref.invalidate(allSeriesProvider);
-                  // Wait for the provider to reload
-                  await ref.read(allSeriesProvider.future);
-                },
-                child: seriesValue.when(
-                  data: (series) => SeriesGridView(series: series),
-                  loading: () => const CustomScrollView(
-                    slivers: [
-                      SliverFillRemaining(
-                        child: Center(child: CircularProgressIndicator()),
+          SafeArea(
+            child: RefreshIndicator(
+              onRefresh: () async {
+                ref.invalidate(allSeriesProvider);
+                // Wait for the provider to reload
+                await ref.read(allSeriesProvider.future);
+              },
+              child: seriesValue.when(
+                data: (series) => SeriesGridView(series: series),
+                loading: () => const CustomScrollView(
+                  slivers: [
+                    SliverFillRemaining(
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                  ],
+                ),
+                error: (err, stack) => CustomScrollView(
+                  slivers: [
+                    SliverFillRemaining(
+                      child: ErrorView(
+                        error: err,
+                        customMessage: 'Failed to load TV shows',
+                        onRetry: () => ref.refresh(allSeriesProvider),
                       ),
-                    ],
-                  ),
-                  error: (err, stack) => CustomScrollView(
-                    slivers: [
-                      SliverFillRemaining(
-                        child: ErrorView(
-                          error: err,
-                          customMessage: 'Failed to load TV shows',
-                          onRetry: () => ref.refresh(allSeriesProvider),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

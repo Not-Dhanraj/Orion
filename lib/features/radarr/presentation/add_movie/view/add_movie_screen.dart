@@ -4,8 +4,8 @@ import 'package:client/features/radarr/presentation/add_movie/widgets/empty_stat
 import 'package:client/features/radarr/presentation/add_movie/widgets/loading_indicator.dart';
 import 'package:client/features/radarr/presentation/add_movie/widgets/movie_card.dart';
 import 'package:client/features/radarr/presentation/add_movie/widgets/no_results.dart';
-import 'package:client/features/radarr/presentation/add_movie/widgets/search_bar.dart';
-import 'package:client/features/radarr/presentation/shared/widgets/safe_entry.dart';
+import 'package:client/core/widgets/search_bar.dart';
+import 'package:client/core/widgets/safe_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr_flutter/radarr_flutter.dart';
@@ -109,6 +109,7 @@ class _AddMovieScreenState extends ConsumerState<AddMovieScreen> {
               searchController: _searchController,
               focusNode: _focusNode,
               isLoading: state.isLoading,
+              hintText: 'Search for a movie...',
             ),
             Expanded(
               child: state.isLoading

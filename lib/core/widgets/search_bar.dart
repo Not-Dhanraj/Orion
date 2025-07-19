@@ -8,6 +8,7 @@ class SearchBarWidget extends StatefulWidget {
     required this.searchController,
     required this.focusNode,
     required this.isLoading,
+    required this.hintText,
   });
 
   final Function(String) onSearch;
@@ -15,6 +16,7 @@ class SearchBarWidget extends StatefulWidget {
   final TextEditingController searchController;
   final FocusNode focusNode;
   final bool isLoading;
+  final String hintText;
 
   @override
   State<SearchBarWidget> createState() => _SearchBarWidgetState();
@@ -31,7 +33,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
         focusNode: widget.focusNode,
         textCapitalization: TextCapitalization.words,
         decoration: InputDecoration(
-          hintText: 'Search for a movie...',
+          hintText: widget.hintText,
           hintStyle: TextStyle(
             color: theme.colorScheme.onSurface.withAlpha(153), // 0.6 opacity
           ),

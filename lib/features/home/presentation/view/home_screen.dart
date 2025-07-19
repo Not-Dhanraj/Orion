@@ -1,4 +1,4 @@
-import 'package:client/core/presentaion/styles/app_styles.dart';
+import 'package:client/core/presentation/styles/app_styles.dart';
 import 'package:client/features/home/application/provider/home_providers.dart';
 import 'package:client/features/radarr/presentation/movies/view/radarr_screen.dart';
 import 'package:client/features/settings/presentation/view/settings_screen.dart';

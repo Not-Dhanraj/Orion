@@ -3,7 +3,7 @@ import 'package:client/features/sonarr/presentation/series_edit/widgets/monitori
 import 'package:client/features/sonarr/presentation/series_edit/widgets/quality_profile_dropdown.dart';
 import 'package:client/features/sonarr/presentation/series_edit/widgets/series_edit_header.dart';
 import 'package:client/features/sonarr/presentation/series_edit/widgets/series_type_dropdown.dart';
-import 'package:client/features/sonarr/presentation/shared/widgets/safe_entry.dart';
+import 'package:client/core/widgets/safe_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';

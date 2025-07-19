@@ -3,10 +3,10 @@ import 'package:client/features/sonarr/application/provider/all_series_provider/
 import 'package:client/features/sonarr/presentation/add_series/widgets/empty_state.dart';
 import 'package:client/features/sonarr/presentation/add_series/widgets/loading_indicator.dart';
 import 'package:client/features/sonarr/presentation/add_series/widgets/no_results.dart';
-import 'package:client/features/sonarr/presentation/add_series/widgets/search_bar.dart';
+import 'package:client/core/widgets/search_bar.dart';
 import 'package:client/features/sonarr/presentation/add_series/widgets/series_card.dart';
 import 'package:client/features/sonarr/presentation/add_series_details/view/add_series_details_screen.dart';
-import 'package:client/features/sonarr/presentation/shared/widgets/safe_entry.dart';
+import 'package:client/core/widgets/safe_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
@@ -112,6 +112,7 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
               searchController: _searchController,
               focusNode: _focusNode,
               isLoading: state.isLoading,
+              hintText: 'Search for a TV show...',
             ),
             Expanded(
               child: state.isLoading

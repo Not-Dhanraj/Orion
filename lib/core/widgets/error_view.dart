@@ -1,4 +1,4 @@
-import 'package:client/core/presentaion/styles/app_styles.dart';
+import 'package:client/core/presentation/styles/app_styles.dart';
 import 'package:flutter/material.dart';
 
 class ErrorView extends StatelessWidget {

@@ -31,7 +31,7 @@ class AddSeriesState {
       isSearched: isSearched ?? this.isSearched,
       existingSeriesMap: existingSeriesMap ?? this.existingSeriesMap,
       searchTerm: searchTerm ?? this.searchTerm,
-      error: error ?? this.error,
+      error: error,
     );
   }
 }

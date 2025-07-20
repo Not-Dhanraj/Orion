@@ -3,6 +3,7 @@ import 'package:client/features/calendar/utils/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:entry/entry.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 void showDayEventsBottomSheet(
   BuildContext context,
@@ -44,7 +45,7 @@ class DayEventsBottomSheet extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withCustomOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(0, -2),
           ),
@@ -60,7 +61,7 @@ class DayEventsBottomSheet extends StatelessWidget {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: colorScheme.onSurface.withOpacity(0.2),
+                color: colorScheme.onSurface.withCustomOpacity(0.2),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -79,7 +80,9 @@ class DayEventsBottomSheet extends StatelessWidget {
                         Icon(
                           Icons.event_busy,
                           size: 64,
-                          color: colorScheme.onSurfaceVariant.withOpacity(0.5),
+                          color: colorScheme.onSurfaceVariant.withCustomOpacity(
+                            0.5,
+                          ),
                         ),
                         const SizedBox(height: 16),
                         Text(
@@ -135,12 +138,12 @@ class _BottomSheetHeader extends StatelessWidget {
           end: Alignment.bottomRight,
           colors: [
             colorScheme.onPrimaryContainer.withAlpha(200),
-            colorScheme.primary.withOpacity(0.8),
+            colorScheme.primary.withCustomOpacity(0.8),
           ],
         ),
         boxShadow: [
           BoxShadow(
-            color: colorScheme.shadow.withOpacity(0.1),
+            color: colorScheme.shadow.withCustomOpacity(0.1),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -151,7 +154,7 @@ class _BottomSheetHeader extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withCustomOpacity(0.2),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Column(
@@ -167,7 +170,7 @@ class _BottomSheetHeader extends StatelessWidget {
                 Text(
                   DateFormat('MMM').format(day),
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withCustomOpacity(0.9),
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
@@ -192,7 +195,7 @@ class _BottomSheetHeader extends StatelessWidget {
                 Text(
                   '$episodeCount ${episodeCount == 1 ? 'episode' : 'episodes'}',
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withCustomOpacity(0.9),
                     fontSize: 14,
                   ),
                 ),
@@ -226,7 +229,7 @@ class _EventCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
-          color: colorScheme.outlineVariant.withOpacity(0.3),
+          color: colorScheme.outlineVariant.withCustomOpacity(0.3),
           width: 1,
         ),
       ),
@@ -277,7 +280,7 @@ class _EventCard extends StatelessWidget {
                             vertical: 2,
                           ),
                           decoration: BoxDecoration(
-                            color: colorScheme.primary.withOpacity(0.2),
+                            color: colorScheme.primary.withCustomOpacity(0.2),
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(

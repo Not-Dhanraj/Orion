@@ -1,6 +1,7 @@
 import 'package:client/features/calendar/domain/calendar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class CalendarView extends StatelessWidget {
   final DateTime focusedDay;
@@ -49,7 +50,7 @@ class CalendarView extends StatelessWidget {
               fontSize: 12,
             ),
             weekendStyle: TextStyle(
-              color: colorScheme.primary.withOpacity(0.7),
+              color: colorScheme.primary.withCustomOpacity(0.7),
               fontWeight: FontWeight.bold,
               fontSize: 12,
             ),
@@ -96,7 +97,7 @@ class CalendarView extends StatelessWidget {
                     end: Alignment.bottomRight,
                     colors: [
                       colorScheme.primary,
-                      colorScheme.primary.withOpacity(0.8),
+                      colorScheme.primary.withCustomOpacity(0.8),
                     ],
                   ),
                   shape: BoxShape.circle,
@@ -117,7 +118,7 @@ class CalendarView extends StatelessWidget {
               return Container(
                 margin: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
-                  color: colorScheme.primaryContainer.withOpacity(0.8),
+                  color: colorScheme.primaryContainer.withCustomOpacity(0.8),
                   shape: BoxShape.circle,
                   border: Border.all(color: colorScheme.primary, width: 1.5),
                 ),
@@ -149,7 +150,9 @@ class CalendarView extends StatelessWidget {
       // Not needed due to custom builders
       selectedDecoration: const BoxDecoration(),
       todayDecoration: const BoxDecoration(),
-      weekendTextStyle: TextStyle(color: colorScheme.primary.withOpacity(0.7)),
+      weekendTextStyle: TextStyle(
+        color: colorScheme.primary.withCustomOpacity(0.7),
+      ),
       // Add more padding around days
       cellMargin: const EdgeInsets.all(4),
       cellPadding: EdgeInsets.zero,
@@ -176,7 +179,7 @@ class CalendarView extends StatelessWidget {
       leftChevronIcon: Container(
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: colorScheme.primaryContainer.withOpacity(0.4),
+          color: colorScheme.primaryContainer.withCustomOpacity(0.4),
           shape: BoxShape.circle,
         ),
         child: Icon(Icons.chevron_left, color: colorScheme.primary),
@@ -184,14 +187,14 @@ class CalendarView extends StatelessWidget {
       rightChevronIcon: Container(
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: colorScheme.primaryContainer.withOpacity(0.4),
+          color: colorScheme.primaryContainer.withCustomOpacity(0.4),
           shape: BoxShape.circle,
         ),
         child: Icon(Icons.chevron_right, color: colorScheme.primary),
       ),
       headerPadding: const EdgeInsets.symmetric(vertical: 12.0),
       decoration: BoxDecoration(
-        color: colorScheme.primaryContainer.withOpacity(0.2),
+        color: colorScheme.primaryContainer.withCustomOpacity(0.2),
       ),
       headerMargin: const EdgeInsets.only(bottom: 8.0),
     );

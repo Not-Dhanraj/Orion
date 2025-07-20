@@ -7,6 +7,7 @@ import 'package:entry/entry.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:radarr_flutter/types.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -195,10 +196,10 @@ class SettingsScreen extends ConsumerWidget {
           healthCheckAsync.when(
             data: (healthChecks) {
               final hasErrors = healthChecks.any(
-                (check) => check.type == 'Error',
+                (check) => check.type == RadarrHealthCheckType.ERROR,
               );
               final hasWarnings = healthChecks.any(
-                (check) => check.type == 'Warning',
+                (check) => check.type == RadarrHealthCheckType.WARNING,
               );
 
               Color statusColor = Colors.green;

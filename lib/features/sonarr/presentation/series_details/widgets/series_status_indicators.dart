@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class SeriesStatusIndicators extends StatelessWidget {
   final SonarrSeries series;
@@ -14,7 +15,7 @@ class SeriesStatusIndicators extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.fromLTRB(20, 12, 20, 0),
       elevation: 2,
-      shadowColor: theme.colorScheme.shadow.withOpacity(0.1),
+      shadowColor: theme.colorScheme.shadow.withCustomOpacity(0.1),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -82,11 +83,11 @@ class SeriesStatusIndicators extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
         decoration: BoxDecoration(
           color: active
-              ? color.withOpacity(0.12)
+              ? color.withCustomOpacity(0.12)
               : theme.colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: active ? color.withOpacity(0.5) : Colors.transparent,
+            color: active ? color.withCustomOpacity(0.5) : Colors.transparent,
             width: 1.5,
           ),
         ),

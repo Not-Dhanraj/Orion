@@ -1,6 +1,7 @@
 import 'package:client/features/calendar/domain/calendar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class WeekViewCard extends StatelessWidget {
   final List<CalendarItem> events;
@@ -125,8 +126,8 @@ class _DayItem extends StatelessWidget {
         margin: const EdgeInsets.only(right: 12),
         decoration: BoxDecoration(
           color: isToday
-              ? colorScheme.primaryContainer.withOpacity(0.7)
-              : colorScheme.surfaceContainerHighest.withOpacity(0.4),
+              ? colorScheme.primaryContainer.withCustomOpacity(0.7)
+              : colorScheme.surfaceContainerHighest.withCustomOpacity(0.4),
           borderRadius: BorderRadius.circular(12),
           border: isToday
               ? Border.all(color: colorScheme.primary, width: 1.5)
@@ -162,8 +163,8 @@ class _DayItem extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: isToday
-                      ? colorScheme.primary.withOpacity(0.2)
-                      : colorScheme.primary.withOpacity(0.15),
+                      ? colorScheme.primary.withCustomOpacity(0.2)
+                      : colorScheme.primary.withCustomOpacity(0.15),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(

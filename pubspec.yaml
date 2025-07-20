@@ -50,6 +50,7 @@ dependencies:
     git:
       url: https://github.com/Not-Dhanraj/sonarr_flutter.git
   table_calendar: ^3.2.0
+  with_opacity: ^0.0.2
 
 dev_dependencies:
   build_runner: ^2.4.10
@@ -69,6 +70,5 @@ flutter:
 
   assets:
     - assets/
-  #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

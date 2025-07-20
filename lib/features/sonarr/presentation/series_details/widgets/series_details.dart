@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class SeriesDetails extends StatelessWidget {
   final SonarrSeries series;
@@ -10,7 +11,7 @@ class SeriesDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int _getCardCount(double screenWidth) {
+    int getCardCount(double screenWidth) {
       return switch (screenWidth) {
         >= 1400 => 6,
         >= 1200 => 5,
@@ -22,7 +23,7 @@ class SeriesDetails extends StatelessWidget {
     }
 
     final screenWidth = MediaQuery.of(context).size.width;
-    final cardCount = _getCardCount(screenWidth);
+    final cardCount = getCardCount(screenWidth);
     final theme = Theme.of(context);
 
     // Calculate cache width once
@@ -30,7 +31,7 @@ class SeriesDetails extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       elevation: 4,
-      shadowColor: theme.colorScheme.shadow.withOpacity(0.2),
+      shadowColor: theme.colorScheme.shadow.withCustomOpacity(0.2),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -48,7 +49,7 @@ class SeriesDetails extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12.0),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
+                          color: Colors.black.withCustomOpacity(0.3),
                           blurRadius: 8.0,
                           offset: const Offset(0, 4),
                         ),

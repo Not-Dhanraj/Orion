@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class MonitoringOptions extends StatelessWidget {
   final SonarrSeries series;
@@ -100,7 +101,7 @@ class MonitoringOptions extends StatelessWidget {
                 value: series.monitored ?? false,
                 activeColor: theme.colorScheme.primary,
                 activeTrackColor: theme.colorScheme.primaryContainer,
-                inactiveTrackColor: theme.colorScheme.surfaceVariant,
+                inactiveTrackColor: theme.colorScheme.surfaceContainerHighest,
                 inactiveThumbColor: theme.colorScheme.outline,
                 onChanged: (value) {
                   onSeriesChanged(series..monitored = value);
@@ -110,7 +111,7 @@ class MonitoringOptions extends StatelessWidget {
             Divider(
               height: 1,
               indent: 56,
-              color: theme.colorScheme.outlineVariant.withOpacity(0.5),
+              color: theme.colorScheme.outlineVariant.withCustomOpacity(0.5),
             ),
             ListTile(
               contentPadding: const EdgeInsets.symmetric(
@@ -147,7 +148,7 @@ class MonitoringOptions extends StatelessWidget {
                 value: series.seasonFolder ?? true,
                 activeColor: theme.colorScheme.primary,
                 activeTrackColor: theme.colorScheme.primaryContainer,
-                inactiveTrackColor: theme.colorScheme.surfaceVariant,
+                inactiveTrackColor: theme.colorScheme.surfaceContainerHighest,
                 inactiveThumbColor: theme.colorScheme.outline,
                 onChanged: (value) {
                   onSeriesChanged(series..seasonFolder = value);

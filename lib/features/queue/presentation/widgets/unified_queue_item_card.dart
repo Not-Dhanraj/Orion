@@ -2,6 +2,7 @@ import 'package:client/features/queue/domain/queue_item.dart';
 import 'package:client/features/queue/application/provider/combined_queue_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class UnifiedQueueItemCard extends ConsumerWidget {
   final UnifiedQueueItem queueItem;
@@ -43,8 +44,8 @@ class _QueueItemHeader extends ConsumerWidget {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: queueItem.type == QueueItemType.sonarr
-                ? Colors.blue.withOpacity(0.1)
-                : Colors.orange.withOpacity(0.1),
+                ? Colors.blue.withCustomOpacity(0.1)
+                : Colors.orange.withCustomOpacity(0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(

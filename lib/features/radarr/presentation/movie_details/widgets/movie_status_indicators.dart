@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:radarr_flutter/radarr_flutter.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class MovieStatusIndicators extends StatelessWidget {
   final RadarrMovie movie;
@@ -15,7 +16,7 @@ class MovieStatusIndicators extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.fromLTRB(20, 12, 20, 0),
       elevation: 2,
-      shadowColor: theme.colorScheme.shadow.withOpacity(0.1),
+      shadowColor: theme.colorScheme.shadow.withCustomOpacity(0.1),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -118,11 +119,11 @@ class MovieStatusIndicators extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
         decoration: BoxDecoration(
           color: active
-              ? color.withOpacity(0.12)
+              ? color.withCustomOpacity(0.12)
               : theme.colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: active ? color.withOpacity(0.5) : Colors.transparent,
+            color: active ? color.withCustomOpacity(0.5) : Colors.transparent,
             width: 1.5,
           ),
         ),

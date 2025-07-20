@@ -158,7 +158,7 @@ class MovieHeaderCard extends StatelessWidget {
             imageUrl: posterUrl,
             fit: BoxFit.cover,
             errorWidget: (context, error, stackTrace) => Container(
-              color: Theme.of(context).colorScheme.surfaceVariant,
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
               child: Icon(
                 Icons.broken_image,
                 size: 48,
@@ -167,7 +167,7 @@ class MovieHeaderCard extends StatelessWidget {
             ),
           )
         : Container(
-            color: Theme.of(context).colorScheme.surfaceVariant,
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
             child: Icon(
               Icons.movie,
               size: 48,

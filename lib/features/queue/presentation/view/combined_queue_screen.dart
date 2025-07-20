@@ -6,6 +6,7 @@ import 'package:client/features/queue/presentation/widgets/unified_queue_item_ca
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class CombinedQueueScreen extends ConsumerStatefulWidget {
   const CombinedQueueScreen({super.key});
@@ -78,7 +79,7 @@ class _CombinedQueueScreenState extends ConsumerState<CombinedQueueScreen>
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  colorScheme.surfaceContainerHighest.withOpacity(0.3),
+                  colorScheme.surfaceContainerHighest.withCustomOpacity(0.3),
                   colorScheme.surface,
                 ],
                 stops: const [0.0, 0.3],

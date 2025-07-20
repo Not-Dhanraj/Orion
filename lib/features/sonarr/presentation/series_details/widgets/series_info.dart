@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class SeriesInfo extends StatelessWidget {
   final SonarrSeries series;
@@ -13,7 +14,7 @@ class SeriesInfo extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       elevation: 3,
-      shadowColor: theme.colorScheme.shadow.withOpacity(0.2),
+      shadowColor: theme.colorScheme.shadow.withCustomOpacity(0.2),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -73,9 +74,8 @@ class SeriesInfo extends StatelessWidget {
               const SizedBox(height: 16),
               Container(
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.surfaceContainerHighest.withOpacity(
-                    0.4,
-                  ),
+                  color: theme.colorScheme.surfaceContainerHighest
+                      .withCustomOpacity(0.4),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 padding: EdgeInsets.symmetric(vertical: 4),
@@ -86,7 +86,7 @@ class SeriesInfo extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Colors.amber.withOpacity(0.2),
+                        color: Colors.amber.withCustomOpacity(0.2),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(

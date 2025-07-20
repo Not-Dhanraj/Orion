@@ -2,6 +2,7 @@ import 'package:client/features/calendar/domain/calendar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:entry/entry.dart';
 import 'package:intl/intl.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class CalendarStatsCard extends StatelessWidget {
   final List<CalendarItem> events;
@@ -178,7 +179,7 @@ class _StatItem extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.2),
+              color: color.withCustomOpacity(0.2),
               shape: BoxShape.circle,
             ),
             child: Icon(icon, color: color),

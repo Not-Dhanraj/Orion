@@ -1,6 +1,7 @@
 import 'package:client/features/sonarr/presentation/seasons/view/seasons_page.dart';
 import 'package:flutter/material.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class SeriesEpisodes extends StatelessWidget {
   final SonarrSeries series;
@@ -14,7 +15,7 @@ class SeriesEpisodes extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       elevation: 3,
-      shadowColor: theme.colorScheme.shadow.withOpacity(0.2),
+      shadowColor: theme.colorScheme.shadow.withCustomOpacity(0.2),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
@@ -39,7 +40,9 @@ class SeriesEpisodes extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: theme.colorScheme.shadow.withOpacity(0.15),
+                          color: theme.colorScheme.shadow.withCustomOpacity(
+                            0.15,
+                          ),
                           blurRadius: 4,
                           offset: const Offset(0, 2),
                         ),
@@ -76,9 +79,8 @@ class SeriesEpisodes extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.primaryContainer.withOpacity(
-                        0.6,
-                      ),
+                      color: theme.colorScheme.primaryContainer
+                          .withCustomOpacity(0.6),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
@@ -93,7 +95,7 @@ class SeriesEpisodes extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     color: theme.colorScheme.surfaceContainerHighest
-                        .withOpacity(0.4),
+                        .withCustomOpacity(0.4),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   padding: EdgeInsets.symmetric(vertical: 6),

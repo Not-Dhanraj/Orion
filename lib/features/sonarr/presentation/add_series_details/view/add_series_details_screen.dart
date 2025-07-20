@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
 import 'package:entry/entry.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class AddSeriesDetailsScreen extends ConsumerWidget {
   final SonarrSeriesLookup series;
@@ -240,7 +241,7 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
         elevation: 2,
         centerTitle: true,
         scrolledUnderElevation: 2,
-        shadowColor: theme.colorScheme.shadow.withOpacity(0.5),
+        shadowColor: theme.colorScheme.shadow.withCustomOpacity(0.5),
         actions: [
           if (!state.isLoading)
             Padding(
@@ -254,7 +255,7 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
                 tooltip: 'Add Series',
                 style: IconButton.styleFrom(
                   backgroundColor: theme.colorScheme.primaryContainer
-                      .withOpacity(0.7),
+                      .withCustomOpacity(0.7),
                   elevation: 1,
                 ),
               ),
@@ -267,7 +268,7 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              theme.colorScheme.surfaceContainerHighest.withOpacity(0.4),
+              theme.colorScheme.surfaceContainerHighest.withCustomOpacity(0.4),
               theme.colorScheme.surface,
             ],
             stops: const [0.0, 0.5],
@@ -297,7 +298,7 @@ class AddSeriesDetailsScreen extends ConsumerWidget {
                 color: theme.colorScheme.surface,
                 boxShadow: [
                   BoxShadow(
-                    color: theme.colorScheme.shadow.withOpacity(0.3),
+                    color: theme.colorScheme.shadow.withCustomOpacity(0.3),
                     blurRadius: 8,
                     offset: const Offset(0, -2),
                   ),

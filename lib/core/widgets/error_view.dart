@@ -1,5 +1,6 @@
 import 'package:client/core/presentation/styles/app_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class ErrorView extends StatelessWidget {
   final Object error;
@@ -27,7 +28,7 @@ class ErrorView extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(AppStyles.spacingL),
               decoration: BoxDecoration(
-                color: colorScheme.errorContainer.withOpacity(0.2),
+                color: colorScheme.errorContainer.withCustomOpacity(0.2),
                 shape: BoxShape.circle,
               ),
               child: Icon(

@@ -4,6 +4,7 @@ import 'package:sonarr_flutter/sonarr_flutter.dart';
 import 'package:entry/entry.dart';
 
 import 'package:client/features/sonarr/application/provider/commands_provider/commands_provider.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class ReleaseSelectionDialog extends ConsumerWidget {
   final List<SonarrRelease> releases;
@@ -120,7 +121,9 @@ class ReleaseSelectionDialog extends ConsumerWidget {
                       child: Card(
                         margin: const EdgeInsets.only(bottom: 12.0),
                         elevation: 3,
-                        shadowColor: theme.colorScheme.shadow.withOpacity(0.3),
+                        shadowColor: theme.colorScheme.shadow.withCustomOpacity(
+                          0.3,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                           side: BorderSide(
@@ -378,7 +381,7 @@ class ReleaseSelectionDialog extends ConsumerWidget {
           title,
           style: theme.textTheme.titleSmall?.copyWith(
             fontWeight: FontWeight.bold,
-            color: theme.colorScheme.onSurface.withOpacity(0.7),
+            color: theme.colorScheme.onSurface.withCustomOpacity(0.7),
           ),
         ),
         const SizedBox(height: 12),
@@ -392,9 +395,9 @@ class ReleaseSelectionDialog extends ConsumerWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.red.withOpacity(0.1),
+        color: Colors.red.withCustomOpacity(0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.red.withOpacity(0.3)),
+        border: Border.all(color: Colors.red.withCustomOpacity(0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

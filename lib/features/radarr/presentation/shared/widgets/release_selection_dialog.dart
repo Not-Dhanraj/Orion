@@ -4,6 +4,7 @@ import 'package:radarr_flutter/radarr_flutter.dart';
 import 'package:entry/entry.dart';
 
 import 'package:client/features/radarr/application/provider/movie_management_provider/movie_release_provider.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class ReleaseSelectionDialog extends ConsumerWidget {
   final List<RadarrRelease> releases;
@@ -137,7 +138,9 @@ class ReleaseSelectionDialog extends ConsumerWidget {
                       child: Card(
                         margin: const EdgeInsets.only(bottom: 12.0),
                         elevation: 3,
-                        shadowColor: theme.colorScheme.shadow.withOpacity(0.3),
+                        shadowColor: theme.colorScheme.shadow.withCustomOpacity(
+                          0.3,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                           side: BorderSide(

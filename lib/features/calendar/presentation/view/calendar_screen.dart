@@ -13,6 +13,7 @@ import 'package:client/features/home/application/provider/home_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:entry/entry.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class CalendarScreen extends ConsumerStatefulWidget {
   const CalendarScreen({super.key});
@@ -180,7 +181,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen>
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              colorScheme.surfaceContainerHighest.withOpacity(0.3),
+              colorScheme.surfaceContainerHighest.withCustomOpacity(0.3),
               colorScheme.surface,
             ],
             stops: const [0.0, 0.3],

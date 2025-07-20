@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class SeriesEditHeader extends StatelessWidget {
   final SonarrSeries series;
@@ -36,7 +37,7 @@ class SeriesEditHeader extends StatelessWidget {
           width: 1,
         ),
       ),
-      surfaceTintColor: theme.colorScheme.surfaceTint.withOpacity(0.08),
+      surfaceTintColor: theme.colorScheme.surfaceTint.withCustomOpacity(0.08),
       child: Container(
         decoration: fanartUrl != null
             ? BoxDecoration(
@@ -118,7 +119,9 @@ class SeriesEditHeader extends StatelessWidget {
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.tertiary.withOpacity(0.9),
+                        color: theme.colorScheme.tertiary.withCustomOpacity(
+                          0.9,
+                        ),
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
@@ -145,7 +148,9 @@ class SeriesEditHeader extends StatelessWidget {
                         shadows: [
                           Shadow(
                             blurRadius: 3.0,
-                            color: theme.colorScheme.shadow.withOpacity(0.3),
+                            color: theme.colorScheme.shadow.withCustomOpacity(
+                              0.3,
+                            ),
                             offset: const Offset(0, 1),
                           ),
                         ],
@@ -177,11 +182,11 @@ class SeriesEditHeader extends StatelessWidget {
                               ),
                               decoration: BoxDecoration(
                                 color: theme.colorScheme.primaryContainer
-                                    .withOpacity(0.7),
+                                    .withCustomOpacity(0.7),
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
                                   color: theme.colorScheme.outlineVariant
-                                      .withOpacity(0.3),
+                                      .withCustomOpacity(0.3),
                                   width: 0.5,
                                 ),
                                 boxShadow: [
@@ -231,11 +236,11 @@ class SeriesEditHeader extends StatelessWidget {
                               ),
                               decoration: BoxDecoration(
                                 color: theme.colorScheme.primaryContainer
-                                    .withOpacity(0.7),
+                                    .withCustomOpacity(0.7),
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
                                   color: theme.colorScheme.outlineVariant
-                                      .withOpacity(0.3),
+                                      .withCustomOpacity(0.3),
                                   width: 0.5,
                                 ),
                                 boxShadow: [

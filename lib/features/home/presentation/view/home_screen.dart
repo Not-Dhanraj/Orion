@@ -7,6 +7,7 @@ import 'package:client/features/queue/presentation/view/combined_queue_screen.da
 import 'package:flutter/material.dart';
 import 'package:client/features/calendar/presentation/view/calendar_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -15,9 +16,7 @@ class HomeScreen extends ConsumerStatefulWidget {
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends ConsumerState<HomeScreen>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _animationController;
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   late final PageController _pageController;
 
   final List<Widget> _screens = [
@@ -59,16 +58,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: AppStyles.shortAnimationDuration,
-    );
     _pageController = PageController();
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
     _pageController.dispose();
     super.dispose();
   }
@@ -102,8 +96,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    colorScheme.primary.withOpacity(0.05),
-                    colorScheme.surface.withOpacity(0.01),
+                    colorScheme.primary.withCustomOpacity(0.05),
+                    colorScheme.surface.withCustomOpacity(0.01),
                   ],
                 ),
               ),
@@ -137,7 +131,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                 color: colorScheme.onSurfaceVariant,
               );
             }),
-            indicatorColor: colorScheme.primaryContainer.withOpacity(0.5),
+            indicatorColor: colorScheme.primaryContainer.withCustomOpacity(0.5),
             surfaceTintColor: Colors.transparent,
             labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
           ),
@@ -145,18 +139,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         child: NavigationBar(
           selectedIndex: selectedIndex,
           onDestinationSelected: (index) {
-            // Use animation for smooth transitions
-            if (index > selectedIndex) {
-              _animationController.forward(from: 0.0);
-            } else {
-              _animationController.reverse(from: 1.0);
-            }
             ref.read(homeScreenIndexProvider.notifier).state = index;
           },
           destinations: _navDestinations,
           elevation: 8,
           height: 72,
-          backgroundColor: colorScheme.surface.withOpacity(0.95),
+          backgroundColor: colorScheme.surface.withCustomOpacity(0.95),
           shadowColor: colorScheme.shadow,
           surfaceTintColor: Colors.transparent,
           labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,

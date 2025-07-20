@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class SeriesOverview extends StatelessWidget {
   final String overview;
@@ -12,7 +13,7 @@ class SeriesOverview extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       elevation: 3,
-      shadowColor: theme.colorScheme.shadow.withOpacity(0.2),
+      shadowColor: theme.colorScheme.shadow.withCustomOpacity(0.2),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),

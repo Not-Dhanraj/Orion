@@ -1071,6 +1071,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.14.0"
+  with_opacity:
+    dependency: "direct main"
+    description:
+      name: with_opacity
+      sha256: "1ba32fec8448cdf45b9313ad7b831aeab2b20b22443fd476e78aedc9549c0079"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   xdg_directories:
     dependency: transitive
     description:

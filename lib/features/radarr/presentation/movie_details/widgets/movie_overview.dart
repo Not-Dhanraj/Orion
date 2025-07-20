@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:radarr_flutter/radarr_flutter.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class MovieOverview extends StatelessWidget {
   final RadarrMovie movie;
@@ -14,7 +15,7 @@ class MovieOverview extends StatelessWidget {
     return Card(
       margin: EdgeInsets.zero,
       elevation: 3,
-      shadowColor: theme.colorScheme.shadow.withOpacity(0.2),
+      shadowColor: theme.colorScheme.shadow.withCustomOpacity(0.2),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),

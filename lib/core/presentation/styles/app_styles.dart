@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class AppStyles {
   // Common text styles
@@ -48,7 +49,7 @@ class AppStyles {
     borderRadius: BorderRadius.circular(16),
     boxShadow: [
       BoxShadow(
-        color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
+        color: Theme.of(context).colorScheme.shadow.withCustomOpacity(0.1),
         blurRadius: 8,
         offset: const Offset(0, 4),
       ),
@@ -57,7 +58,7 @@ class AppStyles {
 
   // Card border
   static Border cardBorder(BuildContext context) => Border.all(
-    color: Theme.of(context).colorScheme.outlineVariant.withOpacity(0.2),
+    color: Theme.of(context).colorScheme.outlineVariant.withCustomOpacity(0.2),
     width: 1,
   );
 
@@ -69,7 +70,9 @@ class AppStyles {
         minimumSize: const Size(double.infinity, 56),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 2,
-        shadowColor: Theme.of(context).colorScheme.shadow.withOpacity(0.3),
+        shadowColor: Theme.of(
+          context,
+        ).colorScheme.shadow.withCustomOpacity(0.3),
         padding: const EdgeInsets.symmetric(vertical: 16),
       );
 
@@ -89,7 +92,7 @@ class AppStyles {
       filled: true,
       fillColor: Theme.of(
         context,
-      ).colorScheme.surfaceContainerHighest.withOpacity(0.3),
+      ).colorScheme.surfaceContainerHighest.withCustomOpacity(0.3),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
@@ -97,7 +100,9 @@ class AppStyles {
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(
-          color: Theme.of(context).colorScheme.outlineVariant.withOpacity(0.5),
+          color: Theme.of(
+            context,
+          ).colorScheme.outlineVariant.withCustomOpacity(0.5),
         ),
       ),
       focusedBorder: OutlineInputBorder(

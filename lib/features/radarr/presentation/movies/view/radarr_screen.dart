@@ -4,6 +4,7 @@ import 'package:client/features/radarr/presentation/movies/widgets/movies_grid_v
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:client/features/radarr/presentation/add_movie/view/add_movie_screen.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class RadarrScreen extends ConsumerWidget {
   const RadarrScreen({super.key});
@@ -35,7 +36,7 @@ class RadarrScreen extends ConsumerWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  colorScheme.surfaceContainerHighest.withOpacity(0.3),
+                  colorScheme.surfaceContainerHighest.withCustomOpacity(0.3),
                   colorScheme.surface,
                 ],
                 stops: const [0.0, 0.3],

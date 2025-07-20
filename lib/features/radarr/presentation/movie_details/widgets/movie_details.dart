@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:radarr_flutter/radarr_flutter.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class MovieDetails extends StatelessWidget {
   final RadarrMovie movie;
@@ -30,7 +31,7 @@ class MovieDetails extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       elevation: 4,
-      shadowColor: theme.colorScheme.shadow.withOpacity(0.2),
+      shadowColor: theme.colorScheme.shadow.withCustomOpacity(0.2),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -48,7 +49,7 @@ class MovieDetails extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12.0),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
+                          color: Colors.black.withCustomOpacity(0.3),
                           blurRadius: 8.0,
                           offset: const Offset(0, 4),
                         ),

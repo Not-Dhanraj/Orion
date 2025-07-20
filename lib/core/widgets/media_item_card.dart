@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class MediaItemCard extends StatelessWidget {
   final String title;
@@ -31,8 +32,8 @@ class MediaItemCard extends StatelessWidget {
   static Color _getStatusColor(String status) {
     final lowerStatus = status.toLowerCase();
     return (lowerStatus == 'continuing' || lowerStatus == 'released')
-        ? Colors.green.withOpacity(0.7)
-        : Colors.orange.withOpacity(0.7);
+        ? Colors.green.withCustomOpacity(0.7)
+        : Colors.orange.withCustomOpacity(0.7);
   }
 
   // Extract status text formatting
@@ -44,7 +45,7 @@ class MediaItemCard extends StatelessWidget {
 
   Widget _buildPlaceholderImage(ColorScheme colorScheme) {
     return Container(
-      color: colorScheme.surfaceContainerHighest.withOpacity(0.3),
+      color: colorScheme.surfaceContainerHighest.withCustomOpacity(0.3),
       child: Center(
         child: CircularProgressIndicator(
           strokeWidth: 2,
@@ -56,7 +57,7 @@ class MediaItemCard extends StatelessWidget {
 
   Widget _buildErrorImage(ColorScheme colorScheme) {
     return Container(
-      color: colorScheme.surfaceContainerHighest.withOpacity(0.5),
+      color: colorScheme.surfaceContainerHighest.withCustomOpacity(0.5),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -85,8 +86,8 @@ class MediaItemCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            colorScheme.surfaceContainerHighest.withOpacity(0.5),
-            colorScheme.surfaceContainerHighest.withOpacity(0.7),
+            colorScheme.surfaceContainerHighest.withCustomOpacity(0.5),
+            colorScheme.surfaceContainerHighest.withCustomOpacity(0.7),
           ],
         ),
       ),
@@ -96,14 +97,14 @@ class MediaItemCard extends StatelessWidget {
           Icon(
             Icons.movie_outlined,
             size: 50,
-            color: colorScheme.onSurfaceVariant.withOpacity(0.6),
+            color: colorScheme.onSurfaceVariant.withCustomOpacity(0.6),
           ),
           const SizedBox(height: 8),
           Text(
             'No Poster\nAvailable',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: colorScheme.onSurfaceVariant.withOpacity(0.8),
+              color: colorScheme.onSurfaceVariant.withCustomOpacity(0.8),
               fontWeight: FontWeight.w500,
               fontSize: 14,
             ),
@@ -128,10 +129,10 @@ class MediaItemCard extends StatelessWidget {
             colors: [
               Color(
                 0xF2000000,
-              ), // More efficient than Colors.black.withOpacity(0.95)
+              ), // More efficient than Colors.black.withCustomOpacity(0.95)
               Color(
                 0xB3000000,
-              ), // More efficient than Colors.black.withOpacity(0.7)
+              ), // More efficient than Colors.black.withCustomOpacity(0.7)
               Colors.transparent,
             ],
             stops: [0.0, 0.5, 0.95],
@@ -195,12 +196,12 @@ class MediaItemCard extends StatelessWidget {
 
     return Card(
       elevation: 4,
-      shadowColor: colorScheme.shadow.withOpacity(0.3),
+      shadowColor: colorScheme.shadow.withCustomOpacity(0.3),
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          color: colorScheme.outlineVariant.withOpacity(0.1),
+          color: colorScheme.outlineVariant.withCustomOpacity(0.1),
           width: 0.5,
         ),
       ),
@@ -230,8 +231,8 @@ class MediaItemCard extends StatelessWidget {
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: onTap,
-                  splashColor: colorScheme.primary.withOpacity(0.3),
-                  highlightColor: colorScheme.primary.withOpacity(0.1),
+                  splashColor: colorScheme.primary.withCustomOpacity(0.3),
+                  highlightColor: colorScheme.primary.withCustomOpacity(0.1),
                   borderRadius: BorderRadius.circular(16),
                 ),
               ),

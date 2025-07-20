@@ -12,14 +12,14 @@ class SafeEntry extends StatefulWidget {
   final Curve curve;
 
   const SafeEntry({
-    Key? key,
+    super.key,
     required this.child,
     this.duration = const Duration(milliseconds: 300),
     this.yOffset,
     this.xOffset,
     this.opacity,
     this.curve = Curves.easeOut,
-  }) : super(key: key);
+  });
 
   @override
   SafeEntryState createState() => SafeEntryState();

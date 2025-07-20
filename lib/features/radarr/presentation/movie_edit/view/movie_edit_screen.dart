@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr_flutter/radarr_flutter.dart';
 import 'package:entry/entry.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class MovieEditScreen extends ConsumerStatefulWidget {
   final RadarrMovie movie;
@@ -119,7 +120,7 @@ class _MovieEditScreenState extends ConsumerState<MovieEditScreen> {
           width: 1,
         ),
       ),
-      surfaceTintColor: theme.colorScheme.surfaceTint.withOpacity(0.08),
+      surfaceTintColor: theme.colorScheme.surfaceTint.withCustomOpacity(0.08),
       child: Container(
         decoration: fanartUrl != null
             ? BoxDecoration(

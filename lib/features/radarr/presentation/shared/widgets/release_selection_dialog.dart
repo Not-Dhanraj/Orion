@@ -309,23 +309,19 @@ class ReleaseSelectionDialog extends ConsumerWidget {
                                         );
 
                                         scaffoldMessenger.showSnackBar(
-                                          SnackBar(
+                                          const SnackBar(
                                             content: Row(
                                               children: [
-                                                const Icon(
+                                                Icon(
                                                   Icons.download_done,
                                                   color: Colors.white,
                                                 ),
-                                                const SizedBox(width: 8),
-                                                const Text(
-                                                  'Release downloading',
-                                                ),
+                                                SizedBox(width: 8),
+                                                Text('Release downloading'),
                                               ],
                                             ),
                                             behavior: SnackBarBehavior.floating,
-                                            duration: const Duration(
-                                              seconds: 2,
-                                            ),
+                                            duration: Duration(seconds: 2),
                                             backgroundColor: Colors.green,
                                           ),
                                         );
@@ -378,7 +374,7 @@ class ReleaseSelectionDialog extends ConsumerWidget {
       children: [
         Row(
           children: [
-            Icon(Icons.warning_amber, color: Colors.red, size: 20),
+            const Icon(Icons.warning_amber, color: Colors.red, size: 20),
             const SizedBox(width: 8),
             Text(
               'Rejections',

@@ -237,7 +237,7 @@ class _MovieEditScreenState extends ConsumerState<MovieEditScreen> {
 
     return PopScope(
       canPop: !_hasChanges,
-      onPopInvoked: (bool didPop) {
+      onPopInvokedWithResult: (bool didPop, bool? result) {
         if (didPop) {
           return;
         }

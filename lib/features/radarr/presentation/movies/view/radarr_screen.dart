@@ -81,8 +81,8 @@ class RadarrScreen extends ConsumerWidget {
                 Navigator.push(
                   context,
                   PageRouteBuilder(
-                    pageBuilder: (_, __, ___) => const AddMovieScreen(),
-                    transitionsBuilder: (_, animation, __, child) {
+                    pageBuilder: (context, animation, secondaryAnimation) => const AddMovieScreen(),
+                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
                       return FadeTransition(
                         opacity: animation,
                         child: SlideTransition(

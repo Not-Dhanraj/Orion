@@ -24,13 +24,13 @@ class DetailSliverAppBar extends StatelessWidget {
       flexibleSpace: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           // Calculate the collapse ratio
-          final double expandedHeight = 250.0;
+          const double expandedHeight = 250.0;
           final double collapsedHeight =
               kToolbarHeight + MediaQuery.of(context).padding.top;
           final double currentHeight = constraints.maxHeight;
 
           // Calculate animation progress (0.0 = fully collapsed, 1.0 = fully expanded)
-          final double t =
+          final t =
               ((currentHeight - collapsedHeight) /
                       (expandedHeight - collapsedHeight))
                   .clamp(0.0, 1.0);
@@ -38,11 +38,11 @@ class DetailSliverAppBar extends StatelessWidget {
           // Calculate horizontal padding for the title
           // When collapsed (t=0): padding for back button (56.0)
           // When expanded (t=1): minimal left padding (16.0)
-          final double leftPadding = 56.0 * (1 - t) + 16.0 * t;
+          final leftPadding = 56.0 * (1 - t) + 16.0 * t;
 
           // Calculate text color based on collapse state and theme
           final bool isDarkTheme = theme.brightness == Brightness.dark;
-          final Color expandedTextColor = Colors.white;
+          const Color expandedTextColor = Colors.white;
           final Color collapsedTextColor = isDarkTheme
               ? Colors.white
               : theme.colorScheme.onSurface;

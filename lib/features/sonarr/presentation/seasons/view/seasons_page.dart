@@ -113,7 +113,7 @@ class SeasonsPage extends ConsumerWidget {
           ref.invalidate(seriesEpisodesProvider(currentSeries.id!));
           ref.invalidate(seriesEpisodeFilesProvider(currentSeries.id!));
           // Return a completed future to satisfy the RefreshIndicator
-          await Future.delayed(Duration(seconds: 1));
+          await Future.delayed(const Duration(seconds: 1));
           return Future.value();
         },
         child: episodesAsyncValue.when(

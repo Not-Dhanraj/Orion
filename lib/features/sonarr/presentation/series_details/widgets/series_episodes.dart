@@ -98,7 +98,7 @@ class SeriesEpisodes extends StatelessWidget {
                         .withCustomOpacity(0.4),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  padding: EdgeInsets.symmetric(vertical: 6),
+                  padding: const EdgeInsets.symmetric(vertical: 6),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

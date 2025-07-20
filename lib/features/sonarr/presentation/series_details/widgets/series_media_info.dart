@@ -148,7 +148,7 @@ class SeriesMediaInfo extends StatelessWidget {
     String value,
     IconData icon,
   ) {
-    var theme = Theme.of(context);
+    final theme = Theme.of(context);
     return Column(
       children: [
         Container(

@@ -91,10 +91,10 @@ class QualityProfileDropdown extends ConsumerWidget {
             qualityProfilesAsync.when(
               data: (profiles) {
                 final currentQualityProfileId = series.qualityProfileId;
-                bool containsCurrentProfile = profiles.any(
+                final bool containsCurrentProfile = profiles.any(
                   (p) => p.id == currentQualityProfileId,
                 );
-                int selectedValue =
+                final int selectedValue =
                     containsCurrentProfile && currentQualityProfileId != null
                     ? currentQualityProfileId
                     : (profiles.isNotEmpty ? profiles.first.id! : 1);

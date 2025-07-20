@@ -78,8 +78,8 @@ class SeriesInfo extends StatelessWidget {
                       .withCustomOpacity(0.4),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                padding: EdgeInsets.symmetric(vertical: 4),
-                margin: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -125,7 +125,7 @@ class SeriesInfo extends StatelessWidget {
     String value,
     IconData icon,
   ) {
-    var theme = Theme.of(context);
+    final theme = Theme.of(context);
     return Column(
       children: [
         Container(

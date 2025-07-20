@@ -75,10 +75,10 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
       }
     } else {
       // Initial setup - require at least one service
-      bool hasSonarr =
+      final bool hasSonarr =
           _sonarrUrlController.text.trim().isNotEmpty ||
           _sonarrApiKeyController.text.trim().isNotEmpty;
-      bool hasRadarr =
+      final bool hasRadarr =
           _radarrUrlController.text.trim().isNotEmpty ||
           _radarrApiKeyController.text.trim().isNotEmpty;
 

@@ -114,7 +114,7 @@ class _AddMovieDetailsScreenState extends ConsumerState<AddMovieDetailsScreen> {
   Widget _buildResponsiveLayout(BuildContext context, RadarrMovie movie) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    List<Widget> children = [
+    final List<Widget> children = [
       MovieHeaderCard(movie: movie),
       MovieConfigurationCard(
         monitored: _monitored,

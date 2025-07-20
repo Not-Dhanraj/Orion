@@ -67,8 +67,8 @@ class SonarrScreen extends ConsumerWidget {
                 Navigator.push(
                   context,
                   PageRouteBuilder(
-                    pageBuilder: (_, __, ___) => const AddSeriesScreen(),
-                    transitionsBuilder: (_, animation, __, child) {
+                    pageBuilder: (_, _, _) => const AddSeriesScreen(),
+                    transitionsBuilder: (_, animation, _, child) {
                       return FadeTransition(
                         opacity: animation,
                         child: SlideTransition(

@@ -143,7 +143,7 @@ class RadarrDetailScreen extends ConsumerWidget {
         movieAsync?.when(
           data: (updatedMovie) => updatedMovie,
           loading: () => movie,
-          error: (_, __) => movie,
+          error: (_, _) => movie,
         ) ??
         movie;
 
@@ -158,7 +158,7 @@ class RadarrDetailScreen extends ConsumerWidget {
           DetailSliverAppBar(
             title: 'Details',
             fanartUrl: backdropUrl,
-            actions: [],
+            actions: const [],
           ),
 
           SliverToBoxAdapter(

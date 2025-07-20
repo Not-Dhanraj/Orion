@@ -81,7 +81,7 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
     }
 
     int calculateCrossAxisCount(BuildContext context) {
-      double width = MediaQuery.of(context).size.width;
+      final double width = MediaQuery.of(context).size.width;
       if (width > 1400) return 6;
       if (width > 1200) return 5;
       if (width > 900) return 4;

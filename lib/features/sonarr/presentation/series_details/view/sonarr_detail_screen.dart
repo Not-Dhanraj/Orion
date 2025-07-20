@@ -137,7 +137,7 @@ class SonarrDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var theme = Theme.of(context);
+    final theme = Theme.of(context);
     final fanartUrl = _getImageUrl(series, coverType: 'fanart');
     final posterUrl = _getImageUrl(series, coverType: 'poster');
 
@@ -148,7 +148,7 @@ class SonarrDetailScreen extends ConsumerWidget {
           DetailSliverAppBar(
             title: 'Details',
             fanartUrl: fanartUrl,
-            actions: [],
+            actions: const [],
           ),
           SliverToBoxAdapter(
             child: Container(

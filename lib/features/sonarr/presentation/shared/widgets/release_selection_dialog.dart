@@ -297,20 +297,18 @@ class ReleaseSelectionDialog extends ConsumerWidget {
                                         );
 
                                         scaffoldMessenger.showSnackBar(
-                                          SnackBar(
+                                          const SnackBar(
                                             content: Row(
                                               children: [
                                                 Icon(
                                                   Icons.download_done,
                                                   color: Colors.white,
                                                 ),
-                                                const SizedBox(width: 8),
+                                                SizedBox(width: 8),
                                                 Text('Release downloading'),
                                               ],
                                             ),
-                                            duration: const Duration(
-                                              seconds: 2,
-                                            ),
+                                            duration: Duration(seconds: 2),
                                             backgroundColor: Colors.green,
                                             behavior: SnackBarBehavior.floating,
                                           ),

@@ -222,7 +222,7 @@ class SettingsScreen extends ConsumerWidget {
             },
             loading: () =>
                 _buildStatusRow(context, 'Health Status', 'Loading...'),
-            error: (_, __) => _buildStatusRow(
+            error: (_, _) => _buildStatusRow(
               context,
               'Health Status',
               'Error',
@@ -255,7 +255,7 @@ class SettingsScreen extends ConsumerWidget {
               return _buildStatusRow(context, 'Disk Space', 'No data');
             },
             loading: () => _buildStatusRow(context, 'Disk Space', 'Loading...'),
-            error: (_, __) => _buildStatusRow(
+            error: (_, _) => _buildStatusRow(
               context,
               'Disk Space',
               'Error',
@@ -452,7 +452,7 @@ class SettingsScreen extends ConsumerWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    AuthScreen(isSonarr: true),
+                                    const AuthScreen(isSonarr: true),
                               ),
                             );
                           },
@@ -468,7 +468,7 @@ class SettingsScreen extends ConsumerWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    AuthScreen(isRadarr: true),
+                                    const AuthScreen(isRadarr: true),
                               ),
                             );
                           },

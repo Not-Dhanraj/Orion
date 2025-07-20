@@ -40,13 +40,13 @@ class AddMovieNotifier extends StateNotifier<AddMovieState> {
     try {
       final existingMovies = await radarr.movie.getAll();
       final existingTmdbIds = {
-        for (var movie in existingMovies)
+        for (final movie in existingMovies)
           if (movie.tmdbId != null) movie.tmdbId!: true,
       };
 
       state = state.copyWith(
         existingMoviesMap: {
-          for (var movie in state.searchResults)
+          for (final movie in state.searchResults)
             if (movie.tmdbId != null)
               movie.tmdbId!: existingTmdbIds.containsKey(movie.tmdbId),
         },

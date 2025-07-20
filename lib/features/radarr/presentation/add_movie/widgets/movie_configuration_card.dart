@@ -257,7 +257,7 @@ class MovieConfigurationCard extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                   loading: () => const LinearProgressIndicator(),
-                  error: (_, __) =>
+                  error: (_, _) =>
                       const Text('Failed to load quality profiles'),
                 ),
               ),
@@ -301,7 +301,7 @@ class MovieConfigurationCard extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   loading: () => const LinearProgressIndicator(),
-                  error: (_, __) => const Text('Failed to load root folders'),
+                  error: (_, _) => const Text('Failed to load root folders'),
                 ),
               ),
             ),
@@ -349,7 +349,7 @@ class MovieConfigurationCard extends ConsumerWidget {
                 );
               },
               loading: () => const SizedBox.shrink(),
-              error: (_, __) => const SizedBox.shrink(),
+              error: (_, _) => const SizedBox.shrink(),
             ),
             _buildFormField(
               context: context,

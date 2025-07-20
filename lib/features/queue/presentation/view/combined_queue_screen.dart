@@ -188,7 +188,7 @@ class _EmptyQueueView extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 16),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _EmptyQueueServiceCard(
@@ -196,7 +196,7 @@ class _EmptyQueueView extends StatelessWidget {
                       label: 'TV Shows',
                       color: Colors.blue,
                     ),
-                    const SizedBox(width: 16),
+                    SizedBox(width: 16),
                     _EmptyQueueServiceCard(
                       icon: Icons.movie,
                       label: 'Movies',

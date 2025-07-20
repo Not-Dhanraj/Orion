@@ -41,13 +41,13 @@ class AddSeriesNotifier extends StateNotifier<AddSeriesState> {
     try {
       final existingSeries = await sonarr.series.getAllSeries();
       final existingTvdbIds = {
-        for (var series in existingSeries)
+        for (final series in existingSeries)
           if (series.tvdbId != null) series.tvdbId!: true,
       };
 
       state = state.copyWith(
         existingSeriesMap: {
-          for (var series in state.searchResults)
+          for (final series in state.searchResults)
             if (series.tvdbId != null)
               series.tvdbId!: existingTvdbIds.containsKey(series.tvdbId),
         },

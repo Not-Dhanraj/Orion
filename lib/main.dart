@@ -27,7 +27,6 @@ class MyApp extends ConsumerWidget {
     final themeSettings = ref.watch(themeProvider);
 
     // Define text theme with Google Fonts
-    final textTheme = GoogleFonts.montserratTextTheme();
 
     // Custom theme configurations
     final lightTheme = FlexThemeData.light(
@@ -54,7 +53,7 @@ class MyApp extends ConsumerWidget {
       useMaterial3: true,
       // Apply the text theme with Google fonts
       fontFamily: GoogleFonts.montserrat().fontFamily,
-    ).copyWith(textTheme: textTheme);
+    );
 
     final darkTheme = FlexThemeData.dark(
       scheme: themeSettings.flexScheme,
@@ -80,7 +79,7 @@ class MyApp extends ConsumerWidget {
       useMaterial3: true,
       // Apply the text theme with Google fonts
       fontFamily: GoogleFonts.montserrat().fontFamily,
-    ).copyWith(textTheme: textTheme);
+    );
 
     return ConnectivityAppWrapper(
       app: MaterialApp(

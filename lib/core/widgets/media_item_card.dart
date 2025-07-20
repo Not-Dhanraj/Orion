@@ -73,6 +73,7 @@ class MediaItemCard extends StatelessWidget {
                 ),
               ),
               padding: const EdgeInsets.fromLTRB(12, 48, 12, 12),
+              //Add status text
               child: Text(
                 title,
                 maxLines: 2,

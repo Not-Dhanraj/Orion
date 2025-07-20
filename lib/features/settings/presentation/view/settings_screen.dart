@@ -549,8 +549,39 @@ class SettingsScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
-
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    foregroundColor: Colors.white,
+                    shadowColor: Colors.transparent,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 32,
+                      vertical: 16,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  onPressed: () {
+                    ref.read(credentialsProvider.notifier).clearCredentials();
+                  },
+                  icon: const Icon(Icons.logout),
+                  label: const Text(
+                    'Logout',
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                ),
                 const SizedBox(height: kBottomNavigationBarHeight + 20),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    ref.read(credentialsProvider.notifier).clearCredentials();
+                  },
+                  icon: const Icon(Icons.logout),
+                  label: const Text(
+                    'Logout',
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                ),
               ]),
             ),
           ),

@@ -1,3 +1,4 @@
+import 'package:client/core/storage/hive_service.dart';
 import 'package:client/features/auth/presentation/view/splash_screen.dart';
 import 'package:client/features/settings/application/provider/theme_provider.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
@@ -7,8 +8,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize Hive
+  await HiveService.init();
+  
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

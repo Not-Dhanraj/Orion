@@ -1,5 +1,5 @@
+import 'package:client/core/storage/hive_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 enum CalendarViewMode { month, week, both }
 
@@ -16,10 +16,9 @@ class CalendarPreferencesNotifier extends StateNotifier<CalendarPreferences> {
   }
 
   Future<void> _loadPreferences() async {
-    final prefs = await SharedPreferences.getInstance();
-    final viewModeIndex =
-        prefs.getInt('calendarViewMode') ?? CalendarViewMode.both.index;
-    final showStats = prefs.getBool('calendarShowStats') ?? true;
+    final box = HiveService.calendarBox;
+    final viewModeIndex = box.get('calendarViewMode', defaultValue: CalendarViewMode.both.index);
+    final showStats = box.get('calendarShowStats', defaultValue: true);
 
     state = state.copyWith(
       viewMode: CalendarViewMode.values[viewModeIndex],
@@ -28,14 +27,14 @@ class CalendarPreferencesNotifier extends StateNotifier<CalendarPreferences> {
   }
 
   Future<void> setViewMode(CalendarViewMode viewMode) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('calendarViewMode', viewMode.index);
+    final box = HiveService.calendarBox;
+    await box.put('calendarViewMode', viewMode.index);
     state = state.copyWith(viewMode: viewMode);
   }
 
   Future<void> setShowStats(bool showStats) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('calendarShowStats', showStats);
+    final box = HiveService.calendarBox;
+    await box.put('calendarShowStats', showStats);
     state = state.copyWith(showStats: showStats);
   }
 }

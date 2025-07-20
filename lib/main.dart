@@ -31,8 +31,6 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeSettings = ref.watch(themeProvider);
 
-    // Define text theme with Google Fonts
-
     // Custom theme configurations
     final lightTheme = FlexThemeData.light(
       scheme: themeSettings.flexScheme,

@@ -264,6 +264,7 @@ class _MovieEditScreenState extends ConsumerState<MovieEditScreen> {
           ),
         ).then((result) {
           if (result ?? false) {
+            if (!context.mounted) return;
             Navigator.of(context).pop();
           }
         });

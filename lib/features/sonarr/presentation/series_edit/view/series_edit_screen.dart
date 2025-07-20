@@ -18,16 +18,18 @@ class SeriesEditScreen extends ConsumerWidget {
       await ref
           .read(seriesEditControllerProvider(series).notifier)
           .saveSeries();
-
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
+      final scaffoldMessenger = ScaffoldMessenger.of(context);
+      final navigator = Navigator.of(context);
+      if (!context.mounted) return;
+      scaffoldMessenger.showSnackBar(
         SnackBar(
           content: Text('${series.title} has been updated'),
           backgroundColor: Colors.green,
           duration: const Duration(seconds: 2),
         ),
       );
-      Navigator.of(context).pop(true);
+      navigator.pop(true);
     } catch (e) {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -46,7 +48,7 @@ class SeriesEditScreen extends ConsumerWidget {
 
     return PopScope(
       canPop: !state.hasChanges,
-      onPopInvoked: (bool didPop) {
+      onPopInvokedWithResult: (bool didPop, bool? result) {
         if (didPop) {
           return;
         }
@@ -73,6 +75,7 @@ class SeriesEditScreen extends ConsumerWidget {
           ),
         ).then((result) {
           if (result ?? false) {
+            if (!context.mounted) return;
             Navigator.of(context).pop();
           }
         });

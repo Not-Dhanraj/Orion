@@ -93,7 +93,7 @@ class MyApp extends ConsumerWidget {
         builder: (buildContext, widget) {
           return Material(
             child: ConnectivityWidgetWrapper(
-              disableInteraction: false,
+              disableInteraction: true,
               height: 56,
               decoration: BoxDecoration(
                 color: Theme.of(buildContext).colorScheme.errorContainer,

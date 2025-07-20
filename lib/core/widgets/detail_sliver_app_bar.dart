@@ -67,7 +67,6 @@ class DetailSliverAppBar extends StatelessWidget {
                     ? [
                         // Only add shadows when expanded enough
                         const Shadow(
-                          blurRadius: 8,
                           color: Colors.black87,
                           offset: Offset(0, 2),
                         ),

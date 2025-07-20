@@ -56,7 +56,7 @@ class SeasonProgressBar extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(4),
                 child: LinearProgressIndicator(
                   value: progressValue,
-                  backgroundColor: Colors.grey.withAlpha(51),
+                  backgroundColor: theme.colorScheme.surface.withAlpha(51),
                   minHeight: 8,
                   color: theme.colorScheme.primary,
                 ),

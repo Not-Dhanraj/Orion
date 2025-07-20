@@ -13,6 +13,7 @@ class AddMovieNotifier extends StateNotifier<AddMovieState> {
     }
 
     // Update searchTerm immediately when search begins
+    if (!mounted) return;
     state = state.copyWith(
       isLoading: true,
       isSearched: true,
@@ -24,12 +25,16 @@ class AddMovieNotifier extends StateNotifier<AddMovieState> {
 
     try {
       final results = await radarr.movieLookup.get(term: term);
+      if (!mounted) return;
       state = state.copyWith(searchResults: results);
       await _checkExistingMovies();
     } catch (e) {
+      if (!mounted) return;
       state = state.copyWith(error: e.toString());
     } finally {
-      state = state.copyWith(isLoading: false);
+      if (mounted) {
+        state = state.copyWith(isLoading: false);
+      }
     }
   }
 
@@ -44,6 +49,7 @@ class AddMovieNotifier extends StateNotifier<AddMovieState> {
           if (movie.tmdbId != null) movie.tmdbId!: true,
       };
 
+      if (!mounted) return;
       state = state.copyWith(
         existingMoviesMap: {
           for (final movie in state.searchResults)
@@ -61,6 +67,7 @@ class AddMovieNotifier extends StateNotifier<AddMovieState> {
   }
 
   void setMovieAsAdded(int tmdbId) {
+    if (!mounted) return;
     final updatedMap = Map<int, bool>.from(state.existingMoviesMap);
     updatedMap[tmdbId] = true;
     state = state.copyWith(existingMoviesMap: updatedMap);

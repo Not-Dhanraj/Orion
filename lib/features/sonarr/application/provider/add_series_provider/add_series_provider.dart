@@ -14,6 +14,7 @@ class AddSeriesNotifier extends StateNotifier<AddSeriesState> {
     }
 
     // Update searchTerm immediately when search begins
+    if (!mounted) return;
     state = state.copyWith(
       isLoading: true,
       isSearched: true,
@@ -25,12 +26,16 @@ class AddSeriesNotifier extends StateNotifier<AddSeriesState> {
 
     try {
       final results = await sonarr.seriesLookup.getSeriesLookup(term: term);
+      if (!mounted) return;
       state = state.copyWith(searchResults: results, error: null);
       await _checkExistingSeries();
     } catch (e) {
+      if (!mounted) return;
       state = state.copyWith(searchResults: [], error: e.toString());
     } finally {
-      state = state.copyWith(isLoading: false);
+      if (mounted) {
+        state = state.copyWith(isLoading: false);
+      }
     }
   }
 
@@ -45,6 +50,7 @@ class AddSeriesNotifier extends StateNotifier<AddSeriesState> {
           if (series.tvdbId != null) series.tvdbId!: true,
       };
 
+      if (!mounted) return;
       state = state.copyWith(
         existingSeriesMap: {
           for (final series in state.searchResults)
@@ -68,6 +74,7 @@ class AddSeriesNotifier extends StateNotifier<AddSeriesState> {
   }
 
   void setSeriesAsAdded(int tvdbId) {
+    if (!mounted) return;
     state = state.copyWith(
       existingSeriesMap: {...state.existingSeriesMap, tvdbId: true},
     );

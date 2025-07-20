@@ -15,15 +15,19 @@ class SeriesEditController extends StateNotifier<SeriesEditState> {
     : super(SeriesEditState(series: series));
 
   void updateSeries(SonarrSeries series) {
+    if (!mounted) return;
     state = state.copyWith(series: series, hasChanges: true);
   }
 
   Future<void> saveSeries() async {
+    if (!mounted) return;
     state = state.copyWith(isLoading: true);
     try {
       await _ref.read(seriesEditServiceProvider).updateSeries(state.series);
+      if (!mounted) return;
       state = state.copyWith(isLoading: false, hasChanges: false);
     } catch (e) {
+      if (!mounted) return;
       state = state.copyWith(isLoading: false);
       rethrow;
     }

@@ -11,6 +11,7 @@ class RadarrQueueNotifier extends StateNotifier<AsyncValue<void>> {
 
   /// Deletes a queue item
   Future<void> deleteQueueItem(int id, {bool blacklist = false}) async {
+    if (!mounted) return;
     state = const AsyncValue.loading();
     try {
       final radarr = _ref.read(radarrProvider);
@@ -22,8 +23,10 @@ class RadarrQueueNotifier extends StateNotifier<AsyncValue<void>> {
 
       // Invalidate the queue provider to refresh the UI
       _ref.invalidate(queueProvider);
+      if (!mounted) return;
       state = const AsyncValue.data(null);
     } catch (e, stack) {
+      if (!mounted) return;
       state = AsyncValue.error(e, stack);
       rethrow;
     }

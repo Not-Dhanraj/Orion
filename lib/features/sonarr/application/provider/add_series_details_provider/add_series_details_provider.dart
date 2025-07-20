@@ -13,6 +13,7 @@ class AddSeriesDetailsNotifier extends StateNotifier<AddSeriesDetailsState> {
   }
 
   Future<void> _fetchData() async {
+    if (!mounted) return;
     state = state.copyWith(isLoading: true, error: null);
 
     try {
@@ -20,6 +21,7 @@ class AddSeriesDetailsNotifier extends StateNotifier<AddSeriesDetailsState> {
       final qualityProfiles = await sonarr.profile.getQualityProfiles();
       final rootFolders = await sonarr.rootFolder.getRootFolders();
 
+      if (!mounted) return;
       state = state.copyWith(
         qualityProfiles: qualityProfiles,
         rootFolders: rootFolders,
@@ -30,18 +32,25 @@ class AddSeriesDetailsNotifier extends StateNotifier<AddSeriesDetailsState> {
         selectedSeriesType: _series.seriesType ?? SonarrSeriesType.STANDARD,
       );
     } catch (e) {
+      if (!mounted) return;
       state = state.copyWith(error: e.toString());
     } finally {
-      state = state.copyWith(isLoading: false);
+      if (mounted) {
+        state = state.copyWith(isLoading: false);
+      }
     }
   }
 
   Future<bool> addSeries() async {
+    if (!mounted) return false;
+
     if (state.rootFolderPath == null) {
+      if (!mounted) return false;
       state = state.copyWith(error: 'Root folder path is required');
       return false;
     }
 
+    if (!mounted) return false;
     state = state.copyWith(isLoading: true, error: null);
 
     try {
@@ -62,42 +71,53 @@ class AddSeriesDetailsNotifier extends StateNotifier<AddSeriesDetailsState> {
       );
       return true;
     } catch (e) {
+      if (!mounted) return false;
       state = state.copyWith(error: e.toString());
       return false;
     } finally {
-      state = state.copyWith(isLoading: false);
+      if (mounted) {
+        state = state.copyWith(isLoading: false);
+      }
     }
   }
 
   void setSelectedQualityProfileId(int value) {
+    if (!mounted) return;
     state = state.copyWith(selectedQualityProfileId: value);
   }
 
   void setRootFolderPath(String? value) {
+    if (!mounted) return;
     state = state.copyWith(rootFolderPath: value);
   }
 
   void setSelectedMonitorType(SonarrMonitorType value) {
+    if (!mounted) return;
     state = state.copyWith(selectedMonitorType: value);
   }
 
   void setSelectedSeriesType(SonarrSeriesType value) {
+    if (!mounted) return;
     state = state.copyWith(selectedSeriesType: value);
   }
 
   void setSeasonFolder(bool value) {
+    if (!mounted) return;
     state = state.copyWith(seasonFolder: value);
   }
 
   void setMonitored(bool value) {
+    if (!mounted) return;
     state = state.copyWith(monitored: value);
   }
 
   void setSearchForMissingEpisodes(bool value) {
+    if (!mounted) return;
     state = state.copyWith(searchForMissingEpisodes: value);
   }
 
   void setSearchForCutoffUnmetEpisodes(bool value) {
+    if (!mounted) return;
     state = state.copyWith(searchForCutoffUnmetEpisodes: value);
   }
 }

@@ -10,10 +10,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Initialize Hive
   await HiveService.init();
-  
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -98,7 +98,7 @@ class MyApp extends ConsumerWidget {
           return Material(
             child: ConnectivityWidgetWrapper(
               disableInteraction: true,
-              height: 56,
+              height: 58,
               decoration: BoxDecoration(
                 color: Theme.of(buildContext).colorScheme.errorContainer,
               ),

@@ -97,7 +97,7 @@ class QualityProfileDropdown extends ConsumerWidget {
                 final int selectedValue =
                     containsCurrentProfile && currentQualityProfileId != null
                     ? currentQualityProfileId
-                    : (profiles.isNotEmpty ? profiles.first.id! : 1);
+                    : (profiles.isNotEmpty ? (profiles.first.id ?? 1) : 1);
 
                 return Container(
                   decoration: BoxDecoration(

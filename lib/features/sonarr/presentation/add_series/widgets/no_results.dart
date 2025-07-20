@@ -17,7 +17,6 @@ class NoResults extends StatelessWidget {
     final theme = Theme.of(context);
     return Center(
       child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32.0),
           child: Column(
@@ -27,8 +26,9 @@ class NoResults extends StatelessWidget {
                 height: 120,
                 width: 120,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.errorContainer
-                      .withAlpha(51), // 0.2 opacity
+                  color: theme.colorScheme.errorContainer.withAlpha(
+                    51,
+                  ), // 0.2 opacity
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -50,8 +50,9 @@ class NoResults extends StatelessWidget {
               Text(
                 'We couldn\'t find any shows matching "$searchTerm". Try searching with a different term.',
                 style: theme.textTheme.bodyLarge?.copyWith(
-                  color:
-                      theme.colorScheme.onSurface.withAlpha(178), // 0.7 opacity
+                  color: theme.colorScheme.onSurface.withAlpha(
+                    178,
+                  ), // 0.7 opacity
                 ),
                 textAlign: TextAlign.center,
               ),

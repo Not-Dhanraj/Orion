@@ -10,7 +10,6 @@ class EmptyState extends StatelessWidget {
     final theme = Theme.of(context);
     return Center(
       child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32.0),
           child: Column(
@@ -20,8 +19,9 @@ class EmptyState extends StatelessWidget {
                 height: 120,
                 width: 120,
                 decoration: BoxDecoration(
-                  color:
-                      theme.colorScheme.primaryContainer.withAlpha(51), // 0.2 opacity
+                  color: theme.colorScheme.primaryContainer.withAlpha(
+                    51,
+                  ), // 0.2 opacity
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -43,8 +43,9 @@ class EmptyState extends StatelessWidget {
               Text(
                 'Enter a title in the search bar above to find shows to add to your library',
                 style: theme.textTheme.bodyLarge?.copyWith(
-                  color:
-                      theme.colorScheme.onSurface.withAlpha(178), // 0.7 opacity
+                  color: theme.colorScheme.onSurface.withAlpha(
+                    178,
+                  ), // 0.7 opacity
                 ),
                 textAlign: TextAlign.center,
               ),

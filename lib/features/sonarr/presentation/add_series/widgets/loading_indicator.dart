@@ -19,13 +19,11 @@ class LoadingIndicator extends StatelessWidget {
           const SizedBox(height: 24),
           if (searchTerm.isNotEmpty)
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 24,
-                vertical: 12,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest
-                    .withAlpha(178), // 0.7 opacity
+                color: theme.colorScheme.surfaceContainerHighest.withAlpha(
+                  178,
+                ), // 0.7 opacity
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(

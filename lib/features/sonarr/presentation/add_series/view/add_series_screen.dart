@@ -1,12 +1,12 @@
-import 'package:client/features/sonarr/data/add_series_provider/add_series_provider.dart';
-import 'package:client/features/sonarr/data/series_provider/series_provider.dart';
+import 'package:client/features/sonarr/application/provider/add_series_provider/add_series_provider.dart';
+import 'package:client/features/sonarr/application/provider/all_series_provider/all_series_provider.dart';
 import 'package:client/features/sonarr/presentation/add_series/widgets/empty_state.dart';
 import 'package:client/features/sonarr/presentation/add_series/widgets/loading_indicator.dart';
 import 'package:client/features/sonarr/presentation/add_series/widgets/no_results.dart';
-import 'package:client/features/sonarr/presentation/add_series/widgets/search_bar.dart';
+import 'package:client/core/widgets/search_bar.dart';
 import 'package:client/features/sonarr/presentation/add_series/widgets/series_card.dart';
 import 'package:client/features/sonarr/presentation/add_series_details/view/add_series_details_screen.dart';
-import 'package:entry/entry.dart';
+import 'package:client/core/widgets/safe_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_flutter/sonarr_flutter.dart';
@@ -19,14 +19,14 @@ class AddSeriesScreen extends ConsumerStatefulWidget {
 }
 
 class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
-  late final TextEditingController searchController;
-  final scrollController = ScrollController();
-  final focusNode = FocusNode();
+  late final TextEditingController _searchController;
+  final _scrollController = ScrollController();
+  final _focusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    searchController = TextEditingController();
+    _searchController = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(addSeriesNotifierProvider.notifier).clearSearch();
     });
@@ -34,9 +34,9 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
 
   @override
   void dispose() {
-    searchController.dispose();
-    scrollController.dispose();
-    focusNode.dispose();
+    _searchController.dispose();
+    _scrollController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -45,24 +45,29 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
     final state = ref.watch(addSeriesNotifierProvider);
     final notifier = ref.read(addSeriesNotifierProvider.notifier);
 
-    if (searchController.text != state.searchTerm && state.searchTerm.isEmpty) {
-      searchController.text = state.searchTerm;
+    if (_searchController.text != state.searchTerm &&
+        state.searchTerm.isEmpty) {
+      _searchController.text = state.searchTerm;
     }
 
     Future<void> addSeries(SonarrSeriesLookup series) async {
       final scaffoldMessenger = ScaffoldMessenger.of(context);
+
+      // Navigate to add series details screen
       final result = await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => AddSeriesDetailsScreen(series: series),
+          fullscreenDialog: true,
         ),
       );
 
-      if (result == true) {
+      // If series was added successfully, show feedback
+      if (result == true && mounted) {
         if (series.tvdbId != null) {
           notifier.setSeriesAsAdded(series.tvdbId!);
-          // Invalidate the seriesProvider to refresh the list
-          ref.invalidate(seriesProvider);
+          // Invalidate the allSeriesProvider to refresh the list
+          ref.invalidate(allSeriesProvider);
         }
 
         scaffoldMessenger.showSnackBar(
@@ -76,7 +81,7 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
     }
 
     int calculateCrossAxisCount(BuildContext context) {
-      double width = MediaQuery.of(context).size.width;
+      final double width = MediaQuery.of(context).size.width;
       if (width > 1400) return 6;
       if (width > 1200) return 5;
       if (width > 900) return 4;
@@ -87,13 +92,16 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const BackButtonIcon(),
+          onPressed: () => Navigator.of(context).pop(),
+          tooltip: null, // Disable the tooltip to prevent the layout error
+        ),
         title: const Text(
           'Add Series',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        centerTitle: true,
         elevation: 0,
-        scrolledUnderElevation: 0,
       ),
       body: SafeArea(
         child: Column(
@@ -101,32 +109,62 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
             SearchBarWidget(
               onSearch: (query) => notifier.searchSeries(query),
               onClear: () => notifier.clearSearch(),
-              searchController: searchController,
-              focusNode: focusNode,
+              searchController: _searchController,
+              focusNode: _focusNode,
               isLoading: state.isLoading,
+              hintText: 'Search for a TV show...',
             ),
             Expanded(
               child: state.isLoading
                   ? LoadingIndicator(searchTerm: state.searchTerm)
                   : !state.isSearched
-                  ? EmptyState(onStartTyping: () => focusNode.requestFocus())
+                  ? EmptyState(onStartTyping: () => _focusNode.requestFocus())
+                  : state.error != null
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.error_outline,
+                            size: 64,
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'Error: ${state.error}',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: () {
+                              notifier.searchSeries(_searchController.text);
+                            },
+                            child: const Text('Retry'),
+                          ),
+                        ],
+                      ),
+                    )
                   : state.searchResults.isEmpty
                   ? NoResults(
                       searchTerm: state.searchTerm,
                       onClear: () {
                         notifier.clearSearch();
-                        focusNode.requestFocus();
+                        _focusNode.requestFocus();
                       },
                       onTryAgain: () =>
-                          notifier.searchSeries(searchController.text),
+                          notifier.searchSeries(_searchController.text),
                     )
                   : RefreshIndicator(
-                      onRefresh: () =>
-                          notifier.searchSeries(searchController.text),
+                      onRefresh: () async {
+                        notifier.searchSeries(_searchController.text);
+                      },
                       child: Scrollbar(
-                        controller: scrollController,
+                        controller: _scrollController,
                         child: GridView.builder(
-                          controller: scrollController,
+                          controller: _scrollController,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: calculateCrossAxisCount(
@@ -152,17 +190,18 @@ class _AddSeriesScreenState extends ConsumerState<AddSeriesScreen> {
                             final series = state.searchResults[index];
                             final isInLibrary =
                                 state.existingSeriesMap[series.tvdbId] ?? false;
-                            return Entry.offset(
-                              yOffset: 100,
-                              duration: const Duration(milliseconds: 300),
-                              child: Entry.opacity(
-                                duration: const Duration(milliseconds: 300),
 
-                                child: SeriesCard(
-                                  series: series,
-                                  isInLibrary: isInLibrary,
-                                  onAdd: () => addSeries(series),
-                                ),
+                            // Use our SafeEntry widget to prevent animation/layout issues
+                            return SafeEntry(
+                              key: ValueKey('series_${series.tvdbId}_$index'),
+                              yOffset: 100,
+                              opacity:
+                                  0.0, // Start fully transparent and fade in
+                              duration: const Duration(milliseconds: 300),
+                              child: SeriesCard(
+                                series: series,
+                                isInLibrary: isInLibrary,
+                                onAdd: () => addSeries(series),
                               ),
                             );
                           },

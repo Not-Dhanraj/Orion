@@ -7,201 +7,216 @@ class SeriesHeaderCard extends StatelessWidget {
 
   final SonarrSeriesLookup series;
 
-  String? _getPosterUrl() {
-    if (series.images == null || series.images!.isEmpty) {
-      return null;
-    }
-    try {
-      return series.images!
-          .firstWhere((image) => image.coverType == 'poster')
-          .remoteUrl;
-    } catch (e) {
-      return null;
-    }
-  }
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
-  Widget _buildInfoChip(
-    ThemeData theme,
-    String text, {
-    Color? backgroundColor,
-    Color? textColor,
-  }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: backgroundColor ?? theme.colorScheme.surface.withAlpha(204), // 0.8 opacity
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(25), // 0.1 opacity
-            spreadRadius: 0,
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
+    return Card(
+      elevation: 3,
+      shadowColor: theme.colorScheme.shadow.withAlpha(40),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+        side: BorderSide(
+          color: theme.colorScheme.outline.withAlpha(30),
+          width: 1,
+        ),
       ),
-      child: Text(
-        text,
-        style: theme.textTheme.bodySmall?.copyWith(
-          fontWeight: FontWeight.w600,
-          color: textColor ?? theme.colorScheme.onSurface,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Series poster
+            Container(
+              width: 120,
+              height: 180,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(76), // 0.3 opacity
+                    spreadRadius: 0,
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: _buildSeriesPoster(context),
+              ),
+            ),
+
+            const SizedBox(width: 20),
+
+            // Series details
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    series.title ?? 'Unknown Title',
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.onSurface,
+                    ),
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  if (series.year != null) ...[
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.calendar_today,
+                          size: 16,
+                          color: theme.colorScheme.primary,
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          series.year.toString(),
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+
+                  if (series.overview != null) ...[
+                    Text(
+                      'Overview',
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: theme.colorScheme.primary,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      series.overview!,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                        height: 1.4,
+                      ),
+                      maxLines: 6,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+
+                  const SizedBox(height: 16),
+
+                  // Series IDs
+                  Wrap(
+                    spacing: 12,
+                    runSpacing: 8,
+                    children: [
+                      if (series.tvdbId != null)
+                        _buildIdChip(
+                          context,
+                          'TVDB',
+                          series.tvdbId.toString(),
+                          Colors.blue,
+                        ),
+                      if (series.tvMazeId != null)
+                        _buildIdChip(
+                          context,
+                          'TVMaze',
+                          series.tvMazeId.toString(),
+                          Colors.green,
+                        ),
+                      if (series.imdbId != null)
+                        _buildIdChip(
+                          context,
+                          'IMDB',
+                          series.imdbId!,
+                          Colors.amber,
+                        ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final posterUrl = _getPosterUrl();
+  Widget _buildSeriesPoster(BuildContext context) {
+    String? posterUrl;
+    try {
+      if (series.images != null && series.images!.isNotEmpty) {
+        for (final image in series.images!) {
+          if (image.coverType == 'poster') {
+            posterUrl = image.remoteUrl;
+            break;
+          }
+        }
+      }
+    } catch (e) {
+      // Ignore errors
+    }
 
-    return Card(
-      elevation: 6,
-      shadowColor: Colors.black.withAlpha(76), // 0.3 opacity
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              if (posterUrl != null)
-                ShaderMask(
-                  shaderCallback: (rect) {
-                    return LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.transparent,
-                        Colors.black.withAlpha(204), // 0.8 opacity
-                      ],
-                      stops: const [0.5, 1.0],
-                    ).createShader(rect);
-                  },
-                  blendMode: BlendMode.srcOver,
-                  child: CachedNetworkImage(
-                    imageUrl: series.images!
-                            .firstWhere(
-                              (image) => image.coverType == 'banner',
-                              orElse: () => SonarrSeriesImage(remoteUrl: null),
-                            )
-                            .remoteUrl ??
-                        'https://via.placeholder.com/500x100?text=No+Banner+Available',
-                    height: 220,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Container(
-                      color: Colors.grey[800],
-                      child: const Center(child: CircularProgressIndicator()),
-                    ),
-                    errorWidget: (context, url, error) => Container(
-                      color: Colors.grey[800],
-                      child: const Icon(Icons.error, color: Colors.white),
-                    ),
-                  ),
-                )
-              else
-                Container(
-                  height: 220,
-                  width: double.infinity,
-                  color: theme.colorScheme.primary.withAlpha(51), // 0.2 opacity
-                  child: Icon(
-                    Icons.image_not_supported,
-                    size: 80,
-                    color: theme.colorScheme.primary,
-                  ),
-                ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      if (posterUrl != null)
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: CachedNetworkImage(
-                            imageUrl: posterUrl,
-                            width: 90,
-                            height: 130,
-                            fit: BoxFit.cover,
-                          ),
-                        )
-                      else
-                        Container(
-                          width: 90,
-                          height: 130,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: const Center(
-                            child: Icon(Icons.image_not_supported, size: 40),
-                          ),
-                        ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              series.title ?? 'Unknown Title',
-                              style: theme.textTheme.headlineSmall?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                shadows: [
-                                  Shadow(
-                                    color: Colors.black.withAlpha(128), // 0.5 opacity
-                                    blurRadius: 2,
-                                    offset: const Offset(1, 1),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            _buildInfoChip(
-                              theme,
-                              'Year: ${series.year ?? 'Unknown'}',
-                            ),
-                            const SizedBox(height: 4),
-                            _buildInfoChip(
-                              theme,
-                              'Network: ${series.network ?? 'Unknown'}',
-                            ),
-                            const SizedBox(height: 4),
-                            _buildInfoChip(
-                              theme,
-                              'Status: ${series.status ?? 'Unknown'}',
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+    return posterUrl != null
+        ? CachedNetworkImage(
+            memCacheWidth: 200,
+            imageUrl: posterUrl,
+            fit: BoxFit.cover,
+            errorWidget: (context, error, stackTrace) => Container(
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
+              child: Icon(
+                Icons.broken_image,
+                size: 48,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
-            ],
+            ),
+          )
+        : Container(
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
+            child: Icon(
+              Icons.tv,
+              size: 48,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+          );
+  }
+
+  Widget _buildIdChip(
+    BuildContext context,
+    String label,
+    String id,
+    Color color,
+  ) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: color.withAlpha(51), // 0.2 opacity
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: color.withAlpha(102), // 0.4 opacity
+          width: 1,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            label,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: color,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Description',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  series.overview ?? 'No description available',
-                  style: theme.textTheme.bodyMedium,
-                ),
-              ],
+          const SizedBox(width: 4),
+          Text(
+            id,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ],

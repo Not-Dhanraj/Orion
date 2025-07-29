@@ -27,14 +27,42 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           automaticallyImplyLeading: false,
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text('h', style: Theme.of(context).textTheme.headlineMedium),
-          ],
-        ),
+      body: Stack(
+        children: [
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.flutter_dash, size: 150, color: Colors.blue),
+                Text(
+                  'New App',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+              ],
+            ),
+          ),
+          Positioned.fill(
+            bottom: 25,
+            child: SafeArea(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 10,
+                      width: 10,
+                      child: CircularProgressIndicator(),
+                    ),
+                    SizedBox(width: 10),
+                    Text('Loading'),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

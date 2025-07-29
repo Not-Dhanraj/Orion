@@ -4,13 +4,13 @@
 
 import 'dart:async';
 
-import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
 class ApiInfoApi {
   final Dio _dio;
 
+  // ignore: unused_field
   final Serializers _serializers;
 
   const ApiInfoApi(this._dio, this._serializers);

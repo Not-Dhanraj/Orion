@@ -20,10 +20,12 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-
-        title: Text('Hello world'),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(0),
+        child: AppBar(
+          title: const Text('Splash Screen'),
+          automaticallyImplyLeading: false,
+        ),
       ),
       body: Center(
         child: Column(

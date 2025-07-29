@@ -6,6 +6,7 @@ import 'package:hive_ce_flutter/adapters.dart';
 class HiveService {
   void init() async {
     await Hive.initFlutter();
+    Hive.registerAdapter(CredentialsAdapter());
     var appConst = AppConst();
     if (!Hive.isBoxOpen(appConst.sonarrBox)) {
       var sonarrBox = await Hive.openBox(appConst.sonarrBox);
@@ -17,7 +18,6 @@ class HiveService {
       radarrBox.put(appConst.radarrEnabled, false);
     }
     if (!Hive.isBoxOpen(appConst.credentialsBox)) {
-      await Hive.openBox(appConst.credentialsBox);
       var credentialsBox = await Hive.openBox<Credentials>(
         appConst.credentialsBox,
       );

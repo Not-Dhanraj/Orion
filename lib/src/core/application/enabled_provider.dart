@@ -14,6 +14,15 @@ class EnabledNotifier extends Notifier<Enabled> {
 
     return Enabled(sonarr: sonarrEnabled, radarr: radarrEnabled);
   }
+
+  void updateEnabled(Enabled newState) {
+    final appConst = AppConst();
+    final sonarrBox = Hive.box(appConst.sonarrBox);
+    final radarrBox = Hive.box(appConst.radarrBox);
+    sonarrBox.put(appConst.sonarrEnabled, newState.sonarr);
+    radarrBox.put(appConst.radarrEnabled, newState.radarr);
+    state = newState;
+  }
 }
 
 final enabledNotifierProvider = NotifierProvider<EnabledNotifier, Enabled>(

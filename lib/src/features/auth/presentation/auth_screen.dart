@@ -79,19 +79,23 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
               type: 'Sonarr',
               onPressed: authState.isLoadingSonarr
                   ? null
-                  : () {
+                  : () async {
                       if (_sonarrFormKey.currentState!.validate()) {
-                        ref
-                            .read(authControllerProvider.notifier)
-                            .configureSonarr(
-                              _sonarrUrlController.text,
-                              _sonarrApiKeyController.text,
-                            );
+                        var authController = ref.read(
+                          authControllerProvider.notifier,
+                        );
+
+                        await authController.updateSonarr(
+                          _sonarrUrlController.text,
+                          _sonarrApiKeyController.text,
+                          context,
+                        );
                       }
                     },
               isLoading: authState.isLoadingSonarr,
               isEditing: authState.sonarrConfigured,
               formState: _sonarrFormKey,
+              primaryColor: Colors.blue,
             ),
 
             const SizedBox(height: 32),
@@ -117,6 +121,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
               isLoading: authState.isLoadingRadarr,
               isEditing: authState.radarrConfigured,
               formState: _radarrFormKey,
+              primaryColor: Colors.orange,
             ),
 
             const SizedBox(height: 32),
@@ -135,6 +140,7 @@ class _AuthCard extends StatelessWidget {
   final TextEditingController apiKeyController;
   final String type;
   final bool isLoading;
+  final Color primaryColor;
   final bool isEditing;
   final void Function()? onPressed;
 
@@ -148,12 +154,13 @@ class _AuthCard extends StatelessWidget {
     required this.isLoading,
     required this.isEditing,
     required this.formState,
+    required this.primaryColor,
   });
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    var primaryColor = theme.colorScheme.primary;
+
     return Card(
       elevation: 2,
       shadowColor: Colors.black.withAlpha(40),
@@ -253,7 +260,9 @@ class _AuthCard extends StatelessWidget {
                 label: Text(
                   isLoading
                       ? 'Saving...'
-                      : (isEditing ? 'Update Credentials' : 'Save & Continue'),
+                      : (isEditing
+                            ? 'Update Credentials'
+                            : 'Check and Continue'),
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: theme.colorScheme.onSurface.withCustomOpacity(0.9),

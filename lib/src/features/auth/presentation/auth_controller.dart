@@ -2,24 +2,66 @@ import 'package:client/src/core/application/enabled_provider.dart';
 import 'package:client/src/core/application/hive_service.dart';
 import 'package:client/src/core/domain/credentials.dart';
 import 'package:client/src/features/auth/domain/auth_state.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sonarr/sonarr.dart';
 
 class AuthController extends Notifier<AuthState> {
   late final HiveService _hiveService;
-  // ignore: unused_field  as we need to rebuild it when proceeding to the next page(as we will save the details in hive)
-  late final EnabledNotifier _enabledNotifier;
 
   @override
   AuthState build() {
     _hiveService = ref.read(hiveProvider);
-    _enabledNotifier = ref.read(enabledNotifierProvider.notifier);
 
     final state = AuthState(sonarrConfigured: false, radarrConfigured: false);
 
     return state;
   }
 
-  Future<void> configureSonarr(String url, String apiKey) async {
+  Future<void> updateSonarr(
+    String url,
+    String apiKey,
+    BuildContext context,
+  ) async {
+    state = state.copyWith(
+      isLoadingSonarr: true,
+      sonarrError: '',
+      clearSonarrError: true,
+    );
+    var sonarrApi = Sonarr(basePathOverride: url);
+    sonarrApi.setApiKey('X-Api-Key', apiKey);
+    try {
+      await sonarrApi.getSystemApi().apiV3SystemStatusGet();
+    } catch (e) {
+      state = state.copyWith(sonarrError: e.toString());
+      state = state.copyWith(isLoadingSonarr: false);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${state.sonarrError}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return;
+    }
+
+    await _configureSonarr(url, apiKey);
+
+    await Future.delayed(const Duration(milliseconds: 200));
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Sonarr configured successfully, please add other details or go to home',
+          ),
+          backgroundColor: Colors.green,
+        ),
+      );
+    }
+  }
+
+  Future<void> _configureSonarr(String url, String apiKey) async {
     if (url.isEmpty || apiKey.isEmpty) {
       state = state.copyWith(sonarrError: 'URL and API key are required');
       return;
@@ -28,12 +70,12 @@ class AuthController extends Notifier<AuthState> {
     final normalizedUrl = url.endsWith('/') ? url : '$url/';
 
     state = state.copyWith(isLoadingSonarr: true, clearSonarrError: true);
-
+    await Future.delayed(const Duration(seconds: 1));
     try {
       await _hiveService.saveSonarrCredentials(
         SonarrCredentials(sonarrUrl: normalizedUrl, sonarrApi: apiKey),
       );
-
+      ref.invalidate(enabledNotifierProvider);
       state = state.copyWith(isLoadingSonarr: false, sonarrConfigured: true);
     } catch (e) {
       state = state.copyWith(
@@ -52,12 +94,13 @@ class AuthController extends Notifier<AuthState> {
     final normalizedUrl = url.endsWith('/') ? url : '$url/';
 
     state = state.copyWith(isLoadingRadarr: true, clearRadarrError: true);
+    await Future.delayed(const Duration(seconds: 1));
 
     try {
       await _hiveService.saveRadarrCredentials(
         RadarrCredentials(radarrUrl: normalizedUrl, radarrApi: apiKey),
       );
-
+      ref.invalidate(enabledNotifierProvider);
       state = state.copyWith(isLoadingRadarr: false, radarrConfigured: true);
     } catch (e) {
       state = state.copyWith(

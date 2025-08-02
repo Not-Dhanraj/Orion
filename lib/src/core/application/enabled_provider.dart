@@ -7,21 +7,11 @@ class EnabledNotifier extends Notifier<Enabled> {
   @override
   build() {
     final appConst = AppConst();
-    final sonarrBox = Hive.box(appConst.sonarrBox);
-    final radarrBox = Hive.box(appConst.radarrBox);
-    var sonarrEnabled = sonarrBox.get(appConst.sonarrEnabled);
-    var radarrEnabled = radarrBox.get(appConst.radarrEnabled);
-
-    return Enabled(sonarr: sonarrEnabled, radarr: radarrEnabled);
-  }
-
-  void updateEnabled(Enabled newState) {
-    final appConst = AppConst();
-    final sonarrBox = Hive.box(appConst.sonarrBox);
-    final radarrBox = Hive.box(appConst.radarrBox);
-    sonarrBox.put(appConst.sonarrEnabled, newState.sonarr);
-    radarrBox.put(appConst.radarrEnabled, newState.radarr);
-    state = newState;
+    final credBox = Hive.box(appConst.credentialsBox);
+    return Enabled(
+      sonarr: credBox.containsKey(appConst.sonarrCredKey),
+      radarr: credBox.containsKey(appConst.radarrCredKey),
+    );
   }
 }
 

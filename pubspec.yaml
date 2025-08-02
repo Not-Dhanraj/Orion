@@ -38,6 +38,8 @@ dependencies:
   hive_ce_flutter: ^2.3.1
   sonarr:
     path: ./api/sonarr_api
+  radarr:
+    path: ./api/radarr_api
 
 dev_dependencies:
   build_runner: ^2.5.4

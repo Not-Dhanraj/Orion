@@ -7,12 +7,14 @@ import 'package:client/src/core/domain/credentials.dart';
 
 extension HiveRegistrar on HiveInterface {
   void registerAdapters() {
-    registerAdapter(CredentialsAdapter());
+    registerAdapter(RadarrCredentialsAdapter());
+    registerAdapter(SonarrCredentialsAdapter());
   }
 }
 
 extension IsolatedHiveRegistrar on IsolatedHiveInterface {
   void registerAdapters() {
-    registerAdapter(CredentialsAdapter());
+    registerAdapter(RadarrCredentialsAdapter());
+    registerAdapter(SonarrCredentialsAdapter());
   }
 }

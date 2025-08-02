@@ -1,8 +1,7 @@
-// Openapi Generator last run: : 2025-07-29T11:22:27.513949
+// Openapi Generator last run: : 2025-08-02T11:30:23.698358
 import 'package:client/src/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:openapi_generator_annotations/openapi_generator_annotations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,15 +10,15 @@ void main() async {
 
 // @Openapi(
 //   additionalProperties: DioProperties(
-//     pubName: 'sonarr',
+//     pubName: 'radarr',
 //     pubAuthor: 'not-dhanraj',
 //   ),
 //   inputSpec: RemoteSpec(
 //     path:
-//         'https://raw.githubusercontent.com/Sonarr/Sonarr/develop/src/Sonarr.Api.V3/openapi.json',
+//         'https://raw.githubusercontent.com/Radarr/Radarr/develop/src/Radarr.Api.V3/openapi.json',
 //   ),
 //   generatorName: Generator.dio,
 //   runSourceGenOnOutput: true,
-//   outputDirectory: 'api/sonarr_api',
+//   outputDirectory: 'api/radarr_api',
 // )
-// class Sonarr {}
+// class Radarr {}

@@ -6,4 +6,6 @@ class AppConst {
 
   final credentialsBox = 'credentials';
   final credentialsKey = 'credentials_key';
+  final sonarrCredKey = 'sonarr_credentials_key';
+  final radarrCredKey = 'radarr_credentials_key';
 }

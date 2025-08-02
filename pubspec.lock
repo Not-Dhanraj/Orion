@@ -571,6 +571,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.2"
+  radarr:
+    dependency: "direct main"
+    description:
+      path: "api/radarr_api"
+      relative: true
+    source: path
+    version: "1.0.0"
   riverpod:
     dependency: transitive
     description:

@@ -1,4 +1,5 @@
 import 'package:client/src/core/application/hive_service.dart';
+import 'package:client/src/features/auth/presentation/splash_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,8 +13,8 @@ class SplashScreen extends ConsumerStatefulWidget {
 class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
-    var hiveService = ref.read(hiveProvider);
-    hiveService.init();
+    var splashController = ref.read(splashControllerProvider.notifier);
+    splashController.navigateToNextScreen();
     super.initState();
   }
 

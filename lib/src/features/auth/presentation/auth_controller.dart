@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AuthController extends Notifier<AuthState> {
   late final HiveService _hiveService;
+  // ignore: unused_field  as we need to rebuild it when proceeding to the next page(as we will save the details in hive)
   late final EnabledNotifier _enabledNotifier;
 
   @override
@@ -34,8 +35,6 @@ class AuthController extends Notifier<AuthState> {
       );
 
       state = state.copyWith(isLoadingSonarr: false, sonarrConfigured: true);
-
-      _enabledNotifier.build();
     } catch (e) {
       state = state.copyWith(
         isLoadingSonarr: false,
@@ -60,8 +59,6 @@ class AuthController extends Notifier<AuthState> {
       );
 
       state = state.copyWith(isLoadingRadarr: false, radarrConfigured: true);
-
-      _enabledNotifier.build();
     } catch (e) {
       state = state.copyWith(
         isLoadingRadarr: false,

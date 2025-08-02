@@ -77,20 +77,17 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
               urlController: _sonarrUrlController,
               apiKeyController: _sonarrApiKeyController,
               type: 'Sonarr',
-              onPressed: () {
-                authState.isLoadingSonarr
-                    ? null
-                    : () {
-                        if (_sonarrFormKey.currentState!.validate()) {
-                          ref
-                              .read(authControllerProvider.notifier)
-                              .configureSonarr(
-                                _sonarrUrlController.text,
-                                _sonarrApiKeyController.text,
-                              );
-                        }
-                      };
-              },
+              onPressed: authState.isLoadingSonarr
+                  ? null
+                  : () {
+                      if (_sonarrFormKey.currentState!.validate()) {
+                        ref
+                            .configureSonarr(
+                              _sonarrUrlController.text,
+                              _sonarrApiKeyController.text,
+                            );
+                      }
+                    },
               isLoading: authState.isLoadingSonarr,
               isEditing: authState.sonarrConfigured,
               formState: _sonarrFormKey,
@@ -104,20 +101,18 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
               urlController: _radarrUrlController,
               apiKeyController: _radarrApiKeyController,
               type: 'Radarr',
-              onPressed: () {
-                authState.isLoadingRadarr
-                    ? null
-                    : () {
-                        if (_radarrFormKey.currentState!.validate()) {
-                          ref
-                              .read(authControllerProvider.notifier)
-                              .configureRadarr(
-                                _radarrUrlController.text,
-                                _radarrApiKeyController.text,
-                              );
-                        }
-                      };
-              },
+              onPressed: authState.isLoadingRadarr
+                  ? null
+                  : () {
+                      if (_radarrFormKey.currentState!.validate()) {
+                        ref
+                            .read(authControllerProvider.notifier)
+                            .configureRadarr(
+                              _radarrUrlController.text,
+                              _radarrApiKeyController.text,
+                            );
+                      }
+                    },
               isLoading: authState.isLoadingRadarr,
               isEditing: authState.radarrConfigured,
               formState: _radarrFormKey,
@@ -243,11 +238,7 @@ class _AuthCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                onPressed: () {
-                  if (formState.currentState!.validate()) {
-                    onPressed?.call();
-                  }
-                },
+                onPressed: isLoading ? null : onPressed,
                 icon: isLoading
                     ? const SizedBox(
                         width: 16,

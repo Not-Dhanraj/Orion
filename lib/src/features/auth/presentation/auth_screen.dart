@@ -1,4 +1,3 @@
-import 'package:client/src/features/auth/domain/auth_state.dart';
 import 'package:client/src/features/auth/presentation/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -97,206 +96,34 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
               formState: _sonarrFormKey,
             ),
 
-            // Card(
-            //   margin: EdgeInsets.zero,
-            //   child: Padding(
-            //     padding: const EdgeInsets.all(16.0),
-            //     child: Column(
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [
-            //         Row(
-            //           children: [
-            //             const Icon(Icons.tv),
-            //             const SizedBox(width: 8),
-            //             Text(
-            //               'Sonarr Configuration',
-            //               style: theme.textTheme.titleLarge,
-            //             ),
-            //             const Spacer(),
-            //             if (authState.sonarrConfigured)
-            //               const Chip(
-            //                 label: Text('Configured'),
-            //                 backgroundColor: Colors.green,
-            //                 labelStyle: TextStyle(color: Colors.white),
-            //               ),
-            //           ],
-            //         ),
-            //         const SizedBox(height: 16),
-            //         if (authState.sonarrError != null)
-            //           Container(
-            //             padding: const EdgeInsets.all(8),
-            //             color: Colors.red.withCustomOpacity(0.1),
-            //             child: Text(
-            //               authState.sonarrError!,
-            //               style: TextStyle(color: Colors.red.shade700),
-            //             ),
-            //           ),
-            //         Form(
-            //           key: _sonarrFormKey,
-            //           child: Column(
-            //             children: [
-            //               _TextFormField(
-            //                 controller: _sonarrUrlController,
-            //                 labelText: 'Sonarr URL',
-            //                 hintText: 'http://your-server:port',
-            //                 validator: (value) {
-            //                   if (value == null || value.isEmpty) {
-            //                     return 'Please enter Sonarr URL';
-            //                   }
-            //                   if (!value.startsWith('http')) {
-            //                     return 'URL must start with http:// or https://';
-            //                   }
-            //                   return null;
-            //                 },
-            //                 icon: Icons.link,
-            //                 helperText: 'The base URL for your Sonarr instance',
-            //               ),
-            //               const SizedBox(height: 16),
-            //               _TextFormField(
-            //                 controller: _sonarrApiKeyController,
-            //                 labelText: 'API Key',
-            //                 hintText: 'Your Sonarr API key',
-            //                 validator: (value) {
-            //                   if (value == null || value.isEmpty) {
-            //                     return 'Please enter API key';
-            //                   }
-            //                   return null;
-            //                 },
-            //                 icon: Icons.vpn_key,
-            //                 helperText: 'Your Sonarr API key',
-            //               ),
-
-            //               const SizedBox(height: 16),
-            //               SizedBox(
-            //                 width: double.infinity,
-            //                 child: ElevatedButton(
-            //                   onPressed: ,
-            //                   child: authState.isLoadingSonarr
-            //                       ? const SizedBox(
-            //                           height: 20,
-            //                           width: 20,
-            //                           child: CircularProgressIndicator(
-            //                             strokeWidth: 2,
-            //                           ),
-            //                         )
-            //                       : const Text('Save Sonarr Configuration'),
-            //                 ),
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
             const SizedBox(height: 32),
-            Card(
-              margin: EdgeInsets.zero,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(Icons.movie),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Radarr Configuration',
-                          style: theme.textTheme.titleLarge,
-                        ),
-                        const Spacer(),
-                        if (authState.radarrConfigured)
-                          const Chip(
-                            label: Text('Configured'),
-                            backgroundColor: Colors.green,
-                            labelStyle: TextStyle(color: Colors.white),
-                          ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    if (authState.radarrError != null)
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        color: Colors.red.withCustomOpacity(0.1),
-                        child: Text(
-                          authState.radarrError!,
-                          style: TextStyle(color: Colors.red.shade700),
-                        ),
-                      ),
-                    Form(
-                      key: _radarrFormKey,
-                      child: Column(
-                        children: [
-                          _TextFormField(
-                            controller: _radarrUrlController,
-                            labelText: 'Radarr URL',
-                            hintText: 'https://radarr.example.com',
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter Radarr URL';
-                              }
-                              if (!value.startsWith('http')) {
-                                return 'URL must start with http:// or https://';
-                              }
-                              return null;
-                            },
-                            icon: Icons.link,
-                            helperText: 'Your Radarr URL',
-                          ),
 
-                          const SizedBox(height: 16),
-
-                          _TextFormField(
-                            controller: _radarrApiKeyController,
-                            labelText: 'API Key',
-                            hintText: 'Your Radarr API key',
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter API key';
-                              }
-                              return null;
-                            },
-                            icon: Icons.lock,
-                            helperText: 'Your Radarr API key',
-                          ),
-                          const SizedBox(height: 16),
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: authState.isLoadingRadarr
-                                  ? null
-                                  : () {
-                                      if (_radarrFormKey.currentState!
-                                          .validate()) {
-                                        ref
-                                            .read(
-                                              authControllerProvider.notifier,
-                                            )
-                                            .configureRadarr(
-                                              _radarrUrlController.text,
-                                              _radarrApiKeyController.text,
-                                            );
-                                      }
-                                    },
-                              child: authState.isLoadingRadarr
-                                  ? const SizedBox(
-                                      height: 20,
-                                      width: 20,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                      ),
-                                    )
-                                  : const Text('Save Radarr Configuration'),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            _AuthCard(
+              cardIcon: Icons.movie_outlined,
+              isConfigured: authState.radarrConfigured,
+              urlController: _radarrUrlController,
+              apiKeyController: _radarrApiKeyController,
+              type: 'Radarr',
+              onPressed: () {
+                authState.isLoadingRadarr
+                    ? null
+                    : () {
+                        if (_radarrFormKey.currentState!.validate()) {
+                          ref
+                              .read(authControllerProvider.notifier)
+                              .configureRadarr(
+                                _radarrUrlController.text,
+                                _radarrApiKeyController.text,
+                              );
+                        }
+                      };
+              },
+              isLoading: authState.isLoadingRadarr,
+              isEditing: authState.radarrConfigured,
+              formState: _radarrFormKey,
             ),
+
+            const SizedBox(height: 32),
           ],
         ),
       ),
@@ -371,8 +198,20 @@ class _AuthCard extends StatelessWidget {
                   if (value == null || value.isEmpty) {
                     return 'Please enter $type URL';
                   }
-                  if (!value.startsWith('http')) {
-                    return 'URL must start with http:// or https://';
+                  final uri = Uri.tryParse(value);
+                  if (uri == null ||
+                      !(uri.isAbsolute &&
+                          (uri.scheme == 'http' || uri.scheme == 'https')) ||
+                      uri.host.isEmpty) {
+                    return 'Please enter a valid URL starting with http:// or https://';
+                  }
+                  // Host must be at least 3 chars and contain a dot or be a valid IPv4/IPv6
+                  final host = uri.host;
+                  final isIp =
+                      RegExp(r'^(\d{1,3}\.){3}\d{1,3}$').hasMatch(host) ||
+                      RegExp(r'^\[[0-9a-fA-F:]+\]$').hasMatch(host);
+                  if (!isIp && !host.contains('.')) {
+                    return 'Please enter a valid domain or IP address';
                   }
                   return null;
                 },
@@ -405,8 +244,9 @@ class _AuthCard extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  formState.currentState!.validate();
-                  onPressed;
+                  if (formState.currentState!.validate()) {
+                    onPressed?.call();
+                  }
                 },
                 icon: isLoading
                     ? const SizedBox(

@@ -16,8 +16,12 @@ class SplashController extends AsyncNotifier<void> {
     await hiveService.init();
     final enabled = ref.read(enabledNotifierProvider);
     if (enabled.sonarr || enabled.radarr) {
-      //TODO: Uncomment when home screen is ready
-      // ref.context.go('/home');
+      //TODO: Remove when home screen is ready
+
+      await Future.delayed(const Duration(seconds: 1));
+      navigatorKey.currentState!.pushReplacement(
+        MaterialPageRoute(builder: (context) => const AuthScreen()),
+      );
     } else {
       await Future.delayed(const Duration(seconds: 1));
       navigatorKey.currentState!.pushReplacement(

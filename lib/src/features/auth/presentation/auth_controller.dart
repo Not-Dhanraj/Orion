@@ -1,11 +1,8 @@
-import 'package:client/src/constants/app_const.dart';
 import 'package:client/src/core/application/enabled_provider.dart';
 import 'package:client/src/core/application/hive_service.dart';
 import 'package:client/src/core/domain/credentials.dart';
 import 'package:client/src/features/auth/domain/auth_state.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive_ce/hive.dart';
 
 class AuthController extends Notifier<AuthState> {
   late final HiveService _hiveService;

@@ -56,232 +56,435 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _buildHeader(theme),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Welcome to ARR Client',
+                  style: theme.textTheme.headlineMedium,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Configure your Sonarr and/or Radarr instances to get started',
+                  style: theme.textTheme.bodyLarge,
+                ),
+              ],
+            ),
             const SizedBox(height: 24),
-            _buildSonarrSection(authState, theme),
+
+            _AuthCard(
+              cardIcon: Icons.tv,
+              isConfigured: authState.sonarrConfigured,
+              urlController: _sonarrUrlController,
+              apiKeyController: _sonarrApiKeyController,
+              type: 'Sonarr',
+              onPressed: () {
+                authState.isLoadingSonarr
+                    ? null
+                    : () {
+                        if (_sonarrFormKey.currentState!.validate()) {
+                          ref
+                              .read(authControllerProvider.notifier)
+                              .configureSonarr(
+                                _sonarrUrlController.text,
+                                _sonarrApiKeyController.text,
+                              );
+                        }
+                      };
+              },
+              isLoading: authState.isLoadingSonarr,
+              isEditing: authState.sonarrConfigured,
+              formState: _sonarrFormKey,
+            ),
+
+            // Card(
+            //   margin: EdgeInsets.zero,
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(16.0),
+            //     child: Column(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         Row(
+            //           children: [
+            //             const Icon(Icons.tv),
+            //             const SizedBox(width: 8),
+            //             Text(
+            //               'Sonarr Configuration',
+            //               style: theme.textTheme.titleLarge,
+            //             ),
+            //             const Spacer(),
+            //             if (authState.sonarrConfigured)
+            //               const Chip(
+            //                 label: Text('Configured'),
+            //                 backgroundColor: Colors.green,
+            //                 labelStyle: TextStyle(color: Colors.white),
+            //               ),
+            //           ],
+            //         ),
+            //         const SizedBox(height: 16),
+            //         if (authState.sonarrError != null)
+            //           Container(
+            //             padding: const EdgeInsets.all(8),
+            //             color: Colors.red.withCustomOpacity(0.1),
+            //             child: Text(
+            //               authState.sonarrError!,
+            //               style: TextStyle(color: Colors.red.shade700),
+            //             ),
+            //           ),
+            //         Form(
+            //           key: _sonarrFormKey,
+            //           child: Column(
+            //             children: [
+            //               _TextFormField(
+            //                 controller: _sonarrUrlController,
+            //                 labelText: 'Sonarr URL',
+            //                 hintText: 'http://your-server:port',
+            //                 validator: (value) {
+            //                   if (value == null || value.isEmpty) {
+            //                     return 'Please enter Sonarr URL';
+            //                   }
+            //                   if (!value.startsWith('http')) {
+            //                     return 'URL must start with http:// or https://';
+            //                   }
+            //                   return null;
+            //                 },
+            //                 icon: Icons.link,
+            //                 helperText: 'The base URL for your Sonarr instance',
+            //               ),
+            //               const SizedBox(height: 16),
+            //               _TextFormField(
+            //                 controller: _sonarrApiKeyController,
+            //                 labelText: 'API Key',
+            //                 hintText: 'Your Sonarr API key',
+            //                 validator: (value) {
+            //                   if (value == null || value.isEmpty) {
+            //                     return 'Please enter API key';
+            //                   }
+            //                   return null;
+            //                 },
+            //                 icon: Icons.vpn_key,
+            //                 helperText: 'Your Sonarr API key',
+            //               ),
+
+            //               const SizedBox(height: 16),
+            //               SizedBox(
+            //                 width: double.infinity,
+            //                 child: ElevatedButton(
+            //                   onPressed: ,
+            //                   child: authState.isLoadingSonarr
+            //                       ? const SizedBox(
+            //                           height: 20,
+            //                           width: 20,
+            //                           child: CircularProgressIndicator(
+            //                             strokeWidth: 2,
+            //                           ),
+            //                         )
+            //                       : const Text('Save Sonarr Configuration'),
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             const SizedBox(height: 32),
-            _buildRadarrSection(authState, theme),
+            Card(
+              margin: EdgeInsets.zero,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.movie),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Radarr Configuration',
+                          style: theme.textTheme.titleLarge,
+                        ),
+                        const Spacer(),
+                        if (authState.radarrConfigured)
+                          const Chip(
+                            label: Text('Configured'),
+                            backgroundColor: Colors.green,
+                            labelStyle: TextStyle(color: Colors.white),
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    if (authState.radarrError != null)
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        color: Colors.red.withCustomOpacity(0.1),
+                        child: Text(
+                          authState.radarrError!,
+                          style: TextStyle(color: Colors.red.shade700),
+                        ),
+                      ),
+                    Form(
+                      key: _radarrFormKey,
+                      child: Column(
+                        children: [
+                          _TextFormField(
+                            controller: _radarrUrlController,
+                            labelText: 'Radarr URL',
+                            hintText: 'https://radarr.example.com',
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter Radarr URL';
+                              }
+                              if (!value.startsWith('http')) {
+                                return 'URL must start with http:// or https://';
+                              }
+                              return null;
+                            },
+                            icon: Icons.link,
+                            helperText: 'Your Radarr URL',
+                          ),
+
+                          const SizedBox(height: 16),
+
+                          _TextFormField(
+                            controller: _radarrApiKeyController,
+                            labelText: 'API Key',
+                            hintText: 'Your Radarr API key',
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter API key';
+                              }
+                              return null;
+                            },
+                            icon: Icons.lock,
+                            helperText: 'Your Radarr API key',
+                          ),
+                          const SizedBox(height: 16),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: authState.isLoadingRadarr
+                                  ? null
+                                  : () {
+                                      if (_radarrFormKey.currentState!
+                                          .validate()) {
+                                        ref
+                                            .read(
+                                              authControllerProvider.notifier,
+                                            )
+                                            .configureRadarr(
+                                              _radarrUrlController.text,
+                                              _radarrApiKeyController.text,
+                                            );
+                                      }
+                                    },
+                              child: authState.isLoadingRadarr
+                                  ? const SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
+                                    )
+                                  : const Text('Save Radarr Configuration'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
+}
 
-  Widget _buildHeader(ThemeData theme) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Welcome to ARR Client', style: theme.textTheme.headlineMedium),
-        const SizedBox(height: 8),
-        Text(
-          'Configure your Sonarr and/or Radarr instances to get started',
-          style: theme.textTheme.bodyLarge,
-        ),
-      ],
-    );
-  }
+class _AuthCard extends StatelessWidget {
+  final IconData cardIcon;
+  final GlobalKey<FormState> formState;
+  final bool isConfigured;
+  final TextEditingController urlController;
+  final TextEditingController apiKeyController;
+  final String type;
+  final bool isLoading;
+  final bool isEditing;
+  final void Function()? onPressed;
 
-  Widget _buildSonarrSection(AuthState state, ThemeData theme) {
+  const _AuthCard({
+    required this.cardIcon,
+    required this.isConfigured,
+    required this.urlController,
+    required this.apiKeyController,
+    required this.type,
+    required this.onPressed,
+    required this.isLoading,
+    required this.isEditing,
+    required this.formState,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    var primaryColor = theme.colorScheme.primary;
     return Card(
-      margin: EdgeInsets.zero,
+      elevation: 2,
+      shadowColor: Colors.black.withAlpha(40),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                const Icon(Icons.tv),
-                const SizedBox(width: 8),
-                Text('Sonarr Configuration', style: theme.textTheme.titleLarge),
-                const Spacer(),
-                if (state.sonarrConfigured)
-                  const Chip(
-                    label: Text('Configured'),
-                    backgroundColor: Colors.green,
-                    labelStyle: TextStyle(color: Colors.white),
-                  ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            if (state.sonarrError != null)
-              Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.red.withCustomOpacity(0.1),
-                child: Text(
-                  state.sonarrError!,
-                  style: TextStyle(color: Colors.red.shade700),
-                ),
-              ),
-            Form(
-              key: _sonarrFormKey,
-              child: Column(
+        padding: EdgeInsets.all(24),
+        child: Form(
+          key: formState,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
-                  TextFormField(
-                    controller: _sonarrUrlController,
-                    decoration: const InputDecoration(
-                      labelText: 'Sonarr URL',
-                      hintText: 'https://sonarr.example.com',
-                      border: OutlineInputBorder(),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: primaryColor.withAlpha(50),
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter Sonarr URL';
-                      }
-                      if (!value.startsWith('http')) {
-                        return 'URL must start with http:// or https://';
-                      }
-                      return null;
-                    },
+                    child: Icon(cardIcon, size: 24, color: primaryColor),
                   ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _sonarrApiKeyController,
-                    decoration: const InputDecoration(
-                      labelText: 'API Key',
-                      hintText: 'Your Sonarr API key',
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter API key';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: state.isLoadingSonarr
-                          ? null
-                          : () {
-                              if (_sonarrFormKey.currentState!.validate()) {
-                                ref
-                                    .read(authControllerProvider.notifier)
-                                    .configureSonarr(
-                                      _sonarrUrlController.text,
-                                      _sonarrApiKeyController.text,
-                                    );
-                              }
-                            },
-                      child: state.isLoadingSonarr
-                          ? const SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : const Text('Save Sonarr Configuration'),
+                  const SizedBox(width: 16),
+                  Text(
+                    '$type Configuration',
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: primaryColor,
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
+              const SizedBox(height: 24),
+              _TextFormField(
+                controller: urlController,
+                labelText: '$type URL',
+                hintText: 'http://your-server:port',
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter $type URL';
+                  }
+                  if (!value.startsWith('http')) {
+                    return 'URL must start with http:// or https://';
+                  }
+                  return null;
+                },
+                icon: Icons.link,
+                helperText: 'The base URL for your $type instance',
+              ),
+              const SizedBox(height: 20),
+              _TextFormField(
+                controller: apiKeyController,
+                labelText: 'API Key',
+                hintText: 'Your $type API key',
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter API key';
+                  }
+                  return null;
+                },
+                icon: Icons.lock,
+                helperText: 'Your $type API key',
+              ),
+              SizedBox(height: 16),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: theme.colorScheme.primary.withAlpha(40),
+                  foregroundColor: theme.colorScheme.onPrimary,
+                  shadowColor: Colors.transparent,
+                  minimumSize: const Size(double.infinity, 56),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                onPressed: () {
+                  formState.currentState!.validate();
+                  onPressed;
+                },
+                icon: isLoading
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : Icon(isEditing ? Icons.check : Icons.save),
+                label: Text(
+                  isLoading
+                      ? 'Saving...'
+                      : (isEditing ? 'Update Credentials' : 'Save & Continue'),
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onSurface.withCustomOpacity(0.9),
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+}
 
-  Widget _buildRadarrSection(AuthState state, ThemeData theme) {
-    return Card(
-      margin: EdgeInsets.zero,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                const Icon(Icons.movie),
-                const SizedBox(width: 8),
-                Text('Radarr Configuration', style: theme.textTheme.titleLarge),
-                const Spacer(),
-                if (state.radarrConfigured)
-                  const Chip(
-                    label: Text('Configured'),
-                    backgroundColor: Colors.green,
-                    labelStyle: TextStyle(color: Colors.white),
-                  ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            if (state.radarrError != null)
-              Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.red.withCustomOpacity(0.1),
-                child: Text(
-                  state.radarrError!,
-                  style: TextStyle(color: Colors.red.shade700),
-                ),
-              ),
-            Form(
-              key: _radarrFormKey,
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: _radarrUrlController,
-                    decoration: const InputDecoration(
-                      labelText: 'Radarr URL',
-                      hintText: 'https://radarr.example.com',
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter Radarr URL';
-                      }
-                      if (!value.startsWith('http')) {
-                        return 'URL must start with http:// or https://';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _radarrApiKeyController,
-                    decoration: const InputDecoration(
-                      labelText: 'API Key',
-                      hintText: 'Your Radarr API key',
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter API key';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: state.isLoadingRadarr
-                          ? null
-                          : () {
-                              if (_radarrFormKey.currentState!.validate()) {
-                                ref
-                                    .read(authControllerProvider.notifier)
-                                    .configureRadarr(
-                                      _radarrUrlController.text,
-                                      _radarrApiKeyController.text,
-                                    );
-                              }
-                            },
-                      child: state.isLoadingRadarr
-                          ? const SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : const Text('Save Radarr Configuration'),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+class _TextFormField extends StatelessWidget {
+  final TextEditingController controller;
+  final String labelText;
+  final String hintText;
+  final IconData icon;
+  final String helperText;
+  final String? Function(String?) validator;
+  const _TextFormField({
+    required this.controller,
+    required this.labelText,
+    required this.hintText,
+    required this.validator,
+    required this.icon,
+    required this.helperText,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        hintText: hintText,
+        prefixIcon: Icon(icon, color: theme.colorScheme.primary),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: theme.colorScheme.outline),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(
+            color: theme.colorScheme.outline.withAlpha(100),
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: theme.colorScheme.primary, width: 2),
+        ),
+        filled: true,
+        fillColor: theme.colorScheme.surface,
+        helperText: helperText,
+        helperStyle: theme.textTheme.bodySmall?.copyWith(
+          color: theme.colorScheme.onSurfaceVariant,
         ),
       ),
+      validator: (value) {
+        return validator(value);
+      },
     );
   }
 }

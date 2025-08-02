@@ -50,84 +50,94 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
             ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Welcome to ARR Client',
-                  style: theme.textTheme.headlineMedium,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Configure your Sonarr and/or Radarr instances to get started',
-                  style: theme.textTheme.bodyLarge,
-                ),
-              ],
+      body: CustomScrollView(
+        slivers: [
+          // Header section
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Welcome to ARR Client',
+                    style: theme.textTheme.headlineMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Configure your Sonarr and/or Radarr instances to get started',
+                    style: theme.textTheme.bodyLarge,
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 24),
+          ),
 
-            _AuthCard(
-              cardIcon: Icons.tv,
-              isConfigured: authState.sonarrConfigured,
-              urlController: _sonarrUrlController,
-              apiKeyController: _sonarrApiKeyController,
-              type: 'Sonarr',
-              onPressed: authState.isLoadingSonarr
-                  ? null
-                  : () async {
-                      if (_sonarrFormKey.currentState!.validate()) {
-                        var authController = ref.read(
-                          authControllerProvider.notifier,
-                        );
-
-                        await authController.updateSonarr(
-                          _sonarrUrlController.text,
-                          _sonarrApiKeyController.text,
-                          context,
-                        );
-                      }
-                    },
-              isLoading: authState.isLoadingSonarr,
-              isEditing: authState.sonarrConfigured,
-              formState: _sonarrFormKey,
-              primaryColor: Colors.blue,
-            ),
-
-            const SizedBox(height: 32),
-
-            _AuthCard(
-              cardIcon: Icons.movie_outlined,
-              isConfigured: authState.radarrConfigured,
-              urlController: _radarrUrlController,
-              apiKeyController: _radarrApiKeyController,
-              type: 'Radarr',
-              onPressed: authState.isLoadingRadarr
-                  ? null
-                  : () {
-                      if (_radarrFormKey.currentState!.validate()) {
-                        ref
-                            .read(authControllerProvider.notifier)
-                            .updateRadarr(
-                              _radarrUrlController.text,
-                              _radarrApiKeyController.text,
+          // Grid section
+          SliverPadding(
+            padding: const EdgeInsets.all(16),
+            sliver: SliverGrid(
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 660,
+                mainAxisExtent: 360,
+                mainAxisSpacing: 16,
+                crossAxisSpacing: 16,
+              ),
+              delegate: SliverChildListDelegate([
+                _AuthCard(
+                  cardIcon: Icons.tv,
+                  isConfigured: authState.sonarrConfigured,
+                  urlController: _sonarrUrlController,
+                  apiKeyController: _sonarrApiKeyController,
+                  type: 'Sonarr',
+                  onPressed: authState.isLoadingSonarr
+                      ? null
+                      : () async {
+                          if (_sonarrFormKey.currentState!.validate()) {
+                            var authController = ref.read(
+                              authControllerProvider.notifier,
+                            );
+                            await authController.updateSonarr(
+                              _sonarrUrlController.text,
+                              _sonarrApiKeyController.text,
                               context,
                             );
-                      }
-                    },
-              isLoading: authState.isLoadingRadarr,
-              isEditing: authState.radarrConfigured,
-              formState: _radarrFormKey,
-              primaryColor: Colors.orange,
+                          }
+                        },
+                  isLoading: authState.isLoadingSonarr,
+                  isEditing: authState.sonarrConfigured,
+                  formState: _sonarrFormKey,
+                  primaryColor: Colors.blue,
+                ),
+                _AuthCard(
+                  cardIcon: Icons.movie_outlined,
+                  isConfigured: authState.radarrConfigured,
+                  urlController: _radarrUrlController,
+                  apiKeyController: _radarrApiKeyController,
+                  type: 'Radarr',
+                  onPressed: authState.isLoadingRadarr
+                      ? null
+                      : () {
+                          if (_radarrFormKey.currentState!.validate()) {
+                            ref
+                                .read(authControllerProvider.notifier)
+                                .updateRadarr(
+                                  _radarrUrlController.text,
+                                  _radarrApiKeyController.text,
+                                  context,
+                                );
+                          }
+                        },
+                  isLoading: authState.isLoadingRadarr,
+                  isEditing: authState.radarrConfigured,
+                  formState: _radarrFormKey,
+                  primaryColor: Colors.orange,
+                ),
+                // Add more _AuthCard widgets here as needed
+              ]),
             ),
-
-            const SizedBox(height: 32),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -5,6 +5,7 @@ import 'package:client/src/features/auth/domain/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
+import 'package:radarr/radarr.dart';
 
 class AuthController extends Notifier<AuthState> {
   late final HiveService _hiveService;
@@ -61,6 +62,49 @@ class AuthController extends Notifier<AuthState> {
     }
   }
 
+  Future<void> updateRadarr(
+    String url,
+    String apiKey,
+    BuildContext context,
+  ) async {
+    state = state.copyWith(
+      isLoadingRadarr: true,
+      radarrError: '',
+      clearRadarrError: true,
+    );
+    var radarrApi = Radarr(basePathOverride: url);
+    radarrApi.setApiKey('X-Api-Key', apiKey);
+    try {
+      await radarrApi.getSystemApi().apiV3SystemStatusGet();
+    } catch (e) {
+      state = state.copyWith(radarrError: e.toString());
+      state = state.copyWith(isLoadingRadarr: false);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${state.radarrError}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return;
+    }
+
+    await _configureRadarr(url, apiKey);
+
+    await Future.delayed(const Duration(milliseconds: 200));
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Radarr configured successfully, please add other details or go to home',
+          ),
+          backgroundColor: Colors.green,
+        ),
+      );
+    }
+  }
+
   Future<void> _configureSonarr(String url, String apiKey) async {
     if (url.isEmpty || apiKey.isEmpty) {
       state = state.copyWith(sonarrError: 'URL and API key are required');
@@ -85,7 +129,7 @@ class AuthController extends Notifier<AuthState> {
     }
   }
 
-  Future<void> configureRadarr(String url, String apiKey) async {
+  Future<void> _configureRadarr(String url, String apiKey) async {
     if (url.isEmpty || apiKey.isEmpty) {
       state = state.copyWith(radarrError: 'URL and API key are required');
       return;

@@ -112,9 +112,10 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                       if (_radarrFormKey.currentState!.validate()) {
                         ref
                             .read(authControllerProvider.notifier)
-                            .configureRadarr(
+                            .updateRadarr(
                               _radarrUrlController.text,
                               _radarrApiKeyController.text,
+                              context,
                             );
                       }
                     },

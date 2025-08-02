@@ -82,6 +82,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                   : () {
                       if (_sonarrFormKey.currentState!.validate()) {
                         ref
+                            .read(authControllerProvider.notifier)
                             .configureSonarr(
                               _sonarrUrlController.text,
                               _sonarrApiKeyController.text,

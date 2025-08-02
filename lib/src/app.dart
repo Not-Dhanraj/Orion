@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       title: 'Flutter',
       theme: FlexThemeData.light(
         scheme: FlexScheme.damask,
@@ -71,7 +72,9 @@ class MyApp extends StatelessWidget {
           popupMenuOpacity: 0.95,
         ),
       ),
-      home: const AuthScreen(),
+      home: const SplashScreen(),
     );
   }
 }
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

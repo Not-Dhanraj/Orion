@@ -4,23 +4,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 
 class HiveService {
-  void init() async {
+  Future<void> init() async {
     await Hive.initFlutter();
     Hive.registerAdapter(SonarrCredentialsAdapter());
     Hive.registerAdapter(RadarrCredentialsAdapter());
     var appConst = AppConst();
-    if (!Hive.isBoxOpen(appConst.sonarrBox)) {
-      var sonarrBox = await Hive.openBox(appConst.sonarrBox);
+    var sonarrBox = await Hive.openBox(appConst.sonarrBox);
+    if (sonarrBox.get(appConst.sonarrEnabled) == null) {
       sonarrBox.put(appConst.sonarrEnabled, false);
     }
 
-    if (!Hive.isBoxOpen(appConst.radarrBox)) {
-      var radarrBox = await Hive.openBox(appConst.radarrBox);
+    var radarrBox = await Hive.openBox(appConst.radarrBox);
+    if (radarrBox.get(appConst.radarrEnabled) == null) {
       radarrBox.put(appConst.radarrEnabled, false);
     }
-    if (!Hive.isBoxOpen(appConst.credentialsBox)) {
-      await Hive.openBox(appConst.credentialsBox);
-    }
+    await Hive.openBox(appConst.credentialsBox);
   }
 
   Future<void> saveSonarrCredentials(SonarrCredentials credentials) async {

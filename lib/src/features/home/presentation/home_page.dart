@@ -42,7 +42,11 @@ class _HomePageState extends ConsumerState<HomePage> {
             children: data.pages,
           ),
           bottomNavigationBar: BottomNavigationBar(
-            type: BottomNavigationBarType.shifting,
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
+            type: BottomNavigationBarType.fixed,
+            selectedFontSize: 12,
+            unselectedFontSize: 12,
             currentIndex: _currentIndex,
             onTap: (index) {
               setState(() {

@@ -33,6 +33,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.6.1
+  flutter_tabler_icons:
+    git: https://github.com/agil3st/flutter_tabler_icons.git
   google_fonts: ^6.2.1
   hive_ce: ^2.11.3
   hive_ce_flutter: ^2.3.1

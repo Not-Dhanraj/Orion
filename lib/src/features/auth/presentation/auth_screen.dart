@@ -2,6 +2,7 @@ import 'package:client/src/features/auth/presentation/auth_controller.dart';
 import 'package:client/src/features/home/presentation/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:with_opacity/with_opacity.dart';
 
 class AuthScreen extends ConsumerStatefulWidget {
@@ -80,13 +81,13 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
             sliver: SliverGrid(
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 660,
-                mainAxisExtent: 360,
+                mainAxisExtent: 420,
                 mainAxisSpacing: 16,
                 crossAxisSpacing: 16,
               ),
               delegate: SliverChildListDelegate([
                 _AuthCard(
-                  cardIcon: Icons.tv,
+                  cardIcon: TablerIcons.device_tv,
                   isConfigured: authState.sonarrConfigured,
                   urlController: _sonarrUrlController,
                   apiKeyController: _sonarrApiKeyController,
@@ -111,7 +112,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                   primaryColor: Colors.blue,
                 ),
                 _AuthCard(
-                  cardIcon: Icons.movie_outlined,
+                  cardIcon: TablerIcons.movie,
                   isConfigured: authState.radarrConfigured,
                   urlController: _radarrUrlController,
                   apiKeyController: _radarrApiKeyController,
@@ -172,7 +173,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                           ),
                         );
                       },
-                icon: Icon(Icons.navigate_next_rounded),
+                icon: Icon(TablerIcons.chevrons_right),
                 label: Text(
                   'Proceed',
                   style: TextStyle(
@@ -189,7 +190,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   }
 }
 
-class _AuthCard extends StatelessWidget {
+class _AuthCard extends ConsumerWidget {
   final IconData cardIcon;
   final GlobalKey<FormState> formState;
   final bool isConfigured;
@@ -215,7 +216,7 @@ class _AuthCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var theme = Theme.of(context);
 
     return Card(
@@ -253,47 +254,44 @@ class _AuthCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 24),
+              Text(
+                'Server URL',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 6),
               _TextFormField(
                 controller: urlController,
                 labelText: '$type URL',
                 hintText: 'http://your-server:port',
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter $type URL';
-                  }
-                  final uri = Uri.tryParse(value);
-                  if (uri == null ||
-                      !(uri.isAbsolute &&
-                          (uri.scheme == 'http' || uri.scheme == 'https')) ||
-                      uri.host.isEmpty) {
-                    return 'Please enter a valid URL starting with http:// or https://';
-                  }
-                  // Host must be at least 3 chars and contain a dot or be a valid IPv4/IPv6
-                  final host = uri.host;
-                  final isIp =
-                      RegExp(r'^(\d{1,3}\.){3}\d{1,3}$').hasMatch(host) ||
-                      RegExp(r'^\[[0-9a-fA-F:]+\]$').hasMatch(host);
-                  if (!isIp && !host.contains('.')) {
-                    return 'Please enter a valid domain or IP address';
-                  }
-                  return null;
-                },
-                icon: Icons.link,
-                helperText: 'The base URL for your $type instance',
+                validator: (value) => ref
+                    .read(authControllerProvider.notifier)
+                    .urlValidatorCheck(value),
+                icon: TablerIcons.link,
+                helperText:
+                    'Example: http://localhost:port or https://yourdomain.xyz',
               ),
               const SizedBox(height: 20),
+              Text(
+                'API Key',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 6),
               _TextFormField(
                 controller: apiKeyController,
                 labelText: 'API Key',
-                hintText: 'Your $type API key',
+                hintText: 'Enter your API key',
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter API key';
                   }
                   return null;
                 },
-                icon: Icons.lock,
-                helperText: 'Your $type API key',
+                icon: TablerIcons.lock,
+                helperText: 'Found in Settings > General > API Key',
               ),
               SizedBox(height: 16),
               ElevatedButton.icon(
@@ -316,7 +314,11 @@ class _AuthCard extends StatelessWidget {
                           color: Colors.white,
                         ),
                       )
-                    : Icon(isEditing ? Icons.check : Icons.save),
+                    : Icon(
+                        isEditing
+                            ? TablerIcons.checks
+                            : TablerIcons.device_floppy,
+                      ),
                 label: Text(
                   isLoading
                       ? 'Saving...'

@@ -262,6 +262,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.6.1"
+  flutter_tabler_icons:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "715a109f2f9f053f52ab8ed0a457d8443b4c2555"
+      url: "https://github.com/agil3st/flutter_tabler_icons.git"
+    source: git
+    version: "1.43.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter

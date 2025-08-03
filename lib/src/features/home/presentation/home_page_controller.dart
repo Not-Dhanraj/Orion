@@ -3,6 +3,7 @@ import 'package:client/src/features/home/domain/home_page_items.dart';
 import 'package:client/src/features/home/presentation/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 
 class HomePageController extends AsyncNotifier<HomePageItems> {
   @override
@@ -18,8 +19,8 @@ class HomePageController extends AsyncNotifier<HomePageItems> {
       pages.add(const SonarrPage());
       navItems.add(
         const BottomNavigationBarItem(
-          icon: Icon(Icons.tv_outlined),
-          activeIcon: Icon(Icons.tv),
+          icon: Icon(TablerIcons.device_tv),
+          activeIcon: Icon(TablerIcons.device_tv_filled),
           label: 'TV Shows',
         ),
       );
@@ -29,8 +30,8 @@ class HomePageController extends AsyncNotifier<HomePageItems> {
       pages.add(const RadarrPage());
       navItems.add(
         const BottomNavigationBarItem(
-          icon: Icon(Icons.movie_outlined),
-          activeIcon: Icon(Icons.movie),
+          icon: Icon(TablerIcons.video),
+          activeIcon: Icon(TablerIcons.video_filled),
           label: 'Movies',
         ),
       );
@@ -40,8 +41,8 @@ class HomePageController extends AsyncNotifier<HomePageItems> {
       pages.add(const QueuePage());
       navItems.add(
         const BottomNavigationBarItem(
-          icon: Icon(Icons.download_outlined),
-          activeIcon: Icon(Icons.download),
+          icon: Icon(TablerIcons.layout_list),
+          activeIcon: Icon(TablerIcons.layout_list_filled),
           label: 'Queue',
         ),
       );
@@ -49,8 +50,8 @@ class HomePageController extends AsyncNotifier<HomePageItems> {
       pages.add(const CalendarPage());
       navItems.add(
         const BottomNavigationBarItem(
-          icon: Icon(Icons.calendar_today_outlined),
-          activeIcon: Icon(Icons.calendar_today),
+          icon: Icon(TablerIcons.calendar_month),
+          activeIcon: Icon(TablerIcons.calendar_month_filled),
           label: 'Calendar',
         ),
       );
@@ -59,8 +60,8 @@ class HomePageController extends AsyncNotifier<HomePageItems> {
     pages.add(const SettingsPage());
     navItems.add(
       const BottomNavigationBarItem(
-        icon: Icon(Icons.settings_outlined),
-        activeIcon: Icon(Icons.settings),
+        icon: Icon(TablerIcons.settings),
+        activeIcon: Icon(TablerIcons.settings_filled),
         label: 'Settings',
       ),
     );

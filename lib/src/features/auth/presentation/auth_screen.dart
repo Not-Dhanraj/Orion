@@ -139,6 +139,45 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
           ),
         ],
       ),
+      bottomNavigationBar: SizedBox(
+        height: kBottomNavigationBarHeight,
+        child: BottomAppBar(
+          color: theme.colorScheme.surface,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Proceed to Home Page',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurface.withCustomOpacity(0.7),
+                ),
+              ),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: theme.colorScheme.primary.withAlpha(40),
+                  foregroundColor: theme.colorScheme.onPrimary,
+                  shadowColor: Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed:
+                    !(authState.sonarrConfigured || authState.radarrConfigured)
+                    ? null
+                    : () {},
+                icon: Icon(Icons.navigate_next_rounded),
+                label: Text(
+                  'Proceed',
+                  style: TextStyle(
+                    color: theme.colorScheme.onSurface.withCustomOpacity(0.9),
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -175,7 +214,10 @@ class _AuthCard extends StatelessWidget {
     return Card(
       elevation: 2,
       shadowColor: Colors.black.withAlpha(40),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: primaryColor.withAlpha(25), width: 1.5),
+      ),
       child: Padding(
         padding: EdgeInsets.all(24),
         child: Form(

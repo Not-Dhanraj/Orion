@@ -7,18 +7,3 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const ProviderScope(child: MyApp()));
 }
-
-// @Openapi(
-//   additionalProperties: DioProperties(
-//     pubName: 'radarr',
-//     pubAuthor: 'not-dhanraj',
-//   ),
-//   inputSpec: RemoteSpec(
-//     path:
-//         'https://raw.githubusercontent.com/Radarr/Radarr/develop/src/Radarr.Api.V3/openapi.json',
-//   ),
-//   generatorName: Generator.dio,
-//   runSourceGenOnOutput: true,
-//   outputDirectory: 'api/radarr_api',
-// )
-// class Radarr {}

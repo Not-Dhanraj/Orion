@@ -2,6 +2,7 @@ import 'package:client/src/app.dart';
 import 'package:client/src/core/application/enabled_provider.dart';
 import 'package:client/src/core/application/hive_service.dart';
 import 'package:client/src/features/auth/presentation/auth_screen.dart';
+import 'package:client/src/features/home/presentation/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -16,11 +17,9 @@ class SplashController extends AsyncNotifier<void> {
     await hiveService.init();
     final enabled = ref.read(enabledNotifierProvider);
     if (enabled.sonarr || enabled.radarr) {
-      //TODO: Remove when home screen is ready
-
       await Future.delayed(const Duration(seconds: 1));
       navigatorKey.currentState!.pushReplacement(
-        MaterialPageRoute(builder: (context) => const AuthScreen()),
+        MaterialPageRoute(builder: (context) => const HomePage()),
       );
     } else {
       await Future.delayed(const Duration(seconds: 1));

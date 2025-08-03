@@ -1,4 +1,5 @@
 import 'package:client/src/features/auth/presentation/auth_controller.dart';
+import 'package:client/src/features/home/presentation/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:with_opacity/with_opacity.dart';
@@ -164,7 +165,13 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                 onPressed:
                     !(authState.sonarrConfigured || authState.radarrConfigured)
                     ? null
-                    : () {},
+                    : () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => const HomePage(),
+                          ),
+                        );
+                      },
                 icon: Icon(Icons.navigate_next_rounded),
                 label: Text(
                   'Proceed',

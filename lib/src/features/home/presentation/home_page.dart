@@ -30,39 +30,87 @@ class _HomePageState extends ConsumerState<HomePage> {
     final homeController = ref.watch(homePageControllerProvider);
     return homeController.when(
       data: (data) {
-        return Scaffold(
-          // appBar: AppBar(title: const Text('App')),
-          body: PageView(
-            controller: pageController,
-            onPageChanged: (index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-            children: data.pages,
-          ),
-          bottomNavigationBar: BottomNavigationBar(
-            showSelectedLabels: true,
-            showUnselectedLabels: true,
-            type: BottomNavigationBarType.fixed,
-            selectedFontSize: 12,
-            unselectedFontSize: 12,
-            currentIndex: _currentIndex,
-            onTap: (index) {
-              setState(() {
-                _currentIndex = index;
-                pageController.jumpToPage(index);
-              });
-            },
-            items: data.navItems,
-          ),
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final isWide = constraints.maxWidth >= 600;
+            if (isWide) {
+              return Scaffold(
+                body: Row(
+                  children: [
+                    NavigationRail(
+                      labelType: NavigationRailLabelType.all,
+
+                      // extended: isExtended,
+                      leading: const Padding(
+                        padding: EdgeInsets.only(top: 8),
+                        child: Icon(Icons.menu),
+                      ),
+                      groupAlignment: 0,
+                      destinations: [
+                        for (final item in data.navItems)
+                          NavigationRailDestination(
+                            icon: item.icon,
+                            selectedIcon: item.activeIcon,
+                            label: Text(item.label ?? ''),
+                          ),
+                      ],
+                      selectedIndex: _currentIndex,
+                      onDestinationSelected: (index) {
+                        setState(() {
+                          _currentIndex = index;
+                          pageController.jumpToPage(index);
+                        });
+                      },
+                    ),
+                    Expanded(
+                      child: PageView(
+                        controller: pageController,
+                        onPageChanged: (index) {
+                          setState(() {
+                            _currentIndex = index;
+                          });
+                        },
+                        children: data.pages,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            // Mobile layout
+            return Scaffold(
+              body: PageView(
+                controller: pageController,
+                onPageChanged: (index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
+                children: data.pages,
+              ),
+              bottomNavigationBar: BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                showSelectedLabels: true,
+                showUnselectedLabels: true,
+                items: data.navItems,
+                currentIndex: _currentIndex,
+                onTap: (index) {
+                  setState(() {
+                    _currentIndex = index;
+                    pageController.jumpToPage(index);
+                  });
+                },
+              ),
+            );
+          },
         );
       },
       error: (error, stackTrace) {
         return Center(child: Text('Error: $error'));
       },
       loading: () =>
-          Material(child: const Center(child: CircularProgressIndicator())),
+          const Material(child: Center(child: CircularProgressIndicator())),
     );
   }
 }
@@ -74,7 +122,37 @@ class RadarrPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('Radarr Page'));
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final padding = constraints.maxWidth > 1200
+            ? EdgeInsets.symmetric(
+                horizontal: (constraints.maxWidth - 1200) / 2,
+              )
+            : const EdgeInsets.symmetric(horizontal: 16);
+
+        return SingleChildScrollView(
+          padding: padding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 16),
+              const Text(
+                'Movies',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+              // Add your movie content here
+              Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: const Text('Radarr Page'),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -83,7 +161,36 @@ class QueuePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('Queue Page'));
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final padding = constraints.maxWidth > 1200
+            ? EdgeInsets.symmetric(
+                horizontal: (constraints.maxWidth - 1200) / 2,
+              )
+            : const EdgeInsets.symmetric(horizontal: 16);
+
+        return SingleChildScrollView(
+          padding: padding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 16),
+              const Text(
+                'Queue',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: const Text('Queue Page'),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -92,7 +199,36 @@ class CalendarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('Calendar Page'));
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final padding = constraints.maxWidth > 1200
+            ? EdgeInsets.symmetric(
+                horizontal: (constraints.maxWidth - 1200) / 2,
+              )
+            : const EdgeInsets.symmetric(horizontal: 16);
+
+        return SingleChildScrollView(
+          padding: padding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 16),
+              const Text(
+                'Calendar',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: const Text('Calendar Page'),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -101,6 +237,35 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('Settings Page'));
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final padding = constraints.maxWidth > 1200
+            ? EdgeInsets.symmetric(
+                horizontal: (constraints.maxWidth - 1200) / 2,
+              )
+            : const EdgeInsets.symmetric(horizontal: 16);
+
+        return SingleChildScrollView(
+          padding: padding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 16),
+              const Text(
+                'Settings',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: const Text('Settings Page'),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

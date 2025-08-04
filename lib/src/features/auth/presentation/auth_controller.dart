@@ -18,42 +18,32 @@ class AuthController extends Notifier<AuthState> {
     String apiKey,
     BuildContext context,
   ) async {
-    state = state.copyWith(isLoadingSonarr: true);
+    state = state.copyWith(isLoadingSonarr: true, clearSonarrError: true);
 
     try {
       final authService = ref.read(authServiceProvider);
-      await authService.makeSonarrRequest(url, apiKey);
-      await authService.configureSonarr(url, apiKey);
+      await authService.validateAndConfigureService(
+        url,
+        apiKey,
+        ServiceType.sonarr,
+      );
+
+      state = state.copyWith(isLoadingSonarr: false, sonarrConfigured: true);
+
+      await Future.delayed(const Duration(milliseconds: 200));
+
+      showSuccessSnackbar(
+        context,
+        'Sonarr configured successfully, please add other details or go to home',
+      );
     } catch (e) {
       final errorMessage = e is AuthException
           ? e.message
           : 'An unexpected error occurred: ${e.toString()}';
 
-      state = state.copyWith(isLoadingSonarr: false);
+      state = state.copyWith(isLoadingSonarr: false, sonarrError: errorMessage);
 
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: $errorMessage'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-      return;
-    }
-
-    state = state.copyWith(isLoadingSonarr: false, sonarrConfigured: true);
-    await Future.delayed(const Duration(milliseconds: 200));
-
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Sonarr configured successfully, please add other details or go to home',
-          ),
-          backgroundColor: Colors.green,
-        ),
-      );
+      showErrorSnackbar(context, errorMessage);
     }
   }
 
@@ -62,48 +52,76 @@ class AuthController extends Notifier<AuthState> {
     String apiKey,
     BuildContext context,
   ) async {
-    state = state.copyWith(isLoadingRadarr: true);
+    state = state.copyWith(isLoadingRadarr: true, clearRadarrError: true);
 
     try {
       final authService = ref.read(authServiceProvider);
-      await authService.makeRadarrRequest(url, apiKey);
-      await authService.configureRadarr(url, apiKey);
+      await authService.validateAndConfigureService(
+        url,
+        apiKey,
+        ServiceType.radarr,
+      );
+
+      state = state.copyWith(isLoadingRadarr: false, radarrConfigured: true);
+
+      await Future.delayed(const Duration(milliseconds: 200));
+
+      showSuccessSnackbar(
+        context,
+        'Radarr configured successfully, please add other details or go to home',
+      );
     } catch (e) {
       final errorMessage = e is AuthException
           ? e.message
           : 'An unexpected error occurred: ${e.toString()}';
 
-      state = state.copyWith(isLoadingRadarr: false);
+      state = state.copyWith(isLoadingRadarr: false, radarrError: errorMessage);
 
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: $errorMessage'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-      return;
-    }
-
-    state = state.copyWith(isLoadingRadarr: false, radarrConfigured: true);
-    await Future.delayed(const Duration(milliseconds: 200));
-
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Radarr configured successfully, please add other details or go to home',
-          ),
-          backgroundColor: Colors.green,
-        ),
-      );
+      showErrorSnackbar(context, errorMessage);
     }
   }
 
   //TODO move to service
   String? urlValidatorCheck(String? value) {
     return UrlValidator.validate(value);
+  }
+
+  /// Helper method to display error messages in a snackbar
+  void showErrorSnackbar(BuildContext context, String message) {
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: $message'),
+          backgroundColor: Colors.red,
+          action: SnackBarAction(
+            label: 'Dismiss',
+            textColor: Colors.white,
+            onPressed: () {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            },
+          ),
+        ),
+      );
+    }
+  }
+
+  /// Helper method to display success messages in a snackbar
+  void showSuccessSnackbar(BuildContext context, String message) {
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: Colors.green,
+          action: SnackBarAction(
+            label: 'Dismiss',
+            textColor: Colors.white,
+            onPressed: () {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            },
+          ),
+        ),
+      );
+    }
   }
 }
 

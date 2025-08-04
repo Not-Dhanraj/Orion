@@ -218,13 +218,22 @@ class _AuthCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var theme = Theme.of(context);
+    final authState = ref.watch(authControllerProvider);
+    final errorMessage = type == 'Sonarr'
+        ? authState.sonarrError
+        : authState.radarrError;
 
     return Card(
       elevation: 2,
       shadowColor: Colors.black.withAlpha(40),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: primaryColor.withAlpha(25), width: 1.5),
+        side: BorderSide(
+          color: errorMessage.isNotEmpty
+              ? Colors.red.withAlpha(100)
+              : primaryColor.withAlpha(25),
+          width: 1.5,
+        ),
       ),
       child: Padding(
         padding: EdgeInsets.all(24),

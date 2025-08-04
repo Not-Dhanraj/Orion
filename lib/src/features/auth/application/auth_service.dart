@@ -89,9 +89,9 @@ class AuthService {
   }
 
   Future<void> configureSonarr(String url, String apiKey) async {
-    try {
-      final normalizedUrl = url.endsWith('/') ? url : '$url/';
+    final normalizedUrl = url.endsWith('/') ? url : '$url/';
 
+    try {
       var hiveService = _ref.read(hiveProvider);
       await hiveService.saveSonarrCredentials(
         SonarrCredentials(sonarrUrl: normalizedUrl, sonarrApi: apiKey),
@@ -107,9 +107,9 @@ class AuthService {
   }
 
   Future<void> configureRadarr(String url, String apiKey) async {
-    try {
-      final normalizedUrl = url.endsWith('/') ? url : '$url/';
+    final normalizedUrl = url.endsWith('/') ? url : '$url/';
 
+    try {
       var hiveService = _ref.read(hiveProvider);
       await hiveService.saveRadarrCredentials(
         RadarrCredentials(radarrUrl: normalizedUrl, radarrApi: apiKey),
@@ -123,7 +123,27 @@ class AuthService {
       );
     }
   }
+
+  /// Validates and configures a service (Sonarr or Radarr) in one transaction
+  /// Returns void if successful or throws an AuthException if anything fails
+  Future<void> validateAndConfigureService(
+    String url,
+    String apiKey,
+    ServiceType serviceType,
+  ) async {
+    // First validate the connection
+    if (serviceType == ServiceType.sonarr) {
+      await makeSonarrRequest(url, apiKey);
+      await configureSonarr(url, apiKey);
+    } else {
+      await makeRadarrRequest(url, apiKey);
+      await configureRadarr(url, apiKey);
+    }
+  }
 }
+
+/// Enum to represent which service is being configured
+enum ServiceType { sonarr, radarr }
 
 final authServiceProvider = Provider<AuthService>((ref) {
   return AuthService(ref);

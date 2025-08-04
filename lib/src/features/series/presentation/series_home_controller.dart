@@ -9,6 +9,8 @@ class SeriesHomeController extends AsyncNotifier<List<SeriesResource>> {
     await Future.delayed(const Duration(milliseconds: 500));
     return await seriesService.fetchAllSeries();
   }
+
+  // Removed getPoster method as it's now handled directly in the widget
 }
 
 final seriesHomeControllerProvider =

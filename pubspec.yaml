@@ -29,6 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   built_collection: ^5.1.1
+  cached_network_image: ^3.4.1
   cupertino_icons: ^1.0.8
   flex_color_scheme: ^8.2.0
   flutter:

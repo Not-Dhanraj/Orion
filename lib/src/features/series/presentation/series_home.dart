@@ -1,7 +1,9 @@
 import 'package:client/src/shared/error_widget.dart';
+import 'package:client/src/shared/media_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:client/src/features/series/presentation/series_home_controller.dart';
+import 'package:sonarr/sonarr.dart';
 
 class SeriesHome extends ConsumerWidget {
   const SeriesHome({super.key});
@@ -20,6 +22,10 @@ class SeriesHome extends ConsumerWidget {
 
         return LayoutBuilder(
           builder: (context, constraints) {
+            var crossAxisCount = (constraints.maxWidth / 175).floor().clamp(
+              1,
+              6,
+            ); // Ensure at least 1 and at most 6 columns
             return CustomScrollView(
               slivers: [
                 SliverAppBar(
@@ -34,42 +40,23 @@ class SeriesHome extends ConsumerWidget {
                   ),
                   sliver: SliverGrid.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: (constraints.maxWidth / 175)
-                          .floor()
-                          .clamp(1, 6),
+                      crossAxisCount: crossAxisCount,
                       childAspectRatio: 0.68,
                       mainAxisSpacing: 10,
                       crossAxisSpacing: 10,
                     ),
                     itemBuilder: (context, index) {
                       final seriesItem = series[index];
-                      return Card(
-                        margin: const EdgeInsets.all(0),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              seriesItem.images!.isNotEmpty
-                                  ? Expanded(
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                          8.0,
-                                        ),
-                                        child: Image.network(
-                                          fit: BoxFit.cover,
-                                          seriesItem.images![2].remoteUrl!,
-                                        ),
-                                      ),
-                                    )
-                                  : const Placeholder(),
-                              SizedBox(height: 8.0),
-                              Text(
-                                seriesItem.title ?? 'Unknown Title',
-                                maxLines: 2,
-                              ),
-                            ],
-                          ),
-                        ),
+                      final poster = seriesItem.images?.firstWhere(
+                        (image) => image.coverType == MediaCoverTypes.poster,
+                        orElse: () => MediaCover(),
+                      );
+                      return MediaWidget(
+                        title: seriesItem.title ?? "Unknown",
+                        year: seriesItem.year?.toString() ?? "0000",
+                        imgUrl: poster?.remoteUrl,
+                        count: crossAxisCount,
+                        rating: seriesItem.ratings?.value?.toString() ?? "0.0",
                       );
                     },
                     itemCount: series.length,

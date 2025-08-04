@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
           popupMenuOpacity: 0.95,
         ),
       ),
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.dark,
       home: const SplashScreen(),
     );
   }

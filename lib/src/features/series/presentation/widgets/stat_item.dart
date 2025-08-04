@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:with_opacity/with_opacity.dart';
 
 class StatItem extends StatelessWidget {
   final String label;

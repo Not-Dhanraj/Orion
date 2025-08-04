@@ -52,6 +52,7 @@ class SeriesHome extends ConsumerWidget {
                         orElse: () => MediaCover(),
                       );
                       return MediaWidget(
+                        index: index,
                         title: seriesItem.title ?? "Unknown",
                         year: seriesItem.year?.toString() ?? "0000",
                         imgUrl: poster?.remoteUrl,

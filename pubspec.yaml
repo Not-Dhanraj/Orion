@@ -31,6 +31,7 @@ dependencies:
   built_collection: ^5.1.1
   cached_network_image: ^3.4.1
   cupertino_icons: ^1.0.8
+  entry: ^1.0.1
   flex_color_scheme: ^8.2.0
   flutter:
     sdk: flutter

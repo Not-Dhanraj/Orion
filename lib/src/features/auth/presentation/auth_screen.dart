@@ -141,48 +141,51 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: SizedBox(
-        height: kBottomNavigationBarHeight,
-        child: BottomAppBar(
-          color: theme.colorScheme.surface,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Proceed to Home Page',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurface.withCustomOpacity(0.7),
-                ),
-              ),
-              ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: theme.colorScheme.primary.withAlpha(40),
-                  foregroundColor: theme.colorScheme.onPrimary,
-                  shadowColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+      bottomNavigationBar: SafeArea(
+        child: SizedBox(
+          height: kBottomNavigationBarHeight,
+          child: BottomAppBar(
+            color: theme.colorScheme.surface,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Proceed to Home Page',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface.withCustomOpacity(0.7),
                   ),
                 ),
-                onPressed:
-                    !(authState.sonarrConfigured || authState.radarrConfigured)
-                    ? null
-                    : () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => const HomePage(),
-                          ),
-                        );
-                      },
-                icon: Icon(TablerIcons.chevrons_right),
-                label: Text(
-                  'Proceed',
-                  style: TextStyle(
-                    color: theme.colorScheme.onSurface.withCustomOpacity(0.9),
-                    fontSize: 16,
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: theme.colorScheme.primary.withAlpha(40),
+                    foregroundColor: theme.colorScheme.onPrimary,
+                    shadowColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed:
+                      !(authState.sonarrConfigured ||
+                          authState.radarrConfigured)
+                      ? null
+                      : () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const HomePage(),
+                            ),
+                          );
+                        },
+                  icon: Icon(TablerIcons.chevrons_right),
+                  label: Text(
+                    'Proceed',
+                    style: TextStyle(
+                      color: theme.colorScheme.onSurface.withCustomOpacity(0.9),
+                      fontSize: 16,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

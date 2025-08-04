@@ -36,12 +36,12 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.6.1
+  flutter_staggered_grid_view: ^0.7.0
   flutter_tabler_icons:
     git: https://github.com/agil3st/flutter_tabler_icons.git
   google_fonts: ^6.2.1
   hive_ce: ^2.11.3
   hive_ce_flutter: ^2.3.1
-  hugeicons: ^0.0.11
   radarr:
     path: ./api/radarr_api
   sonarr:

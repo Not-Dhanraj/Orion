@@ -1,3 +1,4 @@
+import 'package:client/src/features/series/presentation/series_details_page.dart';
 import 'package:client/src/shared/error_widget.dart';
 import 'package:client/src/shared/media_widget.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class SeriesHome extends ConsumerWidget {
           builder: (context, constraints) {
             var crossAxisCount = (constraints.maxWidth / 175).floor().clamp(
               1,
-              6,
+              7,
             ); // Ensure at least 1 and at most 6 columns
             return CustomScrollView(
               slivers: [
@@ -58,6 +59,14 @@ class SeriesHome extends ConsumerWidget {
                         imgUrl: poster?.remoteUrl,
                         count: crossAxisCount,
                         rating: seriesItem.ratings?.value?.toString() ?? "0.0",
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  SeriesDetailsPage(series: seriesItem),
+                            ),
+                          );
+                        },
                       );
                     },
                     itemCount: series.length,

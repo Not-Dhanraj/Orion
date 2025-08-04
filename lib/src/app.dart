@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       title: 'Flutter',
       theme: FlexThemeData.light(
-        scheme: FlexScheme.damask,
+        scheme: FlexScheme.materialBaseline,
         surfaceMode: FlexSurfaceMode.highScaffoldLevelSurface,
         blendLevel: 12,
         appBarStyle: FlexAppBarStyle.background,
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       darkTheme: FlexThemeData.dark(
-        scheme: FlexScheme.material,
+        scheme: FlexScheme.materialBaseline,
         surfaceMode: FlexSurfaceMode.highSurfaceLowScaffold,
         blendLevel: 22,
         appBarStyle: FlexAppBarStyle.background,
@@ -71,6 +71,7 @@ class MyApp extends StatelessWidget {
           popupMenuOpacity: 0.95,
         ),
       ),
+      themeMode: ThemeMode.light,
       home: const SplashScreen(),
     );
   }

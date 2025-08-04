@@ -94,6 +94,7 @@ class AuthController extends Notifier<AuthState> {
     }
   }
 
+  //TODO move to service
   String? urlValidatorCheck(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter proper URL';

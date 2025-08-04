@@ -31,7 +31,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     return homeController.when(
       data: (data) {
         return Scaffold(
-          appBar: AppBar(title: const Text('App')),
+          // appBar: AppBar(title: const Text('App')),
           body: PageView(
             controller: pageController,
             onPageChanged: (index) {
@@ -68,14 +68,6 @@ class _HomePageState extends ConsumerState<HomePage> {
 }
 
 //TODO // Implement the individual pages for Sonarr, Radarr, Queue, Calendar, and Settings
-class SonarrPage extends StatelessWidget {
-  const SonarrPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(child: Text('Sonarr Page'));
-  }
-}
 
 class RadarrPage extends StatelessWidget {
   const RadarrPage({super.key});

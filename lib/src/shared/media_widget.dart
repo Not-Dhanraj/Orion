@@ -27,16 +27,42 @@ class MediaWidget extends StatelessWidget {
       children: [
         imgUrl == null
             ? Card(
-                elevation: 0,
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 margin: EdgeInsets.zero,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Icon(TablerIcons.photo_x),
-                    SizedBox(height: 8),
-                    Text('Poster not found', textAlign: TextAlign.center),
-                  ],
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Theme.of(context).colorScheme.surfaceVariant,
+                        Theme.of(context).colorScheme.surface,
+                      ],
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Icon(
+                        TablerIcons.photo_x,
+                        size: 48,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        'Poster not found',
+                        textAlign: TextAlign.center,
+                        style: textTheme.bodyLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               )
             : CachedNetworkImage(
@@ -59,6 +85,33 @@ class MediaWidget extends StatelessWidget {
                 errorWidget: (context, url, error) =>
                     const Icon(TablerIcons.photo_cancel),
               ),
+        if (rating.isNotEmpty)
+          Positioned(
+            top: 8,
+            right: 8,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.black87,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    TablerIcons.star_filled,
+                    color: Colors.amber,
+                    size: 16,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    rating,
+                    style: textTheme.bodySmall?.copyWith(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+          ),
         Positioned(
           bottom: 0,
           left: 0,
@@ -66,14 +119,19 @@ class MediaWidget extends StatelessWidget {
           child: Container(
             height: 100,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10),
+              ),
               gradient: LinearGradient(
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
                 colors: [
-                  Colors.black.withCustomOpacity(0.7),
+                  Colors.black.withCustomOpacity(0.8),
+                  Colors.black.withCustomOpacity(0.6),
                   Colors.transparent,
                 ],
+                stops: const [0.0, 0.5, 1.0],
               ),
             ),
           ),
@@ -83,7 +141,7 @@ class MediaWidget extends StatelessWidget {
           left: 0,
           right: 0,
           child: Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -91,7 +149,7 @@ class MediaWidget extends StatelessWidget {
                   title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: textTheme.bodyLarge?.copyWith(color: Colors.white),
+                  style: textTheme.titleMedium?.copyWith(color: Colors.white),
                 ),
                 Text(
                   year,

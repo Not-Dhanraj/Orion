@@ -1,6 +1,6 @@
 import 'package:client/src/features/series/presentation/series_details_page.dart';
 import 'package:client/src/shared/error_widget.dart';
-import 'package:client/src/shared/media_widget.dart';
+import 'package:client/src/features/series/presentation/widgets/home_page/series_grid_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:client/src/features/series/presentation/series_home_controller.dart';
@@ -48,25 +48,11 @@ class SeriesHome extends ConsumerWidget {
                     ),
                     itemBuilder: (context, index) {
                       final seriesItem = series[index];
-                      final poster = seriesItem.images?.firstWhere(
-                        (image) => image.coverType == MediaCoverTypes.poster,
-                        orElse: () => MediaCover(),
-                      );
-                      return MediaWidget(
+
+                      return SeriesGridItem(
                         index: index,
-                        title: seriesItem.title ?? "Unknown",
-                        year: seriesItem.year?.toString() ?? "0000",
-                        imgUrl: poster?.remoteUrl,
+                        series: seriesItem,
                         count: crossAxisCount,
-                        rating: seriesItem.ratings?.value?.toString() ?? "0.0",
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  SeriesDetailsPage(series: seriesItem),
-                            ),
-                          );
-                        },
                       );
                     },
                     itemCount: series.length,

@@ -38,6 +38,10 @@ class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
             title: Text("Series Details"),
             floating: true,
             snap: true,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
           ),
 
           SliverPadding(

@@ -45,62 +45,41 @@ class MediaWidget extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       margin: EdgeInsets.zero,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              Theme.of(context).colorScheme.surfaceVariant,
-                              Theme.of(context).colorScheme.surface,
-                            ],
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Icon(
+                            TablerIcons.photo_x,
+                            size: 48,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
                           ),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Icon(
-                              TablerIcons.photo_x,
-                              size: 48,
+                          const SizedBox(height: 12),
+                          Text(
+                            'Poster not found',
+                            textAlign: TextAlign.center,
+                            style: textTheme.bodyLarge?.copyWith(
                               color: Theme.of(
                                 context,
                               ).colorScheme.onSurfaceVariant,
                             ),
-                            const SizedBox(height: 12),
-                            Text(
-                              'Poster not found',
-                              textAlign: TextAlign.center,
-                              style: textTheme.bodyLarge?.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     )
-                  : CachedNetworkImage(
-                      memCacheWidth: mediaquery.size.width ~/ (count),
-                      imageUrl: imgUrl!,
-                      imageBuilder: (context, imageProvider) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(
-                              image: imageProvider,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        );
-                      },
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) =>
-                          const Center(child: CircularProgressIndicator()),
-                      errorWidget: (context, url, error) =>
-                          const Icon(TablerIcons.photo_cancel),
+                  : ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: CachedNetworkImage(
+                        memCacheWidth: mediaquery.size.width ~/ (count * 0.8),
+                        imageUrl: imgUrl!,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) =>
+                            const Center(child: CircularProgressIndicator()),
+                        errorWidget: (context, url, error) =>
+                            const Icon(TablerIcons.photo_cancel),
+                      ),
                     ),
               if (rating.isNotEmpty)
                 Positioned(

@@ -24,19 +24,30 @@ class SeriesHeader extends StatelessWidget {
       children: [
         SizedBox(
           width: double.infinity,
-          height: 250,
+          height: 300,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: posterUrl != null
-                ? CachedNetworkImage(
-                    imageUrl: posterUrl!,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) =>
-                        const Center(child: CircularProgressIndicator()),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                  )
-                : Center(child: const Icon(Icons.image)),
+            child: CachedNetworkImage(
+              imageUrl: posterUrl!,
+              memCacheWidth: MediaQuery.of(context).size.width.toInt(),
+
+              fit: BoxFit.cover,
+              placeholder: (context, url) =>
+                  const Center(child: CircularProgressIndicator()),
+              errorWidget: (context, url, error) {
+                return Card(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.image),
+                        Text('No Image Available'),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
         ),
         SizedBox(height: 12),

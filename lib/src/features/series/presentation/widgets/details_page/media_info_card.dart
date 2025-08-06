@@ -1,3 +1,4 @@
+import 'package:client/src/shared/utils/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:sonarr/sonarr.dart';
 import 'package:with_opacity/with_opacity.dart';
@@ -59,7 +60,9 @@ class MediaInfoCard extends StatelessWidget {
                 ),
                 StatItem(
                   label: 'Status',
-                  value: series.status?.name.split('.').last ?? 'Unknown',
+                  value:
+                      series.status?.name.split('.').last.capitalizeByWord() ??
+                      'Unknown',
                   icon: Icons.live_tv,
                 ),
                 StatItem(

@@ -1,10 +1,8 @@
-import 'package:client/src/features/series/presentation/series_details_page.dart';
 import 'package:client/src/shared/error_widget.dart';
 import 'package:client/src/features/series/presentation/widgets/home_page/series_grid_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:client/src/features/series/presentation/series_home_controller.dart';
-import 'package:sonarr/sonarr.dart';
 
 class SeriesHome extends ConsumerWidget {
   const SeriesHome({super.key});

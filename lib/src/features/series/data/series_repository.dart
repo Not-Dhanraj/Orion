@@ -32,8 +32,16 @@ class SeriesRepository {
     return response.data;
   }
 
-  Future<void> delete(int id) async {
-    await _api.getSeriesApi().apiV3SeriesIdDelete(id: id);
+  Future<void> delete(
+    int id,
+    bool deleteFiles,
+    bool addImportListExclusion,
+  ) async {
+    await _api.getSeriesApi().apiV3SeriesIdDelete(
+      id: id,
+      deleteFiles: deleteFiles,
+      addImportListExclusion: addImportListExclusion,
+    );
   }
 
   Future<BuiltList<SeriesResource>?> search(String term) async {

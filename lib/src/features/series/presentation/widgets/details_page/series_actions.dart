@@ -1,4 +1,4 @@
-import 'package:client/src/features/series/presentation/series_edit_controller.dart';
+import 'package:client/src/features/series/application/series_service.dart';
 import 'package:client/src/features/series/presentation/series_edit_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -69,18 +69,86 @@ class SeriesActionCard extends ConsumerWidget {
                 _ActionWidget(
                   icon: TablerIcons.http_delete,
                   label: 'Delete',
-                  onPressed: () {},
-                ),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        bool deleteFiles = false;
+                        bool addImportListExclusion = false;
 
-                _ActionWidget(
-                  icon: TablerIcons.edit,
-                  label: 'Edit',
-                  onPressed: () {},
-                ),
-                _ActionWidget(
-                  icon: TablerIcons.http_delete,
-                  label: 'Delete',
-                  onPressed: () {},
+                        return StatefulBuilder(
+                          builder: (context, setState) => AlertDialog(
+                            title: const Text('Delete Series'),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Are you sure you want to delete this series?',
+                                ),
+                                const SizedBox(height: 16),
+                                CheckboxListTile(
+                                  title: const Text('Delete Files'),
+                                  value: deleteFiles,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      deleteFiles = value ?? false;
+                                    });
+                                  },
+                                  contentPadding: EdgeInsets.zero,
+                                  dense: true,
+                                ),
+                                CheckboxListTile(
+                                  title: const Text(
+                                    'Add Import List Exclusion',
+                                  ),
+                                  value: addImportListExclusion,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      addImportListExclusion = value ?? false;
+                                    });
+                                  },
+                                  contentPadding: EdgeInsets.zero,
+                                  dense: true,
+                                ),
+                              ],
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  try {
+                                    ref
+                                        .read(seriesServiceProvider)
+                                        .deleteSeries(
+                                          series.id!,
+                                          deleteFiles,
+                                          addImportListExclusion,
+                                        );
+                                  } catch (e) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          'Failed to delete series.',
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Delete'),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
                 ),
               ],
             ),

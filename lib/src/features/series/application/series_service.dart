@@ -95,10 +95,14 @@ class SeriesService {
     }
   }
 
-  Future<void> deleteSeries(int id) async {
+  Future<void> deleteSeries(
+    int id,
+    bool deleteFiles,
+    bool addImportListExclusion,
+  ) async {
     try {
       final seriesRepository = _ref.read(seriesRepositoryProvider);
-      await seriesRepository.delete(id);
+      await seriesRepository.delete(id, deleteFiles, addImportListExclusion);
     } catch (e, stackTrace) {
       throw RepositoryException(
         'Failed to delete series with ID $id',

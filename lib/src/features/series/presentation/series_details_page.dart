@@ -1,3 +1,4 @@
+import 'package:client/src/features/series/presentation/series_details_controller.dart';
 import 'package:client/src/features/series/presentation/widgets/details_page/series_actions.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'widgets/details_page/media_info_card.dart';
@@ -20,8 +21,17 @@ class SeriesDetailsPage extends ConsumerStatefulWidget {
 
 class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
   @override
+  void initState() {
+    ref
+        .read(seriesDetailsControllerProvider.notifier)
+        .initialize(widget.series);
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final series = widget.series;
+    final series = ref.watch(seriesDetailsControllerProvider);
     final posterUrl =
         series.images
             ?.firstWhere(

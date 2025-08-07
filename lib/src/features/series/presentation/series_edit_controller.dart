@@ -1,5 +1,6 @@
 import 'package:client/src/features/series/application/series_service.dart';
 import 'package:client/src/features/series/domain/series_edit_state.dart';
+import 'package:client/src/features/series/presentation/series_details_controller.dart';
 import 'package:client/src/features/series/presentation/series_home_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
@@ -32,12 +33,15 @@ class SeriesEditControllerNotifier
   Future<void> saveChanges() async {
     if (state.value?.series == null) return;
 
-    state = const AsyncLoading();
     try {
       await Future.delayed(const Duration(milliseconds: 500));
       var updatedSeries = await ref
           .read(seriesServiceProvider)
           .updateSeries(state.value!.series!);
+
+      ref
+          .read(seriesDetailsControllerProvider.notifier)
+          .initialize(updatedSeries);
       state = AsyncData(
         SeriesEditState(
           series: updatedSeries,

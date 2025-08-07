@@ -56,13 +56,18 @@ class SeriesEditPage extends ConsumerWidget {
                             ),
                           ),
                           onPressed: state.hasChanges
-                              ? () => ref
-                                    .read(
-                                      seriesEditControllerProvider(
-                                        seriesId,
-                                      ).notifier,
-                                    )
-                                    .saveChanges()
+                              ? () async {
+                                  await ref
+                                      .read(
+                                        seriesEditControllerProvider(
+                                          seriesId,
+                                        ).notifier,
+                                      )
+                                      .saveChanges();
+                                  if (context.mounted) {
+                                    Navigator.of(context).pop();
+                                  }
+                                }
                               : null,
                         ),
                       ),

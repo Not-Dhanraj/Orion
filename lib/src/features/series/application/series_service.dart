@@ -125,6 +125,20 @@ class SeriesService {
       );
     }
   }
+
+  Future<List<QualityProfileResource>> fetchQualityProfiles() async {
+    try {
+      final seriesRepository = _ref.read(seriesRepositoryProvider);
+      final profiles = await seriesRepository.fetchQualityProfiles();
+      return profiles?.toList() ?? [];
+    } catch (e, stackTrace) {
+      throw RepositoryException(
+        'Failed to fetch quality profiles',
+        error: e,
+        stackTrace: stackTrace,
+      );
+    }
+  }
 }
 
 // Provider for the SeriesService

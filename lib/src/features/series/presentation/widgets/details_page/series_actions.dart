@@ -1,13 +1,18 @@
+import 'package:client/src/features/series/presentation/series_edit_controller.dart';
+import 'package:client/src/features/series/presentation/series_edit_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
+import 'package:sonarr/sonarr.dart';
 import 'package:with_opacity/with_opacity.dart';
 
 //TODO
-class SeriesActionCard extends StatelessWidget {
-  const SeriesActionCard({super.key});
+class SeriesActionCard extends ConsumerWidget {
+  final SeriesResource series;
+  const SeriesActionCard({super.key, required this.series});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 0),
@@ -18,7 +23,6 @@ class SeriesActionCard extends StatelessWidget {
         padding: const EdgeInsets.all(12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-
           children: [
             Row(
               children: [
@@ -53,7 +57,14 @@ class SeriesActionCard extends StatelessWidget {
                 _ActionWidget(
                   icon: TablerIcons.edit,
                   label: 'Edit',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            SeriesEditPage(seriesId: series.id!),
+                      ),
+                    );
+                  },
                 ),
                 _ActionWidget(
                   icon: TablerIcons.http_delete,

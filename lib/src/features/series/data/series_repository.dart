@@ -42,6 +42,12 @@ class SeriesRepository {
     );
     return response.data;
   }
+
+  //get quality Profile
+  Future<BuiltList<QualityProfileResource>?> fetchQualityProfiles() async {
+    var response = await _api.getQualityProfileApi().apiV3QualityprofileGet();
+    return response.data;
+  }
 }
 
 final seriesRepositoryProvider = Provider<SeriesRepository>((ref) {

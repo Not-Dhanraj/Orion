@@ -53,7 +53,7 @@ class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
               itemBuilder: (context, index) {
                 final widgets = [
                   SeriesHeader(posterUrl: posterUrl, series: series),
-                  SeriesActionCard(),
+                  SeriesActionCard(series: series),
                   SeriesOverviewCard(overview: series.overview),
                   SeriesSeasonsCard(seasons: series.seasons?.toList()),
                   SeriesInfoCard(series: series),

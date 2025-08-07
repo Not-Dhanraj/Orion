@@ -41,7 +41,7 @@ class SeriesGridItem extends StatelessWidget {
           ),
           openElevation: 0,
           closedElevation: 0,
-          transitionDuration: Duration(milliseconds: 300),
+          transitionDuration: Duration(milliseconds: 250),
           closedColor: Colors.transparent,
           transitionType: ContainerTransitionType.fadeThrough,
           openColor: Colors.transparent,

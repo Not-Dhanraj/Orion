@@ -22,11 +22,14 @@ class SeriesDetailsPage extends ConsumerStatefulWidget {
 class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
   @override
   void initState() {
-    ref
-        .read(seriesDetailsControllerProvider.notifier)
-        .initialize(widget.series);
-
     super.initState();
+
+    // Use a microtask to update the state after the build is complete
+    Future.microtask(() {
+      ref
+          .read(seriesDetailsControllerProvider.notifier)
+          .initialize(widget.series);
+    });
   }
 
   @override

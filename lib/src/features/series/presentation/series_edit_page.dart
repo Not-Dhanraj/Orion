@@ -21,9 +21,35 @@ class SeriesEditPage extends ConsumerWidget {
     var theme = Theme.of(context);
 
     return PopScope(
+      canPop: seriesEditController.maybeWhen(
+        data: (state) => !state.isLoading,
+        orElse: () => true,
+      ),
       child: Scaffold(
         body: seriesEditController.when(
           data: (state) {
+            if (state.isLoading) {
+              // Show loading dialog if not already shown
+              Future.microtask(() {
+                if (context.mounted) {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) => const AlertDialog(
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(),
+                          SizedBox(height: 10),
+                          Text("Saving changes..."),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+              });
+            }
             return CustomScrollView(
               slivers: [
                 SliverAppBar(
@@ -42,7 +68,10 @@ class SeriesEditPage extends ConsumerWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: ElevatedButton.icon(
-                          icon: const Icon(Icons.save_outlined),
+                          icon: Icon(
+                            Icons.save_outlined,
+                            color: theme.colorScheme.onPrimary,
+                          ),
                           label: const Text('SAVE'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: state.hasChanges
@@ -65,6 +94,11 @@ class SeriesEditPage extends ConsumerWidget {
                                       )
                                       .saveChanges();
                                   if (context.mounted) {
+                                    // Pop the dialog first if it's showing
+                                    if (Navigator.of(context).canPop()) {
+                                      Navigator.of(context).pop();
+                                    }
+                                    // Then pop the page
                                     Navigator.of(context).pop();
                                   }
                                 }

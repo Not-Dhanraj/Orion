@@ -65,15 +65,15 @@ class QualityProfileDropdown extends ConsumerWidget {
             Builder(
               builder: (context) {
                 final currentQualityProfileId = series.qualityProfileId;
-                final bool containsCurrentProfile = qualityProfiles.any(
-                  (p) => p.id == currentQualityProfileId,
-                );
-                final int selectedValue =
-                    containsCurrentProfile && currentQualityProfileId != null
-                    ? currentQualityProfileId
-                    : (qualityProfiles.isNotEmpty
-                          ? (qualityProfiles.first.id ?? 1)
-                          : 1);
+                // final bool containsCurrentProfile = qualityProfiles.any(
+                //   (p) => p.id == currentQualityProfileId,
+                // );
+                // final int selectedValue =
+                //     containsCurrentProfile && currentQualityProfileId != null
+                //     ? currentQualityProfileId
+                //     : (qualityProfiles.isNotEmpty
+                //           ? (qualityProfiles.first.id ?? 1)
+                //           : 1);
 
                 return Container(
                   decoration: BoxDecoration(
@@ -84,7 +84,7 @@ class QualityProfileDropdown extends ConsumerWidget {
                     ),
                   ),
                   child: DropdownButtonFormField<int>(
-                    value: selectedValue,
+                    value: currentQualityProfileId ?? 1,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),

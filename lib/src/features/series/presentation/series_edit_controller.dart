@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
 
 class SeriesEditControllerNotifier
-    extends FamilyAsyncNotifier<SeriesEditState, int> {
+    extends AutoDisposeFamilyAsyncNotifier<SeriesEditState, int> {
   @override
   Future<SeriesEditState> build(int seriesId) async {
     var serService = ref.watch(seriesServiceProvider);
@@ -24,6 +24,7 @@ class SeriesEditControllerNotifier
       SeriesEditState(
         series: state.value!.series,
         hasChanges: true,
+        qualityProfiles: state.value!.qualityProfiles,
       ).copyWith(series: series),
     );
   }
@@ -34,10 +35,17 @@ class SeriesEditControllerNotifier
     state = const AsyncLoading();
     try {
       await Future.delayed(const Duration(milliseconds: 500));
-      await ref.read(seriesServiceProvider).updateSeries(state.value!.series!);
+      var updatedSeries = await ref
+          .read(seriesServiceProvider)
+          .updateSeries(state.value!.series!);
       state = AsyncData(
-        SeriesEditState(series: state.value!.series, hasChanges: false),
+        SeriesEditState(
+          series: updatedSeries,
+          hasChanges: false,
+          qualityProfiles: state.value!.qualityProfiles,
+        ),
       );
+
       ref.invalidate(seriesHomeControllerProvider);
     } catch (e) {
       state = AsyncError(e, StackTrace.current);
@@ -47,7 +55,7 @@ class SeriesEditControllerNotifier
 }
 
 final seriesEditControllerProvider =
-    AsyncNotifierProviderFamily<
+    AutoDisposeAsyncNotifierProviderFamily<
       SeriesEditControllerNotifier,
       SeriesEditState,
       int

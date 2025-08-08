@@ -68,7 +68,7 @@ class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
                   SeriesHeader(posterUrl: posterUrl, series: series),
                   SeriesActionCard(series: series),
                   SeriesOverviewCard(overview: series.overview),
-                  SeriesSeasonsCard(seasons: series.seasons?.toList()),
+                  SeriesSeasonsCard(series: series),
                   SeriesInfoCard(series: series),
                   MediaInfoCard(series: series),
                 ];

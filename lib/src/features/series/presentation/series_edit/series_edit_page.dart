@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:client/src/features/series/presentation/series_edit_controller.dart';
-import 'package:client/src/features/series/presentation/widgets/edit_page/series_monitoring_options.dart';
-import 'package:client/src/features/series/presentation/widgets/edit_page/series_quality_dropdown.dart';
-import 'package:client/src/features/series/presentation/widgets/edit_page/series_type_dropdown.dart';
+import 'package:client/src/features/series/presentation/series_edit/series_edit_controller.dart';
+import 'package:client/src/features/series/presentation/series_edit/widgets/series_monitoring_options.dart';
+import 'package:client/src/features/series/presentation/series_edit/widgets/series_quality_dropdown.dart';
+import 'package:client/src/features/series/presentation/series_edit/widgets/series_type_dropdown.dart';
 import 'package:client/src/shared/error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

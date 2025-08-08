@@ -1,5 +1,5 @@
 import 'package:client/src/features/series/application/series_service.dart';
-import 'package:client/src/features/series/presentation/series_edit_page.dart';
+import 'package:client/src/features/series/presentation/series_edit/series_edit_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';

@@ -1,14 +1,14 @@
-import 'package:client/src/features/series/presentation/series_details_controller.dart';
-import 'package:client/src/features/series/presentation/widgets/details_page/series_actions.dart';
+import 'package:client/src/features/series/presentation/series_detail/series_details_controller.dart';
+import 'package:client/src/features/series/presentation/series_detail/widgets/series_actions.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'widgets/details_page/media_info_card.dart';
-import 'widgets/details_page/series_info_card.dart';
-import 'widgets/details_page/series_overview_card.dart';
-import 'package:client/src/features/series/presentation/widgets/details_page/series_header.dart';
+import 'widgets/media_info_card.dart';
+import 'widgets/series_info_card.dart';
+import 'widgets/series_overview_card.dart';
+import 'package:client/src/features/series/presentation/series_detail/widgets/series_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
-import 'widgets/details_page/series_seasons_card.dart';
+import 'widgets/series_seasons_card.dart';
 
 class SeriesDetailsPage extends ConsumerStatefulWidget {
   final SeriesResource series;

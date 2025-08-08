@@ -1,7 +1,7 @@
 import 'package:client/src/core/application/enabled_provider.dart';
 import 'package:client/src/features/home/domain/home_page_items.dart';
 import 'package:client/src/features/home/presentation/home_page.dart';
-import 'package:client/src/features/series/presentation/series_home.dart';
+import 'package:client/src/features/series/presentation/series_home/series_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';

@@ -1,6 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:client/src/features/series/presentation/series_details_page.dart';
+import 'package:client/src/features/series/presentation/series_detail/series_details_page.dart';
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';

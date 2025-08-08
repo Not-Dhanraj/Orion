@@ -44,7 +44,8 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
 
     return seasonPageState.when(
       loading: () => _buildLoadingScaffold(),
-      error: (error, stackTrace) => _buildErrorScaffold(error.toString()),
+      error: (error, stackTrace) =>
+          CustomErrorPage(errorMessage: error.toString()),
       data: (state) {
         // Setup tab controller when data is available
         if (state.seasons.isEmpty) {
@@ -555,45 +556,6 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
         title: const Text('Seasons'),
       ),
       body: const Center(child: CircularProgressIndicator()),
-    );
-  }
-
-  Widget _buildErrorScaffold(String errorMessage) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: const Text('Seasons'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.error_outline, size: 48),
-            const SizedBox(height: 16),
-            Text(
-              'Error loading seasons',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              errorMessage,
-              style: Theme.of(context).textTheme.bodyMedium,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                // Invalidate the provider to force a rebuild
-                ref.invalidate(seasonPageControllerProvider(widget.series));
-              },
-              child: const Text('Retry'),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

@@ -1,4 +1,3 @@
-import 'package:client/src/exceptions/repository_exception.dart';
 import 'package:client/src/features/series/application/season_service.dart';
 import 'package:client/src/features/series/domain/season_page_state.dart';
 import 'package:client/src/features/series/domain/season_with_episodes.dart';
@@ -7,33 +6,22 @@ import 'package:sonarr/sonarr.dart';
 
 class SeasonPageController
     extends AutoDisposeFamilyAsyncNotifier<SeasonPageState, SeriesResource> {
-  late final SeasonService _seasonService;
-
   @override
   Future<SeasonPageState> build(SeriesResource series) async {
-    _seasonService = ref.watch(seasonServiceProvider);
+    ref.watch(seasonServiceProvider);
 
-    try {
-      final episodesBySeason = await _fetchEpisodesBySeason(series.id!);
-      final seasons = _buildSeasonsList(series, episodesBySeason);
+    final episodesBySeason = await _fetchEpisodesBySeason(series.id!);
+    final seasons = _buildSeasonsList(series, episodesBySeason);
 
-      return SeasonPageState(seriesResource: series, seasons: seasons);
-    } catch (e, stackTrace) {
-      String errorMessage = 'Failed to load seasons and episodes';
-      if (e is RepositoryException) {
-        errorMessage = e.message;
-      } else {
-        errorMessage = 'An unexpected error occurred: $e';
-      }
-
-      throw AsyncError(errorMessage, stackTrace);
-    }
+    return SeasonPageState(seriesResource: series, seasons: seasons);
   }
 
   Future<Map<int, List<EpisodeResource>>> _fetchEpisodesBySeason(
     int seriesId,
   ) async {
-    final allEpisodes = await _seasonService.getEpisodes(
+    final service = ref.read(seasonServiceProvider);
+
+    final allEpisodes = await service.getEpisodes(
       seriesId: seriesId,
       includeEpisodeFile: true,
     );
@@ -83,30 +71,25 @@ class SeasonPageController
     }
   }
 
-  Future<List<ReleaseResource>> loadReleases() async {
+  Future<List<ReleaseResource>> loadReleases({
+    int? seriesId,
+    int? seasonNumber,
+    int? episodeId,
+  }) async {
     if (state.value == null || state.value!.selectedSeason == null) return [];
 
     try {
-      state = AsyncLoading();
-
-      final currentState = state.value!;
-      final selectedSeason = currentState.selectedSeason!;
-
-      final releases = await _seasonService.getReleases(
-        seriesId: currentState.seriesResource.id,
-        seasonNumber: selectedSeason.seasonNumber,
-      );
+      final releases = await ref
+          .read(seasonServiceProvider)
+          .getReleases(
+            seriesId: seriesId,
+            seasonNumber: seasonNumber,
+            episodeId: episodeId,
+          );
 
       return releases;
     } catch (e, stackTrace) {
-      String errorMessage = 'Failed to load releases';
-      if (e is RepositoryException) {
-        errorMessage = e.message;
-      } else {
-        errorMessage = 'An unexpected error occurred: $e';
-      }
-
-      state = AsyncError(errorMessage, stackTrace);
+      state = AsyncError(e, stackTrace);
       return [];
     }
   }
@@ -114,15 +97,18 @@ class SeasonPageController
   Future<void> toggleSeasonMonitoring(int seasonNumber, bool monitored) async {
     if (state.value == null) return;
 
-    try {
-      state = AsyncLoading();
-      final currentState = state.value!;
+    final currentState = state.requireValue;
 
-      final updatedSeries = await _seasonService.updateSeasonMonitoring(
-        seriesId: currentState.seriesResource.id!,
-        seasonNumber: seasonNumber,
-        monitored: monitored,
-      );
+    try {
+      state = const AsyncLoading();
+
+      final updatedSeries = await ref
+          .read(seasonServiceProvider)
+          .updateSeasonMonitoring(
+            seriesId: currentState.seriesResource.id!,
+            seasonNumber: seasonNumber,
+            monitored: monitored,
+          );
 
       final episodesBySeason = await _fetchEpisodesBySeason(
         currentState.seriesResource.id!,
@@ -152,14 +138,7 @@ class SeasonPageController
         ),
       );
     } catch (e, stackTrace) {
-      String errorMessage = 'Failed to update season monitoring status';
-      if (e is RepositoryException) {
-        errorMessage = e.message;
-      } else {
-        errorMessage = 'An unexpected error occurred: $e';
-      }
-
-      state = AsyncError(errorMessage, stackTrace);
+      state = AsyncError(e, stackTrace);
     }
   }
 
@@ -169,25 +148,23 @@ class SeasonPageController
   ) async {
     if (state.value == null || state.value!.selectedSeason == null) return;
 
+    final currentState = state.requireValue;
+
     try {
-      state = AsyncLoading();
+      state = const AsyncLoading();
 
-      final currentState = state.value!;
-      final selectedSeason = currentState.selectedSeason!;
-
-      await _seasonService.monitorEpisodes(
-        episodeIds: episodeIds,
-        monitored: monitored,
-      );
+      await ref
+          .read(seasonServiceProvider)
+          .monitorEpisodes(episodeIds: episodeIds, monitored: monitored);
 
       final episodesBySeason = await _fetchEpisodesBySeason(
         currentState.seriesResource.id!,
       );
       final selectedSeasonEpisodes =
-          episodesBySeason[selectedSeason.seasonNumber] ?? [];
+          episodesBySeason[currentState.selectedSeason!.seasonNumber] ?? [];
 
       final updatedSeasons = currentState.seasons.map((season) {
-        if (season.seasonNumber == selectedSeason.seasonNumber) {
+        if (season.seasonNumber == currentState.selectedSeason!.seasonNumber) {
           return season.copyWith(episodes: selectedSeasonEpisodes);
         }
         return season;
@@ -195,36 +172,30 @@ class SeasonPageController
 
       state = AsyncData(currentState.copyWith(seasons: updatedSeasons));
     } catch (e, stackTrace) {
-      String errorMessage = 'Failed to update episode monitoring status';
-      if (e is RepositoryException) {
-        errorMessage = e.message;
-      } else {
-        errorMessage = 'An unexpected error occurred: $e';
-      }
-
-      state = AsyncError(errorMessage, stackTrace);
+      state = AsyncError(e, stackTrace);
     }
   }
 
   Future<void> deleteEpisodeFile(int episodeId) async {
     if (state.value == null || state.value!.selectedSeason == null) return;
 
+    final currentState = state.requireValue;
+
     try {
-      state = AsyncLoading();
+      state = const AsyncLoading();
 
-      final currentState = state.value!;
-      final selectedSeason = currentState.selectedSeason!;
-
-      await _seasonService.deleteEpisodeFile(episodeId: episodeId);
+      await ref
+          .read(seasonServiceProvider)
+          .deleteEpisodeFile(episodeId: episodeId);
 
       final episodesBySeason = await _fetchEpisodesBySeason(
         currentState.seriesResource.id!,
       );
       final selectedSeasonEpisodes =
-          episodesBySeason[selectedSeason.seasonNumber] ?? [];
+          episodesBySeason[currentState.selectedSeason!.seasonNumber] ?? [];
 
       final updatedSeasons = currentState.seasons.map((season) {
-        if (season.seasonNumber == selectedSeason.seasonNumber) {
+        if (season.seasonNumber == currentState.selectedSeason!.seasonNumber) {
           return season.copyWith(episodes: selectedSeasonEpisodes);
         }
         return season;
@@ -232,14 +203,7 @@ class SeasonPageController
 
       state = AsyncData(currentState.copyWith(seasons: updatedSeasons));
     } catch (e, stackTrace) {
-      String errorMessage = 'Failed to delete episode file';
-      if (e is RepositoryException) {
-        errorMessage = e.message;
-      } else {
-        errorMessage = 'An unexpected error occurred: $e';
-      }
-
-      state = AsyncError(errorMessage, stackTrace);
+      state = AsyncError(e, stackTrace);
     }
   }
 
@@ -249,21 +213,20 @@ class SeasonPageController
   }) async {
     if (state.value == null) return;
 
+    final currentState = state.requireValue;
+
     try {
       state = const AsyncLoading();
 
-      await _seasonService.downloadRelease(indexerId: indexerId, guid: guid);
+      await ref
+          .read(seasonServiceProvider)
+          .downloadRelease(indexerId: indexerId, guid: guid);
 
-      await loadReleases();
-    } catch (e, stackTrace) {
-      String errorMessage = 'Failed to download release';
-      if (e is RepositoryException) {
-        errorMessage = e.message;
-      } else {
-        errorMessage = 'An unexpected error occurred: $e';
+      if (state.isLoading) {
+        state = AsyncData(currentState);
       }
-
-      state = AsyncError(errorMessage, stackTrace);
+    } catch (e, stackTrace) {
+      state = AsyncError(e, stackTrace);
     }
   }
 }
@@ -273,6 +236,4 @@ final seasonPageControllerProvider =
       SeasonPageController,
       SeasonPageState,
       SeriesResource
-    >(() {
-      return SeasonPageController();
-    });
+    >(SeasonPageController.new);

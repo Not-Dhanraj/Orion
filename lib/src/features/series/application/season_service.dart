@@ -65,7 +65,6 @@ class SeasonService {
     }
   }
 
-  /// Get releases for a season or episode
   Future<List<ReleaseResource>> getReleases({
     int? seriesId,
     int? episodeId,

@@ -1,4 +1,5 @@
 import 'package:client/src/features/series/presentation/season/season_page_controller.dart';
+import 'package:client/src/features/series/presentation/season/widgets/series_download_widget.dart';
 import 'package:client/src/shared/page/custom_error_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -167,30 +168,80 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
                   );
                 },
               ),
-              IconButton(
-                icon: const Icon(Icons.search),
-                tooltip: 'Search for releases',
-                onPressed: () {
-                  ref
-                      .read(
-                        seasonPageControllerProvider(widget.series).notifier,
-                      )
-                      .loadReleases();
-
-                  // Show releases dialog TODO
-                  // if (state.releases.isNotEmpty) {
-                  //   _showReleasesDialog(
-                  //     context,
-                  //     state.releases,
-                  //     selectedSeason.seasonNumber,
-                  //   );
-                  // } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        'No releases found for ${selectedSeason.seasonNumber == 0 ? 'Specials' : 'Season ${selectedSeason.seasonNumber}'}',
-                      ),
-                    ),
+              Builder(
+                builder: (context) {
+                  bool hasFile = true;
+                  for (var episode in selectedSeason.episodes) {
+                    if (!(episode.hasFile ?? false)) {
+                      hasFile = false;
+                      break;
+                    }
+                  }
+                  return IconButton(
+                    icon: !hasFile
+                        ? const Icon(Icons.search)
+                        : const Icon(Icons.folder),
+                    tooltip: 'Search for releases',
+                    onPressed: () async {
+                      if (!hasFile) {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (_) {
+                            return AlertDialog(
+                              content: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SizedBox(child: CircularProgressIndicator()),
+                                  const SizedBox(height: 12),
+                                  const Text(
+                                    'Searching for releases may take some time.',
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                        var result = await ref
+                            .read(
+                              seasonPageControllerProvider(
+                                widget.series,
+                              ).notifier,
+                            )
+                            .loadReleases(
+                              seriesId: widget.series.id,
+                              seasonNumber: selectedSeason.seasonNumber,
+                            );
+                        result = result
+                            .where((release) => release.fullSeason == true)
+                            .toList();
+                        Navigator.of(context).pop(); // Close dialog
+                        if (result.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('No releases found ')),
+                          );
+                        } else {
+                          if (context.mounted) {
+                            _showReleasesDialog(
+                              context,
+                              result,
+                              selectedSeason.seasonNumber,
+                              widget.series,
+                            );
+                          }
+                        }
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'All episodes in season ${selectedSeason.seasonNumber} already have files.',
+                            ),
+                          ),
+                        );
+                      }
+                    },
                   );
                 },
               ),
@@ -205,10 +256,288 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
               // Wait a bit to let the UI refresh
               await Future.delayed(const Duration(milliseconds: 100));
             },
-            child: _buildEpisodesList(
-              context,
-              selectedSeason.episodes,
-              selectedSeason.seasonNumber,
+            child: Builder(
+              builder: (_) {
+                final episodes = selectedSeason.episodes;
+                final seasonNumber = selectedSeason.seasonNumber;
+                final theme = Theme.of(context);
+
+                if (episodes.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.video_library, size: 48),
+                        const SizedBox(height: 16),
+                        Text(
+                          'No episodes found',
+                          style: theme.textTheme.titleLarge,
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                return ListView.builder(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: episodes.length,
+                  itemBuilder: (context, index) {
+                    final episode = episodes[index];
+                    final hasFile = episode.hasFile ?? false;
+
+                    return Card(
+                      margin: const EdgeInsets.only(bottom: 12),
+                      elevation: 3,
+                      shadowColor: theme.colorScheme.shadow.withCustomOpacity(
+                        0.2,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(12),
+                        onTap: () => _showEpisodeDetails(context, episode),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      'E${episode.episodeNumber}: ${episode.title ?? 'Unknown'}',
+                                      style: theme.textTheme.titleMedium
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Builder(
+                                    builder: (_) {
+                                      final hasFile = episode.hasFile ?? false;
+                                      final monitored =
+                                          episode.monitored ?? false;
+                                      final theme = Theme.of(context);
+
+                                      if (hasFile) {
+                                        return Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 4,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.green,
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
+                                          ),
+                                          child: const Text(
+                                            'Downloaded',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        );
+                                      } else if (!monitored) {
+                                        return Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 4,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey,
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
+                                          ),
+                                          child: const Text(
+                                            'Not Monitored',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        return Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 4,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: theme.colorScheme.primary,
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
+                                          ),
+                                          child: const Text(
+                                            'Missing',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                              if (episode.airDate != null) ...[
+                                const SizedBox(height: 8),
+                                Text(
+                                  'Air Date: ${episode.airDate}',
+                                  style: theme.textTheme.bodyMedium,
+                                ),
+                              ],
+                              if (episode.overview != null &&
+                                  episode.overview!.isNotEmpty) ...[
+                                const SizedBox(height: 8),
+                                Text(
+                                  episode.overview!,
+                                  style: theme.textTheme.bodyMedium,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                              const SizedBox(height: 12),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  // Monitor/Unmonitor Button
+                                  IconButton(
+                                    icon: Icon(
+                                      episode.monitored == true
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
+                                      color: episode.monitored == true
+                                          ? theme.colorScheme.primary
+                                          : theme.colorScheme.onSurface
+                                                .withCustomOpacity(0.5),
+                                    ),
+                                    onPressed: () {
+                                      ref
+                                          .read(
+                                            seasonPageControllerProvider(
+                                              widget.series,
+                                            ).notifier,
+                                          )
+                                          .toggleEpisodesMonitoring([
+                                            episode.id!,
+                                          ], !(episode.monitored ?? false));
+                                    },
+                                  ),
+                                  // Download/Search Button
+                                  IconButton(
+                                    icon: Icon(
+                                      hasFile
+                                          ? Icons.download_done
+                                          : Icons.download,
+                                      color: hasFile
+                                          ? Colors.green
+                                          : theme.colorScheme.primary,
+                                    ),
+                                    onPressed: () async {
+                                      if (!hasFile) {
+                                        showDialog(
+                                          context: context,
+                                          barrierDismissible: false,
+                                          builder: (_) {
+                                            return AlertDialog(
+                                              content: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  SizedBox(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  ),
+                                                  const SizedBox(height: 12),
+                                                  const Text(
+                                                    'Searching for releases may take some time.',
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        );
+                                        var result = await ref
+                                            .read(
+                                              seasonPageControllerProvider(
+                                                widget.series,
+                                              ).notifier,
+                                            )
+                                            .loadReleases(
+                                              episodeId: episode.id,
+                                            );
+                                        result = result
+                                            .where(
+                                              (release) =>
+                                                  release.fullSeason == false,
+                                            )
+                                            .toList();
+                                        Navigator.of(
+                                          context,
+                                        ).pop(); // Close dialog
+                                        if (result.isEmpty) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                'No releases found for E${episode.episodeNumber}',
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          if (context.mounted) {
+                                            _showReleasesDialog(
+                                              context,
+                                              result,
+                                              seasonNumber,
+                                              widget.series,
+                                            );
+                                          }
+                                        }
+                                      }
+                                    },
+                                  ),
+                                  // Delete File Button (if file exists)
+                                  if (hasFile)
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.delete,
+                                        color: theme.colorScheme.error,
+                                      ),
+                                      onPressed: () {
+                                        _confirmDeleteFile(
+                                          context,
+                                          episode,
+                                          seasonNumber,
+                                        );
+                                      },
+                                    ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
           ),
         );
@@ -265,211 +594,6 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildEpisodesList(
-    BuildContext context,
-    List<EpisodeResource> episodes,
-    int seasonNumber,
-  ) {
-    final theme = Theme.of(context);
-
-    if (episodes.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.video_library, size: 48),
-            const SizedBox(height: 16),
-            Text('No episodes found', style: theme.textTheme.titleLarge),
-          ],
-        ),
-      );
-    }
-
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: episodes.length,
-      itemBuilder: (context, index) {
-        final episode = episodes[index];
-        final hasFile = episode.hasFile ?? false;
-
-        return Card(
-          margin: const EdgeInsets.only(bottom: 12),
-          elevation: 3,
-          shadowColor: theme.colorScheme.shadow.withCustomOpacity(0.2),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: InkWell(
-            borderRadius: BorderRadius.circular(12),
-            onTap: () => _showEpisodeDetails(context, episode),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'E${episode.episodeNumber}: ${episode.title ?? 'Unknown'}',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Builder(
-                        builder: (context) {
-                          final hasFile = episode.hasFile ?? false;
-                          final monitored = episode.monitored ?? false;
-                          final theme = Theme.of(context);
-
-                          if (hasFile) {
-                            return Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: const Text(
-                                'Downloaded',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            );
-                          } else if (!monitored) {
-                            return Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: const Text(
-                                'Not Monitored',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            );
-                          } else {
-                            return Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: theme.colorScheme.primary,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: const Text(
-                                'Missing',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                  if (episode.airDate != null) ...[
-                    const SizedBox(height: 8),
-                    Text(
-                      'Air Date: ${episode.airDate}',
-                      style: theme.textTheme.bodyMedium,
-                    ),
-                  ],
-                  if (episode.overview != null &&
-                      episode.overview!.isNotEmpty) ...[
-                    const SizedBox(height: 8),
-                    Text(
-                      episode.overview!,
-                      style: theme.textTheme.bodyMedium,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                  const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      // Monitor/Unmonitor Button
-                      IconButton(
-                        icon: Icon(
-                          episode.monitored == true
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: episode.monitored == true
-                              ? theme.colorScheme.primary
-                              : theme.colorScheme.onSurface.withCustomOpacity(
-                                  0.5,
-                                ),
-                        ),
-                        onPressed: () {
-                          ref
-                              .read(
-                                seasonPageControllerProvider(
-                                  widget.series,
-                                ).notifier,
-                              )
-                              .toggleEpisodesMonitoring([
-                                episode.id!,
-                              ], !(episode.monitored ?? false));
-                        },
-                      ),
-                      // Download/Search Button
-                      IconButton(
-                        icon: Icon(
-                          hasFile ? Icons.download_done : Icons.download,
-                          color: hasFile
-                              ? Colors.green
-                              : theme.colorScheme.primary,
-                        ),
-                        onPressed: () {
-                          if (!hasFile) {
-                            //TODO
-                            // _searchForEpisode(context, episode, seasonNumber);
-                          }
-                        },
-                      ),
-                      // Delete File Button (if file exists)
-                      if (hasFile)
-                        IconButton(
-                          icon: Icon(
-                            Icons.delete,
-                            color: theme.colorScheme.error,
-                          ),
-                          onPressed: () {
-                            _confirmDeleteFile(context, episode, seasonNumber);
-                          },
-                        ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 
@@ -566,6 +690,22 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void _showReleasesDialog(
+    BuildContext context,
+    List<ReleaseResource> releases,
+    int seasonNumber,
+    final SeriesResource series,
+  ) {
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) {
+          return SeriesDownloadWidget(releases, seasonNumber, series: series);
+        },
       ),
     );
   }

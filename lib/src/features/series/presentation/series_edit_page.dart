@@ -26,90 +26,94 @@ class SeriesEditPage extends ConsumerWidget {
         orElse: () => true,
       ),
       child: Scaffold(
-        body: seriesEditController.when(
-          data: (state) {
-            if (state.isLoading) {
-              // Show loading dialog if not already shown
-              Future.microtask(() {
-                if (context.mounted) {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (context) => const AlertDialog(
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          CircularProgressIndicator(),
-                          SizedBox(height: 10),
-                          Text("Saving changes..."),
-                        ],
-                      ),
-                    ),
-                  );
-                }
-              });
-            }
-            return CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  titleSpacing: 0,
-                  title: Text("Edit Series"),
-                  floating: true,
-                  snap: true,
-                  leading: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                  actions: [
-                    AnimatedOpacity(
-                      opacity: state.hasChanges ? 1.0 : 0.6,
-                      duration: const Duration(milliseconds: 200),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: ElevatedButton.icon(
-                          icon: Icon(
-                            Icons.save_outlined,
-                            color: theme.colorScheme.onPrimary,
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              titleSpacing: 0,
+              title: const Text("Edit Series"),
+              floating: true,
+              snap: true,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              actions: [
+                seriesEditController.maybeWhen(
+                  data: (state) => AnimatedOpacity(
+                    opacity: state.hasChanges ? 1.0 : 0.6,
+                    duration: const Duration(milliseconds: 200),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: ElevatedButton.icon(
+                        icon: Icon(
+                          Icons.save_outlined,
+                          color: theme.colorScheme.onPrimary,
+                        ),
+                        label: const Text('SAVE'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: state.hasChanges
+                              ? theme.colorScheme.primary
+                              : theme.colorScheme.primary.withAlpha(180),
+                          foregroundColor: theme.colorScheme.onPrimary,
+                          elevation: 2,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
                           ),
-                          label: const Text('SAVE'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: state.hasChanges
-                                ? theme.colorScheme.primary
-                                : theme.colorScheme.primary.withAlpha(180),
-                            foregroundColor: theme.colorScheme.onPrimary,
-                            elevation: 2,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                          ),
-                          onPressed: state.hasChanges
-                              ? () async {
-                                  await ref
-                                      .read(
-                                        seriesEditControllerProvider(
-                                          seriesId,
-                                        ).notifier,
-                                      )
-                                      .saveChanges();
-                                  if (context.mounted) {
-                                    // Pop the dialog first if it's showing
-                                    if (Navigator.of(context).canPop()) {
-                                      Navigator.of(context).pop();
-                                    }
-                                    // Then pop the page
+                        ),
+                        onPressed: state.hasChanges
+                            ? () async {
+                                await ref
+                                    .read(
+                                      seriesEditControllerProvider(
+                                        seriesId,
+                                      ).notifier,
+                                    )
+                                    .saveChanges();
+                                if (context.mounted) {
+                                  // Pop the dialog first if it's showing
+                                  if (Navigator.of(context).canPop()) {
                                     Navigator.of(context).pop();
                                   }
+                                  // Then pop the page
+                                  Navigator.of(context).pop();
                                 }
-                              : null,
-                        ),
+                              }
+                            : null,
                       ),
                     ),
-                  ],
+                  ),
+                  orElse: () => const SizedBox.shrink(),
                 ),
-                SliverPadding(
-                  padding: EdgeInsets.all(12),
+              ],
+            ),
+            seriesEditController.when(
+              data: (state) {
+                if (state.isLoading) {
+                  // Show loading dialog if not already shown
+                  Future.microtask(() {
+                    if (context.mounted) {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (context) => const AlertDialog(
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CircularProgressIndicator(),
+                              SizedBox(height: 10),
+                              Text("Saving changes..."),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                  });
+                }
+
+                return SliverPadding(
+                  padding: const EdgeInsets.all(12),
                   sliver: SliverMasonryGrid.extent(
                     maxCrossAxisExtent: 600,
                     mainAxisSpacing: 12.0,
@@ -221,13 +225,16 @@ class SeriesEditPage extends ConsumerWidget {
                     },
                     childCount: 4,
                   ),
-                ),
-              ],
-            );
-          },
-          error: (error, stackTrace) =>
-              ErrorWidgetCe(errorMessage: error.toString()),
-          loading: () => const Center(child: CircularProgressIndicator()),
+                );
+              },
+              loading: () => const SliverFillRemaining(
+                child: Center(child: CircularProgressIndicator()),
+              ),
+              error: (error, stackTrace) => SliverFillRemaining(
+                child: ErrorWidgetCe(errorMessage: error.toString()),
+              ),
+            ),
+          ],
         ),
       ),
     );

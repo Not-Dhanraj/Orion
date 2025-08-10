@@ -143,6 +143,20 @@ class SeriesService {
       );
     }
   }
+
+  Future<List<RootFolderResource>> fetchRootFolders() async {
+    try {
+      final seriesRepository = _ref.read(seriesRepositoryProvider);
+      final rootFolders = await seriesRepository.fetchRootFolders();
+      return rootFolders?.toList() ?? [];
+    } catch (e, stackTrace) {
+      throw RepositoryException(
+        'Failed to fetch root folders',
+        error: e,
+        stackTrace: stackTrace,
+      );
+    }
+  }
 }
 
 // Provider for the SeriesService

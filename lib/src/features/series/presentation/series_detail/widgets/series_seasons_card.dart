@@ -19,6 +19,7 @@ class SeriesSeasonsCard extends StatelessWidget {
       shadowColor: theme.colorScheme.shadow.withCustomOpacity(0.2),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: OpenContainer(
+        closedElevation: 0,
         closedColor: Colors.transparent,
         openColor: Colors.transparent,
         transitionType: ContainerTransitionType.fadeThrough,

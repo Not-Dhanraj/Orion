@@ -71,10 +71,11 @@ class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
                   SeriesSeasonsCard(series: series),
                   SeriesInfoCard(series: series),
                   MediaInfoCard(series: series),
+                  const SizedBox(height: 16),
                 ];
                 return widgets[index];
               },
-              childCount: 6,
+              childCount: 7,
             ),
           ),
         ],

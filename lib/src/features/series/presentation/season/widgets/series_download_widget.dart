@@ -2,6 +2,8 @@ import 'package:client/src/features/series/presentation/season/season_page_contr
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
+import 'package:built_collection/built_collection.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class SeriesDownloadWidget extends ConsumerStatefulWidget {
   final SeriesResource series;
@@ -21,36 +23,13 @@ class SeriesDownloadWidget extends ConsumerStatefulWidget {
 }
 
 class _SeriesDownloadWidgetState extends ConsumerState<SeriesDownloadWidget> {
-  String? filterQuery;
-  String? selectedQuality;
-  String? selectedProtocol;
-  bool showRejected = false;
+  bool showRejected = true;
 
   @override
   Widget build(BuildContext context) {
     final releases = widget.releases;
-    final seasonNumber = widget.seasonNumber;
-
-    final qualities = releases
-        .map((r) => r.quality?.quality?.name)
-        .where((q) => q != null)
-        .toSet()
-        .toList();
 
     var filteredReleases = releases.where((release) {
-      if (filterQuery != null && filterQuery!.isNotEmpty) {
-        final title = release.title?.toLowerCase() ?? '';
-        if (!title.contains(filterQuery!.toLowerCase())) {
-          return false;
-        }
-      }
-
-      if (selectedQuality != null) {
-        if (release.quality?.quality?.name != selectedQuality) {
-          return false;
-        }
-      }
-
       if (!showRejected && (release.rejections?.isNotEmpty ?? false)) {
         return false;
       }
@@ -74,94 +53,25 @@ class _SeriesDownloadWidgetState extends ConsumerState<SeriesDownloadWidget> {
     });
 
     return AlertDialog(
-      title: Text('Releases for Season $seasonNumber'),
-      content: Container(
+      title: Text('Releases for ${widget.series.title}'),
+      content: SizedBox(
         width: double.maxFinite,
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * 0.7,
-        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Search releases...',
-                        isDense: true,
-                        prefixIcon: const Icon(Icons.search),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          filterQuery = value;
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  if (qualities.isNotEmpty) ...[
-                    DropdownButton<String?>(
-                      hint: const Text('Quality'),
-                      value: selectedQuality,
-                      items: [
-                        const DropdownMenuItem<String?>(
-                          value: null,
-                          child: Text('All Qualities'),
-                        ),
-                        ...qualities.map(
-                          (q) => DropdownMenuItem<String?>(
-                            value: q,
-                            child: Text(q!),
-                          ),
-                        ),
-                      ],
-                      onChanged: (value) {
-                        setState(() {
-                          selectedQuality = value;
-                        });
-                      },
-                    ),
-                    const SizedBox(width: 8),
-                  ],
-
-                  FilterChip(
-                    label: const Text('Show Rejected'),
-                    selected: showRejected,
-                    onSelected: (selected) {
-                      print("Show rejected changed to: $selected");
-                      setState(() {
-                        showRejected = selected;
-                      });
-                      print(
-                        "State updated, showRejected is now: $showRejected",
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 8),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Text(
-                '${filteredReleases.length} releases found',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
+            Row(
+              children: [
+                FilterChip(
+                  label: Text('Show Rejected: ${filteredReleases.length}'),
+                  selected: showRejected,
+                  onSelected: (selected) {
+                    setState(() {
+                      showRejected = selected;
+                    });
+                  },
+                ),
+              ],
             ),
 
             Expanded(
@@ -192,15 +102,17 @@ class _SeriesDownloadWidgetState extends ConsumerState<SeriesDownloadWidget> {
                         }
 
                         return Card(
-                          elevation: 2,
-                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          elevation: 1,
+                          margin: const EdgeInsets.symmetric(
+                            vertical: 2,
+                            horizontal: 4,
+                          ),
                           color: hasRejections
-                              ? Theme.of(
-                                  context,
-                                ).colorScheme.errorContainer.withOpacity(0.2)
+                              ? Theme.of(context).colorScheme.errorContainer
+                                    .withCustomOpacity(0.2)
                               : null,
                           child: Padding(
-                            padding: const EdgeInsets.all(12.0),
+                            padding: const EdgeInsets.all(8.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -220,7 +132,16 @@ class _SeriesDownloadWidgetState extends ConsumerState<SeriesDownloadWidget> {
                                         ),
                                       ),
                                     ),
-                                    if (!hasRejections)
+                                    if (!hasRejections) ...[
+                                      if (release.infoUrl != null &&
+                                          release.infoUrl!.isNotEmpty)
+                                        IconButton(
+                                          icon: const Icon(Icons.info_outline),
+                                          tooltip: 'View release info',
+                                          onPressed: () {
+                                            //TODO release.infoUrl
+                                          },
+                                        ),
                                       IconButton(
                                         icon: const Icon(Icons.download),
                                         tooltip: 'Download this release',
@@ -245,6 +166,7 @@ class _SeriesDownloadWidgetState extends ConsumerState<SeriesDownloadWidget> {
                                           );
                                         },
                                       ),
+                                    ],
                                   ],
                                 ),
 
@@ -265,6 +187,12 @@ class _SeriesDownloadWidgetState extends ConsumerState<SeriesDownloadWidget> {
                                     _buildReleaseInfoChip(
                                       Icons.source,
                                       'Source: ${release.indexer ?? 'Unknown'}',
+                                    ),
+
+                                    // Add language information
+                                    _buildReleaseInfoChip(
+                                      Icons.language,
+                                      _formatLanguages(release.languages),
                                     ),
 
                                     if (release.seeders != null)
@@ -363,5 +291,17 @@ class _SeriesDownloadWidgetState extends ConsumerState<SeriesDownloadWidget> {
       return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
     }
     return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(1)} GB';
+  }
+
+  String _formatLanguages(BuiltList<Language>? languages) {
+    if (languages == null || languages.isEmpty) {
+      return 'Unknown';
+    }
+
+    if (languages.length > 1) {
+      return 'Multi-Language';
+    }
+
+    return languages.first.name ?? 'Unknown';
   }
 }

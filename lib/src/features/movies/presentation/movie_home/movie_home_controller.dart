@@ -9,22 +9,9 @@ class MovieHomeController extends AsyncNotifier<List<MovieResource>> {
     await Future.delayed(const Duration(milliseconds: 500));
     return await movieService.fetchAllMovies();
   }
-
-  Future<void> refreshMovies() async {
-    state = const AsyncLoading();
-    try {
-      await Future.delayed(const Duration(milliseconds: 500));
-      final movieService = ref.watch(movieServiceProvider);
-      final moviesList = await movieService.fetchAllMovies();
-      state = AsyncData(moviesList);
-    } catch (e) {
-      state = AsyncError(e, StackTrace.current);
-      // Handle error, e.g., show a message to the user
-    }
-  }
 }
 
 final movieHomeControllerProvider =
     AsyncNotifierProvider<MovieHomeController, List<MovieResource>>(() {
-  return MovieHomeController();
-});
+      return MovieHomeController();
+    });

@@ -1,15 +1,15 @@
-import 'package:client/src/features/series/application/series_service.dart';
-import 'package:client/src/features/series/presentation/series_edit/series_edit_page.dart';
-import 'package:client/src/features/series/presentation/series_home/series_home_controller.dart';
+import 'package:client/src/features/movies/application/movie_service.dart';
+import 'package:client/src/features/movies/presentation/movie_edit/movie_edit_page.dart';
+import 'package:client/src/features/movies/presentation/movie_home/movie_home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:radarr/radarr.dart';
 import 'package:with_opacity/with_opacity.dart';
 
-class SeriesActionCard extends ConsumerWidget {
-  final SeriesResource series;
-  const SeriesActionCard({super.key, required this.series});
+class MovieActionCard extends ConsumerWidget {
+  final MovieResource movie;
+  const MovieActionCard({super.key, required this.movie});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -59,11 +59,9 @@ class SeriesActionCard extends ConsumerWidget {
                   icon: TablerIcons.edit,
                   label: 'Edit',
                   onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (dialogContext) {
-                        return SeriesEditPage(series: series);
-                      },
+                    // TODO: Replace with actual MovieEditPage when implemented
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Edit functionality coming soon')),
                     );
                   },
                 ),
@@ -79,13 +77,13 @@ class SeriesActionCard extends ConsumerWidget {
 
                         return StatefulBuilder(
                           builder: (context, setState) => AlertDialog(
-                            title: const Text('Delete Series'),
+                            title: const Text('Delete Movie'),
                             content: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  'Are you sure you want to delete this series?',
+                                  'Are you sure you want to delete this movie?',
                                 ),
                                 const SizedBox(height: 16),
                                 CheckboxListTile(
@@ -100,9 +98,7 @@ class SeriesActionCard extends ConsumerWidget {
                                   dense: true,
                                 ),
                                 CheckboxListTile(
-                                  title: const Text(
-                                    'Add Import List Exclusion',
-                                  ),
+                                  title: const Text('Add to Exclusion List'),
                                   value: addImportListExclusion,
                                   onChanged: (value) {
                                     setState(() {
@@ -116,9 +112,7 @@ class SeriesActionCard extends ConsumerWidget {
                             ),
                             actions: [
                               TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
+                                onPressed: () => Navigator.of(context).pop(),
                                 child: const Text('Cancel'),
                               ),
                               TextButton(
@@ -140,16 +134,14 @@ class SeriesActionCard extends ConsumerWidget {
                                     );
 
                                     await ref
-                                        .read(seriesServiceProvider)
-                                        .deleteSeries(
-                                          series.id!,
+                                        .read(movieServiceProvider)
+                                        .deleteMovie(
+                                          movie.id!,
                                           deleteFiles,
                                           addImportListExclusion,
                                         );
 
-                                    ref.invalidate(
-                                      seriesHomeControllerProvider,
-                                    );
+                                    ref.invalidate(movieHomeControllerProvider);
                                     await Future.delayed(
                                       Duration(milliseconds: 500),
                                     );
@@ -172,7 +164,7 @@ class SeriesActionCard extends ConsumerWidget {
                                               const SizedBox(width: 12),
                                               Expanded(
                                                 child: Text(
-                                                  'Successfully deleted "${series.title}"',
+                                                  'Successfully deleted "${movie.title}"',
                                                   style: const TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                   ),
@@ -237,6 +229,18 @@ class SeriesActionCard extends ConsumerWidget {
                           ),
                         );
                       },
+                    );
+                  },
+                ),
+                _ActionWidget(
+                  icon: TablerIcons.refresh,
+                  label: 'Refresh',
+                  onPressed: () {
+                    // TODO: Implement refresh movie metadata
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Refresh functionality coming soon'),
+                      ),
                     );
                   },
                 ),

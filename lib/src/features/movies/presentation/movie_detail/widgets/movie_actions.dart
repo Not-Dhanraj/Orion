@@ -59,9 +59,13 @@ class MovieActionCard extends ConsumerWidget {
                   icon: TablerIcons.edit,
                   label: 'Edit',
                   onPressed: () {
-                    // TODO: Replace with actual MovieEditPage when implemented
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Edit functionality coming soon')),
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return MovieEditPage(
+                          movie: movie,
+                        );
+                      },
                     );
                   },
                 ),
@@ -233,8 +237,8 @@ class MovieActionCard extends ConsumerWidget {
                   },
                 ),
                 _ActionWidget(
-                  icon: TablerIcons.refresh,
-                  label: 'Refresh',
+                  icon: TablerIcons.download,
+                  label: 'Releases',
                   onPressed: () {
                     // TODO: Implement refresh movie metadata
                     ScaffoldMessenger.of(context).showSnackBar(

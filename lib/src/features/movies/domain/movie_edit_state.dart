@@ -2,34 +2,30 @@ import 'package:radarr/radarr.dart';
 
 class MovieEditState {
   final MovieResource? movie;
+  final bool hasChanges;
   final bool isLoading;
-  final bool isSaving;
-  final String? errorMessage;
-  final List<QualityProfileResource>? qualityProfiles;
+  final List<QualityProfileResource> qualityProfiles;
   final List<RootFolderResource>? rootFolders;
 
   MovieEditState({
     this.movie,
+    this.hasChanges = false,
     this.isLoading = false,
-    this.isSaving = false,
-    this.errorMessage,
-    this.qualityProfiles,
+    this.qualityProfiles = const [],
     this.rootFolders,
   });
 
   MovieEditState copyWith({
     MovieResource? movie,
+    bool? hasChanges,
     bool? isLoading,
-    bool? isSaving,
-    String? errorMessage,
     List<QualityProfileResource>? qualityProfiles,
     List<RootFolderResource>? rootFolders,
   }) {
     return MovieEditState(
       movie: movie ?? this.movie,
+      hasChanges: hasChanges ?? this.hasChanges,
       isLoading: isLoading ?? this.isLoading,
-      isSaving: isSaving ?? this.isSaving,
-      errorMessage: errorMessage,
       qualityProfiles: qualityProfiles ?? this.qualityProfiles,
       rootFolders: rootFolders ?? this.rootFolders,
     );

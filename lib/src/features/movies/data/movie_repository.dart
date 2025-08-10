@@ -60,6 +60,37 @@ class MovieRepository {
     var response = await _api.getRootFolderApi().apiV3RootfolderGet();
     return response.data;
   }
+
+  Future<BuiltList<ReleaseResource>?> getReleases({required int movieId}) async {
+    var response = await _api.getReleaseApi().apiV3ReleaseGet(movieId: movieId);
+    return response.data;
+  }
+
+  Future<void> downloadRelease({
+    required int indexerId,
+    required String guid,
+  }) async {
+    await _api.getReleaseApi().apiV3ReleasePost(
+      releaseResource: ReleaseResource((r) => r
+        ..indexerId = indexerId
+        ..guid = guid),
+    );
+  }
+  
+  Future<void> deleteMovieFile(int movieId) async {
+    // First we need to get the movie file ID
+    final movieResponse = await _api.getMovieApi().apiV3MovieIdGet(id: movieId);
+    final movie = movieResponse.data;
+    
+    if (movie == null || movie.movieFile == null || movie.movieFile?.id == null) {
+      throw Exception('Movie file not found');
+    }
+    
+    // Then we can delete the file using the moviefile endpoint
+    await _api.getMovieFileApi().apiV3MoviefileIdDelete(
+      id: movie.movieFile!.id!,
+    );
+  }
 }
 
 final movieRepositoryProvider = Provider<MovieRepository>((ref) {

@@ -1,4 +1,5 @@
 import 'package:client/src/features/movies/application/movie_service.dart';
+import 'package:client/src/features/movies/presentation/movie_detail/widgets/movie_download_widget.dart';
 import 'package:client/src/features/movies/presentation/movie_edit/movie_edit_page.dart';
 import 'package:client/src/features/movies/presentation/movie_home/movie_home_controller.dart';
 import 'package:flutter/material.dart';
@@ -62,9 +63,7 @@ class MovieActionCard extends ConsumerWidget {
                     showDialog(
                       context: context,
                       builder: (context) {
-                        return MovieEditPage(
-                          movie: movie,
-                        );
+                        return MovieEditPage(movie: movie);
                       },
                     );
                   },
@@ -237,21 +236,206 @@ class MovieActionCard extends ConsumerWidget {
                   },
                 ),
                 _ActionWidget(
-                  icon: TablerIcons.download,
-                  label: 'Releases',
-                  onPressed: () {
-                    // TODO: Implement refresh movie metadata
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Refresh functionality coming soon'),
-                      ),
-                    );
-                  },
-                ),
+                // Show either "Downloaded" or "Releases" button based on if the movie has a file
+                if (movie.hasFile == true && movie.movieFile != null)
+                  _ActionWidget(
+                    icon: Icons.file_download_done,
+                    label: 'Downloaded',
+                    onPressed: () {
+                      _showDeleteFileConfirmation(context, ref, movie);
+                    },
+                  )
+                else
+                  _ActionWidget(
+                    icon: TablerIcons.download,
+                    label: 'Releases',
+                    onPressed: () {
+                      _showMovieReleases(context, ref, movie);
+                    },
+                  ),
               ],
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _showMovieReleases(
+    BuildContext context,
+    WidgetRef ref,
+    MovieResource movie,
+  ) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return AlertDialog(
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(child: CircularProgressIndicator()),
+              const SizedBox(height: 12),
+              const Text('Searching for releases may take some time.'),
+            ],
+          ),
+        );
+      },
+    );
+
+    try {
+      final releases = await ref
+          .read(movieServiceProvider)
+          .getReleases(movieId: movie.id!);
+
+      if (context.mounted) {
+        Navigator.of(context).pop(); // Close the loading dialog
+
+        if (releases.isEmpty) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('No releases found')));
+          return;
+        }
+
+        _showReleasesDialog(context, releases, movie);
+      }
+    } catch (error) {
+      if (context.mounted) {
+        Navigator.of(context).pop(); // Close the loading dialog
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error loading releases: ${error.toString()}'),
+          ),
+        );
+      }
+    }
+  }
+
+  void _showReleasesDialog(
+    BuildContext context,
+    List<ReleaseResource> releases,
+    MovieResource movie,
+  ) {
+    showDialog(
+      context: context,
+      builder: (context) => MovieDownloadWidget(releases, movie: movie),
+    );
+  }
+
+  void _showDeleteFileConfirmation(
+    BuildContext context,
+    WidgetRef ref,
+    MovieResource movie,
+  ) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Downloaded File'),
+        content: Text(
+          'Are you sure you want to delete the downloaded file for "${movie.title}"?\n\n'
+          'This will remove the file from disk but keep the movie in Radarr.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.of(context).pop(); // Close the dialog
+
+              try {
+                // Show loading dialog
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (context) => const AlertDialog(
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CircularProgressIndicator(),
+                        SizedBox(height: 16),
+                        Text('Deleting file...'),
+                      ],
+                    ),
+                  ),
+                );
+
+                // Call the movie service to delete the file
+                await ref.read(movieServiceProvider).deleteMovieFile(movie.id!);
+
+                // Close the loading dialog
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+
+                  // Show success message
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Row(
+                        children: [
+                          const Icon(Icons.check_circle, color: Colors.white),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              'Successfully deleted file for "${movie.title}"',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      backgroundColor: Colors.green.shade600,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      margin: const EdgeInsets.all(16),
+                      duration: const Duration(seconds: 4),
+                    ),
+                  );
+                }
+              } catch (e) {
+                // Show error message
+                if (context.mounted) {
+                  Navigator.of(
+                    context,
+                  ).pop(); // Close loading dialog if it's open
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Row(
+                        children: [
+                          const Icon(Icons.error_outline, color: Colors.white),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              'Failed to delete file: ${e.toString()}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      backgroundColor: Colors.red,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      margin: const EdgeInsets.all(16),
+                      duration: const Duration(seconds: 5),
+                    ),
+                  );
+                }
+              }
+            },
+            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+          ),
+        ],
       ),
     );
   }
@@ -293,6 +477,8 @@ class _ActionWidget extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: theme.textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w500,
               ),

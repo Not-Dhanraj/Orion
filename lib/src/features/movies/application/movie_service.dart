@@ -157,6 +157,49 @@ class MovieService {
       );
     }
   }
+
+  Future<List<ReleaseResource>> getReleases({required int movieId}) async {
+    try {
+      final movieRepository = _ref.read(movieRepositoryProvider);
+      final releases = await movieRepository.getReleases(movieId: movieId);
+      return releases?.toList() ?? [];
+    } catch (e, stackTrace) {
+      throw RepositoryException(
+        'Failed to fetch releases for movie with ID $movieId',
+        error: e,
+        stackTrace: stackTrace,
+      );
+    }
+  }
+
+  Future<void> downloadRelease({
+    required int indexerId,
+    required String guid,
+  }) async {
+    try {
+      final movieRepository = _ref.read(movieRepositoryProvider);
+      await movieRepository.downloadRelease(indexerId: indexerId, guid: guid);
+    } catch (e, stackTrace) {
+      throw RepositoryException(
+        'Failed to download release',
+        error: e,
+        stackTrace: stackTrace,
+      );
+    }
+  }
+  
+  Future<void> deleteMovieFile(int movieId) async {
+    try {
+      final movieRepository = _ref.read(movieRepositoryProvider);
+      await movieRepository.deleteMovieFile(movieId);
+    } catch (e, stackTrace) {
+      throw RepositoryException(
+        'Failed to delete movie file for movie with ID $movieId',
+        error: e,
+        stackTrace: stackTrace,
+      );
+    }
+  }
 }
 
 // Provider for the MovieService

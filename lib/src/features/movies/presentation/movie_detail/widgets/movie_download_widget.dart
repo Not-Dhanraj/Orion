@@ -1,28 +1,21 @@
-import 'package:client/src/features/series/presentation/season/season_page_controller.dart';
+import 'package:client/src/features/movies/application/movie_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sonarr/sonarr.dart';
-import 'package:built_collection/built_collection.dart';
+import 'package:radarr/radarr.dart';
 import 'package:with_opacity/with_opacity.dart';
 
-class SeriesDownloadWidget extends ConsumerStatefulWidget {
-  final SeriesResource series;
+class MovieDownloadWidget extends ConsumerStatefulWidget {
   final List<ReleaseResource> releases;
-  final int seasonNumber;
+  final MovieResource movie;
 
-  const SeriesDownloadWidget(
-    this.releases,
-    this.seasonNumber, {
-    super.key,
-    required this.series,
-  });
+  const MovieDownloadWidget(this.releases, {super.key, required this.movie});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _SeriesDownloadWidgetState();
+      _MovieDownloadWidgetState();
 }
 
-class _SeriesDownloadWidgetState extends ConsumerState<SeriesDownloadWidget> {
+class _MovieDownloadWidgetState extends ConsumerState<MovieDownloadWidget> {
   bool showRejected = true;
 
   @override
@@ -53,7 +46,7 @@ class _SeriesDownloadWidgetState extends ConsumerState<SeriesDownloadWidget> {
     });
 
     return AlertDialog(
-      title: Text('Releases for ${widget.series.title}'),
+      title: Text('Releases for ${widget.movie.title}'),
       content: SizedBox(
         width: double.maxFinite,
         child: Column(
@@ -132,23 +125,27 @@ class _SeriesDownloadWidgetState extends ConsumerState<SeriesDownloadWidget> {
                                         ),
                                       ),
                                     ),
-
                                     if (release.infoUrl != null &&
                                         release.infoUrl!.isNotEmpty)
                                       IconButton(
                                         icon: const Icon(Icons.info_outline),
                                         tooltip: 'View release info',
                                         onPressed: () {
-                                          ref
-                                              .read(
-                                                seasonPageControllerProvider(
-                                                  widget.series,
-                                                ).notifier,
-                                              )
+                                          // TODO: Implement opening info URL
+                                        },
+                                      ),
+                                    IconButton(
+                                      icon: const Icon(Icons.download),
+                                      tooltip: 'Download this release',
+                                      onPressed: () async {
+                                        try {
+                                          await ref
+                                              .read(movieServiceProvider)
                                               .downloadRelease(
                                                 indexerId: release.indexerId!,
                                                 guid: release.guid!,
                                               );
+
                                           Navigator.of(context).pop();
                                           ScaffoldMessenger.of(
                                             context,
@@ -157,30 +154,18 @@ class _SeriesDownloadWidgetState extends ConsumerState<SeriesDownloadWidget> {
                                               content: Text('Download started'),
                                             ),
                                           );
-                                        },
-                                      ),
-                                    IconButton(
-                                      icon: const Icon(Icons.download),
-                                      tooltip: 'Download this release',
-                                      onPressed: () {
-                                        ref
-                                            .read(
-                                              seasonPageControllerProvider(
-                                                widget.series,
-                                              ).notifier,
-                                            )
-                                            .downloadRelease(
-                                              indexerId: release.indexerId!,
-                                              guid: release.guid!,
-                                            );
-                                        Navigator.of(context).pop();
-                                        ScaffoldMessenger.of(
-                                          context,
-                                        ).showSnackBar(
-                                          const SnackBar(
-                                            content: Text('Download started'),
-                                          ),
-                                        );
+                                        } catch (e) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                'Failed to download: ${e.toString()}',
+                                              ),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                        }
                                       },
                                     ),
                                   ],
@@ -200,17 +185,16 @@ class _SeriesDownloadWidgetState extends ConsumerState<SeriesDownloadWidget> {
                                       Icons.storage,
                                       _formatFileSize(release.size ?? 0),
                                     ),
-                                    _buildReleaseInfoChip(
-                                      Icons.source,
-                                      'Source: ${release.indexer ?? 'Unknown'}',
-                                    ),
-
-                                    // Add language information
-                                    _buildReleaseInfoChip(
-                                      Icons.language,
-                                      _formatLanguages(release.languages),
-                                    ),
-
+                                    if (release.indexer != null)
+                                      _buildReleaseInfoChip(
+                                        Icons.source,
+                                        'Source: ${release.indexer}',
+                                      ),
+                                    if (release.protocol != null)
+                                      _buildReleaseInfoChip(
+                                        Icons.sync,
+                                        'Protocol: ${release.protocol.toString().split('.').last}',
+                                      ),
                                     if (release.seeders != null)
                                       _buildReleaseInfoChip(
                                         Icons.arrow_upward,
@@ -307,17 +291,5 @@ class _SeriesDownloadWidgetState extends ConsumerState<SeriesDownloadWidget> {
       return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
     }
     return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(1)} GB';
-  }
-
-  String _formatLanguages(BuiltList<Language>? languages) {
-    if (languages == null || languages.isEmpty) {
-      return 'Unknown';
-    }
-
-    if (languages.length > 1) {
-      return 'Multi-Language';
-    }
-
-    return languages.first.name ?? 'Unknown';
   }
 }

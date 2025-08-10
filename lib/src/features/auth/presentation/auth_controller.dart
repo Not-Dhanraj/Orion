@@ -19,31 +19,38 @@ class AuthController extends Notifier<AuthState> {
     BuildContext context,
   ) async {
     state = state.copyWith(isLoadingSonarr: true, clearSonarrError: true);
+    if (context.mounted) {
+      try {
+        final authService = ref.read(authServiceProvider);
+        await authService.validateAndConfigureService(
+          url,
+          apiKey,
+          ServiceType.sonarr,
+        );
 
-    try {
-      final authService = ref.read(authServiceProvider);
-      await authService.validateAndConfigureService(
-        url,
-        apiKey,
-        ServiceType.sonarr,
-      );
+        state = state.copyWith(isLoadingSonarr: false, sonarrConfigured: true);
 
-      state = state.copyWith(isLoadingSonarr: false, sonarrConfigured: true);
+        await Future.delayed(const Duration(milliseconds: 200));
 
-      await Future.delayed(const Duration(milliseconds: 200));
+        if (context.mounted) {
+          showSuccessSnackbar(
+            context,
+            'Sonarr configured successfully, please add other details or go to home',
+          );
+        }
+      } catch (e) {
+        final errorMessage = e is AuthException
+            ? e.message
+            : 'An unexpected error occurred: ${e.toString()}';
 
-      showSuccessSnackbar(
-        context,
-        'Sonarr configured successfully, please add other details or go to home',
-      );
-    } catch (e) {
-      final errorMessage = e is AuthException
-          ? e.message
-          : 'An unexpected error occurred: ${e.toString()}';
-
-      state = state.copyWith(isLoadingSonarr: false, sonarrError: errorMessage);
-
-      showErrorSnackbar(context, errorMessage);
+        state = state.copyWith(
+          isLoadingSonarr: false,
+          sonarrError: errorMessage,
+        );
+        if (context.mounted) {
+          showErrorSnackbar(context, errorMessage);
+        }
+      }
     }
   }
 
@@ -65,23 +72,22 @@ class AuthController extends Notifier<AuthState> {
       state = state.copyWith(isLoadingRadarr: false, radarrConfigured: true);
 
       await Future.delayed(const Duration(milliseconds: 200));
-
-      showSuccessSnackbar(
-        context,
-        'Radarr configured successfully, please add other details or go to home',
-      );
+      if (context.mounted) {
+        showSuccessSnackbar(
+          context,
+          'Radarr configured successfully, please add other details or go to home',
+        );
+      }
     } catch (e) {
       final errorMessage = e is AuthException
           ? e.message
           : 'An unexpected error occurred: ${e.toString()}';
 
       state = state.copyWith(isLoadingRadarr: false, radarrError: errorMessage);
-
-      showErrorSnackbar(context, errorMessage);
+      if (context.mounted) showErrorSnackbar(context, errorMessage);
     }
   }
 
-  //TODO move to service
   String? urlValidatorCheck(String? value) {
     return UrlValidator.validate(value);
   }

@@ -1,4 +1,3 @@
-import 'package:client/src/features/home/presentation/home_page_controller.dart';
 import 'package:client/src/features/series/application/series_service.dart';
 import 'package:client/src/features/series/presentation/series_edit/series_edit_page.dart';
 import 'package:client/src/features/series/presentation/series_home/series_home_controller.dart';
@@ -6,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:sonarr/sonarr.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class SeriesActionCard extends ConsumerWidget {
   final SeriesResource series;
@@ -18,7 +18,7 @@ class SeriesActionCard extends ConsumerWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 0),
       elevation: 3,
-      shadowColor: theme.colorScheme.shadow.withOpacity(0.2),
+      shadowColor: theme.colorScheme.shadow.withCustomOpacity(0.2),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -30,7 +30,9 @@ class SeriesActionCard extends ConsumerWidget {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.primaryContainer.withOpacity(0.4),
+                    color: theme.colorScheme.primaryContainer.withCustomOpacity(
+                      0.4,
+                    ),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(

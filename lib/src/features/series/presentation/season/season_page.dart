@@ -218,13 +218,13 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
                         result = result
                             .where((release) => release.fullSeason == true)
                             .toList();
-                        Navigator.of(context).pop(); // Close dialog
-                        if (result.isEmpty) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('No releases found ')),
-                          );
-                        } else {
-                          if (context.mounted) {
+                        if (context.mounted) {
+                          Navigator.of(context).pop(); // Close dialog
+                          if (result.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('No releases found ')),
+                            );
+                          } else {
                             _showReleasesDialog(
                               context,
                               result,
@@ -232,15 +232,17 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
                               widget.series,
                             );
                           }
+                        } else {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'All episodes in season ${selectedSeason.seasonNumber} already have files.',
+                                ),
+                              ),
+                            );
+                          }
                         }
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'All episodes in season ${selectedSeason.seasonNumber} already have files.',
-                            ),
-                          ),
-                        );
                       }
                     },
                   );
@@ -488,21 +490,21 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
                                                   release.fullSeason == false,
                                             )
                                             .toList();
-                                        Navigator.of(
-                                          context,
-                                        ).pop(); // Close dialog
-                                        if (result.isEmpty) {
-                                          ScaffoldMessenger.of(
+                                        if (context.mounted) {
+                                          Navigator.of(
                                             context,
-                                          ).showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                'No releases found for E${episode.episodeNumber}',
+                                          ).pop(); // Close dialog
+                                          if (result.isEmpty) {
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'No releases found for E${episode.episodeNumber}',
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        } else {
-                                          if (context.mounted) {
+                                            );
+                                          } else {
                                             _showReleasesDialog(
                                               context,
                                               result,

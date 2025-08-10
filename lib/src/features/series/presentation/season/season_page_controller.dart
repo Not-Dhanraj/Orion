@@ -213,18 +213,10 @@ class SeasonPageController
   }) async {
     if (state.value == null) return;
 
-    final currentState = state.requireValue;
-
     try {
-      state = const AsyncLoading();
-
       await ref
           .read(seasonServiceProvider)
           .downloadRelease(indexerId: indexerId, guid: guid);
-
-      if (state.isLoading) {
-        state = AsyncData(currentState);
-      }
     } catch (e, stackTrace) {
       state = AsyncError(e, stackTrace);
     }

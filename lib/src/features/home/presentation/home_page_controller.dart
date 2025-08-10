@@ -1,6 +1,7 @@
 import 'package:client/src/core/application/enabled_provider.dart';
 import 'package:client/src/features/home/domain/home_page_items.dart';
 import 'package:client/src/features/home/presentation/home_page.dart';
+import 'package:client/src/features/movies/presentation/movie_home/movie_home.dart';
 import 'package:client/src/features/series/presentation/series_home/series_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,7 +29,7 @@ class HomePageController extends Notifier<HomePageItems> {
     }
 
     if (radarrEnabled) {
-      pages.add(const Placeholder());
+      pages.add(const MovieHome());
       navItems.add(
         const BottomNavigationBarItem(
           icon: Icon(TablerIcons.video),

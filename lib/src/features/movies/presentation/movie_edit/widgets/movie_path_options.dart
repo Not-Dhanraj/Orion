@@ -88,6 +88,7 @@ class MoviePathOptions extends ConsumerWidget {
             DropdownButtonFormField<String>(
               value: currentPath,
               borderRadius: BorderRadius.circular(12),
+              isExpanded: true,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -104,10 +105,23 @@ class MoviePathOptions extends ConsumerWidget {
               items: _getUniqueRootFolders().map((folder) {
                 return DropdownMenuItem<String>(
                   value: folder.path,
-                  child: Text(
-                    folder.path ?? 'Unknown Path',
-                    style: theme.textTheme.bodyLarge,
-                    overflow: TextOverflow.ellipsis,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.folder,
+                        color: theme.colorScheme.primary,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Flexible(
+                        child: Text(
+                          folder.path ?? 'Unknown Path',
+                          style: theme.textTheme.bodyLarge,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
                   ),
                 );
               }).toList(),

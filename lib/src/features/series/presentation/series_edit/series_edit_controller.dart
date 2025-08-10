@@ -30,8 +30,8 @@ class SeriesEditControllerNotifier
     );
   }
 
-  Future<void> saveChanges() async {
-    if (state.value?.series == null) return;
+  Future<bool> saveChanges() async {
+    if (state.value?.series == null) return false;
 
     try {
       state = AsyncData(state.value!.copyWith(isLoading: true));
@@ -52,9 +52,11 @@ class SeriesEditControllerNotifier
       );
 
       ref.invalidate(seriesHomeControllerProvider);
+      return true;
     } catch (e) {
       state = AsyncError(e, StackTrace.current);
       // Show error message
+      return false;
     } finally {
       state = AsyncData(state.value!.copyWith(isLoading: false));
     }

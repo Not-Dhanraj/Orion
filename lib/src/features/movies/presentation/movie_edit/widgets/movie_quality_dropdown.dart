@@ -69,7 +69,7 @@ class QualityProfileDropdown extends ConsumerWidget {
                 return DropdownButtonFormField<int>(
                   value: currentQualityProfileId ?? 1,
                   borderRadius: BorderRadius.circular(12),
-
+                  isExpanded: true,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -87,15 +87,20 @@ class QualityProfileDropdown extends ConsumerWidget {
                     return DropdownMenuItem<int>(
                       value: profile.id!,
                       child: Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
                             Icons.high_quality,
                             color: theme.colorScheme.primary,
+                            size: 20,
                           ),
                           const SizedBox(width: 8),
-                          Text(
-                            profile.name ?? 'Unknown Profile',
-                            style: theme.textTheme.bodyLarge,
+                          Flexible(
+                            child: Text(
+                              profile.name ?? 'Unknown Profile',
+                              style: theme.textTheme.bodyLarge,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ],
                       ),

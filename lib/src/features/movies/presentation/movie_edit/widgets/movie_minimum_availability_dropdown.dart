@@ -63,7 +63,7 @@ class MovieMinimumAvailabilityDropdown extends ConsumerWidget {
             ),
             DropdownButtonFormField<MovieStatusType>(
               borderRadius: BorderRadius.circular(12),
-
+              isExpanded: true,
               value: currentMinimumAvailability,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -81,15 +81,66 @@ class MovieMinimumAvailabilityDropdown extends ConsumerWidget {
               items: [
                 DropdownMenuItem<MovieStatusType>(
                   value: MovieStatusType.announced,
-                  child: Text('Announced', style: theme.textTheme.bodyLarge),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.announcement,
+                        color: theme.colorScheme.primary,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Flexible(
+                        child: Text(
+                          'Announced',
+                          style: theme.textTheme.bodyLarge,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 DropdownMenuItem<MovieStatusType>(
                   value: MovieStatusType.inCinemas,
-                  child: Text('In Cinemas', style: theme.textTheme.bodyLarge),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.theaters,
+                        color: theme.colorScheme.primary,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Flexible(
+                        child: Text(
+                          'In Cinemas',
+                          style: theme.textTheme.bodyLarge,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 DropdownMenuItem<MovieStatusType>(
                   value: MovieStatusType.released,
-                  child: Text('Physical/Web', style: theme.textTheme.bodyLarge),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.check_circle,
+                        color: theme.colorScheme.primary,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Flexible(
+                        child: Text(
+                          'Physical/Web',
+                          style: theme.textTheme.bodyLarge,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
               onChanged: (newValue) {

@@ -135,9 +135,100 @@ class MovieEditPage extends ConsumerWidget {
                       FilledButton(
                         onPressed: state.hasChanges
                             ? () async {
+                                // Show loading dialog
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (dialogContext) => AlertDialog(
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+
+                                      children: [
+                                        const CircularProgressIndicator(),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          'Saving changes...',
+                                          style: theme.textTheme.bodyLarge,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+
+                                // Save changes
                                 final success = await controller.saveChanges();
-                                if (success && context.mounted) {
-                                  Navigator.of(context).pop(true);
+
+                                // Close the loading dialog
+                                if (context.mounted) {
+                                  Navigator.of(context).pop();
+                                }
+
+                                // Show result and close edit dialog if successful
+                                if (context.mounted) {
+                                  if (success) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.check_circle,
+                                              color: Colors.white,
+                                            ),
+                                            const SizedBox(width: 12),
+                                            Expanded(
+                                              child: Text(
+                                                'Changes saved successfully',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        backgroundColor: Colors.green,
+                                        behavior: SnackBarBehavior.floating,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                        ),
+                                        margin: const EdgeInsets.all(16),
+                                        duration: const Duration(seconds: 4),
+                                      ),
+                                    );
+                                    Navigator.of(context).pop(true);
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.error_outline,
+                                              color: Colors.white,
+                                            ),
+                                            const SizedBox(width: 12),
+                                            Expanded(
+                                              child: Text(
+                                                'Failed to save changes',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        backgroundColor: Colors.red,
+                                        behavior: SnackBarBehavior.floating,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                        ),
+                                        margin: const EdgeInsets.all(16),
+                                        duration: const Duration(seconds: 4),
+                                      ),
+                                    );
+                                  }
                                 }
                               }
                             : null,

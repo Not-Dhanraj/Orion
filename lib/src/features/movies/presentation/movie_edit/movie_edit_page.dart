@@ -1,3 +1,4 @@
+import 'package:client/src/features/movies/presentation/movie_edit/widgets/movie_minimum_availability.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr/radarr.dart';
@@ -11,21 +12,16 @@ import 'widgets/movie_quality_dropdown.dart';
 
 class MovieEditPage extends ConsumerWidget {
   final MovieResource movie;
-  
-  const MovieEditPage({
-    super.key,
-    required this.movie,
-  });
+
+  const MovieEditPage({super.key, required this.movie});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final controller = ref.watch(movieEditControllerProvider(movie));
-    
+
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
         constraints: const BoxConstraints(maxWidth: 600),
         child: controller.when(
@@ -50,10 +46,7 @@ class MovieEditPage extends ConsumerWidget {
                   style: theme.textTheme.titleMedium,
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  error.toString(),
-                  style: theme.textTheme.bodyMedium,
-                ),
+                Text(error.toString(), style: theme.textTheme.bodyMedium),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),
@@ -67,20 +60,22 @@ class MovieEditPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context, WidgetRef ref, MovieEditState state) {
+  Widget _buildContent(
+    BuildContext context,
+    WidgetRef ref,
+    MovieEditState state,
+  ) {
     final theme = Theme.of(context);
     final controller = ref.read(movieEditControllerProvider(movie).notifier);
     final movieData = state.movie;
-    
+
     if (movieData == null) {
       return const Padding(
         padding: EdgeInsets.all(24.0),
-        child: Center(
-          child: Text('Movie data not available'),
-        ),
+        child: Center(child: Text('Movie data not available')),
       );
     }
-    
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -139,6 +134,11 @@ class MovieEditPage extends ConsumerWidget {
                   QualityProfileDropdown(
                     movie: movieData,
                     qualityProfiles: state.qualityProfiles,
+                    onMovieChanged: controller.updateMovie,
+                  ),
+                  const SizedBox(height: 8),
+                  MovieMinimumAvailabilityDropdown(
+                    movie: movieData,
                     onMovieChanged: controller.updateMovie,
                   ),
                   const SizedBox(height: 8),

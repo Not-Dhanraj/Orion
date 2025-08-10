@@ -1,3 +1,4 @@
+import 'package:client/src/shared/widgets/custom_switch_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr/radarr.dart';
@@ -61,29 +62,21 @@ class MovieMonitoringOptions extends ConsumerWidget {
                 ],
               ),
             ),
-            SwitchListTile(
-              title: Text('Monitor movie', style: theme.textTheme.bodyLarge),
-              subtitle: Text(
-                'When enabled, Radarr will automatically search for this movie and download it when available.',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
+            CustomSwitchTile(
+              title: 'Monitor movie',
+              subtitle:
+                  'When enabled, Radarr will automatically search for this movie and download it when available.',
               value: currentMonitored,
               onChanged: (bool value) {
                 final updatedMovie = movie.rebuild((m) => m..monitored = value);
                 onMovieChanged(updatedMovie);
               },
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-                side: BorderSide(
-                  color: theme.colorScheme.outline.withAlpha(100),
-                  width: 1,
-                ),
-              ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 4,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'When a movie is monitored, Radarr will automatically search for and download it according to your quality settings.',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
               ),
             ),
           ],

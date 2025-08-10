@@ -1,5 +1,5 @@
 import 'package:client/src/features/movies/presentation/movie_home/widgets/movie_grid_widget.dart';
-import 'package:client/src/features/series/presentation/series_add/series_add_page.dart';
+import 'package:client/src/features/movies/presentation/movie_add/movie_add_page.dart';
 import 'package:client/src/shared/error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -71,11 +71,11 @@ class MovieHome extends ConsumerWidget {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const SeriesAddPage(),
+                        builder: (context) => const MovieAddPage(),
                       ),
                     );
                   },
-                  tooltip: 'Add Series',
+                  tooltip: 'Add Movie',
                   child: const Icon(Icons.add),
                 ),
               ),

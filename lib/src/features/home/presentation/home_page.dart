@@ -1,9 +1,15 @@
-import 'package:client/src/features/home/presentation/home_page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomePage extends ConsumerStatefulWidget {
-  const HomePage({super.key});
+  final List<Widget> pages;
+  final List<BottomNavigationBarItem> bottomNavItems;
+
+  const HomePage({
+    super.key,
+    required this.pages,
+    required this.bottomNavItems,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _HomePageState();
@@ -27,134 +33,78 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final homeController = ref.watch(homePageControllerProvider);
-    return homeController.when(
-      data: (data) {
-        return LayoutBuilder(
-          builder: (context, constraints) {
-            final isWide = constraints.maxWidth >= 600;
-            if (isWide) {
-              return Scaffold(
-                body: Row(
-                  children: [
-                    NavigationRail(
-                      labelType: NavigationRailLabelType.all,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isWide = constraints.maxWidth >= 600;
+        return Scaffold(
+          body: Row(
+            children: [
+              if (isWide)
+                NavigationRail(
+                  labelType: NavigationRailLabelType.all,
 
-                      // extended: isExtended,
-                      leading: const Padding(
-                        padding: EdgeInsets.only(top: 8),
-                        child: Icon(Icons.menu),
+                  // extended: isExtended,
+                  leading: const Padding(
+                    padding: EdgeInsets.only(top: 8),
+                    child: Icon(Icons.menu),
+                  ),
+                  groupAlignment: 0,
+                  destinations: [
+                    for (final item in widget.bottomNavItems)
+                      NavigationRailDestination(
+                        icon: item.icon,
+                        selectedIcon: item.activeIcon,
+                        label: Text(item.label ?? ''),
                       ),
-                      groupAlignment: 0,
-                      destinations: [
-                        for (final item in data.navItems)
-                          NavigationRailDestination(
-                            icon: item.icon,
-                            selectedIcon: item.activeIcon,
-                            label: Text(item.label ?? ''),
-                          ),
-                      ],
-                      selectedIndex: _currentIndex,
-                      onDestinationSelected: (index) {
-                        setState(() {
-                          _currentIndex = index;
-                          pageController.jumpToPage(index);
-                        });
-                      },
-                    ),
-                    Expanded(
-                      child: PageView(
-                        controller: pageController,
-                        onPageChanged: (index) {
-                          setState(() {
-                            _currentIndex = index;
-                          });
-                        },
-                        children: data.pages,
-                      ),
-                    ),
                   ],
+                  selectedIndex: _currentIndex,
+                  onDestinationSelected: (index) {
+                    setState(() {
+                      _currentIndex = index;
+                      pageController.jumpToPage(index);
+                    });
+                  },
                 ),
-              );
-            }
-
-            // Mobile layout
-            return Scaffold(
-              body: PageView(
-                controller: pageController,
-                onPageChanged: (index) {
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                },
-                children: data.pages,
+              Expanded(
+                child: PageView.builder(
+                  itemBuilder: (context, index) {
+                    return widget.pages[index];
+                  },
+                  itemCount: widget.pages.length,
+                  controller: pageController,
+                  onPageChanged: (index) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                  },
+                ),
               ),
-              bottomNavigationBar: BottomNavigationBar(
-                type: BottomNavigationBarType.fixed,
-                showSelectedLabels: true,
-                showUnselectedLabels: true,
-                items: data.navItems,
-                currentIndex: _currentIndex,
-                onTap: (index) {
-                  setState(() {
-                    _currentIndex = index;
-                    pageController.jumpToPage(index);
-                  });
-                },
-              ),
-            );
-          },
+            ],
+          ),
+          bottomNavigationBar: isWide
+              ? null // No bottom nav in wide layout
+              : BottomNavigationBar(
+                  type: BottomNavigationBarType.fixed,
+                  showSelectedLabels: true,
+                  showUnselectedLabels: true,
+                  items: widget.bottomNavItems,
+                  currentIndex: _currentIndex,
+                  onTap: (index) {
+                    setState(() {
+                      _currentIndex = index;
+                      pageController.jumpToPage(index);
+                    });
+                  },
+                ),
         );
+
+        // Mobile layout
       },
-      error: (error, stackTrace) {
-        return Center(child: Text('Error: $error'));
-      },
-      loading: () =>
-          const Material(child: Center(child: CircularProgressIndicator())),
     );
   }
 }
 
 //TODO // Implement the individual pages for Sonarr, Radarr, Queue, Calendar, and Settings
-
-class RadarrPage extends StatelessWidget {
-  const RadarrPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final padding = constraints.maxWidth > 1200
-            ? EdgeInsets.symmetric(
-                horizontal: (constraints.maxWidth - 1200) / 2,
-              )
-            : const EdgeInsets.symmetric(horizontal: 16);
-
-        return SingleChildScrollView(
-          padding: padding,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 16),
-              const Text(
-                'Movies',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 16),
-              // Add your movie content here
-              Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 1200),
-                  child: const Text('Radarr Page'),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
 
 class QueuePage extends StatelessWidget {
   const QueuePage({super.key});

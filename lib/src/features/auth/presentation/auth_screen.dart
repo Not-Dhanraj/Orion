@@ -1,5 +1,6 @@
 import 'package:client/src/features/auth/presentation/auth_controller.dart';
 import 'package:client/src/features/home/presentation/home_page.dart';
+import 'package:client/src/features/home/presentation/home_page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
@@ -169,9 +170,14 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                           authState.radarrConfigured)
                       ? null
                       : () {
+                          final data = ref.read(homePageControllerProvider);
+
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
-                              builder: (context) => const HomePage(),
+                              builder: (context) => HomePage(
+                                pages: data.pages,
+                                bottomNavItems: data.navItems,
+                              ),
                             ),
                           );
                         },

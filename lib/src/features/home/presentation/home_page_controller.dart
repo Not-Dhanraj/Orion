@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 
-class HomePageController extends AsyncNotifier<HomePageItems> {
+class HomePageController extends Notifier<HomePageItems> {
   @override
-  Future<HomePageItems> build() async {
+  HomePageItems build() {
     final enabledProvider = ref.watch(enabledNotifierProvider);
     final sonarrEnabled = enabledProvider.sonarr;
     final radarrEnabled = enabledProvider.radarr;
@@ -28,7 +28,7 @@ class HomePageController extends AsyncNotifier<HomePageItems> {
     }
 
     if (radarrEnabled) {
-      pages.add(const RadarrPage());
+      pages.add(const Placeholder());
       navItems.add(
         const BottomNavigationBarItem(
           icon: Icon(TablerIcons.video),
@@ -72,6 +72,4 @@ class HomePageController extends AsyncNotifier<HomePageItems> {
 }
 
 final homePageControllerProvider =
-    AsyncNotifierProvider<HomePageController, HomePageItems>(
-      HomePageController.new,
-    );
+    NotifierProvider<HomePageController, HomePageItems>(HomePageController.new);

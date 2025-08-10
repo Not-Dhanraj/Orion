@@ -257,105 +257,64 @@ class SeriesAddCard extends ConsumerWidget {
             width: MediaQuery.of(context).size.width * 0.9,
             constraints: BoxConstraints(
               maxWidth: 500,
-              maxHeight: MediaQuery.of(context).size.height * 0.8,
+              maxHeight: MediaQuery.of(context).size.height * 0.9,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    if (series.images?.isNotEmpty == true)
-                      ShaderMask(
-                        shaderCallback: (rect) {
-                          return LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              theme.colorScheme.primary.withCustomOpacity(0.7),
-                              theme.colorScheme.primary,
-                            ],
-                          ).createShader(rect);
-                        },
-                        blendMode: BlendMode.srcATop,
-                        child: CachedNetworkImage(
-                          imageUrl:
-                              series.images!
-                                  .firstWhere(
-                                    (i) =>
-                                        i.coverType == MediaCoverTypes.fanart,
-                                    orElse: () => series.images!.first,
-                                  )
-                                  .remoteUrl ??
-                              '',
-                          height: 120,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                          errorWidget: (_, __, ___) => const SizedBox(),
-                        ),
-                      )
-                    else
-                      Container(
-                        height: 120,
-                        width: double.infinity,
-                        color: theme.colorScheme.onSurface,
-                        child: Icon(
-                          Icons.movie,
-                          size: 50,
-                          color: theme.colorScheme.primary,
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: series.images?.isNotEmpty == true
+                            ? CachedNetworkImageProvider(
+                                series.images!.first.remoteUrl ?? '',
+                              )
+                            : null,
+                        backgroundColor: theme.colorScheme.primaryContainer,
+                        child: series.images?.isEmpty == true
+                            ? Icon(Icons.tv, color: theme.colorScheme.primary)
+                            : null,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              series.title ?? 'Unknown Series',
+                              style: theme.textTheme.titleLarge?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            if (series.year != null)
+                              Text(
+                                series.year.toString(),
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  color: theme.colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                          ],
                         ),
                       ),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 16,
+                      IconButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        icon: const Icon(Icons.close),
+                        tooltip: 'Close',
                       ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Add Series',
-                                  style: theme.textTheme.labelLarge?.copyWith(
-                                    color: theme.colorScheme.onPrimary
-                                        .withCustomOpacity(0.8),
-                                  ),
-                                ),
-                                Text(
-                                  series.title ?? 'Unknown Title',
-                                  style: theme.textTheme.titleLarge?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: theme.colorScheme.onPrimary,
-                                  ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ),
-                          // Close button
-                          IconButton(
-                            icon: Icon(
-                              Icons.close,
-                              color: theme.colorScheme.onPrimary,
-                            ),
-                            onPressed: () => Navigator.of(context).pop(),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
 
                 // Configuration form
                 Flexible(
                   child: SingleChildScrollView(
                     child: Padding(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(8),
                       child: selectedSeries != null
                           ? SeriesConfigurationForm(
                               series: selectedSeries,
@@ -381,16 +340,6 @@ class SeriesAddCard extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 12,
-                  ),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.surface,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withCustomOpacity(0.1),
-                        blurRadius: 4,
-                        offset: const Offset(0, -2),
-                      ),
-                    ],
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,

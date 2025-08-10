@@ -1,11 +1,9 @@
-import 'package:client/src/features/movies/presentation/movie_edit/widgets/movie_minimum_availability.dart';
+import 'package:client/src/core/widgets/loading_indicator.dart';
+import 'package:client/src/features/movies/presentation/movie_edit/movie_edit_controller.dart';
+import 'package:client/src/features/movies/presentation/movie_edit/widgets/movie_minimum_availability_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr/radarr.dart';
-
-import '../../../../core/widgets/loading_indicator.dart';
-import '../../domain/movie_edit_state.dart';
-import '../movie_edit/movie_edit_controller.dart';
 import 'widgets/movie_monitoring_options.dart';
 import 'widgets/movie_path_options.dart';
 import 'widgets/movie_quality_dropdown.dart';
@@ -25,7 +23,132 @@ class MovieEditPage extends ConsumerWidget {
       child: Container(
         constraints: const BoxConstraints(maxWidth: 600),
         child: controller.when(
-          data: (state) => _buildContent(context, ref, state),
+          data: (state) {
+            final theme = Theme.of(context);
+            final controller = ref.read(
+              movieEditControllerProvider(movie).notifier,
+            );
+            final movieData = state.movie;
+
+            if (movieData == null) {
+              return const Padding(
+                padding: EdgeInsets.all(24.0),
+                child: Center(child: Text('Movie data not available')),
+              );
+            }
+
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundImage: movieData.images?.isNotEmpty == true
+                              ? NetworkImage(
+                                  movieData.images!.first.remoteUrl ?? '',
+                                )
+                              : null,
+                          backgroundColor: theme.colorScheme.primaryContainer,
+                          child: movieData.images?.isEmpty == true
+                              ? Icon(
+                                  Icons.movie,
+                                  color: theme.colorScheme.primary,
+                                )
+                              : null,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                movieData.title ?? 'Unknown Movie',
+                                style: theme.textTheme.titleLarge?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              if (movieData.year != null)
+                                Text(
+                                  movieData.year.toString(),
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    color: theme.colorScheme.onSurfaceVariant,
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          icon: const Icon(Icons.close),
+                          tooltip: 'Close',
+                        ),
+                      ],
+                    ),
+                  ),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          MovieMonitoringOptions(
+                            movie: movieData,
+                            onMovieChanged: controller.updateMovie,
+                          ),
+                          const SizedBox(height: 8),
+                          QualityProfileDropdown(
+                            movie: movieData,
+                            qualityProfiles: state.qualityProfiles,
+                            onMovieChanged: controller.updateMovie,
+                          ),
+                          const SizedBox(height: 8),
+                          MovieMinimumAvailabilityDropdown(
+                            movie: movieData,
+                            onMovieChanged: controller.updateMovie,
+                          ),
+                          const SizedBox(height: 8),
+                          if (state.rootFolders != null)
+                            MoviePathOptions(
+                              movie: movieData,
+                              rootFolders: state.rootFolders!,
+                              onMovieChanged: controller.updateMovie,
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text('Cancel'),
+                      ),
+                      const SizedBox(width: 8),
+                      FilledButton(
+                        onPressed: state.hasChanges
+                            ? () async {
+                                final success = await controller.saveChanges();
+                                if (success && context.mounted) {
+                                  Navigator.of(context).pop(true);
+                                }
+                              }
+                            : null,
+                        child: const Text('Save Changes'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
           loading: () => const Padding(
             padding: EdgeInsets.all(24.0),
             child: LoadingIndicator(),
@@ -56,130 +179,6 @@ class MovieEditPage extends ConsumerWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildContent(
-    BuildContext context,
-    WidgetRef ref,
-    MovieEditState state,
-  ) {
-    final theme = Theme.of(context);
-    final controller = ref.read(movieEditControllerProvider(movie).notifier);
-    final movieData = state.movie;
-
-    if (movieData == null) {
-      return const Padding(
-        padding: EdgeInsets.all(24.0),
-        child: Center(child: Text('Movie data not available')),
-      );
-    }
-
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  backgroundImage: movieData.images?.isNotEmpty == true
-                      ? NetworkImage(movieData.images!.first.remoteUrl ?? '')
-                      : null,
-                  backgroundColor: theme.colorScheme.primaryContainer,
-                  child: movieData.images?.isEmpty == true
-                      ? Icon(Icons.movie, color: theme.colorScheme.primary)
-                      : null,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        movieData.title ?? 'Unknown Movie',
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      if (movieData.year != null)
-                        Text(
-                          movieData.year.toString(),
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-                IconButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  icon: const Icon(Icons.close),
-                  tooltip: 'Close',
-                ),
-              ],
-            ),
-          ),
-          Flexible(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  QualityProfileDropdown(
-                    movie: movieData,
-                    qualityProfiles: state.qualityProfiles,
-                    onMovieChanged: controller.updateMovie,
-                  ),
-                  const SizedBox(height: 8),
-                  MovieMinimumAvailabilityDropdown(
-                    movie: movieData,
-                    onMovieChanged: controller.updateMovie,
-                  ),
-                  const SizedBox(height: 8),
-                  if (state.rootFolders != null)
-                    MoviePathOptions(
-                      movie: movieData,
-                      rootFolders: state.rootFolders!,
-                      onMovieChanged: controller.updateMovie,
-                    ),
-                  const SizedBox(height: 8),
-                  MovieMonitoringOptions(
-                    movie: movieData,
-                    onMovieChanged: controller.updateMovie,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Cancel'),
-              ),
-              const SizedBox(width: 8),
-              FilledButton(
-                onPressed: state.hasChanges
-                    ? () async {
-                        final success = await controller.saveChanges();
-                        if (success && context.mounted) {
-                          Navigator.of(context).pop(true);
-                        }
-                      }
-                    : null,
-                child: const Text('Save Changes'),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }

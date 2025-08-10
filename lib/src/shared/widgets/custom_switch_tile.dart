@@ -33,10 +33,10 @@ class CustomSwitchTile extends StatelessWidget {
       onChanged: onChanged,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(
-          color: theme.colorScheme.outline.withAlpha(100),
-          width: 1,
-        ),
+        // side: BorderSide(
+        //   color: theme.colorScheme.outline.withAlpha(100),
+        //   width: 1,
+        // ),
       ),
 
       // contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),

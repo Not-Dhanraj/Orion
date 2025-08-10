@@ -66,56 +66,53 @@ class QualityProfileDropdown extends ConsumerWidget {
               builder: (context) {
                 final currentQualityProfileId = movie.qualityProfileId;
 
-                return Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: theme.colorScheme.outline.withAlpha(100),
-                      width: 1,
+                return DropdownButtonFormField<int>(
+                  value: currentQualityProfileId ?? 1,
+                  borderRadius: BorderRadius.circular(12),
+
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
                     ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 16,
+                    ),
+                    filled: true,
+                    fillColor: theme.colorScheme.surface,
+                    hintText: 'Select quality profile',
                   ),
-                  child: DropdownButtonFormField<int>(
-                    value: currentQualityProfileId ?? 1,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
+                  items: qualityProfiles.map((profile) {
+                    return DropdownMenuItem<int>(
+                      value: profile.id!,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.high_quality,
+                            color: theme.colorScheme.primary,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            profile.name ?? 'Unknown Profile',
+                            style: theme.textTheme.bodyLarge,
+                          ),
+                        ],
                       ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 16,
-                      ),
-                      filled: true,
-                      fillColor: theme.colorScheme.surface,
-                      hintText: 'Select quality profile',
-                    ),
-                    items: qualityProfiles.map((profile) {
-                      return DropdownMenuItem<int>(
-                        value: profile.id!,
-                        child: Text(
-                          profile.name ?? 'Unknown Profile',
-                          style: theme.textTheme.bodyLarge,
-                        ),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    if (newValue != null) {
+                      final updatedMovie = movie.rebuild(
+                        (m) => m..qualityProfileId = newValue,
                       );
-                    }).toList(),
-                    onChanged: (newValue) {
-                      if (newValue != null) {
-                        final updatedMovie = movie.rebuild((m) => m
-                          ..qualityProfileId = newValue);
-                        onMovieChanged(updatedMovie);
-                      }
-                    },
-                  ),
+                      onMovieChanged(updatedMovie);
+                    }
+                  },
                 );
               },
             ),
             const SizedBox(height: 8),
-            Text(
-              'Choose the quality you prefer for this movie.',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
           ],
         ),
       ),

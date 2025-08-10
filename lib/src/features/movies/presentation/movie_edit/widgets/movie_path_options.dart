@@ -18,21 +18,21 @@ class MoviePathOptions extends ConsumerWidget {
   List<RootFolderResource> _getUniqueRootFolders() {
     final uniquePaths = <String>{};
     final uniqueFolders = <RootFolderResource>[];
-    
+
     for (final folder in rootFolders) {
       if (folder.path != null && !uniquePaths.contains(folder.path)) {
         uniquePaths.add(folder.path!);
         uniqueFolders.add(folder);
       }
     }
-    
+
     // Make sure the current path is included in the items
     if (movie.path != null && !uniquePaths.contains(movie.path)) {
       // Create a temporary RootFolderResource with the current path
       final currentPathFolder = RootFolderResource((b) => b..path = movie.path);
       uniqueFolders.add(currentPathFolder);
     }
-    
+
     return uniqueFolders;
   }
 
@@ -85,55 +85,40 @@ class MoviePathOptions extends ConsumerWidget {
                 ],
               ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withAlpha(100),
-                  width: 1,
+            DropdownButtonFormField<String>(
+              value: currentPath,
+              borderRadius: BorderRadius.circular(12),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
                 ),
-              ),
-              child: DropdownButtonFormField<String>(
-                value: currentPath,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 16,
-                  ),
-                  filled: true,
-                  fillColor: theme.colorScheme.surface,
-                  hintText: 'Select root folder',
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
                 ),
-                items: _getUniqueRootFolders().map((folder) {
-                  return DropdownMenuItem<String>(
-                    value: folder.path,
-                    child: Text(
-                      folder.path ?? 'Unknown Path',
-                      style: theme.textTheme.bodyLarge,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  );
-                }).toList(),
-                onChanged: (newValue) {
-                  if (newValue != null) {
-                    final updatedMovie = movie.rebuild((m) => m
-                      ..path = newValue);
-                    onMovieChanged(updatedMovie);
-                  }
-                },
+                filled: true,
+                fillColor: theme.colorScheme.surface,
+                hintText: 'Select root folder',
               ),
+              items: _getUniqueRootFolders().map((folder) {
+                return DropdownMenuItem<String>(
+                  value: folder.path,
+                  child: Text(
+                    folder.path ?? 'Unknown Path',
+                    style: theme.textTheme.bodyLarge,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                );
+              }).toList(),
+              onChanged: (newValue) {
+                if (newValue != null) {
+                  final updatedMovie = movie.rebuild((m) => m..path = newValue);
+                  onMovieChanged(updatedMovie);
+                }
+              },
             ),
             const SizedBox(height: 8),
-            Text(
-              'The folder where this movie will be stored.',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
           ],
         ),
       ),

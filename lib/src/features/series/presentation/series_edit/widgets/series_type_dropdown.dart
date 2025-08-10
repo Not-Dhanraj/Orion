@@ -69,65 +69,54 @@ class SeriesTypeDropdown extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withAlpha(100),
-                  width: 1,
+            DropdownButtonFormField<SeriesTypes>(
+              value: series.seriesType ?? SeriesTypes.standard,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
                 ),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
+                ),
+                filled: true,
+                fillColor: theme.colorScheme.surface,
+                hintText: 'Select quality profile',
               ),
-              child: DropdownButtonFormField<SeriesTypes>(
-                value: series.seriesType ?? SeriesTypes.standard,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 16,
-                  ),
-                  filled: true,
-                  fillColor: theme.colorScheme.surface,
-                  hintText: 'Select quality profile',
-                ),
-                items: SeriesTypes.values.map((type) {
-                  return DropdownMenuItem(
-                    value: type,
-                    child: Row(
-                      children: [
-                        Icon(
-                          _getSeriesTypeIcon(type),
-                          color: theme.colorScheme.primary,
+              items: SeriesTypes.values.map((type) {
+                return DropdownMenuItem(
+                  value: type,
+                  child: Row(
+                    children: [
+                      Icon(
+                        _getSeriesTypeIcon(type),
+                        color: theme.colorScheme.primary,
+                      ),
+                      const SizedBox(width: 12.0),
+                      Text(
+                        type.name.capitalizeByWord(),
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w500,
                         ),
-                        const SizedBox(width: 12.0),
-                        Text(
-                          type.name.capitalizeByWord(),
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  if (value != null) {
-                    var newSeries = series.rebuild(
-                      (b) => b..seriesType = value,
-                    );
-                    onSeriesChanged(newSeries);
-                  }
-                },
-                icon: Icon(
-                  Icons.arrow_drop_down,
-                  color: theme.colorScheme.primary,
-                ),
-                dropdownColor: theme.colorScheme.surface,
-                borderRadius: BorderRadius.circular(12),
-                isExpanded: true,
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+              onChanged: (value) {
+                if (value != null) {
+                  var newSeries = series.rebuild((b) => b..seriesType = value);
+                  onSeriesChanged(newSeries);
+                }
+              },
+              icon: Icon(
+                Icons.arrow_drop_down,
+                color: theme.colorScheme.primary,
               ),
+              dropdownColor: theme.colorScheme.surface,
+              borderRadius: BorderRadius.circular(12),
+              isExpanded: true,
             ),
           ],
         ),

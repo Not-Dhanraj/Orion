@@ -62,21 +62,26 @@ class MovieMonitoringOptions extends ConsumerWidget {
                 ],
               ),
             ),
-            CustomSwitchTile(
-              title: 'Monitor movie',
-              subtitle:
-                  'When enabled, Radarr will automatically search for this movie and download it when available.',
-              value: currentMonitored,
-              onChanged: (bool value) {
-                final updatedMovie = movie.rebuild((m) => m..monitored = value);
-                onMovieChanged(updatedMovie);
-              },
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'When a movie is monitored, Radarr will automatically search for and download it according to your quality settings.',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(
+                  color: theme.colorScheme.outline.withAlpha(100),
+                  width: 1,
+                ),
+              ),
+              padding: const EdgeInsets.all(4.0),
+              child: CustomSwitchTile(
+                title: 'Monitor movie',
+                subtitle:
+                    'When enabled, Radarr will automatically search for this movie and download it when available.',
+                value: currentMonitored,
+                onChanged: (bool value) {
+                  final updatedMovie = movie.rebuild(
+                    (m) => m..monitored = value,
+                  );
+                  onMovieChanged(updatedMovie);
+                },
               ),
             ),
           ],

@@ -139,24 +139,7 @@ class _SeriesDownloadWidgetState extends ConsumerState<SeriesDownloadWidget> {
                                         icon: const Icon(Icons.info_outline),
                                         tooltip: 'View release info',
                                         onPressed: () {
-                                          ref
-                                              .read(
-                                                seasonPageControllerProvider(
-                                                  widget.series,
-                                                ).notifier,
-                                              )
-                                              .downloadRelease(
-                                                indexerId: release.indexerId!,
-                                                guid: release.guid!,
-                                              );
-                                          Navigator.of(context).pop();
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).showSnackBar(
-                                            const SnackBar(
-                                              content: Text('Download started'),
-                                            ),
-                                          );
+                                          //TODO release.infoUrl
                                         },
                                       ),
                                     IconButton(

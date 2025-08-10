@@ -235,7 +235,6 @@ class MovieActionCard extends ConsumerWidget {
                     );
                   },
                 ),
-                _ActionWidget(
                 // Show either "Downloaded" or "Releases" button based on if the movie has a file
                 if (movie.hasFile == true && movie.movieFile != null)
                   _ActionWidget(
@@ -460,30 +459,33 @@ class _ActionWidget extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.secondaryContainer,
-                borderRadius: BorderRadius.circular(10),
+        child: SizedBox(
+          width: 50,
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.secondaryContainer,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(
+                  icon,
+                  color: theme.colorScheme.onSecondaryContainer,
+                  size: 24,
+                ),
               ),
-              child: Icon(
-                icon,
-                color: theme.colorScheme.onSecondaryContainer,
-                size: 24,
+              const SizedBox(height: 8),
+              Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

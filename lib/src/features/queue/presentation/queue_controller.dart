@@ -7,8 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final queueControllerProvider =
     AsyncNotifierProvider<QueueController, List<QueueItem>>(() {
-  return QueueController();
-});
+      return QueueController();
+    });
 
 class QueueController extends AsyncNotifier<List<QueueItem>> {
   Timer? _autoRefreshTimer;
@@ -17,17 +17,17 @@ class QueueController extends AsyncNotifier<List<QueueItem>> {
   Future<List<QueueItem>> build() async {
     // Get service from ref
     final queueService = ref.watch(queueServiceProvider);
-    
+
     // Initialize auto-refresh
     if (queueService.hasEnabledService) {
       _startAutoRefresh();
     }
-    
+
     // Add listener to dispose timer when ref is disposed
     ref.onDispose(() {
       _stopAutoRefresh();
     });
-    
+
     // Initial data fetch
     if (queueService.hasEnabledService) {
       return await queueService.getQueueItems();
@@ -41,7 +41,7 @@ class QueueController extends AsyncNotifier<List<QueueItem>> {
     _stopAutoRefresh(); // Cancel any existing timer
 
     _autoRefreshTimer = Timer.periodic(
-      const Duration(seconds: 2),
+      const Duration(seconds: 5),
       (_) => refreshQueue(),
     );
   }
@@ -55,7 +55,7 @@ class QueueController extends AsyncNotifier<List<QueueItem>> {
   /// Refresh the queue data from enabled services
   Future<void> refreshQueue() async {
     final queueService = ref.read(queueServiceProvider);
-    
+
     if (!queueService.hasEnabledService) {
       state = const AsyncValue.data([]);
       return;
@@ -63,7 +63,7 @@ class QueueController extends AsyncNotifier<List<QueueItem>> {
 
     try {
       final queueItems = await queueService.getQueueItems();
-      
+
       // Update state with new data
       // This preserves loading state while keeping old data visible
       state = AsyncValue.data(queueItems);
@@ -85,7 +85,7 @@ class QueueController extends AsyncNotifier<List<QueueItem>> {
     bool blocklist = false,
   }) async {
     final queueService = ref.read(queueServiceProvider);
-    
+
     try {
       await queueService.removeQueueItem(
         item,

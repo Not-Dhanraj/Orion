@@ -31,7 +31,7 @@ class _QueuePageState extends ConsumerState<QueuePage> {
   Widget build(BuildContext context) {
     final queueState = ref.watch(queueControllerProvider);
     final queueService = ref.watch(queueServiceProvider);
-    
+
     // Get enabled services info
     final radarrEnabled = queueService.isRadarrEnabled;
     final sonarrEnabled = queueService.isSonarrEnabled;
@@ -71,7 +71,7 @@ class _QueuePageState extends ConsumerState<QueuePage> {
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            color: Theme.of(context).colorScheme.surfaceVariant,
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
             child: Text(
               'Services: $enabledText',
               style: Theme.of(context).textTheme.bodyMedium,
@@ -106,7 +106,7 @@ class _QueuePageState extends ConsumerState<QueuePage> {
       ),
     );
   }
-  
+
   // Helper method to get text indicating which services are enabled
   String _getEnabledServicesText(bool radarrEnabled, bool sonarrEnabled) {
     if (radarrEnabled && sonarrEnabled) {
@@ -124,7 +124,7 @@ class _QueuePageState extends ConsumerState<QueuePage> {
 class QueueItemTile extends ConsumerWidget {
   final QueueItem item;
 
-  const QueueItemTile({Key? key, required this.item}) : super(key: key);
+  const QueueItemTile({super.key, required this.item});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -191,7 +191,7 @@ class QueueItemTile extends ConsumerWidget {
                 children: [
                   LinearProgressIndicator(
                     value: item.progress / 100,
-                    backgroundColor: theme.colorScheme.surfaceVariant,
+                    backgroundColor: theme.colorScheme.surfaceContainerHighest,
                   ),
                   const SizedBox(height: 4),
                   Row(
@@ -218,7 +218,7 @@ class QueueItemTile extends ConsumerWidget {
                   style: subtitleStyle?.copyWith(color: Colors.red),
                 ),
               ),
-            ButtonBar(
+            OverflowBar(
               alignment: MainAxisAlignment.end,
               children: [
                 TextButton(

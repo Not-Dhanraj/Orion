@@ -1,4 +1,3 @@
-import 'package:built_collection/built_collection.dart';
 import 'package:radarr/radarr.dart';
 
 /// Repository for fetching queue data from Radarr

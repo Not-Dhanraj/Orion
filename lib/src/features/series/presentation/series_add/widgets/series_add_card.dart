@@ -248,11 +248,11 @@ class SeriesAddCard extends ConsumerWidget {
         final selectedSeries = state?.selectedSeries;
         final qualityProfiles = state?.qualityProfiles ?? [];
 
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          clipBehavior: Clip.antiAlias,
+        return Dialog.fullscreen(
+          // shape: RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.circular(12),
+          // ),
+          // clipBehavior: Clip.antiAlias,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.9,
             constraints: BoxConstraints(

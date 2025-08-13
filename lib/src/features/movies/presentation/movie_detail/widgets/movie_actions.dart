@@ -331,7 +331,7 @@ class MovieActionCard extends ConsumerWidget {
   ) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (context) => AlertDialog.adaptive(
         title: const Text('Delete Downloaded File'),
         content: Text(
           'Are you sure you want to delete the downloaded file for "${movie.title}"?\n\n'

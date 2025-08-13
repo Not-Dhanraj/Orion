@@ -233,7 +233,10 @@ class MovieAddCard extends ConsumerWidget {
   }
 
   void _showAddMovieDialog(
-      BuildContext context, MovieResource movie, WidgetRef ref) async {
+    BuildContext context,
+    MovieResource movie,
+    WidgetRef ref,
+  ) async {
     // Select the movie in the controller
     ref.read(movieAddControllerProvider.notifier).selectMovie(movie);
     final theme = Theme.of(context);
@@ -244,11 +247,11 @@ class MovieAddCard extends ConsumerWidget {
         final state = ref.watch(movieAddControllerProvider).value;
         final selectedMovie = state?.selectedMovie;
 
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          clipBehavior: Clip.antiAlias,
+        return Dialog.fullscreen(
+          // shape: RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.circular(12),
+          // ),
+          // clipBehavior: Clip.antiAlias,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.9,
             constraints: BoxConstraints(
@@ -271,7 +274,10 @@ class MovieAddCard extends ConsumerWidget {
                             : null,
                         backgroundColor: theme.colorScheme.primaryContainer,
                         child: movie.images?.isEmpty == true
-                            ? Icon(Icons.movie, color: theme.colorScheme.primary)
+                            ? Icon(
+                                Icons.movie,
+                                color: theme.colorScheme.primary,
+                              )
                             : null,
                       ),
                       const SizedBox(width: 12),

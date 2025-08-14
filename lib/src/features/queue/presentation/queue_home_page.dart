@@ -1,4 +1,3 @@
-import 'package:client/src/features/queue/application/queue_service.dart';
 import 'package:client/src/features/queue/presentation/queue_home_controller.dart';
 import 'package:client/src/features/queue/presentation/widgets/queue_list_widget.dart';
 import 'package:client/src/shared/widgets/error_message.dart';

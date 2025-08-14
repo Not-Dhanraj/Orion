@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/src/core/widgets/loading_indicator.dart';
 import 'package:client/src/features/movies/presentation/movie_edit/movie_edit_controller.dart';
 import 'package:client/src/features/movies/presentation/movie_edit/widgets/movie_minimum_availability_dropdown.dart';
@@ -49,7 +50,7 @@ class MovieEditPage extends ConsumerWidget {
                       children: [
                         CircleAvatar(
                           backgroundImage: movieData.images?.isNotEmpty == true
-                              ? NetworkImage(
+                              ? CachedNetworkImageProvider(
                                   movieData.images!.first.remoteUrl ?? '',
                                 )
                               : null,

@@ -1,4 +1,3 @@
-import 'package:client/src/features/calendar/application/calendar_service.dart';
 import 'package:client/src/features/calendar/domain/calendar_item.dart';
 import 'package:client/src/features/calendar/presentation/calendar_home_controller.dart';
 import 'package:client/src/features/calendar/presentation/widgets/calendar_events_widget.dart';
@@ -47,7 +46,6 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
   @override
   Widget build(BuildContext context) {
     final calendarState = ref.watch(calendarHomeControllerProvider);
-    final calendarService = ref.watch(calendarServiceProvider);
 
     return Scaffold(
       appBar: AppBar(

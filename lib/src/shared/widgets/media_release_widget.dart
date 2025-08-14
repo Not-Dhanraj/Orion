@@ -368,28 +368,36 @@ class _MediaReleaseWidgetState extends ConsumerState<MediaReleaseWidget> {
                                                               as String,
                                                         );
 
-                                                    Navigator.of(context).pop();
-                                                    ScaffoldMessenger.of(
-                                                      context,
-                                                    ).showSnackBar(
-                                                      const SnackBar(
-                                                        content: Text(
-                                                          'Download started',
+                                                    if (mounted) {
+                                                      final currentContext = context;
+                                                      Navigator.of(
+                                                        currentContext,
+                                                      ).pop();
+                                                      ScaffoldMessenger.of(
+                                                        currentContext,
+                                                      ).showSnackBar(
+                                                        const SnackBar(
+                                                          content: Text(
+                                                            'Download started',
+                                                          ),
                                                         ),
-                                                      ),
-                                                    );
+                                                      );
+                                                    }
                                                   } catch (e) {
-                                                    ScaffoldMessenger.of(
-                                                      context,
-                                                    ).showSnackBar(
-                                                      SnackBar(
-                                                        content: Text(
-                                                          'Failed to download: ${e.toString()}',
+                                                    if (mounted) {
+                                                      final currentContext = context;
+                                                      ScaffoldMessenger.of(
+                                                        currentContext,
+                                                      ).showSnackBar(
+                                                        SnackBar(
+                                                          content: Text(
+                                                            'Failed to download: ${e.toString()}',
+                                                          ),
+                                                          backgroundColor:
+                                                              Colors.red,
                                                         ),
-                                                        backgroundColor:
-                                                            Colors.red,
-                                                      ),
-                                                    );
+                                                      );
+                                                    }
                                                   }
                                                 },
                                               ),
@@ -565,7 +573,7 @@ class _MediaReleaseWidgetState extends ConsumerState<MediaReleaseWidget> {
       decoration: BoxDecoration(
         color: Theme.of(
           context,
-        ).colorScheme.surfaceVariant.withCustomOpacity(0.7),
+        ).colorScheme.surfaceContainerHighest.withCustomOpacity(0.7),
         borderRadius: BorderRadius.circular(compact ? 4 : 6),
       ),
       child: Row(

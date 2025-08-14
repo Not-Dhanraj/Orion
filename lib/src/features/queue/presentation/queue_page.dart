@@ -239,7 +239,7 @@ class QueueItemTile extends ConsumerWidget {
                                   .removeItem(
                                     item,
                                     removeFromClient: false,
-                                    blocklist: false,
+                                    blacklist: false,
                                   );
                             },
                             child: const Text('Ignore Download'),
@@ -252,7 +252,7 @@ class QueueItemTile extends ConsumerWidget {
                                   .removeItem(
                                     item,
                                     removeFromClient: true,
-                                    blocklist: false,
+                                    blacklist: false,
                                   );
                             },
                             child: const Text('Remove from Client'),
@@ -265,7 +265,7 @@ class QueueItemTile extends ConsumerWidget {
                                   .removeItem(
                                     item,
                                     removeFromClient: true,
-                                    blocklist: true,
+                                    blacklist: true,
                                   );
                             },
                             child: const Text('Blacklist Release'),

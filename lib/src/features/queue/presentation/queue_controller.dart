@@ -41,7 +41,7 @@ class QueueController extends AsyncNotifier<List<QueueItem>> {
     _stopAutoRefresh(); // Cancel any existing timer
 
     _autoRefreshTimer = Timer.periodic(
-      const Duration(seconds: 5),
+      const Duration(seconds: 2),
       (_) => refreshQueue(),
     );
   }
@@ -82,15 +82,15 @@ class QueueController extends AsyncNotifier<List<QueueItem>> {
   Future<void> removeItem(
     QueueItem item, {
     bool removeFromClient = true,
-    bool blocklist = false,
+    bool blacklist = false,
   }) async {
     final queueService = ref.read(queueServiceProvider);
 
     try {
-      await queueService.removeQueueItem(
+      await queueService.deleteQueueItem(
         item,
         removeFromClient: removeFromClient,
-        blocklist: blocklist,
+        blacklist: blacklist,
       );
 
       // Update state optimistically by removing the item

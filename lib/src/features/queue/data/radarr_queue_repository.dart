@@ -42,16 +42,16 @@ class RadarrQueueRepository {
   }
 
   /// Remove an item from the queue
-  Future<void> removeFromQueue(
-    int id, {
+  Future<void> deleteQueueItem({
+    required int id,
     bool? removeFromClient = true,
-    bool? blocklist = false,
+    bool? blacklist = false,
   }) async {
     try {
       await _api.getQueueApi().apiV3QueueIdDelete(
         id: id,
         removeFromClient: removeFromClient,
-        blocklist: blocklist,
+        blocklist: blacklist,
       );
     } catch (e) {
       // Log the error or handle it as needed

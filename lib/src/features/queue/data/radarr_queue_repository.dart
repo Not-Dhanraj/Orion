@@ -1,12 +1,10 @@
 import 'package:radarr/radarr.dart';
 
-/// Repository for fetching queue data from Radarr
 class RadarrQueueRepository {
   final Radarr _api;
 
   RadarrQueueRepository(this._api);
 
-  /// Fetch the current queue from Radarr
   Future<List<QueueResource>> getQueue({
     int? page,
     int? pageSize,
@@ -36,12 +34,10 @@ class RadarrQueueRepository {
       }
       return [];
     } catch (e) {
-      // Log the error or handle it as needed
       rethrow;
     }
   }
 
-  /// Remove an item from the queue
   Future<void> deleteQueueItem({
     required int id,
     bool? removeFromClient = true,
@@ -54,7 +50,6 @@ class RadarrQueueRepository {
         blocklist: blacklist,
       );
     } catch (e) {
-      // Log the error or handle it as needed
       rethrow;
     }
   }

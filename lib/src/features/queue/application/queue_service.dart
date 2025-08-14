@@ -6,46 +6,19 @@ import 'package:client/src/features/queue/data/sonarr_queue_repository.dart';
 import 'package:client/src/features/queue/domain/queue_item.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final queueServiceProvider = Provider<QueueService>((ref) {
-  final enabled = ref.watch(enabledNotifierProvider);
-
-  // Initialize repositories based on enabled services
-  RadarrQueueRepository? radarrRepo;
-  SonarrQueueRepository? sonarrRepo;
-
-  if (enabled.radarr) {
-    final radarrApi = ref.watch(moviesApiProvider);
-    radarrRepo = RadarrQueueRepository(radarrApi);
-  }
-
-  if (enabled.sonarr) {
-    final sonarrApi = ref.watch(seriesApiProvider);
-    sonarrRepo = SonarrQueueRepository(sonarrApi);
-  }
-
-  return QueueService(ref, radarrRepo: radarrRepo, sonarrRepo: sonarrRepo);
-});
-
 class QueueService {
   final RadarrQueueRepository? radarrRepo;
   final SonarrQueueRepository? sonarrRepo;
 
   QueueService(Ref ref, {this.radarrRepo, this.sonarrRepo});
 
-  /// Check if any service is enabled
-  bool get hasEnabledService => radarrRepo != null || sonarrRepo != null;
-
-  /// Check if Radarr service is enabled
   bool get isRadarrEnabled => radarrRepo != null;
 
-  /// Check if Sonarr service is enabled
   bool get isSonarrEnabled => sonarrRepo != null;
 
-  /// Fetch queue items from all enabled services
   Future<List<QueueItem>> getQueueItems({int? page, int? pageSize = 50}) async {
     final List<QueueItem> combinedQueue = [];
 
-    // Fetch from Radarr if enabled
     if (isRadarrEnabled) {
       try {
         final radarrQueue = await radarrRepo!.getQueue(
@@ -66,7 +39,6 @@ class QueueService {
       }
     }
 
-    // Fetch from Sonarr if enabled
     if (isSonarrEnabled) {
       try {
         final sonarrQueue = await sonarrRepo!.getQueue(
@@ -88,13 +60,11 @@ class QueueService {
       }
     }
 
-    // Sort by progress percentage descending (most complete first)
     combinedQueue.sort((a, b) => b.progress.compareTo(a.progress));
 
     return combinedQueue;
   }
 
-  /// Delete an item from the queue
   Future<void> deleteQueueItem(
     QueueItem item, {
     bool removeFromClient = true,
@@ -125,3 +95,22 @@ class QueueService {
     }
   }
 }
+
+final queueServiceProvider = Provider<QueueService>((ref) {
+  final enabled = ref.watch(enabledNotifierProvider);
+
+  RadarrQueueRepository? radarrRepo;
+  SonarrQueueRepository? sonarrRepo;
+
+  if (enabled.radarr) {
+    final radarrApi = ref.watch(moviesApiProvider);
+    radarrRepo = RadarrQueueRepository(radarrApi);
+  }
+
+  if (enabled.sonarr) {
+    final sonarrApi = ref.watch(seriesApiProvider);
+    sonarrRepo = SonarrQueueRepository(sonarrApi);
+  }
+
+  return QueueService(ref, radarrRepo: radarrRepo, sonarrRepo: sonarrRepo);
+});

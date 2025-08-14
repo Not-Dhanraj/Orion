@@ -1,12 +1,10 @@
 import 'package:sonarr/sonarr.dart';
 
-/// Repository for fetching calendar data from Sonarr API
 class SonarrCalendarRepository {
   final Sonarr _sonarrApi;
 
   SonarrCalendarRepository(this._sonarrApi);
 
-  /// Fetch calendar data from Sonarr
   Future<List<EpisodeResource>> getCalendar({
     DateTime? start,
     DateTime? end,

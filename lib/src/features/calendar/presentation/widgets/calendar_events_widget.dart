@@ -1,6 +1,7 @@
 import 'package:client/src/features/calendar/domain/calendar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:intl/intl.dart';
 
@@ -36,15 +37,14 @@ class CalendarEventsWidget extends ConsumerWidget {
             ),
           ),
         ),
-        ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
+        MasonryGridView.extent(
+          maxCrossAxisExtent: 700,
+          crossAxisSpacing: 0,
+          mainAxisSpacing: 0,
           itemCount: events.length,
+          shrinkWrap: true,
           itemBuilder: (context, index) {
-            return CalendarEventCard(
-              event: events[index],
-              showDate: showDate,
-            );
+            return CalendarEventCard(event: events[index], showDate: showDate);
           },
         ),
       ],
@@ -55,28 +55,28 @@ class CalendarEventsWidget extends ConsumerWidget {
 class CalendarEventCard extends StatelessWidget {
   final CalendarItem event;
   final bool showDate;
-  
+
   const CalendarEventCard({
     super.key,
     required this.event,
     this.showDate = true,
   });
-  
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final dateFormat = DateFormat('EEE, MMM d');
-    
-    // Determine media type icon
+
     final bool isMovie = event.isRadarr;
-    final IconData typeIcon = isMovie ? TablerIcons.movie : TablerIcons.device_tv;
+    final IconData typeIcon = isMovie
+        ? TablerIcons.movie
+        : TablerIcons.device_tv;
     final Color typeColor = isMovie ? Colors.blue : Colors.purple;
-    
-    // Determine download status icon and color
+
     IconData statusIcon = TablerIcons.calendar;
     Color statusColor = theme.colorScheme.primary;
     String statusText = 'Upcoming';
-    
+
     if (event.hasFile) {
       statusIcon = TablerIcons.check;
       statusColor = Colors.green;
@@ -86,7 +86,7 @@ class CalendarEventCard extends StatelessWidget {
       statusColor = Colors.grey;
       statusText = 'Unmonitored';
     }
-    
+
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: Padding(
@@ -94,7 +94,6 @@ class CalendarEventCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Title row with media type icon
             Row(
               children: [
                 Icon(typeIcon, size: 16, color: typeColor),
@@ -111,7 +110,7 @@ class CalendarEventCard extends StatelessWidget {
                 ),
               ],
             ),
-            
+
             if (event.overview.isNotEmpty) ...[
               const SizedBox(height: 8),
               Text(
@@ -121,10 +120,9 @@ class CalendarEventCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ],
-            
+
             const SizedBox(height: 8),
-            
-            // Air date and status row
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -141,8 +139,7 @@ class CalendarEventCard extends StatelessWidget {
                   )
                 else
                   const SizedBox.shrink(),
-                
-                // Status indicator
+
                 Row(
                   children: [
                     Icon(statusIcon, size: 14, color: statusColor),
@@ -157,9 +154,10 @@ class CalendarEventCard extends StatelessWidget {
                 ),
               ],
             ),
-            
-            // Additional media details for episodes
-            if (!isMovie && event.seasonNumber != null && event.episodeNumber != null) ...[
+
+            if (!isMovie &&
+                event.seasonNumber != null &&
+                event.episodeNumber != null) ...[
               const SizedBox(height: 4),
               Row(
                 children: [

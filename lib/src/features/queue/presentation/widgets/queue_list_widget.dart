@@ -3,6 +3,7 @@ import 'package:client/src/features/queue/presentation/queue_home_controller.dar
 import 'package:client/src/utils/format_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class QueueListWidget extends StatelessWidget {
   final List<QueueItem> items;
@@ -11,8 +12,13 @@ class QueueListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return MasonryGridView.extent(
+      padding: const EdgeInsets.all(8.0),
+      maxCrossAxisExtent: 650,
+      crossAxisSpacing: 8,
+      mainAxisSpacing: 8,
       itemCount: items.length,
+
       itemBuilder: (context, index) {
         final item = items[index];
         return QueueItemTile(item: item);
@@ -32,7 +38,6 @@ class QueueItemTile extends ConsumerWidget {
     final titleStyle = theme.textTheme.titleMedium;
     final subtitleStyle = theme.textTheme.bodyMedium;
 
-    // Get appropriate icon and color based on source and status
     IconData sourceIcon = item.isRadarr ? Icons.movie : Icons.tv;
     Color? statusColor;
     IconData statusIcon;
@@ -60,7 +65,7 @@ class QueueItemTile extends ConsumerWidget {
     }
 
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(

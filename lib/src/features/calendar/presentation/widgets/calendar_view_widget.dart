@@ -64,10 +64,11 @@ class _CalendarViewWidgetState extends ConsumerState<CalendarViewWidget> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final now = DateTime.now();
 
     return TableCalendar<CalendarItem>(
-      firstDay: DateTime.utc(2010, 1, 1),
-      lastDay: DateTime.utc(2030, 12, 31),
+      firstDay: DateTime(now.year, now.month - 1, 1).toUtc(),
+      lastDay: DateTime(now.year, now.month + 2, 0).toUtc(),
       focusedDay: widget.focusedDay,
       selectedDayPredicate: (day) => isSameDay(widget.selectedDay, day),
       calendarFormat: widget.calendarFormat,

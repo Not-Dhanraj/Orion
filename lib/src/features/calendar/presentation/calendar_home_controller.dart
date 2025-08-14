@@ -23,23 +23,17 @@ class CalendarHomeController extends AsyncNotifier<List<CalendarItem>> {
 
     _setDefaultDateRange();
 
-    if (calendarService.hasEnabledService) {
-      _startAutoRefresh();
-    }
+    _startAutoRefresh();
 
     ref.onDispose(() {
       _stopAutoRefresh();
     });
 
-    if (calendarService.hasEnabledService) {
-      return await calendarService.getCalendarItems(
-        start: _startDate,
-        end: _endDate,
-        includeUnmonitored: includeUnmonitored,
-      );
-    } else {
-      return [];
-    }
+    return await calendarService.getCalendarItems(
+      start: _startDate,
+      end: _endDate,
+      includeUnmonitored: includeUnmonitored,
+    );
   }
 
   void _setDefaultDateRange() {
@@ -70,11 +64,6 @@ class CalendarHomeController extends AsyncNotifier<List<CalendarItem>> {
 
   Future<void> refreshCalendar() async {
     final calendarService = ref.read(calendarServiceProvider);
-
-    if (!calendarService.hasEnabledService) {
-      state = const AsyncValue.data([]);
-      return;
-    }
 
     try {
       final calendarItems = await calendarService.getCalendarItems(

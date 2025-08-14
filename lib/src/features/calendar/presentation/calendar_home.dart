@@ -49,10 +49,6 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
     final calendarState = ref.watch(calendarHomeControllerProvider);
     final calendarService = ref.watch(calendarServiceProvider);
 
-    final radarrEnabled = calendarService.isRadarrEnabled;
-    final sonarrEnabled = calendarService.isSonarrEnabled;
-    final enabledText = _getEnabledServicesText(radarrEnabled, sonarrEnabled);
-
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -81,94 +77,61 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            color: Theme.of(context).colorScheme.surfaceContainerHighest,
-            child: Text(
-              'Services: $enabledText',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
+      body: calendarState.when(
+        data: (calendarItems) {
+          _allItems = calendarItems;
 
-          Expanded(
-            child: calendarState.when(
-              data: (calendarItems) {
-                _allItems = calendarItems;
+          _selectedDayEvents = _getEventsForDay(_selectedDay, calendarItems);
 
-                if (calendarItems.isEmpty) {
-                  return const Center(
-                    child: Text('No upcoming releases in calendar'),
-                  );
-                }
+          _upcomingWeekEvents = _getUpcomingWeekEvents(calendarItems);
 
-                _selectedDayEvents = _getEventsForDay(
-                  _selectedDay,
-                  calendarItems,
-                );
-
-                _upcomingWeekEvents = _getUpcomingWeekEvents(calendarItems);
-
-                return RefreshIndicator(
-                  onRefresh: _refreshCalendar,
-                  child: SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: CalendarViewWidget(
-                            items: calendarItems,
-                            focusedDay: _focusedDay,
-                            selectedDay: _selectedDay,
-                            calendarFormat: _calendarFormat,
-                            onDaySelected: _onDaySelected,
-                            onViewChanged: _onCalendarFormatChanged,
-                          ),
-                        ),
-
-                        if (_selectedDayEvents.isNotEmpty)
-                          CalendarEventsWidget(
-                            events: _selectedDayEvents,
-                            title: 'Selected Day',
-                            showDate: false,
-                          ),
-
-                        if (_upcomingWeekEvents.isNotEmpty)
-                          CalendarEventsWidget(
-                            events: _upcomingWeekEvents,
-                            title: 'Coming This Week',
-                            showDate: true,
-                          ),
-                      ],
+          return RefreshIndicator(
+            onRefresh: _refreshCalendar,
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: CalendarViewWidget(
+                      items: calendarItems,
+                      focusedDay: _focusedDay,
+                      selectedDay: _selectedDay,
+                      calendarFormat: _calendarFormat,
+                      onDaySelected: _onDaySelected,
+                      onViewChanged: _onCalendarFormatChanged,
                     ),
                   ),
-                );
-              },
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (error, stackTrace) => ErrorMessage(
-                message: 'Error loading calendar: $error',
-                onRetry: _refreshCalendar,
+                  if (calendarItems.isEmpty)
+                    const Center(
+                      child: Text('No upcoming releases in calendar'),
+                    ),
+
+                  if (_selectedDayEvents.isNotEmpty)
+                    CalendarEventsWidget(
+                      events: _selectedDayEvents,
+                      title: 'Selected Day',
+                      showDate: false,
+                    ),
+
+                  if (_upcomingWeekEvents.isNotEmpty)
+                    CalendarEventsWidget(
+                      events: _upcomingWeekEvents,
+                      title: 'Coming This Week',
+                      showDate: true,
+                    ),
+                ],
               ),
             ),
-          ),
-        ],
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stackTrace) => ErrorMessage(
+          message: 'Error loading calendar: $error',
+          onRetry: _refreshCalendar,
+        ),
       ),
     );
-  }
-
-  String _getEnabledServicesText(bool radarrEnabled, bool sonarrEnabled) {
-    if (radarrEnabled && sonarrEnabled) {
-      return 'Radarr & Sonarr';
-    } else if (radarrEnabled) {
-      return 'Radarr only';
-    } else if (sonarrEnabled) {
-      return 'Sonarr only';
-    } else {
-      return 'None enabled';
-    }
   }
 
   List<CalendarItem> _getEventsForDay(

@@ -1,12 +1,10 @@
 import 'package:radarr/radarr.dart';
 
-/// Repository for fetching calendar data from Radarr API
 class RadarrCalendarRepository {
   final Radarr _radarrApi;
 
   RadarrCalendarRepository(this._radarrApi);
 
-  /// Fetch calendar data from Radarr
   Future<List<MovieResource>> getCalendar({
     DateTime? start,
     DateTime? end,

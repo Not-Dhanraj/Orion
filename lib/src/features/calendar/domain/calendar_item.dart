@@ -1,7 +1,6 @@
 import 'package:radarr/radarr.dart' show MovieResource, MediaCoverTypes;
 import 'package:sonarr/sonarr.dart' show EpisodeResource;
 
-/// A model representing a calendar item from either Sonarr or Radarr
 class CalendarItem {
   final int id;
   final String title;
@@ -10,12 +9,12 @@ class CalendarItem {
   final String? posterPath;
   final bool hasFile;
   final bool monitored;
-  final bool isRadarr; // Whether this is from Radarr (true) or Sonarr (false)
-  final String? seriesTitle; // Only for Sonarr items
-  final int? seasonNumber; // Only for Sonarr items
-  final int? episodeNumber; // Only for Sonarr items
-  final String? quality; // Quality profile of the item
-  final int? runtime; // Runtime in minutes
+  final bool isRadarr;
+  final String? seriesTitle;
+  final int? seasonNumber;
+  final int? episodeNumber;
+  final String? quality;
+  final int? runtime;
 
   CalendarItem({
     required this.id,
@@ -33,7 +32,6 @@ class CalendarItem {
     this.runtime,
   });
 
-  /// Factory method to create a CalendarItem from a Radarr MovieResource
   factory CalendarItem.fromRadarr(MovieResource movie) {
     return CalendarItem(
       id: movie.id!,
@@ -54,7 +52,6 @@ class CalendarItem {
     );
   }
 
-  /// Factory method to create a CalendarItem from a Sonarr EpisodeResource
   factory CalendarItem.fromSonarr(EpisodeResource episode) {
     return CalendarItem(
       id: episode.id!,
@@ -78,7 +75,6 @@ class CalendarItem {
     );
   }
 
-  /// Helper method to get a formatted episode number string (S01E01)
   String? get episodeNumberFormatted {
     if (!isRadarr && seasonNumber != null && episodeNumber != null) {
       return 'S${seasonNumber.toString().padLeft(2, '0')}E${episodeNumber.toString().padLeft(2, '0')}';
@@ -86,7 +82,6 @@ class CalendarItem {
     return null;
   }
 
-  /// Helper method to get a full title (includes series title for TV shows)
   String get fullTitle {
     if (!isRadarr && seriesTitle != null) {
       final epNumber = episodeNumberFormatted;

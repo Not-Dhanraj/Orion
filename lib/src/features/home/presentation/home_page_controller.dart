@@ -1,11 +1,11 @@
 import 'package:client/src/core/application/enabled_provider.dart';
 import 'package:client/src/features/calendar/presentation/calendar_page_new.dart';
 import 'package:client/src/features/home/domain/home_page_items.dart';
-import 'package:client/src/features/home/presentation/home_page.dart'
-    hide CalendarPage, QueuePage;
+
 import 'package:client/src/features/movies/presentation/movie_home/movie_home.dart';
 import 'package:client/src/features/queue/presentation/queue_page.dart';
 import 'package:client/src/features/series/presentation/series_home/series_home.dart';
+import 'package:client/src/features/settings/presentation/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';

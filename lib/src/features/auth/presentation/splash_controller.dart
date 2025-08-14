@@ -15,19 +15,30 @@ class SplashController extends AsyncNotifier<void> {
 
   void navigateToNextScreen() async {
     final hiveService = ref.read(hiveProvider);
-    await hiveService.init();
-    final enabled = ref.read(enabledNotifierProvider);
-    if (enabled.sonarr || enabled.radarr) {
-      await Future.delayed(const Duration(seconds: 1));
-      final data = ref.read(homePageControllerProvider);
 
-      navigatorKey.currentState!.pushReplacement(
-        MaterialPageRoute(
-          builder: (context) =>
-              HomePage(pages: data.pages, bottomNavItems: data.navItems),
-        ),
-      );
-    } else {
+    try {
+      await hiveService.init();
+
+      final enabled = ref.read(enabledNotifierProvider);
+
+      if (enabled.sonarr || enabled.radarr) {
+        await Future.delayed(const Duration(seconds: 1));
+        final data = ref.read(homePageControllerProvider);
+
+        navigatorKey.currentState!.pushReplacement(
+          MaterialPageRoute(
+            builder: (context) =>
+                HomePage(pages: data.pages, bottomNavItems: data.navItems),
+          ),
+        );
+      } else {
+        await Future.delayed(const Duration(seconds: 1));
+        navigatorKey.currentState!.pushReplacement(
+          MaterialPageRoute(builder: (context) => const AuthScreen()),
+        );
+      }
+    } catch (e) {
+      debugPrint('Error in navigateToNextScreen: $e');
       await Future.delayed(const Duration(seconds: 1));
       navigatorKey.currentState!.pushReplacement(
         MaterialPageRoute(builder: (context) => const AuthScreen()),

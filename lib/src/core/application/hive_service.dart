@@ -1,24 +1,49 @@
 import 'package:client/src/constants/app_const.dart';
 import 'package:client/src/core/domain/credentials.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 
 class HiveService {
+  static const String themeBoxName = 'theme_settings';
+
   Future<void> init() async {
     await Hive.initFlutter();
-    Hive.registerAdapter(SonarrCredentialsAdapter());
-    Hive.registerAdapter(RadarrCredentialsAdapter());
-    var appConst = AppConst();
-    var sonarrBox = await Hive.openBox(appConst.sonarrBox);
-    if (sonarrBox.get(appConst.sonarrEnabled) == null) {
-      sonarrBox.put(appConst.sonarrEnabled, false);
+
+    // Register adapters only if not already registered
+    try {
+      // Check if adapters are already registered by their typeId
+      if (!_isAdapterRegistered(1)) {
+        Hive.registerAdapter(SonarrCredentialsAdapter());
+      }
+
+      if (!_isAdapterRegistered(2)) {
+        Hive.registerAdapter(RadarrCredentialsAdapter());
+      }
+    } catch (e) {
+      // Log any errors
+      debugPrint('Error registering adapters: $e');
     }
 
-    var radarrBox = await Hive.openBox(appConst.radarrBox);
-    if (radarrBox.get(appConst.radarrEnabled) == null) {
-      radarrBox.put(appConst.radarrEnabled, false);
-    }
+    var appConst = AppConst();
+
+    // Open boxes
+    await Hive.openBox(appConst.sonarrBox);
+    await Hive.openBox(appConst.radarrBox);
     await Hive.openBox(appConst.credentialsBox);
+
+    // Open theme settings box
+    await Hive.openBox(themeBoxName);
+  }
+
+  // Helper method to check if an adapter is already registered
+  bool _isAdapterRegistered(int typeId) {
+    try {
+      return Hive.isAdapterRegistered(typeId);
+    } catch (_) {
+      // If we can't check, assume it's not registered
+      return false;
+    }
   }
 
   Future<void> saveSonarrCredentials(SonarrCredentials credentials) async {

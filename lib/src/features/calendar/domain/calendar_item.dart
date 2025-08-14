@@ -1,5 +1,5 @@
-import 'package:radarr/src/model/movie_resource.dart';
-import 'package:sonarr/src/model/episode_resource.dart';
+import 'package:radarr/radarr.dart' show MovieResource, MediaCoverTypes;
+import 'package:sonarr/sonarr.dart' show EpisodeResource;
 
 /// A model representing a calendar item from either Sonarr or Radarr
 class CalendarItem {
@@ -42,7 +42,7 @@ class CalendarItem {
       overview: movie.overview ?? '',
       posterPath: movie.images
           ?.firstWhere(
-            (img) => img.coverType == 'poster',
+            (img) => img.coverType == MediaCoverTypes.poster,
             orElse: () => movie.images!.first,
           )
           .remoteUrl,
@@ -63,7 +63,7 @@ class CalendarItem {
       overview: episode.overview ?? '',
       posterPath: episode.series?.images
           ?.firstWhere(
-            (img) => img.coverType == 'poster',
+            (img) => img.coverType == MediaCoverTypes.poster,
             orElse: () => episode.series!.images!.first,
           )
           .remoteUrl,

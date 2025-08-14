@@ -5,12 +5,12 @@ import 'package:client/src/features/queue/domain/queue_item.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final queueControllerProvider =
-    AsyncNotifierProvider<QueueController, List<QueueItem>>(() {
-      return QueueController();
+final queueHomeControllerProvider =
+    AsyncNotifierProvider<QueueHomeController, List<QueueItem>>(() {
+      return QueueHomeController();
     });
 
-class QueueController extends AsyncNotifier<List<QueueItem>> {
+class QueueHomeController extends AsyncNotifier<List<QueueItem>> {
   Timer? _autoRefreshTimer;
 
   @override
@@ -102,19 +102,55 @@ class QueueController extends AsyncNotifier<List<QueueItem>> {
         state = AsyncValue.data(updatedItems);
       });
 
-      // Refresh to ensure data is up-to-date
-      // No need to show loading state since we already updated optimistically
-      try {
-        final queueItems = await queueService.getQueueItems();
-        state = AsyncValue.data(queueItems);
-      } catch (e) {
-        // Ignore refresh errors after removal as we've already updated optimistically
-        debugPrint('Error refreshing after item removal: $e');
-      }
+      // Refresh the queue after a short delay to ensure changes are reflected
+      await Future.delayed(const Duration(milliseconds: 500));
+      await refreshQueue();
     } catch (e) {
+      // If error occurs, refresh the queue to ensure correct data
       debugPrint('Error removing queue item: $e');
-      // If there was an error, refresh to get accurate data
-      refreshQueue();
+      await refreshQueue();
+    }
+  }
+
+  /// Remove a queue item by ID
+  Future<void> removeQueueItem({
+    required int id,
+    required bool isRadarr,
+    bool removeFromClient = true,
+    bool blacklist = false,
+  }) async {
+    final queueService = ref.read(queueServiceProvider);
+
+    try {
+      // Create a minimal QueueItem just for deletion
+      final item = QueueItem(
+        id: id,
+        isRadarr: isRadarr,
+        title: 'Temporary Item', // Not used for deletion
+        status: 'Unknown', // Not used for deletion
+        originalResource: null, // Not used for deletion
+      );
+
+      await queueService.deleteQueueItem(
+        item,
+        removeFromClient: removeFromClient,
+        blacklist: blacklist,
+      );
+
+      // Update state optimistically by removing the item
+      state.whenData((currentItems) {
+        final updatedItems = [...currentItems];
+        updatedItems.removeWhere((i) => i.id == id && i.isRadarr == isRadarr);
+        state = AsyncValue.data(updatedItems);
+      });
+
+      // Refresh the queue after a short delay to ensure changes are reflected
+      await Future.delayed(const Duration(milliseconds: 500));
+      await refreshQueue();
+    } catch (e) {
+      // If error occurs, refresh the queue to ensure correct data
+      debugPrint('Error removing queue item: $e');
+      await refreshQueue();
     }
   }
 }

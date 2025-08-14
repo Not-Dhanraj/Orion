@@ -2,9 +2,10 @@ import 'package:client/src/features/settings/application/settings_controller.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class ThemeSelector extends ConsumerWidget {
-  const ThemeSelector({Key? key}) : super(key: key);
+  const ThemeSelector({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -76,7 +77,7 @@ class _ThemeOptionTile extends StatelessWidget {
 
     return Material(
       color: isSelected
-          ? theme.colorScheme.primaryContainer.withOpacity(0.3)
+          ? theme.colorScheme.primaryContainer.withCustomOpacity(0.3)
           : Colors.transparent,
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
@@ -90,8 +91,9 @@ class _ThemeOptionTile extends StatelessWidget {
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? theme.colorScheme.primary.withOpacity(0.2)
-                      : theme.colorScheme.surfaceVariant.withOpacity(0.4),
+                      ? theme.colorScheme.primary.withCustomOpacity(0.2)
+                      : theme.colorScheme.surfaceContainerHighest
+                            .withCustomOpacity(0.4),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(

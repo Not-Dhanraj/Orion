@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class CredentialsEditor extends StatefulWidget {
   final String serviceName;
@@ -8,12 +9,12 @@ class CredentialsEditor extends StatefulWidget {
   final Future<void> Function(String, String) onSave;
 
   const CredentialsEditor({
-    Key? key,
+    super.key,
     required this.serviceName,
     required this.initialUrl,
     required this.initialApiKey,
     required this.onSave,
-  }) : super(key: key);
+  });
 
   @override
   State<CredentialsEditor> createState() => _CredentialsEditorState();
@@ -44,7 +45,7 @@ class _CredentialsEditorState extends State<CredentialsEditor> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isRadarr = widget.serviceName == 'Radarr';
-    
+
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
@@ -91,20 +92,31 @@ class _CredentialsEditorState extends State<CredentialsEditor> {
                     controller: _urlController,
                     decoration: InputDecoration(
                       labelText: 'Server URL',
-                      hintText: 'e.g., http://192.168.1.100:${isRadarr ? '7878' : '8989'}',
+                      hintText:
+                          'e.g., http://192.168.1.100:${isRadarr ? '7878' : '8989'}',
                       prefixIcon: const Icon(TablerIcons.link, size: 20),
                       isDense: true,
-                      contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal: 16,
+                      ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: theme.colorScheme.outline.withOpacity(0.6)),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.outline.withCustomOpacity(
+                            0.6,
+                          ),
+                        ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: theme.colorScheme.primary, width: 1.5),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.primary,
+                          width: 1.5,
+                        ),
                       ),
                     ),
                     validator: (value) {
@@ -123,21 +135,33 @@ class _CredentialsEditorState extends State<CredentialsEditor> {
                       hintText: 'Enter your API key',
                       prefixIcon: const Icon(TablerIcons.key, size: 20),
                       isDense: true,
-                      contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal: 16,
+                      ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: theme.colorScheme.outline.withOpacity(0.6)),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.outline.withCustomOpacity(
+                            0.6,
+                          ),
+                        ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: theme.colorScheme.primary, width: 1.5),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.primary,
+                          width: 1.5,
+                        ),
                       ),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscureApiKey ? TablerIcons.eye : TablerIcons.eye_off,
+                          _obscureApiKey
+                              ? TablerIcons.eye
+                              : TablerIcons.eye_off,
                           size: 20,
                         ),
                         onPressed: () {
@@ -164,19 +188,30 @@ class _CredentialsEditorState extends State<CredentialsEditor> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
+                  onPressed: _isLoading
+                      ? null
+                      : () => Navigator.of(context).pop(),
                   style: TextButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 10,
+                    ),
                   ),
-                  child: Text('CANCEL', style: TextStyle(
-                    color: theme.colorScheme.onSurface.withOpacity(0.8),
-                  )),
+                  child: Text(
+                    'CANCEL',
+                    style: TextStyle(
+                      color: theme.colorScheme.onSurface.withCustomOpacity(0.8),
+                    ),
+                  ),
                 ),
                 const SizedBox(width: 12),
                 FilledButton(
                   onPressed: _isLoading ? null : _saveCredentials,
                   style: FilledButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 10,
+                    ),
                   ),
                   child: _isLoading
                       ? const SizedBox(
@@ -184,7 +219,9 @@ class _CredentialsEditorState extends State<CredentialsEditor> {
                           height: 16,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.white,
+                            ),
                           ),
                         )
                       : const Text('SAVE'),

@@ -11,7 +11,7 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeSettingsProvider);
-    
+
     return MaterialApp(
       navigatorKey: navigatorKey,
       title: 'Flutter',

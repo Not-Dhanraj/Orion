@@ -4,19 +4,17 @@ import 'package:client/src/features/settings/presentation/widgets/theme_selector
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
+import 'package:with_opacity/with_opacity.dart';
 
 class SettingsPage extends ConsumerWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final serviceSettings = ref.watch(serviceSettingsProvider);
-    final theme = Theme.of(context);
-    
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-      ),
+      appBar: AppBar(title: const Text('Settings')),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -26,11 +24,9 @@ class SettingsPage extends ConsumerWidget {
               const _SettingsSection(
                 title: 'Appearance',
                 icon: TablerIcons.palette,
-                children: [
-                  ThemeSelector(),
-                ],
+                children: [ThemeSelector()],
               ),
-              
+
               // Service Settings Section
               _SettingsSection(
                 title: 'Radarr Configuration',
@@ -46,11 +42,13 @@ class SettingsPage extends ConsumerWidget {
                       icon: TablerIcons.edit,
                       title: 'Edit Credentials',
                       onTap: () => _showEditCredentialsDialog(
-                        context, 
-                        'Radarr', 
+                        context,
+                        'Radarr',
                         serviceSettings.radarrCredentials!.radarrUrl,
                         serviceSettings.radarrCredentials!.radarrApi,
-                        (url, apiKey) => ref.read(serviceSettingsProvider.notifier).updateRadarrCredentials(url, apiKey),
+                        (url, apiKey) => ref
+                            .read(serviceSettingsProvider.notifier)
+                            .updateRadarrCredentials(url, apiKey),
                       ),
                     ),
                     const Divider(height: 1, indent: 56, endIndent: 16),
@@ -59,9 +57,11 @@ class SettingsPage extends ConsumerWidget {
                       title: 'Delete Service',
                       isDestructive: true,
                       onTap: () => _showDeleteConfirmation(
-                        context, 
-                        'Radarr', 
-                        () => ref.read(serviceSettingsProvider.notifier).deleteRadarrService(),
+                        context,
+                        'Radarr',
+                        () => ref
+                            .read(serviceSettingsProvider.notifier)
+                            .deleteRadarrService(),
                       ),
                     ),
                   ] else
@@ -69,16 +69,18 @@ class SettingsPage extends ConsumerWidget {
                       icon: TablerIcons.plus,
                       title: 'Add Radarr',
                       onTap: () => _showEditCredentialsDialog(
-                        context, 
-                        'Radarr', 
-                        '', 
+                        context,
+                        'Radarr',
                         '',
-                        (url, apiKey) => ref.read(serviceSettingsProvider.notifier).updateRadarrCredentials(url, apiKey),
+                        '',
+                        (url, apiKey) => ref
+                            .read(serviceSettingsProvider.notifier)
+                            .updateRadarrCredentials(url, apiKey),
                       ),
                     ),
                 ],
               ),
-              
+
               _SettingsSection(
                 title: 'Sonarr Configuration',
                 icon: TablerIcons.device_tv,
@@ -93,11 +95,13 @@ class SettingsPage extends ConsumerWidget {
                       icon: TablerIcons.edit,
                       title: 'Edit Credentials',
                       onTap: () => _showEditCredentialsDialog(
-                        context, 
-                        'Sonarr', 
+                        context,
+                        'Sonarr',
                         serviceSettings.sonarrCredentials!.sonarrUrl,
                         serviceSettings.sonarrCredentials!.sonarrApi,
-                        (url, apiKey) => ref.read(serviceSettingsProvider.notifier).updateSonarrCredentials(url, apiKey),
+                        (url, apiKey) => ref
+                            .read(serviceSettingsProvider.notifier)
+                            .updateSonarrCredentials(url, apiKey),
                       ),
                     ),
                     const Divider(height: 1, indent: 56, endIndent: 16),
@@ -106,9 +110,11 @@ class SettingsPage extends ConsumerWidget {
                       title: 'Delete Service',
                       isDestructive: true,
                       onTap: () => _showDeleteConfirmation(
-                        context, 
-                        'Sonarr', 
-                        () => ref.read(serviceSettingsProvider.notifier).deleteSonarrService(),
+                        context,
+                        'Sonarr',
+                        () => ref
+                            .read(serviceSettingsProvider.notifier)
+                            .deleteSonarrService(),
                       ),
                     ),
                   ] else
@@ -116,16 +122,18 @@ class SettingsPage extends ConsumerWidget {
                       icon: TablerIcons.plus,
                       title: 'Add Sonarr',
                       onTap: () => _showEditCredentialsDialog(
-                        context, 
-                        'Sonarr', 
-                        '', 
+                        context,
+                        'Sonarr',
                         '',
-                        (url, apiKey) => ref.read(serviceSettingsProvider.notifier).updateSonarrCredentials(url, apiKey),
+                        '',
+                        (url, apiKey) => ref
+                            .read(serviceSettingsProvider.notifier)
+                            .updateSonarrCredentials(url, apiKey),
                       ),
                     ),
                 ],
               ),
-              
+
               // About Section
               _SettingsSection(
                 title: 'About',
@@ -138,7 +146,10 @@ class SettingsPage extends ConsumerWidget {
                         SizedBox(width: 40),
                         Text('Version'),
                         Spacer(),
-                        Text('1.0.0', style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text(
+                          '1.0.0',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ],
                     ),
                   ),
@@ -165,12 +176,12 @@ class SettingsPage extends ConsumerWidget {
       ),
     );
   }
-  
+
   void _showEditCredentialsDialog(
-    BuildContext context, 
-    String serviceName, 
-    String initialUrl, 
-    String initialApiKey, 
+    BuildContext context,
+    String serviceName,
+    String initialUrl,
+    String initialApiKey,
     Future<void> Function(String, String) onSave,
   ) {
     showDialog(
@@ -183,19 +194,21 @@ class SettingsPage extends ConsumerWidget {
       ),
     );
   }
-  
+
   void _showDeleteConfirmation(
-    BuildContext context, 
-    String serviceName, 
+    BuildContext context,
+    String serviceName,
     VoidCallback onConfirm,
   ) {
     final theme = Theme.of(context);
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text('Delete $serviceName'),
-        content: Text('Are you sure you want to delete this service? This will remove all credentials and disable the service.'),
+        content: Text(
+          'Are you sure you want to delete this service? This will remove all credentials and disable the service.',
+        ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         actions: [
           TextButton(
@@ -233,7 +246,7 @@ class _SettingsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Card(
       elevation: 3,
       shadowColor: theme.colorScheme.shadow.withAlpha(40),
@@ -258,11 +271,7 @@ class _SettingsSection extends StatelessWidget {
                     color: theme.colorScheme.primaryContainer.withAlpha(100),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Icon(
-                    icon,
-                    size: 20,
-                    color: theme.colorScheme.primary,
-                  ),
+                  child: Icon(icon, size: 20, color: theme.colorScheme.primary),
                 ),
                 const SizedBox(width: 12),
                 Text(
@@ -297,22 +306,17 @@ class _ActionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final color = isDestructive ? theme.colorScheme.error : theme.colorScheme.primary;
-    
+    final color = isDestructive
+        ? theme.colorScheme.error
+        : theme.colorScheme.primary;
+
     return InkWell(
       onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
         child: Row(
           children: [
-            SizedBox(
-              width: 40,
-              child: Icon(
-                icon,
-                color: color,
-                size: 20,
-              ),
-            ),
+            SizedBox(width: 40, child: Icon(icon, color: color, size: 20)),
             Text(
               title,
               style: theme.textTheme.bodyLarge?.copyWith(
@@ -323,7 +327,7 @@ class _ActionTile extends StatelessWidget {
             Icon(
               TablerIcons.chevron_right,
               size: 18,
-              color: theme.colorScheme.onSurfaceVariant.withOpacity(0.5),
+              color: theme.colorScheme.onSurfaceVariant.withCustomOpacity(0.5),
             ),
           ],
         ),
@@ -336,23 +340,17 @@ class _ServiceStatusTile extends StatelessWidget {
   final String title;
   final String subtitle;
 
-  const _ServiceStatusTile({
-    required this.title,
-    required this.subtitle,
-  });
+  const _ServiceStatusTile({required this.title, required this.subtitle});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
       child: Row(
         children: [
-          Icon(TablerIcons.server, 
-            color: theme.colorScheme.primary,
-            size: 22,
-          ),
+          Icon(TablerIcons.server, color: theme.colorScheme.primary, size: 22),
           const SizedBox(width: 16),
           Expanded(
             child: Column(

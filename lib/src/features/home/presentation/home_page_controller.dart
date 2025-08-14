@@ -1,9 +1,9 @@
 import 'package:client/src/core/application/enabled_provider.dart';
-import 'package:client/src/features/calendar/presentation/calendar_page_new.dart';
+import 'package:client/src/features/calendar/presentation/calendar_home.dart';
 import 'package:client/src/features/home/domain/home_page_items.dart';
 
 import 'package:client/src/features/movies/presentation/movie_home/movie_home.dart';
-import 'package:client/src/features/queue/presentation/queue_page.dart';
+import 'package:client/src/features/queue/presentation/queue_home_page.dart';
 import 'package:client/src/features/series/presentation/series_home/series_home.dart';
 import 'package:client/src/features/settings/presentation/settings_page.dart';
 import 'package:flutter/material.dart';

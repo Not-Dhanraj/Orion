@@ -46,10 +46,12 @@ class _CredentialsEditorState extends State<CredentialsEditor> {
     final isRadarr = widget.serviceName == 'Radarr';
     
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+      clipBehavior: Clip.antiAlias,
+      child: Container(
+        width: 400, // Set a fixed width for consistency
+        padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,7 +61,7 @@ class _CredentialsEditorState extends State<CredentialsEditor> {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.primaryContainer.withOpacity(0.4),
+                    color: theme.colorScheme.primaryContainer,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Icon(
@@ -93,6 +95,17 @@ class _CredentialsEditorState extends State<CredentialsEditor> {
                       prefixIcon: const Icon(TablerIcons.link, size: 20),
                       isDense: true,
                       contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: theme.colorScheme.outline.withOpacity(0.6)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: theme.colorScheme.primary, width: 1.5),
+                      ),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -111,6 +124,17 @@ class _CredentialsEditorState extends State<CredentialsEditor> {
                       prefixIcon: const Icon(TablerIcons.key, size: 20),
                       isDense: true,
                       contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: theme.colorScheme.outline.withOpacity(0.6)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: theme.colorScheme.primary, width: 1.5),
+                      ),
                       suffixIcon: IconButton(
                         icon: Icon(
                           _obscureApiKey ? TablerIcons.eye : TablerIcons.eye_off,
@@ -135,22 +159,24 @@ class _CredentialsEditorState extends State<CredentialsEditor> {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
                   onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
                   style: TextButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                   ),
-                  child: const Text('CANCEL'),
+                  child: Text('CANCEL', style: TextStyle(
+                    color: theme.colorScheme.onSurface.withOpacity(0.8),
+                  )),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: 12),
                 FilledButton(
                   onPressed: _isLoading ? null : _saveCredentials,
                   style: FilledButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                   ),
                   child: _isLoading
                       ? const SizedBox(

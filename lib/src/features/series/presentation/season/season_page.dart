@@ -1,6 +1,7 @@
 import 'package:client/src/features/series/presentation/season/season_page_controller.dart';
-import 'package:client/src/features/series/presentation/season/widgets/series_download_widget.dart';
 import 'package:client/src/shared/page/custom_error_page.dart';
+import 'package:client/src/shared/widgets/media_release_widget.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
@@ -664,12 +665,30 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
     int seasonNumber,
     final SeriesResource series,
   ) {
+    final seasonController = ref.read(
+      seasonPageControllerProvider(series).notifier,
+    );
+
     showDialog(
       context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) {
-          return SeriesDownloadWidget(releases, seasonNumber, series: series);
-        },
+      builder: (context) => Dialog.fullscreen(
+        child: MediaReleaseWidget(
+          releases: releases,
+          title: '${series.title} - Season $seasonNumber',
+          onDownloadRelease: (indexerId, guid) async {
+            return seasonController.downloadRelease(
+              indexerId: indexerId,
+              guid: guid,
+            );
+          },
+          formatLanguages: (languages) {
+            if (languages == null) return 'Unknown';
+            if (languages is BuiltList) {
+              return languages.map((lang) => lang.name).join(', ');
+            }
+            return languages.toString();
+          },
+        ),
       ),
     );
   }

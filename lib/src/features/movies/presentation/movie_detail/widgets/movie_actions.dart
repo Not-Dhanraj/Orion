@@ -1,7 +1,7 @@
 import 'package:client/src/features/movies/application/movie_service.dart';
-import 'package:client/src/features/movies/presentation/movie_detail/widgets/movie_download_widget.dart';
 import 'package:client/src/features/movies/presentation/movie_edit/movie_edit_page.dart';
 import 'package:client/src/features/movies/presentation/movie_home/movie_home_controller.dart';
+import 'package:client/src/shared/widgets/media_release_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
@@ -299,7 +299,7 @@ class MovieActionCard extends ConsumerWidget {
           return;
         }
 
-        _showReleasesDialog(context, releases, movie);
+        _showReleasesDialog(context, ref, releases, movie);
       }
     } catch (error) {
       if (context.mounted) {
@@ -315,12 +315,27 @@ class MovieActionCard extends ConsumerWidget {
 
   void _showReleasesDialog(
     BuildContext context,
+    WidgetRef ref,
     List<ReleaseResource> releases,
     MovieResource movie,
   ) {
+    // Get a reference to the movieService
+    final movieService = ref.read(movieServiceProvider);
+
     showDialog(
       context: context,
-      builder: (context) => MovieDownloadWidget(releases, movie: movie),
+      builder: (context) => Dialog.fullscreen(
+        child: MediaReleaseWidget(
+          releases: releases,
+          title: movie.title ?? 'Unknown',
+          onDownloadRelease: (indexerId, guid) async {
+            return movieService.downloadRelease(
+              indexerId: indexerId,
+              guid: guid,
+            );
+          },
+        ),
+      ),
     );
   }
 

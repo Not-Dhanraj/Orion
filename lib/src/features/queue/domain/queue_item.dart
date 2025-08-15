@@ -28,6 +28,7 @@ class QueueItem {
     return QueueItem(
       id: resource.id ?? 0,
       title: resource.movie?.title ?? 'Unknown Movie',
+      // ignore: deprecated_member_use
       sizeRemaining: resource.sizeleft,
       size: resource.size,
       estimatedCompletionTime: resource.estimatedCompletionTime,
@@ -42,6 +43,7 @@ class QueueItem {
     return QueueItem(
       id: resource.id ?? 0,
       title: resource.series?.title ?? 'Unknown Series',
+      // ignore: deprecated_member_use
       sizeRemaining: resource.sizeleft,
       size: resource.size,
       estimatedCompletionTime: resource.estimatedCompletionTime,

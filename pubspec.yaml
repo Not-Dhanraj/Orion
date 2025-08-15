@@ -49,6 +49,7 @@ dependencies:
   sonarr:
     path: ./api/sonarr_api
   table_calendar: ^3.0.9
+  url_launcher: ^6.3.2
   with_opacity: ^0.0.2
 
 dev_dependencies:

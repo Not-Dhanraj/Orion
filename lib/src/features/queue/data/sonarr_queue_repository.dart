@@ -1,12 +1,10 @@
 import 'package:sonarr/sonarr.dart';
 
-/// Repository for fetching queue data from Sonarr
 class SonarrQueueRepository {
   final Sonarr _api;
 
   SonarrQueueRepository(this._api);
 
-  /// Fetch the current queue from Sonarr
   Future<List<QueueResource>> getQueue({
     int? page,
     int? pageSize,
@@ -33,12 +31,10 @@ class SonarrQueueRepository {
       }
       return [];
     } catch (e) {
-      // Log the error or handle it as needed
       rethrow;
     }
   }
 
-  /// Remove an item from the queue
   Future<void> deleteQueueItem({
     required int id,
     bool? removeFromClient = true,
@@ -51,7 +47,6 @@ class SonarrQueueRepository {
         blocklist: blacklist,
       );
     } catch (e) {
-      // Log the error or handle it as needed
       rethrow;
     }
   }

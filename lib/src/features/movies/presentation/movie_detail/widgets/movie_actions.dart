@@ -321,7 +321,6 @@ class MovieActionCard extends ConsumerWidget {
   ) {
     // Get a reference to the movieService
     final movieService = ref.read(movieServiceProvider);
-
     showDialog(
       context: context,
       builder: (context) => Dialog.fullscreen(

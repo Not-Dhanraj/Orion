@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:with_opacity/with_opacity.dart';
 
 class MediaReleaseWidget extends ConsumerStatefulWidget {
@@ -105,10 +107,13 @@ class _MediaReleaseWidgetState extends ConsumerState<MediaReleaseWidget> {
             Expanded(
               child: filteredReleases.isEmpty
                   ? const Center(child: Text('No releases match your filters'))
-                  : ListView.separated(
+                  : MasonryGridView.extent(
+                      maxCrossAxisExtent: 800,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
                       shrinkWrap: true,
                       itemCount: filteredReleases.length,
-                      separatorBuilder: (context, index) => const Divider(),
+
                       itemBuilder: (context, index) {
                         final release = filteredReleases[index];
                         final hasRejections =
@@ -315,8 +320,32 @@ class _MediaReleaseWidgetState extends ConsumerState<MediaReleaseWidget> {
                                                   8,
                                                 ),
                                                 tooltip: 'View release info',
-                                                onPressed: () {
-                                                  // TODO: Implement opening info URL
+                                                onPressed: () async {
+                                                  Uri url = Uri.parse(
+                                                    release.infoUrl
+                                                            as String? ??
+                                                        '',
+                                                  );
+                                                  if (!await launchUrl(url)) {
+                                                    if (context.mounted) {
+                                                      final currentContext =
+                                                          context;
+                                                      ScaffoldMessenger.of(
+                                                        currentContext,
+                                                      ).showSnackBar(
+                                                        SnackBar(
+                                                          content: Text(
+                                                            'Could not launch ${release.infoUrl}',
+                                                          ),
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                        ),
+                                                      );
+                                                    }
+                                                    throw Exception(
+                                                      'Could not launch ${release.infoUrl}',
+                                                    );
+                                                  }
                                                 },
                                               ),
                                             const SizedBox(height: 4),
@@ -368,8 +397,9 @@ class _MediaReleaseWidgetState extends ConsumerState<MediaReleaseWidget> {
                                                               as String,
                                                         );
 
-                                                    if (mounted) {
-                                                      final currentContext = context;
+                                                    if (context.mounted) {
+                                                      final currentContext =
+                                                          context;
                                                       Navigator.of(
                                                         currentContext,
                                                       ).pop();
@@ -384,8 +414,9 @@ class _MediaReleaseWidgetState extends ConsumerState<MediaReleaseWidget> {
                                                       );
                                                     }
                                                   } catch (e) {
-                                                    if (mounted) {
-                                                      final currentContext = context;
+                                                    if (context.mounted) {
+                                                      final currentContext =
+                                                          context;
                                                       ScaffoldMessenger.of(
                                                         currentContext,
                                                       ).showSnackBar(

@@ -271,7 +271,7 @@ class _AuthCard extends ConsumerWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
               Text(
                 'Server URL',
                 style: theme.textTheme.titleMedium?.copyWith(
@@ -290,7 +290,7 @@ class _AuthCard extends ConsumerWidget {
                 helperText:
                     'Example: http://localhost:port or https://yourdomain.xyz',
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
               Text(
                 'API Key',
                 style: theme.textTheme.titleMedium?.copyWith(

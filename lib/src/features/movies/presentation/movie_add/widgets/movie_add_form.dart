@@ -89,11 +89,10 @@ class MovieAddForm extends ConsumerWidget {
                                 const SizedBox(height: 4),
                                 Align(
                                   alignment: Alignment.centerLeft,
-                                  child: const Text(
+                                  child: Text(
                                     'Select how to monitor this movie',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Color(0xFF393939),
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: theme.colorScheme.onSurfaceVariant,
                                     ),
                                   ),
                                 ),

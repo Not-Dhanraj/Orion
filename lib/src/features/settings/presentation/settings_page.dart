@@ -20,14 +20,12 @@ class SettingsPage extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Column(
             children: [
-              // Theme Settings Section
               const _SettingsSection(
                 title: 'Appearance',
                 icon: TablerIcons.palette,
                 children: [ThemeSelector()],
               ),
 
-              // Service Settings Section
               _SettingsSection(
                 title: 'Radarr Configuration',
                 icon: TablerIcons.movie,
@@ -134,26 +132,10 @@ class SettingsPage extends ConsumerWidget {
                 ],
               ),
 
-              // About Section
               _SettingsSection(
                 title: 'About',
                 icon: TablerIcons.info_circle,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                    child: Row(
-                      children: [
-                        SizedBox(width: 40),
-                        Text('Version'),
-                        Spacer(),
-                        Text(
-                          '1.0.0',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Divider(height: 1, indent: 56, endIndent: 16),
                   _ActionTile(
                     icon: TablerIcons.license,
                     title: 'Licenses',
@@ -168,7 +150,30 @@ class SettingsPage extends ConsumerWidget {
                       ),
                     ),
                   ),
+                  const Divider(height: 1, indent: 56, endIndent: 16),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    child: Row(
+                      children: [
+                        SizedBox(width: 40),
+                        Text('Version'),
+                        Spacer(),
+                        Text(
+                          '1.0.0',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
+              ),
+              Text(
+                'Made with ❤️ in Flutter',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurfaceVariant.withCustomOpacity(0.6),
+                ),
               ),
             ],
           ),

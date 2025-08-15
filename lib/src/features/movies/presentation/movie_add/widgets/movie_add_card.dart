@@ -75,7 +75,6 @@ class MovieAddCard extends ConsumerWidget {
                         ),
                 ),
 
-                // Gradient overlay
                 Positioned.fill(
                   child: Container(
                     decoration: BoxDecoration(
@@ -92,7 +91,6 @@ class MovieAddCard extends ConsumerWidget {
                   ),
                 ),
 
-                // Title and badges
                 Positioned(
                   bottom: 0,
                   left: 0,
@@ -119,7 +117,7 @@ class MovieAddCard extends ConsumerWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 8),
-                        // Info badges
+
                         Wrap(
                           spacing: 8,
                           runSpacing: 8,
@@ -142,7 +140,6 @@ class MovieAddCard extends ConsumerWidget {
                   ),
                 ),
 
-                // Add button overlay in top right
                 Positioned(
                   top: 12,
                   right: 12,
@@ -179,7 +176,6 @@ class MovieAddCard extends ConsumerWidget {
               ],
             ),
 
-            // Overview section
             if (movie.overview != null && movie.overview!.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -237,227 +233,242 @@ class MovieAddCard extends ConsumerWidget {
     MovieResource movie,
     WidgetRef ref,
   ) async {
-    // Select the movie in the controller
     ref.read(movieAddControllerProvider.notifier).selectMovie(movie);
     final theme = Theme.of(context);
 
+    final initialMovie = ref
+        .read(movieAddControllerProvider)
+        .value
+        ?.selectedMovie;
+
     await showDialog(
       context: context,
-      builder: (context) {
-        final state = ref.watch(movieAddControllerProvider).value;
-        final selectedMovie = state?.selectedMovie;
+      builder: (dialogContext) {
+        return Consumer(
+          builder: (context, dialogRef, _) {
+            final state = dialogRef.watch(movieAddControllerProvider).value;
+            final selectedMovie = state?.selectedMovie ?? initialMovie;
 
-        return Dialog.fullscreen(
-          // shape: RoundedRectangleBorder(
-          //   borderRadius: BorderRadius.circular(12),
-          // ),
-          // clipBehavior: Clip.antiAlias,
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.9,
-            constraints: BoxConstraints(
-              maxWidth: 500,
-              maxHeight: MediaQuery.of(context).size.height * 0.9,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: movie.images?.isNotEmpty == true
-                            ? CachedNetworkImageProvider(
-                                movie.images!.first.remoteUrl ?? '',
-                              )
-                            : null,
-                        backgroundColor: theme.colorScheme.primaryContainer,
-                        child: movie.images?.isEmpty == true
-                            ? Icon(
-                                Icons.movie,
-                                color: theme.colorScheme.primary,
-                              )
-                            : null,
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              movie.title ?? 'Unknown Movie',
-                              style: theme.textTheme.titleLarge?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            if (movie.year != null)
-                              Text(
-                                movie.year.toString(),
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.colorScheme.onSurfaceVariant,
+            return Dialog.fullscreen(
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                constraints: BoxConstraints(
+                  maxWidth: 500,
+                  maxHeight: MediaQuery.of(context).size.height * 0.9,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundImage: movie.images?.isNotEmpty == true
+                                ? CachedNetworkImageProvider(
+                                    movie.images!.first.remoteUrl ?? '',
+                                  )
+                                : null,
+                            backgroundColor: theme.colorScheme.primaryContainer,
+                            child: movie.images?.isEmpty == true
+                                ? Icon(
+                                    Icons.movie,
+                                    color: theme.colorScheme.primary,
+                                  )
+                                : null,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  movie.title ?? 'Unknown Movie',
+                                  style: theme.textTheme.titleLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              ),
-                          ],
+                                if (movie.year != null)
+                                  Text(
+                                    movie.year.toString(),
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      color: theme.colorScheme.onSurfaceVariant,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            icon: const Icon(Icons.close),
+                            tooltip: 'Close',
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    Flexible(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: selectedMovie != null
+                              ? MovieAddForm(movie: selectedMovie)
+                              : const Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.all(24.0),
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                ),
                         ),
                       ),
-                      IconButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        icon: const Icon(Icons.close),
-                        tooltip: 'Close',
-                      ),
-                    ],
-                  ),
-                ),
+                    ),
 
-                // Configuration form (using MovieAddForm)
-                Flexible(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: selectedMovie != null
-                          ? MovieAddForm(movie: selectedMovie)
-                          : const Center(
-                              child: Padding(
-                                padding: EdgeInsets.all(24.0),
-                                child: CircularProgressIndicator(),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          OutlinedButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            style: OutlinedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 12,
                               ),
                             ),
-                    ),
-                  ),
-                ),
-
-                // Action buttons
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      OutlinedButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 12,
+                            child: const Text('Cancel'),
                           ),
-                        ),
-                        child: const Text('Cancel'),
-                      ),
-                      const SizedBox(width: 12),
-                      FilledButton.icon(
-                        icon: const Icon(Icons.add),
-                        label: const Text('Add Movie'),
-                        style: FilledButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 12,
-                          ),
-                        ),
-                        onPressed: state?.isCreating == true
-                            ? null
-                            : () async {
-                                if (selectedMovie == null) return;
+                          const SizedBox(width: 12),
+                          FilledButton.icon(
+                            icon: const Icon(Icons.add),
+                            label: const Text('Add Movie'),
+                            style: FilledButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 12,
+                              ),
+                            ),
+                            onPressed: state?.isCreating == true
+                                ? null
+                                : () async {
+                                    if (selectedMovie == null) return;
 
-                                showDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder: (_) {
-                                    return AlertDialog(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                      content: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          const SizedBox(height: 16),
-                                          CircularProgressIndicator(
-                                            color: theme.colorScheme.primary,
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (_) {
+                                        return AlertDialog(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              16,
+                                            ),
                                           ),
-                                          const SizedBox(height: 24),
-                                          Text(
-                                            'Adding Movie...',
-                                            style: theme.textTheme.titleMedium,
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const SizedBox(height: 16),
+                                              CircularProgressIndicator(
+                                                color:
+                                                    theme.colorScheme.primary,
+                                              ),
+                                              const SizedBox(height: 24),
+                                              Text(
+                                                'Adding Movie...',
+                                                style:
+                                                    theme.textTheme.titleMedium,
+                                              ),
+                                              const SizedBox(height: 8),
+                                              Text(
+                                                'Please wait while the movie is added to your library.',
+                                                textAlign: TextAlign.center,
+                                                style:
+                                                    theme.textTheme.bodyMedium,
+                                              ),
+                                              const SizedBox(height: 16),
+                                            ],
                                           ),
-                                          const SizedBox(height: 8),
-                                          Text(
-                                            'Please wait while the movie is added to your library.',
-                                            textAlign: TextAlign.center,
-                                            style: theme.textTheme.bodyMedium,
-                                          ),
-                                          const SizedBox(height: 16),
-                                        ],
-                                      ),
+                                        );
+                                      },
                                     );
+
+                                    try {
+                                      await dialogRef
+                                          .read(
+                                            movieAddControllerProvider.notifier,
+                                          )
+                                          .addMovie(selectedMovie);
+
+                                      if (context.mounted) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              'Movie added successfully: ${selectedMovie.title}',
+                                            ),
+                                            backgroundColor: Colors.green,
+                                            behavior: SnackBarBehavior.floating,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            margin: const EdgeInsets.all(16),
+                                            duration: const Duration(
+                                              seconds: 4,
+                                            ),
+                                            action: SnackBarAction(
+                                              label: 'OK',
+                                              textColor: Colors.white,
+                                              onPressed: () {},
+                                            ),
+                                          ),
+                                        );
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context).pop();
+                                      }
+                                    } catch (e) {
+                                      if (context.mounted) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              'Failed to add movie: ${e.toString()}',
+                                            ),
+                                            backgroundColor: theme
+                                                .colorScheme
+                                                .errorContainer,
+                                            behavior: SnackBarBehavior.floating,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            margin: const EdgeInsets.all(16),
+                                            duration: const Duration(
+                                              seconds: 4,
+                                            ),
+                                          ),
+                                        );
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context).pop();
+                                      }
+                                    }
                                   },
-                                );
-
-                                try {
-                                  await ref
-                                      .read(movieAddControllerProvider.notifier)
-                                      .addMovie(selectedMovie);
-
-                                  if (context.mounted) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          'Movie added successfully: ${selectedMovie.title}',
-                                        ),
-                                        backgroundColor: Colors.green,
-                                        behavior: SnackBarBehavior.floating,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            12,
-                                          ),
-                                        ),
-                                        margin: const EdgeInsets.all(16),
-                                        duration: const Duration(seconds: 4),
-                                        action: SnackBarAction(
-                                          label: 'OK',
-                                          textColor: Colors.white,
-                                          onPressed: () {},
-                                        ),
-                                      ),
-                                    );
-                                    Navigator.of(context).pop();
-                                    Navigator.of(context).pop();
-                                  }
-                                } catch (e) {
-                                  if (context.mounted) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          'Failed to add movie: ${e.toString()}',
-                                        ),
-                                        backgroundColor:
-                                            theme.colorScheme.errorContainer,
-                                        behavior: SnackBarBehavior.floating,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            12,
-                                          ),
-                                        ),
-                                        margin: const EdgeInsets.all(16),
-                                        duration: const Duration(seconds: 4),
-                                      ),
-                                    );
-                                    Navigator.of(context).pop();
-                                    Navigator.of(context).pop();
-                                  }
-                                  return;
-                                }
-                              },
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         );
       },
     );

@@ -96,17 +96,7 @@ class AuthController extends Notifier<AuthState> {
   void showErrorSnackbar(BuildContext context, String message) {
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error: $message'),
-          backgroundColor: Colors.red,
-          action: SnackBarAction(
-            label: 'Dismiss',
-            textColor: Colors.white,
-            onPressed: () {
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            },
-          ),
-        ),
+        SnackBar(content: Text('Error: $message'), backgroundColor: Colors.red),
       );
     }
   }
@@ -115,17 +105,7 @@ class AuthController extends Notifier<AuthState> {
   void showSuccessSnackbar(BuildContext context, String message) {
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          backgroundColor: Colors.green,
-          action: SnackBarAction(
-            label: 'Dismiss',
-            textColor: Colors.white,
-            onPressed: () {
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            },
-          ),
-        ),
+        SnackBar(content: Text(message), backgroundColor: Colors.green),
       );
     }
   }

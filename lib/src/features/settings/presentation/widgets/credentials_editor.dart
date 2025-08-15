@@ -247,6 +247,13 @@ class _CredentialsEditorState extends State<CredentialsEditor> {
         );
         if (mounted) {
           Navigator.of(context).pop();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'App needs to be restarted for changes to take effect.',
+              ),
+            ),
+          );
         }
       } catch (e) {
         if (mounted) {

@@ -262,11 +262,15 @@ class _AuthCard extends ConsumerWidget {
                     child: Icon(cardIcon, size: 24, color: primaryColor),
                   ),
                   const SizedBox(width: 16),
-                  Text(
-                    '$type Configuration',
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: primaryColor,
+                  Flexible(
+                    child: Text(
+                      '$type Configuration',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: primaryColor,
+                      ),
                     ),
                   ),
                 ],

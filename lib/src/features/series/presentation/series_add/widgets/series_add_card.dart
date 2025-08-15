@@ -38,14 +38,14 @@ class SeriesAddCard extends ConsumerWidget {
                   child:
                       series.images?.isNotEmpty == true &&
                           series.images!.any(
-                            (i) => i.coverType == MediaCoverTypes.fanart,
+                            (i) => i.coverType == MediaCoverTypes.poster,
                           )
                       ? CachedNetworkImage(
                           imageUrl:
                               series.images!
                                   .firstWhere(
                                     (i) =>
-                                        i.coverType == MediaCoverTypes.fanart,
+                                        i.coverType == MediaCoverTypes.poster,
                                     orElse: () => series.images!.firstWhere(
                                       (i) =>
                                           i.coverType ==
@@ -312,26 +312,24 @@ class SeriesAddCard extends ConsumerWidget {
 
                 // Configuration form
                 Flexible(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: selectedSeries != null
-                          ? SeriesConfigurationForm(
-                              series: selectedSeries,
-                              qualityProfiles: qualityProfiles,
-                              onSeriesChanged: (updatedSeries) {
-                                ref
-                                    .read(seriesAddControllerProvider.notifier)
-                                    .updateSelectedSeries(updatedSeries);
-                              },
-                            )
-                          : const Center(
-                              child: Padding(
-                                padding: EdgeInsets.all(24.0),
-                                child: CircularProgressIndicator(),
-                              ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: selectedSeries != null
+                        ? SeriesConfigurationForm(
+                            series: selectedSeries,
+                            qualityProfiles: qualityProfiles,
+                            onSeriesChanged: (updatedSeries) {
+                              ref
+                                  .read(seriesAddControllerProvider.notifier)
+                                  .updateSelectedSeries(updatedSeries);
+                            },
+                          )
+                        : const Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(24.0),
+                              child: CircularProgressIndicator(),
                             ),
-                    ),
+                          ),
                   ),
                 ),
 

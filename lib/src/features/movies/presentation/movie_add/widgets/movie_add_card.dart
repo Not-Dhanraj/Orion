@@ -37,14 +37,14 @@ class MovieAddCard extends ConsumerWidget {
                   child:
                       movie.images?.isNotEmpty == true &&
                           movie.images!.any(
-                            (i) => i.coverType == MediaCoverTypes.fanart,
+                            (i) => i.coverType == MediaCoverTypes.poster,
                           )
                       ? CachedNetworkImage(
                           imageUrl:
                               movie.images!
                                   .firstWhere(
                                     (i) =>
-                                        i.coverType == MediaCoverTypes.fanart,
+                                        i.coverType == MediaCoverTypes.poster,
                                     orElse: () => movie.images!.firstWhere(
                                       (i) =>
                                           i.coverType ==
@@ -175,7 +175,6 @@ class MovieAddCard extends ConsumerWidget {
                 ),
               ],
             ),
-
             if (movie.overview != null && movie.overview!.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -311,18 +310,16 @@ class MovieAddCard extends ConsumerWidget {
                     ),
 
                     Flexible(
-                      child: SingleChildScrollView(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: selectedMovie != null
-                              ? MovieAddForm(movie: selectedMovie)
-                              : const Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(24.0),
-                                    child: CircularProgressIndicator(),
-                                  ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: selectedMovie != null
+                            ? MovieAddForm(movie: selectedMovie)
+                            : const Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(24.0),
+                                  child: CircularProgressIndicator(),
                                 ),
-                        ),
+                              ),
                       ),
                     ),
 

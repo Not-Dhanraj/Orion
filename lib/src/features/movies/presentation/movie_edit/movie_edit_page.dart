@@ -19,7 +19,7 @@ class MovieEditPage extends ConsumerWidget {
     final theme = Theme.of(context);
     final controller = ref.watch(movieEditControllerProvider(movie));
 
-    return Dialog.fullscreen(
+    return Dialog(
       // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
         constraints: const BoxConstraints(maxWidth: 600),

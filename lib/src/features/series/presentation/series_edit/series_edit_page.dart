@@ -19,7 +19,7 @@ class SeriesEditPage extends ConsumerWidget {
       seriesEditControllerProvider(series.id!),
     );
 
-    return Dialog.fullscreen(
+    return Dialog(
       // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
         constraints: const BoxConstraints(maxWidth: 600),

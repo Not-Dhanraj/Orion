@@ -23,7 +23,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(0),
         child: AppBar(
-          title: const Text('Splash Screen'),
+          elevation: 0,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           automaticallyImplyLeading: false,
         ),
       ),
@@ -33,16 +34,33 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.flutter_dash, size: 150, color: Colors.blue),
+                Hero(
+                  tag: 'app_icon',
+                  child: Image.asset(
+                    'assets/icon/icon.png',
+                    width: 150,
+                    height: 150,
+                  ),
+                ),
+                const SizedBox(height: 24),
                 Text(
-                  'New App',
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  'Orion',
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Your Media Management Companion',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7),
+                      ),
                 ),
               ],
             ),
           ),
           Positioned.fill(
-            bottom: 25,
+            bottom: 40,
             child: SafeArea(
               child: Align(
                 alignment: Alignment.bottomCenter,
@@ -51,12 +69,20 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
-                      height: 10,
-                      width: 10,
-                      child: CircularProgressIndicator(),
+                      height: 16,
+                      width: 16,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
-                    SizedBox(width: 10),
-                    Text('Loading'),
+                    const SizedBox(width: 12),
+                    Text(
+                      'Preparing your experience...',
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7),
+                      ),
+                    ),
                   ],
                 ),
               ),

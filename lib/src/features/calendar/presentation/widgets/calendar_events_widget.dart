@@ -71,7 +71,7 @@ class CalendarEventCard extends StatelessWidget {
     final IconData typeIcon = isMovie
         ? TablerIcons.movie
         : TablerIcons.device_tv;
-    final Color typeColor = isMovie ? Colors.blue : Colors.purple;
+    final Color typeColor = isMovie ? Colors.orange : Colors.blue;
 
     IconData statusIcon = TablerIcons.calendar;
     Color statusColor = theme.colorScheme.primary;

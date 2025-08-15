@@ -224,22 +224,26 @@ class SettingsPage extends ConsumerWidget {
             onPressed: () async {
               try {
                 await onConfirm();
-                Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text(
-                      'App needs to be restarted for changes to take effect.',
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        'App needs to be restarted for changes to take effect.',
+                      ),
                     ),
-                  ),
-                );
+                  );
+                }
               } catch (e) {
-                Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Error deleting service: $e'),
-                    backgroundColor: Theme.of(context).colorScheme.error,
-                  ),
-                );
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Error deleting service: $e'),
+                      backgroundColor: Theme.of(context).colorScheme.error,
+                    ),
+                  );
+                }
               }
             },
             style: ElevatedButton.styleFrom(

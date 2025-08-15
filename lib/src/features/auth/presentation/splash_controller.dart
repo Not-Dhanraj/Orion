@@ -1,7 +1,7 @@
 import 'package:client/src/app.dart';
 import 'package:client/src/core/application/enabled_provider.dart';
 import 'package:client/src/core/application/hive_service.dart';
-import 'package:client/src/features/auth/presentation/auth_screen.dart';
+import 'package:client/src/features/auth/presentation/auth_page.dart';
 import 'package:client/src/features/home/presentation/home_page.dart';
 import 'package:client/src/features/home/presentation/home_page_controller.dart';
 import 'package:flutter/material.dart';

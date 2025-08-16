@@ -1,4 +1,5 @@
-import 'package:client/src/features/settings/application/settings_controller.dart';
+import 'package:client/src/features/settings/application/theme_controller.dart';
+import 'package:client/src/features/settings/presentation/widgets/dynamic_color_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
@@ -9,7 +10,9 @@ class ThemeSelector extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentTheme = ref.watch(themeSettingsProvider);
+    final themeSettings = ref.watch(themeSettingsProvider);
+    final currentTheme = themeSettings.themeMode;
+    final useDynamicColor = themeSettings.useDynamicColor;
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -45,6 +48,17 @@ class ThemeSelector extends ConsumerWidget {
             groupValue: currentTheme,
             onChanged: (value) {
               ref.read(themeSettingsProvider.notifier).setThemeMode(value);
+            },
+          ),
+          const SizedBox(height: 16),
+          const Divider(height: 1, indent: 16, endIndent: 16),
+          const SizedBox(height: 16),
+          DynamicColorSwitch(
+            value: useDynamicColor,
+            onChanged: (value) {
+              ref
+                  .read(themeSettingsProvider.notifier)
+                  .setDynamicColorEnabled(value);
             },
           ),
         ],

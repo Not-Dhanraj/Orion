@@ -8,4 +8,7 @@ class AppConst {
   final credentialsKey = 'credentials_key';
   final sonarrCredKey = 'sonarr_credentials_key';
   final radarrCredKey = 'radarr_credentials_key';
+
+  final themeModeKey = 'theme_mode_key';
+  final useDynamicColorKey = 'dynamic_color_key';
 }

@@ -6,58 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 
-// Theme settings provider - switched to StateNotifierProvider for better persistence
-final themeSettingsProvider =
-    StateNotifierProvider<ThemeSettingsNotifier, ThemeMode>(
-      (ref) => ThemeSettingsNotifier(),
-    );
-
-class ThemeSettingsNotifier extends StateNotifier<ThemeMode> {
-  static const String _themeBoxName = 'theme_settings';
-  static const String _themeModeKey = 'theme_mode';
-
-  // Initialize with system theme by default
-  ThemeSettingsNotifier() : super(ThemeMode.system) {
-    // Try to load theme immediately if Hive is already initialized
-    _tryLoadTheme();
-  }
-
-  // Try to load theme without async operations
-  void _tryLoadTheme() {
-    try {
-      if (Hive.isBoxOpen(_themeBoxName)) {
-        state = _loadThemeMode();
-      }
-    } catch (e) {
-      debugPrint('Error in quick theme load: $e');
-    }
-  }
-
-  ThemeMode _loadThemeMode() {
-    if (!Hive.isBoxOpen(_themeBoxName)) {
-      return ThemeMode.system;
-    }
-    final box = Hive.box(_themeBoxName);
-    final themeValue = box.get(
-      _themeModeKey,
-      defaultValue: ThemeMode.system.index,
-    );
-    return ThemeMode.values[themeValue];
-  }
-
-  Future<void> setThemeMode(ThemeMode mode) async {
-    final box = Hive.box(_themeBoxName);
-    await box.put(_themeModeKey, mode.index);
-    state = mode;
-  }
-}
-
-// Service credentials controllers
-final serviceSettingsProvider =
-    NotifierProvider<ServiceSettingsNotifier, ServiceSettings>(
-      () => ServiceSettingsNotifier(),
-    );
-
 class ServiceSettingsNotifier extends Notifier<ServiceSettings> {
   @override
   ServiceSettings build() {
@@ -138,3 +86,8 @@ class ServiceSettingsNotifier extends Notifier<ServiceSettings> {
     return normalizedUrl;
   }
 }
+
+final serviceSettingsProvider =
+    NotifierProvider<ServiceSettingsNotifier, ServiceSettings>(
+      () => ServiceSettingsNotifier(),
+    );

@@ -152,12 +152,15 @@ class SettingsPage extends ConsumerWidget {
                       title: 'Licenses',
                       onTap: () => showLicensePage(
                         context: context,
-                        applicationName: 'Arr Client',
+                        applicationName: 'Orion',
                         applicationVersion: '1.0.0',
-                        applicationLegalese: '© 2025 Arr Client',
-                        applicationIcon: const Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: FlutterLogo(size: 48),
+                        applicationLegalese: '© 2025 Orion',
+                        applicationIcon: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            'assets/icon/icon.png',
+                            width: 100,
+                          ),
                         ),
                       ),
                     ),

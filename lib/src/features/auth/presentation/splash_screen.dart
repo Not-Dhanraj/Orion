@@ -35,12 +35,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  'assets/icon/icon.png',
-                  width: 150,
-                  height: 150,
-                  cacheWidth: 201,
-                ),
+                Image.asset('assets/icon/icon.png', width: 150, height: 150),
                 const SizedBox(height: 24),
                 Text(
                   'Orion',

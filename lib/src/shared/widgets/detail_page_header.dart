@@ -38,10 +38,9 @@ class DetailPageHeader extends StatelessWidget {
               ),
               child: LayoutBuilder(
                 builder: (context, constraints) {
-                  var memWidth = min(
-                    constraints.maxWidth,
-                    constraints.maxHeight * 0.8,
-                  );
+                  var memWidth =
+                      min(constraints.maxWidth, constraints.maxHeight * 0.8) *
+                      1.1;
                   return SizedBox(
                     height: MediaQuery.of(context).size.height * 0.6,
                     child: CachedNetworkImage(

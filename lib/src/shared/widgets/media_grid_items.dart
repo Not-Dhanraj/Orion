@@ -58,7 +58,7 @@ class MediaGridItem extends ConsumerWidget {
               : Positioned.fill(
                   child: LayoutBuilder(
                     builder: (context, constraints) {
-                      var memWidth = constraints.maxWidth;
+                      var memWidth = constraints.maxWidth * 1.15;
                       return ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: CachedNetworkImage(

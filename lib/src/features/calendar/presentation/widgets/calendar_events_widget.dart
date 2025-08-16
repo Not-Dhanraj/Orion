@@ -7,13 +7,11 @@ import 'package:intl/intl.dart';
 
 class CalendarEventsWidget extends ConsumerWidget {
   final List<CalendarItem> events;
-  final String title;
   final bool showDate;
 
   const CalendarEventsWidget({
     super.key,
     required this.events,
-    required this.title,
     this.showDate = true,
   });
 
@@ -23,31 +21,14 @@ class CalendarEventsWidget extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    final theme = Theme.of(context);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-          child: Text(
-            title,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        MasonryGridView.extent(
-          maxCrossAxisExtent: 700,
-          crossAxisSpacing: 0,
-          mainAxisSpacing: 0,
-          itemCount: events.length,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return CalendarEventCard(event: events[index], showDate: showDate);
-          },
-        ),
-      ],
+    return SliverMasonryGrid.extent(
+      maxCrossAxisExtent: 700,
+      crossAxisSpacing: 0,
+      mainAxisSpacing: 0,
+      childCount: events.length,
+      itemBuilder: (context, index) {
+        return CalendarEventCard(event: events[index], showDate: showDate);
+      },
     );
   }
 }

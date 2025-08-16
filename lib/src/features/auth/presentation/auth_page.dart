@@ -3,6 +3,7 @@ import 'package:client/src/features/home/presentation/home_page.dart';
 import 'package:client/src/features/home/presentation/home_page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:with_opacity/with_opacity.dart';
 
@@ -63,7 +64,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Welcome to ARR Client',
+                    'Welcome to Orion',
                     style: theme.textTheme.headlineMedium,
                   ),
                   const SizedBox(height: 8),
@@ -78,66 +79,74 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
 
           // Grid section
           SliverPadding(
-            padding: const EdgeInsets.all(16),
-            sliver: SliverGrid(
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 660,
-                mainAxisExtent: 420,
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 16,
-              ),
-              delegate: SliverChildListDelegate([
-                _AuthCard(
-                  cardIcon: TablerIcons.device_tv,
-                  isConfigured: authState.sonarrConfigured,
-                  urlController: _sonarrUrlController,
-                  apiKeyController: _sonarrApiKeyController,
-                  type: 'Sonarr',
-                  onPressed: authState.isLoadingSonarr
-                      ? null
-                      : () async {
-                          if (_sonarrFormKey.currentState!.validate()) {
-                            var authController = ref.read(
-                              authControllerProvider.notifier,
-                            );
-                            await authController.updateSonarr(
-                              _sonarrUrlController.text,
-                              _sonarrApiKeyController.text,
-                              context,
-                            );
-                          }
-                        },
-                  isLoading: authState.isLoadingSonarr,
-                  isEditing: authState.sonarrConfigured,
-                  formState: _sonarrFormKey,
-                  primaryColor: Colors.blue,
-                ),
-                _AuthCard(
-                  cardIcon: TablerIcons.movie,
-                  isConfigured: authState.radarrConfigured,
-                  urlController: _radarrUrlController,
-                  apiKeyController: _radarrApiKeyController,
-                  type: 'Radarr',
-                  onPressed: authState.isLoadingRadarr
-                      ? null
-                      : () {
-                          if (_radarrFormKey.currentState!.validate()) {
-                            ref
-                                .read(authControllerProvider.notifier)
-                                .updateRadarr(
-                                  _radarrUrlController.text,
-                                  _radarrApiKeyController.text,
-                                  context,
-                                );
-                          }
-                        },
-                  isLoading: authState.isLoadingRadarr,
-                  isEditing: authState.radarrConfigured,
-                  formState: _radarrFormKey,
-                  primaryColor: Colors.orange,
-                ),
-                // Add more _AuthCard widgets here as needed
-              ]),
+            padding: const EdgeInsets.all(12),
+            sliver: SliverMasonryGrid.extent(
+              maxCrossAxisExtent: 650,
+              childCount: 2,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+              itemBuilder: (context, index) {
+                var items = [
+                  _AuthCard(
+                    cardIcon: TablerIcons.device_tv,
+                    isConfigured: authState.sonarrConfigured,
+                    urlController: _sonarrUrlController,
+                    apiKeyController: _sonarrApiKeyController,
+                    type: 'Sonarr',
+                    onPressed: authState.isLoadingSonarr
+                        ? null
+                        : () async {
+                            if (_sonarrFormKey.currentState!.validate()) {
+                              var authController = ref.read(
+                                authControllerProvider.notifier,
+                              );
+                              await authController.updateSonarr(
+                                _sonarrUrlController.text,
+                                _sonarrApiKeyController.text,
+                                context,
+                              );
+                            }
+                          },
+                    isLoading: authState.isLoadingSonarr,
+                    isEditing: authState.sonarrConfigured,
+                    formState: _sonarrFormKey,
+                    primaryColor: Colors.blue,
+                  ),
+                  _AuthCard(
+                    cardIcon: TablerIcons.movie,
+                    isConfigured: authState.radarrConfigured,
+                    urlController: _radarrUrlController,
+                    apiKeyController: _radarrApiKeyController,
+                    type: 'Radarr',
+                    onPressed: authState.isLoadingRadarr
+                        ? null
+                        : () {
+                            if (_radarrFormKey.currentState!.validate()) {
+                              ref
+                                  .read(authControllerProvider.notifier)
+                                  .updateRadarr(
+                                    _radarrUrlController.text,
+                                    _radarrApiKeyController.text,
+                                    context,
+                                  );
+                            }
+                          },
+                    isLoading: authState.isLoadingRadarr,
+                    isEditing: authState.radarrConfigured,
+                    formState: _radarrFormKey,
+                    primaryColor: Colors.orange,
+                  ),
+                  // Add more _AuthCard widgets here as needed
+                ];
+                return items[index];
+              },
+              // gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              //   maxCrossAxisExtent: 660,
+              //   mainAxisExtent: 420,
+              //   mainAxisSpacing: 16,
+              //   crossAxisSpacing: 16,
+              // ),
+              // delegate: SliverChildListDelegate([]),
             ),
           ),
         ],

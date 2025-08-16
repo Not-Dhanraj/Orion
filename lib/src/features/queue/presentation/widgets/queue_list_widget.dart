@@ -14,17 +14,18 @@ class QueueListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MasonryGridView.extent(
+    return SliverPadding(
       padding: const EdgeInsets.all(8.0),
-      maxCrossAxisExtent: 650,
-      crossAxisSpacing: 8,
-      mainAxisSpacing: 8,
-      itemCount: items.length,
-
-      itemBuilder: (context, index) {
-        final item = items[index];
-        return QueueItemTile(item: item);
-      },
+      sliver: SliverMasonryGrid.extent(
+        maxCrossAxisExtent: 800,
+        mainAxisSpacing: 8,
+        crossAxisSpacing: 8,
+        childCount: items.length,
+        itemBuilder: (context, index) {
+          final item = items[index];
+          return QueueItemTile(item: item);
+        },
+      ),
     );
   }
 }

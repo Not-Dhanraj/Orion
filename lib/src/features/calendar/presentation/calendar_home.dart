@@ -3,6 +3,7 @@ import 'package:client/src/features/calendar/presentation/calendar_home_controll
 import 'package:client/src/features/calendar/presentation/widgets/calendar_events_widget.dart';
 import 'package:client/src/features/calendar/presentation/widgets/calendar_view_widget.dart';
 import 'package:client/src/shared/widgets/error_message.dart';
+import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -47,86 +48,113 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
   Widget build(BuildContext context) {
     final calendarState = ref.watch(calendarHomeControllerProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            const Text('Calendar'),
-            if (_isRefreshing) ...[
-              const SizedBox(width: 8),
-              const SizedBox(
-                width: 12,
-                height: 12,
-                child: CircularProgressIndicator(strokeWidth: 2),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                'Refreshing...',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-            ],
-          ],
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _refreshCalendar,
-            tooltip: 'Force refresh now',
-          ),
-        ],
-      ),
-      body: calendarState.when(
-        data: (calendarItems) {
-          _allItems = calendarItems;
-
-          _selectedDayEvents = _getEventsForDay(_selectedDay, calendarItems);
-
-          _upcomingWeekEvents = _getUpcomingWeekEvents(calendarItems);
-
-          return RefreshIndicator(
-            onRefresh: _refreshCalendar,
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: Column(
+    return Entry.opacity(
+      child: RefreshIndicator(
+        onRefresh: _refreshCalendar,
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              title: Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: CalendarViewWidget(
-                      items: calendarItems,
-                      focusedDay: _focusedDay,
-                      selectedDay: _selectedDay,
-                      calendarFormat: _calendarFormat,
-                      onDaySelected: _onDaySelected,
-                      onViewChanged: _onCalendarFormatChanged,
+                  const Text('Calendar'),
+                  if (_isRefreshing) ...[
+                    const SizedBox(width: 8),
+                    const SizedBox(
+                      width: 12,
+                      height: 12,
+                      child: CircularProgressIndicator(strokeWidth: 2),
                     ),
-                  ),
-                  if (calendarItems.isEmpty)
-                    const Center(
-                      child: Text('No upcoming releases in calendar'),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Refreshing...',
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
-
-                  if (_selectedDayEvents.isNotEmpty)
-                    CalendarEventsWidget(
-                      events: _selectedDayEvents,
-                      title: 'Selected Day',
-                      showDate: false,
-                    ),
-
-                  if (_upcomingWeekEvents.isNotEmpty)
-                    CalendarEventsWidget(
-                      events: _upcomingWeekEvents,
-                      title: 'Coming This Week',
-                      showDate: true,
-                    ),
+                  ],
                 ],
               ),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: _refreshCalendar,
+                  tooltip: 'Force refresh now',
+                ),
+              ],
+              floating: true,
+              snap: true,
             ),
-          );
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) => ErrorMessage(
-          message: 'Error loading calendar: $error',
-          onRetry: _refreshCalendar,
+            calendarState.when(
+              data: (calendarItems) {
+                _allItems = calendarItems;
+                _selectedDayEvents = _getEventsForDay(
+                  _selectedDay,
+                  calendarItems,
+                );
+                _upcomingWeekEvents = _getUpcomingWeekEvents(calendarItems);
+
+                return SliverList(
+                  delegate: SliverChildListDelegate([
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: CalendarViewWidget(
+                        items: calendarItems,
+                        focusedDay: _focusedDay,
+                        selectedDay: _selectedDay,
+                        calendarFormat: _calendarFormat,
+                        onDaySelected: _onDaySelected,
+                        onViewChanged: _onCalendarFormatChanged,
+                      ),
+                    ),
+                    if (_selectedDayEvents.isEmpty)
+                      const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Text('No upcoming releases for selected day.'),
+                        ),
+                      ),
+                  ]),
+                );
+              },
+              loading: () => const SliverFillRemaining(
+                child: Center(child: CircularProgressIndicator()),
+              ),
+              error: (error, stackTrace) => SliverFillRemaining(
+                child: ErrorMessage(
+                  message: 'Error loading calendar: $error',
+                  onRetry: _refreshCalendar,
+                ),
+              ),
+            ),
+
+            if (calendarState is AsyncData && _selectedDayEvents.isNotEmpty)
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                  child: Text(
+                    'Selected Day',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            if (calendarState is AsyncData && _selectedDayEvents.isNotEmpty)
+              CalendarEventsWidget(events: _selectedDayEvents, showDate: false),
+
+            if (calendarState is AsyncData && _upcomingWeekEvents.isNotEmpty)
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                  child: Text(
+                    'Coming This Week',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            if (calendarState is AsyncData && _upcomingWeekEvents.isNotEmpty)
+              CalendarEventsWidget(events: _upcomingWeekEvents, showDate: true),
+          ],
         ),
       ),
     );

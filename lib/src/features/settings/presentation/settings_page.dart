@@ -1,8 +1,10 @@
 import 'package:client/src/features/settings/application/settings_controller.dart';
 import 'package:client/src/features/settings/presentation/widgets/credentials_editor.dart';
 import 'package:client/src/features/settings/presentation/widgets/theme_selector.dart';
+import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:with_opacity/with_opacity.dart';
 
@@ -13,171 +15,187 @@ class SettingsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final serviceSettings = ref.watch(serviceSettingsProvider);
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Column(
-            children: [
-              const _SettingsSection(
-                title: 'Appearance',
-                icon: TablerIcons.palette,
-                children: [ThemeSelector()],
-              ),
-
-              _SettingsSection(
-                title: 'Radarr Configuration',
-                icon: TablerIcons.movie,
-                children: [
-                  if (serviceSettings.radarrCredentials != null) ...[
-                    _ServiceStatusTile(
-                      title: 'Radarr',
-                      subtitle: serviceSettings.radarrCredentials!.radarrUrl,
-                    ),
-                    const Divider(height: 1, indent: 56, endIndent: 16),
-                    _ActionTile(
-                      icon: TablerIcons.edit,
-                      title: 'Edit Credentials',
-                      onTap: () => _showEditCredentialsDialog(
-                        context,
-                        'Radarr',
-                        serviceSettings.radarrCredentials!.radarrUrl,
-                        serviceSettings.radarrCredentials!.radarrApi,
-                        (url, apiKey) => ref
-                            .read(serviceSettingsProvider.notifier)
-                            .updateRadarrCredentials(url, apiKey),
-                      ),
-                    ),
-                    const Divider(height: 1, indent: 56, endIndent: 16),
-                    _ActionTile(
-                      icon: TablerIcons.trash,
-                      title: 'Delete Service',
-                      isDestructive: true,
-                      onTap: () => _showDeleteConfirmation(
-                        context,
-                        'Radarr',
-                        () => ref
-                            .read(serviceSettingsProvider.notifier)
-                            .deleteRadarrService(),
-                      ),
-                    ),
-                  ] else
-                    _ActionTile(
-                      icon: TablerIcons.plus,
-                      title: 'Add Radarr',
-                      onTap: () => _showEditCredentialsDialog(
-                        context,
-                        'Radarr',
-                        '',
-                        '',
-                        (url, apiKey) => ref
-                            .read(serviceSettingsProvider.notifier)
-                            .updateRadarrCredentials(url, apiKey),
-                      ),
-                    ),
-                ],
-              ),
-
-              _SettingsSection(
-                title: 'Sonarr Configuration',
-                icon: TablerIcons.device_tv,
-                children: [
-                  if (serviceSettings.sonarrCredentials != null) ...[
-                    _ServiceStatusTile(
-                      title: 'Sonarr',
-                      subtitle: serviceSettings.sonarrCredentials!.sonarrUrl,
-                    ),
-                    const Divider(height: 1, indent: 56, endIndent: 16),
-                    _ActionTile(
-                      icon: TablerIcons.edit,
-                      title: 'Edit Credentials',
-                      onTap: () => _showEditCredentialsDialog(
-                        context,
-                        'Sonarr',
-                        serviceSettings.sonarrCredentials!.sonarrUrl,
-                        serviceSettings.sonarrCredentials!.sonarrApi,
-                        (url, apiKey) => ref
-                            .read(serviceSettingsProvider.notifier)
-                            .updateSonarrCredentials(url, apiKey),
-                      ),
-                    ),
-                    const Divider(height: 1, indent: 56, endIndent: 16),
-                    _ActionTile(
-                      icon: TablerIcons.trash,
-                      title: 'Delete Service',
-                      isDestructive: true,
-                      onTap: () => _showDeleteConfirmation(
-                        context,
-                        'Sonarr',
-                        () => ref
-                            .read(serviceSettingsProvider.notifier)
-                            .deleteSonarrService(),
-                      ),
-                    ),
-                  ] else
-                    _ActionTile(
-                      icon: TablerIcons.plus,
-                      title: 'Add Sonarr',
-                      onTap: () => _showEditCredentialsDialog(
-                        context,
-                        'Sonarr',
-                        '',
-                        '',
-                        (url, apiKey) => ref
-                            .read(serviceSettingsProvider.notifier)
-                            .updateSonarrCredentials(url, apiKey),
-                      ),
-                    ),
-                ],
-              ),
-
-              _SettingsSection(
-                title: 'About',
-                icon: TablerIcons.info_circle,
-                children: [
-                  _ActionTile(
-                    icon: TablerIcons.license,
-                    title: 'Licenses',
-                    onTap: () => showLicensePage(
-                      context: context,
-                      applicationName: 'Arr Client',
-                      applicationVersion: '1.0.0',
-                      applicationLegalese: '© 2025 Arr Client',
-                      applicationIcon: const Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: FlutterLogo(size: 48),
-                      ),
-                    ),
-                  ),
-                  const Divider(height: 1, indent: 56, endIndent: 16),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                    child: Row(
-                      children: [
-                        SizedBox(width: 40),
-                        Text('Version'),
-                        Spacer(),
-                        Text(
-                          '1.0.0',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Text(
-                'Made with ❤️ in Flutter',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onSurfaceVariant.withCustomOpacity(0.6),
-                ),
-              ),
-            ],
+    return Entry.opacity(
+      child: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            title: const Text('Settings'),
+            floating: true,
+            snap: true,
           ),
-        ),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 6),
+            sliver: SliverMasonryGrid(
+              mainAxisSpacing: 2,
+              crossAxisSpacing: 2,
+              gridDelegate:
+                  const SliverSimpleGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 900,
+                  ),
+              delegate: SliverChildListDelegate([
+                const _SettingsSection(
+                  title: 'Appearance',
+                  icon: TablerIcons.palette,
+                  children: [ThemeSelector()],
+                ),
+
+                _SettingsSection(
+                  title: 'Sonarr Configuration',
+                  icon: TablerIcons.device_tv,
+                  children: [
+                    if (serviceSettings.sonarrCredentials != null) ...[
+                      _ServiceStatusTile(
+                        title: 'Sonarr',
+                        subtitle: serviceSettings.sonarrCredentials!.sonarrUrl,
+                      ),
+                      const Divider(height: 1, indent: 56, endIndent: 16),
+                      _ActionTile(
+                        icon: TablerIcons.edit,
+                        title: 'Edit Credentials',
+                        onTap: () => _showEditCredentialsDialog(
+                          context,
+                          'Sonarr',
+                          serviceSettings.sonarrCredentials!.sonarrUrl,
+                          serviceSettings.sonarrCredentials!.sonarrApi,
+                          (url, apiKey) => ref
+                              .read(serviceSettingsProvider.notifier)
+                              .updateSonarrCredentials(url, apiKey),
+                        ),
+                      ),
+                      const Divider(height: 1, indent: 56, endIndent: 16),
+                      _ActionTile(
+                        icon: TablerIcons.trash,
+                        title: 'Delete Service',
+                        isDestructive: true,
+                        onTap: () => _showDeleteConfirmation(
+                          context,
+                          'Sonarr',
+                          () => ref
+                              .read(serviceSettingsProvider.notifier)
+                              .deleteSonarrService(),
+                        ),
+                      ),
+                    ] else
+                      _ActionTile(
+                        icon: TablerIcons.plus,
+                        title: 'Add Sonarr',
+                        onTap: () => _showEditCredentialsDialog(
+                          context,
+                          'Sonarr',
+                          '',
+                          '',
+                          (url, apiKey) => ref
+                              .read(serviceSettingsProvider.notifier)
+                              .updateSonarrCredentials(url, apiKey),
+                        ),
+                      ),
+                  ],
+                ),
+                _SettingsSection(
+                  title: 'Radarr Configuration',
+                  icon: TablerIcons.movie,
+                  children: [
+                    if (serviceSettings.radarrCredentials != null) ...[
+                      _ServiceStatusTile(
+                        title: 'Radarr',
+                        subtitle: serviceSettings.radarrCredentials!.radarrUrl,
+                      ),
+                      const Divider(height: 1, indent: 56, endIndent: 16),
+                      _ActionTile(
+                        icon: TablerIcons.edit,
+                        title: 'Edit Credentials',
+                        onTap: () => _showEditCredentialsDialog(
+                          context,
+                          'Radarr',
+                          serviceSettings.radarrCredentials!.radarrUrl,
+                          serviceSettings.radarrCredentials!.radarrApi,
+                          (url, apiKey) => ref
+                              .read(serviceSettingsProvider.notifier)
+                              .updateRadarrCredentials(url, apiKey),
+                        ),
+                      ),
+                      const Divider(height: 1, indent: 56, endIndent: 16),
+                      _ActionTile(
+                        icon: TablerIcons.trash,
+                        title: 'Delete Service',
+                        isDestructive: true,
+                        onTap: () => _showDeleteConfirmation(
+                          context,
+                          'Radarr',
+                          () => ref
+                              .read(serviceSettingsProvider.notifier)
+                              .deleteRadarrService(),
+                        ),
+                      ),
+                    ] else
+                      _ActionTile(
+                        icon: TablerIcons.plus,
+                        title: 'Add Radarr',
+                        onTap: () => _showEditCredentialsDialog(
+                          context,
+                          'Radarr',
+                          '',
+                          '',
+                          (url, apiKey) => ref
+                              .read(serviceSettingsProvider.notifier)
+                              .updateRadarrCredentials(url, apiKey),
+                        ),
+                      ),
+                  ],
+                ),
+                _SettingsSection(
+                  title: 'About',
+                  icon: TablerIcons.info_circle,
+                  children: [
+                    _ActionTile(
+                      icon: TablerIcons.license,
+                      title: 'Licenses',
+                      onTap: () => showLicensePage(
+                        context: context,
+                        applicationName: 'Arr Client',
+                        applicationVersion: '1.0.0',
+                        applicationLegalese: '© 2025 Arr Client',
+                        applicationIcon: const Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: FlutterLogo(size: 48),
+                        ),
+                      ),
+                    ),
+                    const Divider(height: 1, indent: 56, endIndent: 16),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                      child: Row(
+                        children: [
+                          SizedBox(width: 40),
+                          Text('Version'),
+                          Spacer(),
+                          Text(
+                            '1.0.0',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Text(
+                  'Made with ❤️ in Flutter',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurfaceVariant.withCustomOpacity(0.6),
+                  ),
+                ),
+                // Add some bottom padding
+                const SizedBox(height: 16),
+              ]),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -276,7 +294,6 @@ class _SettingsSection extends StatelessWidget {
     return Card(
       elevation: 3,
       shadowColor: theme.colorScheme.shadow.withAlpha(40),
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
         side: BorderSide(

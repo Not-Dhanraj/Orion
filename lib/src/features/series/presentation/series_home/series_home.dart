@@ -1,6 +1,7 @@
 import 'package:client/src/features/series/presentation/series_add/series_add_page.dart';
 import 'package:client/src/shared/error_widget.dart';
 import 'package:client/src/features/series/presentation/series_home/widgets/series_grid_widget.dart';
+import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:client/src/features/series/presentation/series_home/series_home_controller.dart';
@@ -12,80 +13,90 @@ class SeriesHome extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final seriesAsyncValue = ref.watch(seriesHomeControllerProvider);
 
-    return seriesAsyncValue.when(
-      data: (series) {
-        if (series.isEmpty) {
-          return const Center(
-            child: Text('No series found. Add a series to get started.'),
-          );
-        }
+    return Entry.opacity(
+      child: Stack(
+        children: [
+          CustomScrollView(
+            slivers: [
+              const SliverAppBar(
+                title: Text('Series'),
+                floating: true,
+                snap: true,
+              ),
 
-        return Stack(
-          children: [
-            LayoutBuilder(
-              builder: (context, constraints) {
-                var crossAxisCount = (constraints.maxWidth / 175).floor().clamp(
-                  1,
-                  7,
-                ); // Ensure at least 1 and at most 6 columns
-                return CustomScrollView(
-                  slivers: [
-                    SliverAppBar(
-                      title: const Text('Series'),
-                      floating: true,
-                      snap: true,
-                    ),
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 10,
-                      ),
-                      sliver: SliverGrid.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: crossAxisCount,
-                          childAspectRatio: 0.68,
-                          mainAxisSpacing: 10,
-                          crossAxisSpacing: 10,
+              seriesAsyncValue.when(
+                data: (series) {
+                  if (series.isEmpty) {
+                    return const SliverFillRemaining(
+                      child: Center(
+                        child: Text(
+                          'No series found. Add a series to get started.',
                         ),
-                        itemBuilder: (context, index) {
-                          final seriesItem = series[index];
-
-                          return SeriesGridItem(
-                            index: index,
-                            series: seriesItem,
-                            count: crossAxisCount,
-                          );
-                        },
-                        itemCount: series.length,
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-            Positioned(
-              bottom: 20,
-              right: 20,
-              child: SafeArea(
-                child: FloatingActionButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const SeriesAddPage(),
                       ),
                     );
-                  },
-                  tooltip: 'Add Series',
-                  child: const Icon(Icons.add),
+                  }
+
+                  return SliverPadding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 10,
+                    ),
+                    sliver: SliverGrid.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount:
+                            (MediaQuery.of(context).size.width / 175)
+                                .floor()
+                                .clamp(1, 7),
+                        childAspectRatio: 0.68,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                      ),
+                      itemBuilder: (context, index) {
+                        final seriesItem = series[index];
+                        final crossAxisCount =
+                            (MediaQuery.of(context).size.width / 175)
+                                .floor()
+                                .clamp(1, 7);
+
+                        return SeriesGridItem(
+                          index: index,
+                          series: seriesItem,
+                          count: crossAxisCount,
+                        );
+                      },
+                      itemCount: series.length,
+                    ),
+                  );
+                },
+                loading: () => const SliverFillRemaining(
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+                error: (error, stackTrace) => SliverFillRemaining(
+                  child: ErrorWidgetCe(errorMessage: error.toString()),
                 ),
               ),
+            ],
+          ),
+
+          Positioned(
+            bottom: 20,
+            right: 20,
+            child: SafeArea(
+              child: FloatingActionButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const SeriesAddPage(),
+                    ),
+                  );
+                },
+                tooltip: 'Add Series',
+                child: const Icon(Icons.add),
+              ),
             ),
-          ],
-        );
-      },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stackTrace) =>
-          ErrorWidgetCe(errorMessage: error.toString()),
+          ),
+        ],
+      ),
     );
   }
 }

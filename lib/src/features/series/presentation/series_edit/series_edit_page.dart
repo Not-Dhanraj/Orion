@@ -20,7 +20,6 @@ class SeriesEditPage extends ConsumerWidget {
     );
 
     return Dialog(
-      // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
         constraints: const BoxConstraints(maxWidth: 600),
         child: seriesEditController.when(
@@ -36,6 +35,7 @@ class SeriesEditPage extends ConsumerWidget {
                       backgroundImage: series.images?.isNotEmpty == true
                           ? CachedNetworkImageProvider(
                               series.images!.first.remoteUrl ?? '',
+                              maxWidth: 250,
                             )
                           : null,
                       backgroundColor: theme.colorScheme.primaryContainer,

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/src/features/series/presentation/series_add/series_add_controller.dart';
 import 'package:client/src/features/series/presentation/series_add/widgets/series_add_form.dart';
@@ -40,31 +42,43 @@ class SeriesAddCard extends ConsumerWidget {
                           series.images!.any(
                             (i) => i.coverType == MediaCoverTypes.poster,
                           )
-                      ? CachedNetworkImage(
-                          imageUrl:
-                              series.images!
-                                  .firstWhere(
-                                    (i) =>
-                                        i.coverType == MediaCoverTypes.poster,
-                                    orElse: () => series.images!.firstWhere(
-                                      (i) =>
-                                          i.coverType ==
-                                              MediaCoverTypes.poster ||
-                                          i.coverType == MediaCoverTypes.banner,
-                                      orElse: () => series.images!.first,
-                                    ),
-                                  )
-                                  .remoteUrl ??
-                              '',
-                          fit: BoxFit.cover,
-                          errorWidget: (_, __, ___) => Container(
-                            color: theme.colorScheme.surfaceContainerHighest,
-                            child: Icon(
-                              Icons.movie,
-                              size: 50,
-                              color: theme.colorScheme.primary,
-                            ),
-                          ),
+                      ? LayoutBuilder(
+                          builder: (context, constraints) {
+                            var memCacheWidth = min(
+                              constraints.maxWidth * 1.2,
+                              constraints.maxHeight * 1.2,
+                            );
+                            return CachedNetworkImage(
+                              memCacheWidth: (memCacheWidth).toInt(),
+                              imageUrl:
+                                  series.images!
+                                      .firstWhere(
+                                        (i) =>
+                                            i.coverType ==
+                                            MediaCoverTypes.poster,
+                                        orElse: () => series.images!.firstWhere(
+                                          (i) =>
+                                              i.coverType ==
+                                                  MediaCoverTypes.poster ||
+                                              i.coverType ==
+                                                  MediaCoverTypes.banner,
+                                          orElse: () => series.images!.first,
+                                        ),
+                                      )
+                                      .remoteUrl ??
+                                  '',
+                              fit: BoxFit.cover,
+                              errorWidget: (_, __, ___) => Container(
+                                color:
+                                    theme.colorScheme.surfaceContainerHighest,
+                                child: Icon(
+                                  Icons.movie,
+                                  size: 50,
+                                  color: theme.colorScheme.primary,
+                                ),
+                              ),
+                            );
+                          },
                         )
                       : Container(
                           color: theme.colorScheme.surfaceContainerHighest,
@@ -271,6 +285,7 @@ class SeriesAddCard extends ConsumerWidget {
                         backgroundImage: series.images?.isNotEmpty == true
                             ? CachedNetworkImageProvider(
                                 series.images!.first.remoteUrl ?? '',
+                                maxWidth: 250,
                               )
                             : null,
                         backgroundColor: theme.colorScheme.primaryContainer,

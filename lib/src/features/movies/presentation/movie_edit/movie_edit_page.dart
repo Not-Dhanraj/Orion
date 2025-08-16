@@ -52,6 +52,7 @@ class MovieEditPage extends ConsumerWidget {
                           backgroundImage: movieData.images?.isNotEmpty == true
                               ? CachedNetworkImageProvider(
                                   movieData.images!.first.remoteUrl ?? '',
+                                  maxWidth: 100,
                                 )
                               : null,
                           backgroundColor: theme.colorScheme.primaryContainer,

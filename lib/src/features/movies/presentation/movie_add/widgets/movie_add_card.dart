@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/src/features/movies/presentation/movie_add/movie_add_controller.dart';
 import 'package:client/src/features/movies/presentation/movie_add/widgets/movie_add_form.dart';
@@ -39,31 +41,43 @@ class MovieAddCard extends ConsumerWidget {
                           movie.images!.any(
                             (i) => i.coverType == MediaCoverTypes.poster,
                           )
-                      ? CachedNetworkImage(
-                          imageUrl:
-                              movie.images!
-                                  .firstWhere(
-                                    (i) =>
-                                        i.coverType == MediaCoverTypes.poster,
-                                    orElse: () => movie.images!.firstWhere(
-                                      (i) =>
-                                          i.coverType ==
-                                              MediaCoverTypes.poster ||
-                                          i.coverType == MediaCoverTypes.banner,
-                                      orElse: () => movie.images!.first,
-                                    ),
-                                  )
-                                  .remoteUrl ??
-                              '',
-                          fit: BoxFit.cover,
-                          errorWidget: (_, __, ___) => Container(
-                            color: theme.colorScheme.surfaceContainerHighest,
-                            child: Icon(
-                              Icons.movie,
-                              size: 50,
-                              color: theme.colorScheme.primary,
-                            ),
-                          ),
+                      ? LayoutBuilder(
+                          builder: (context, constraints) {
+                            var memCacheWidth = min(
+                              constraints.maxWidth * 1.2,
+                              constraints.maxHeight * 1.2,
+                            );
+                            return CachedNetworkImage(
+                              memCacheWidth: memCacheWidth.toInt(),
+                              imageUrl:
+                                  movie.images!
+                                      .firstWhere(
+                                        (i) =>
+                                            i.coverType ==
+                                            MediaCoverTypes.poster,
+                                        orElse: () => movie.images!.firstWhere(
+                                          (i) =>
+                                              i.coverType ==
+                                                  MediaCoverTypes.poster ||
+                                              i.coverType ==
+                                                  MediaCoverTypes.banner,
+                                          orElse: () => movie.images!.first,
+                                        ),
+                                      )
+                                      .remoteUrl ??
+                                  '',
+                              fit: BoxFit.cover,
+                              errorWidget: (_, __, ___) => Container(
+                                color:
+                                    theme.colorScheme.surfaceContainerHighest,
+                                child: Icon(
+                                  Icons.movie,
+                                  size: 50,
+                                  color: theme.colorScheme.primary,
+                                ),
+                              ),
+                            );
+                          },
                         )
                       : Container(
                           color: theme.colorScheme.surfaceContainerHighest,
@@ -266,6 +280,7 @@ class MovieAddCard extends ConsumerWidget {
                           CircleAvatar(
                             backgroundImage: movie.images?.isNotEmpty == true
                                 ? CachedNetworkImageProvider(
+                                    maxWidth: 100,
                                     movie.images!.first.remoteUrl ?? '',
                                   )
                                 : null,

@@ -1,9 +1,9 @@
 import 'package:client/src/features/movies/presentation/movie_detail/movie_details_controller.dart';
 import 'package:client/src/features/movies/presentation/movie_detail/widgets/media_info_card.dart';
 import 'package:client/src/features/movies/presentation/movie_detail/widgets/movie_actions.dart';
-import 'package:client/src/features/movies/presentation/movie_detail/widgets/movie_header.dart';
 import 'package:client/src/features/movies/presentation/movie_detail/widgets/movie_info_card.dart';
 import 'package:client/src/features/movies/presentation/movie_detail/widgets/movie_overview_card.dart';
+import 'package:client/src/shared/widgets/detail_page_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -52,12 +52,18 @@ class _MovieDetailsPageState extends ConsumerState<MovieDetailsPage> {
           SliverPadding(
             padding: EdgeInsets.all(12),
             sliver: SliverMasonryGrid.extent(
-              maxCrossAxisExtent: 600,
+              maxCrossAxisExtent: 650,
               mainAxisSpacing: 12.0,
               crossAxisSpacing: 12.0,
               itemBuilder: (context, index) {
                 final widgets = [
-                  MovieHeader(posterUrl: posterUrl, movie: movie),
+                  DetailPageHeader(
+                    isMonitored: movie.monitored ?? false,
+                    posterUrl: posterUrl,
+                    title: movie.title,
+                    originalLanguage: movie.originalLanguage?.name,
+                    status: movie.status?.name,
+                  ),
                   MovieActionCard(movie: movie),
                   MovieOverviewCard(overview: movie.overview),
                   MovieInfoCard(movie: movie),

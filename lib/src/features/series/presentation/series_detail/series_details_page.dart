@@ -1,10 +1,10 @@
 import 'package:client/src/features/series/presentation/series_detail/series_details_controller.dart';
 import 'package:client/src/features/series/presentation/series_detail/widgets/series_actions.dart';
+import 'package:client/src/shared/widgets/detail_page_header.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'widgets/media_info_card.dart';
 import 'widgets/series_info_card.dart';
 import 'widgets/series_overview_card.dart';
-import 'package:client/src/features/series/presentation/series_detail/widgets/series_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
@@ -58,7 +58,13 @@ class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
               crossAxisSpacing: 12.0,
               itemBuilder: (context, index) {
                 final widgets = [
-                  SeriesHeader(posterUrl: posterUrl, series: series),
+                  DetailPageHeader(
+                    isMonitored: series.monitored ?? false,
+                    posterUrl: posterUrl,
+                    title: series.title,
+                    originalLanguage: series.originalLanguage?.name,
+                    status: series.status?.name,
+                  ),
                   SeriesActionCard(series: series),
                   SeriesOverviewCard(overview: series.overview),
                   SeriesSeasonsCard(series: series),

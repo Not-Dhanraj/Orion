@@ -7,25 +7,33 @@ A modern, responsive, and feature-rich cross-platform client for Radarr and Sona
 ## Features
 
 - **Multi-platform Support**: Run on Android, iOS, Windows, macOS, Linux, and Web
-- **Responsive UI**: Adapts beautifully to any screen size from phones to large desktop displays
-- **Radarr Integration**: Manage your movie library, monitor downloads, and control the queue
-- **Sonarr Integration**: Manage your TV show library, monitor episodes, and control the queue
-- **Unified Queue**: View and manage downloads from both Radarr and Sonarr in a single interface
-- **Dark & Light Themes**: Choose your preferred visual style
+- **Responsive Design**: Adapts to any screen size with responsive layouts using MasonryGridView and adaptive navigation
+- **Unified Media Management**:
+  - **Movie Management**: Browse, search, and manage your Radarr movie library
+  - **TV Show Management**: Browse, search, and manage your Sonarr TV series library
+  - **Download Queue**: View and manage all downloads in a unified interface with status indicators and progress tracking
+  - **Comprehensive Calendar**: Track upcoming releases and recently added content
+- **Dynamic Theming**: Light and dark theme support using FlexColorScheme
+- **Adaptive Layouts**: Responsive grid views that adjust based on screen size
+- **Download Management**: Pause, resume, or remove downloads directly from the app
+
+- **Technical Features**:
+  - **Riverpod State Management**: Clean architecture with separation of concerns
+  - **API Integration**: Direct integration with Radarr and Sonarr APIs
 
 
 ## Screenshots
 
 <table>
   <tr>
-    <td><img src="assets/screenshots/screenshot1.png" alt="Dashboard" width="100%"/></td>
-    <td><img src="assets/screenshots/screenshot2.png" alt="Movie Details" width="100%"/></td>
-    <td><img src="assets/screenshots/screenshot3.png" alt="TV Show Details" width="100%"/></td>
+    <td><img src="screenshots/Series_Home.png" alt="Series Home" width="100%"/></td>
+    <td><img src="screenshots/Movies_Home.png" alt="Movie Home" width="100%"/></td>
+    <td><img src="screenshots/Details_page.png" alt="Details Page" width="100%"/></td>
   </tr>
   <tr>
-    <td><img src="assets/screenshots/screenshot4.png" alt="Queue" width="100%"/></td>
-    <td><img src="assets/screenshots/screenshot5.png" alt="Settings" width="100%"/></td>
-    <td><img src="assets/screenshots/screenshot6.png" alt="Calendar" width="100%"/></td>
+    <td><img src="screenshots/Queue.png" alt="Queue" width="100%"/></td>
+    <td><img src="screenshots/Seasons.png" alt="Seasons Page" width="100%"/></td>
+    <td><img src="screenshots/Settings.png" alt="Settings" width="100%"/></td>
   </tr>
 </table>
 
@@ -39,10 +47,6 @@ A modern, responsive, and feature-rich cross-platform client for Radarr and Sona
 ### iOS
 
 - Build from source using Xcode
-
-### Windows
-- Download the installer from the Releases page
-- Run the installer and follow the on-screen instructions
 
 
 
@@ -105,6 +109,16 @@ flutter build linux --release
 flutter build web --release
 ```
 
+## Future Plans
+
+- [ ] Prowlarr integration for managing indexers
+- [ ] Lidarr integration for music collection management
+- [ ] Enhanced error handling and user feedback
+- [ ] Code restructuring for better maintainability
+- [ ] Performance optimizations for larger libraries
+- [ ] Write proper unit tests
+
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
@@ -118,11 +132,3 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Future Plans
-
-- [ ] Prowlarr integration for managing indexers
-- [ ] Lidarr integration for music collection management
-- [ ] Enhanced error handling and user feedback
-- [ ] Code restructuring for better maintainability
-- [ ] Performance optimizations for larger libraries

@@ -7,6 +7,7 @@ import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:client/src/features/movies/presentation/movie_home/movie_home_controller.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:radarr/radarr.dart';
 
 class MovieHome extends ConsumerWidget {
@@ -109,7 +110,7 @@ class MovieHome extends ConsumerWidget {
                   );
                 },
                 tooltip: 'Add Movie',
-                child: const Icon(Icons.add),
+                child: const Icon(TablerIcons.copy_plus),
               ),
             ),
           ),

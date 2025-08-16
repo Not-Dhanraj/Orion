@@ -4,6 +4,7 @@ import 'package:client/src/shared/page/custom_error_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:with_opacity/with_opacity.dart';
 
 class MovieAddPage extends ConsumerStatefulWidget {
@@ -71,7 +72,7 @@ class _MovieAddPageState extends ConsumerState<MovieAddPage> {
                       children: [
                         if (_searchController.text.isNotEmpty)
                           IconButton(
-                            icon: const Icon(Icons.clear),
+                            icon: const Icon(TablerIcons.x),
                             tooltip: 'Clear search',
                             onPressed: () {
                               _searchController.clear();
@@ -209,7 +210,7 @@ class _MovieAddPageState extends ConsumerState<MovieAddPage> {
                                 ),
                                 const SizedBox(height: 12),
                                 FilledButton.icon(
-                                  icon: const Icon(Icons.refresh),
+                                  icon: const Icon(TablerIcons.refresh),
                                   label: const Text('Try Another Search'),
                                   onPressed: () {
                                     _searchController.clear();

@@ -4,6 +4,7 @@ import 'package:client/src/features/movies/presentation/movie_edit/movie_edit_co
 import 'package:client/src/features/movies/presentation/movie_edit/widgets/movie_minimum_availability_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:radarr/radarr.dart';
 import 'widgets/movie_monitoring_options.dart';
 import 'widgets/movie_path_options.dart';
@@ -88,7 +89,7 @@ class MovieEditPage extends ConsumerWidget {
                         ),
                         IconButton(
                           onPressed: () => Navigator.of(context).pop(),
-                          icon: const Icon(Icons.close),
+                          icon: const Icon(TablerIcons.x),
                           tooltip: 'Close',
                         ),
                       ],

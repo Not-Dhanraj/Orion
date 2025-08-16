@@ -387,19 +387,11 @@ class MovieActionCard extends ConsumerWidget {
                   // Show success message
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Row(
-                        children: [
-                          const Icon(Icons.check_circle, color: Colors.white),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              'Successfully deleted file for "${movie.title}"',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
+                      content: Expanded(
+                        child: Text(
+                          'Successfully deleted file for "${movie.title}"',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ),
                       backgroundColor: Colors.green.shade600,
                       behavior: SnackBarBehavior.floating,
@@ -420,19 +412,11 @@ class MovieActionCard extends ConsumerWidget {
 
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Row(
-                        children: [
-                          const Icon(Icons.error_outline, color: Colors.white),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              'Failed to delete file: ${e.toString()}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
+                      content: Expanded(
+                        child: Text(
+                          'Failed to delete file: ${e.toString()}',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ),
                       backgroundColor: Colors.red,
                       behavior: SnackBarBehavior.floating,

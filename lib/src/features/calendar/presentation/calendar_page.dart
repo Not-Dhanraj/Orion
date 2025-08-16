@@ -6,6 +6,7 @@ import 'package:client/src/shared/widgets/error_message.dart';
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarPage extends ConsumerStatefulWidget {
@@ -74,7 +75,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
               ),
               actions: [
                 IconButton(
-                  icon: const Icon(Icons.refresh),
+                  icon: const Icon(TablerIcons.refresh),
                   onPressed: _refreshCalendar,
                   tooltip: 'Force refresh now',
                 ),

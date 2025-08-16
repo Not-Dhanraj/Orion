@@ -5,6 +5,7 @@ import 'package:client/src/features/movies/presentation/movie_add/movie_add_cont
 import 'package:client/src/features/movies/presentation/movie_add/widgets/movie_add_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:radarr/radarr.dart';
 import 'package:with_opacity/with_opacity.dart';
 
@@ -317,7 +318,7 @@ class MovieAddCard extends ConsumerWidget {
                           ),
                           IconButton(
                             onPressed: () => Navigator.of(context).pop(),
-                            icon: const Icon(Icons.close),
+                            icon: const Icon(TablerIcons.x),
                             tooltip: 'Close',
                           ),
                         ],
@@ -358,7 +359,7 @@ class MovieAddCard extends ConsumerWidget {
                           ),
                           const SizedBox(width: 12),
                           FilledButton.icon(
-                            icon: const Icon(Icons.add),
+                            icon: const Icon(TablerIcons.copy_plus),
                             label: const Text('Add Movie'),
                             style: FilledButton.styleFrom(
                               padding: const EdgeInsets.symmetric(

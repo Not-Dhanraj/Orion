@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   final List<Widget> pages;
@@ -43,10 +44,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                 NavigationRail(
                   labelType: NavigationRailLabelType.all,
 
-                  // extended: isExtended,
                   leading: const Padding(
                     padding: EdgeInsets.only(top: 8),
-                    child: Icon(Icons.menu),
+                    child: Icon(TablerIcons.category),
                   ),
                   groupAlignment: 0,
                   destinations: [
@@ -82,7 +82,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             ],
           ),
           bottomNavigationBar: isWide
-              ? null // No bottom nav in wide layout
+              ? null
               : BottomNavigationBar(
                   type: BottomNavigationBarType.fixed,
                   showSelectedLabels: true,
@@ -97,8 +97,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                   },
                 ),
         );
-
-        // Mobile layout
       },
     );
   }

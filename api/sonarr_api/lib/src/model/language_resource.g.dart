@@ -1,0 +1,115 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'language_resource.dart';
+
+// **************************************************************************
+// BuiltValueGenerator
+// **************************************************************************
+
+class _$LanguageResource extends LanguageResource {
+  @override
+  final int? id;
+  @override
+  final String? name;
+  @override
+  final String? nameLower;
+
+  factory _$LanguageResource(
+          [void Function(LanguageResourceBuilder)? updates]) =>
+      (LanguageResourceBuilder()..update(updates))._build();
+
+  _$LanguageResource._({this.id, this.name, this.nameLower}) : super._();
+  @override
+  LanguageResource rebuild(void Function(LanguageResourceBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  LanguageResourceBuilder toBuilder() =>
+      LanguageResourceBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is LanguageResource &&
+        id == other.id &&
+        name == other.name &&
+        nameLower == other.nameLower;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, id.hashCode);
+    _$hash = $jc(_$hash, name.hashCode);
+    _$hash = $jc(_$hash, nameLower.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'LanguageResource')
+          ..add('id', id)
+          ..add('name', name)
+          ..add('nameLower', nameLower))
+        .toString();
+  }
+}
+
+class LanguageResourceBuilder
+    implements Builder<LanguageResource, LanguageResourceBuilder> {
+  _$LanguageResource? _$v;
+
+  int? _id;
+  int? get id => _$this._id;
+  set id(int? id) => _$this._id = id;
+
+  String? _name;
+  String? get name => _$this._name;
+  set name(String? name) => _$this._name = name;
+
+  String? _nameLower;
+  String? get nameLower => _$this._nameLower;
+  set nameLower(String? nameLower) => _$this._nameLower = nameLower;
+
+  LanguageResourceBuilder() {
+    LanguageResource._defaults(this);
+  }
+
+  LanguageResourceBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _name = $v.name;
+      _nameLower = $v.nameLower;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(LanguageResource other) {
+    _$v = other as _$LanguageResource;
+  }
+
+  @override
+  void update(void Function(LanguageResourceBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  LanguageResource build() => _build();
+
+  _$LanguageResource _build() {
+    final _$result = _$v ??
+        _$LanguageResource._(
+          id: id,
+          name: name,
+          nameLower: nameLower,
+        );
+    replace(_$result);
+    return _$result;
+  }
+}
+
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

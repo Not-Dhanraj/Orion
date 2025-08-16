@@ -117,7 +117,7 @@ flutter build web --release
 - [ ] Code restructuring for better maintainability
 - [ ] Performance optimizations for larger libraries
 - [ ] Write proper unit tests
-
+- [ ] Go Router for routing
 
 ## Contributing
 

@@ -23,8 +23,6 @@ class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
   @override
   void initState() {
     super.initState();
-
-    // Use a microtask to update the state after the build is complete
   }
 
   @override
@@ -39,44 +37,41 @@ class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
             .remoteUrl ??
         '';
     return Scaffold(
-      body: Hero(
-        tag: series.id ?? series.title ?? 0,
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              titleSpacing: 0,
-              title: Text("Series Details"),
-              floating: true,
-              snap: true,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            titleSpacing: 0,
+            title: Text("Series Details"),
+            floating: true,
+            snap: true,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop(),
             ),
+          ),
 
-            SliverPadding(
-              padding: EdgeInsets.all(12),
-              sliver: SliverMasonryGrid.extent(
-                maxCrossAxisExtent: 600,
-                mainAxisSpacing: 12.0,
-                crossAxisSpacing: 12.0,
-                itemBuilder: (context, index) {
-                  final widgets = [
-                    SeriesHeader(posterUrl: posterUrl, series: series),
-                    SeriesActionCard(series: series),
-                    SeriesOverviewCard(overview: series.overview),
-                    SeriesSeasonsCard(series: series),
-                    SeriesInfoCard(series: series),
-                    MediaInfoCard(series: series),
-                    const SizedBox(height: 16),
-                  ];
-                  return widgets[index];
-                },
-                childCount: 7,
-              ),
+          SliverPadding(
+            padding: EdgeInsets.all(12),
+            sliver: SliverMasonryGrid.extent(
+              maxCrossAxisExtent: 600,
+              mainAxisSpacing: 12.0,
+              crossAxisSpacing: 12.0,
+              itemBuilder: (context, index) {
+                final widgets = [
+                  SeriesHeader(posterUrl: posterUrl, series: series),
+                  SeriesActionCard(series: series),
+                  SeriesOverviewCard(overview: series.overview),
+                  SeriesSeasonsCard(series: series),
+                  SeriesInfoCard(series: series),
+                  MediaInfoCard(series: series),
+                  const SizedBox(height: 16),
+                ];
+                return widgets[index];
+              },
+              childCount: 7,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

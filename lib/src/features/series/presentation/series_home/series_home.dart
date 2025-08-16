@@ -1,10 +1,13 @@
 import 'package:client/src/features/series/presentation/series_add/series_add_page.dart';
+import 'package:client/src/features/series/presentation/series_detail/series_details_controller.dart';
+import 'package:client/src/features/series/presentation/series_detail/series_details_page.dart';
 import 'package:client/src/shared/error_widget.dart';
-import 'package:client/src/features/series/presentation/series_home/widgets/series_grid_widget.dart';
+import 'package:client/src/shared/widgets/media_grid_items.dart';
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:client/src/features/series/presentation/series_home/series_home_controller.dart';
+import 'package:sonarr/sonarr.dart';
 
 class SeriesHome extends ConsumerWidget {
   const SeriesHome({super.key});
@@ -53,15 +56,31 @@ class SeriesHome extends ConsumerWidget {
                       ),
                       itemBuilder: (context, index) {
                         final seriesItem = series[index];
-                        final crossAxisCount =
-                            (MediaQuery.of(context).size.width / 175)
-                                .floor()
-                                .clamp(1, 7);
 
-                        return SeriesGridItem(
-                          index: index,
-                          series: seriesItem,
-                          count: crossAxisCount,
+                        final imgUrl = seriesItem.images
+                            ?.firstWhere(
+                              (image) =>
+                                  image.coverType == MediaCoverTypes.poster,
+                              orElse: () => MediaCover(),
+                            )
+                            .remoteUrl;
+                        return MediaGridItem(
+                          title: seriesItem.title,
+                          year: seriesItem.year,
+                          imgUrl: imgUrl,
+                          ratings: seriesItem.ratings?.value,
+                          onTap: () {
+                            ref
+                                .read(seriesDetailsControllerProvider.notifier)
+                                .initialize(seriesItem);
+
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    SeriesDetailsPage(series: seriesItem),
+                              ),
+                            );
+                          },
                         );
                       },
                       itemCount: series.length,

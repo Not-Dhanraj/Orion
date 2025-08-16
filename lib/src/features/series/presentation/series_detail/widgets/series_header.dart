@@ -29,19 +29,22 @@ class SeriesHeader extends StatelessWidget {
 
             child: Container(
               constraints: BoxConstraints(
-                maxHeight:
-                    MediaQuery.of(context).size.height *
-                    0.6, // Max 60% of screen
+                maxHeight: MediaQuery.of(context).size.height * 0.6,
               ),
-              child: CachedNetworkImage(
-                memCacheWidth: MediaQuery.of(context).size.width.toInt(),
-                imageUrl: posterUrl!,
-                fit: BoxFit.fitWidth,
-                placeholder: (context, url) => SizedBox(
-                  height: 200,
-                  child: Center(child: CircularProgressIndicator()),
-                ),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  var memWidth = constraints.maxWidth;
+                  return CachedNetworkImage(
+                    imageUrl: posterUrl!,
+                    memCacheWidth: memWidth.toInt(),
+                    fit: BoxFit.fitWidth,
+                    placeholder: (context, url) => SizedBox(
+                      height: 200,
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  );
+                },
               ),
             ),
           ),

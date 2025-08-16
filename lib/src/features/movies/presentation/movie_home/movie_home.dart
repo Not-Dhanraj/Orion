@@ -1,10 +1,13 @@
-import 'package:client/src/features/movies/presentation/movie_home/widgets/movie_grid_widget.dart';
+import 'package:client/src/features/movies/presentation/movie_detail/movie_details_controller.dart';
+import 'package:client/src/features/movies/presentation/movie_detail/movie_details_page.dart';
 import 'package:client/src/features/movies/presentation/movie_add/movie_add_page.dart';
 import 'package:client/src/shared/error_widget.dart';
+import 'package:client/src/shared/widgets/media_grid_items.dart';
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:client/src/features/movies/presentation/movie_home/movie_home_controller.dart';
+import 'package:radarr/radarr.dart';
 
 class MovieHome extends ConsumerWidget {
   const MovieHome({super.key});
@@ -53,15 +56,30 @@ class MovieHome extends ConsumerWidget {
                       ),
                       itemBuilder: (context, index) {
                         final movieItem = movies[index];
-                        final crossAxisCount =
-                            (MediaQuery.of(context).size.width / 175)
-                                .floor()
-                                .clamp(1, 7);
 
-                        return MovieGridItem(
-                          index: index,
-                          movie: movieItem,
-                          count: crossAxisCount,
+                        return MediaGridItem(
+                          title: movieItem.title,
+                          year: movieItem.year,
+                          imgUrl: movieItem.images
+                              ?.firstWhere(
+                                (image) =>
+                                    image.coverType == MediaCoverTypes.poster,
+                                orElse: () => MediaCover(),
+                              )
+                              .remoteUrl,
+                          onTap: () {
+                            ref
+                                .read(movieDetailsControllerProvider.notifier)
+                                .initialize(movieItem);
+
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    MovieDetailsPage(movie: movieItem),
+                              ),
+                            );
+                          },
+                          ratings: movieItem.ratings?.imdb?.value,
                         );
                       },
                       itemCount: movies.length,

@@ -8,11 +8,7 @@ class MovieHeader extends StatelessWidget {
   final String? posterUrl;
   final MovieResource movie;
 
-  const MovieHeader({
-    super.key,
-    required this.posterUrl,
-    required this.movie,
-  });
+  const MovieHeader({super.key, required this.posterUrl, required this.movie});
 
   @override
   Widget build(BuildContext context) {
@@ -29,17 +25,24 @@ class MovieHeader extends StatelessWidget {
             child: Container(
               constraints: BoxConstraints(
                 maxHeight:
-                    MediaQuery.of(context).size.height * 0.6, // Max 60% of screen
+                    MediaQuery.of(context).size.height *
+                    0.6, // Max 60% of screen
               ),
-              child: CachedNetworkImage(
-                memCacheWidth: MediaQuery.of(context).size.width.toInt(),
-                imageUrl: posterUrl!,
-                fit: BoxFit.fitWidth,
-                placeholder: (context, url) => SizedBox(
-                  height: 200,
-                  child: Center(child: CircularProgressIndicator()),
-                ),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  var memWidth = constraints.maxWidth;
+
+                  return CachedNetworkImage(
+                    memCacheWidth: memWidth.toInt(),
+                    imageUrl: posterUrl!,
+                    fit: BoxFit.fitWidth,
+                    placeholder: (context, url) => SizedBox(
+                      height: 200,
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  );
+                },
               ),
             ),
           ),
@@ -47,8 +50,9 @@ class MovieHeader extends StatelessWidget {
         SizedBox(height: 12),
         Text(
           movie.title ?? 'Unknown Movie',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold),
+          style: Theme.of(
+            context,
+          ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
           textAlign: TextAlign.start,
         ),
         Text(

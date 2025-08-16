@@ -1,4 +1,3 @@
-import 'package:animations/animations.dart';
 import 'package:client/src/features/series/presentation/season/season_page.dart';
 import 'package:flutter/material.dart';
 import 'package:sonarr/sonarr.dart';

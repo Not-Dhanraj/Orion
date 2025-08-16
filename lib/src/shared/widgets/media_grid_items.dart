@@ -1,46 +1,31 @@
-import 'package:animations/animations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:client/src/features/movies/presentation/movie_detail/movie_details_controller.dart';
-import 'package:client/src/features/movies/presentation/movie_detail/movie_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
-import 'package:radarr/radarr.dart';
 import 'package:with_opacity/with_opacity.dart';
 
-class MovieGridItem extends ConsumerWidget {
-  final int index;
-  final int count;
-  final MovieResource movie;
+class MediaGridItem extends ConsumerWidget {
+  final String? imgUrl;
+  final void Function() onTap;
+  final double? ratings;
+  final String? title;
+  final int? year;
 
-  const MovieGridItem({
+  const MediaGridItem({
     super.key,
-    required this.index,
-    required this.movie,
-    required this.count,
+    required this.title,
+    required this.year,
+    required this.imgUrl,
+    required this.onTap,
+    required this.ratings,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final imgUrl = movie.images
-        ?.firstWhere(
-          (image) => image.coverType == MediaCoverTypes.poster,
-          orElse: () => MediaCover(),
-        )
-        .remoteUrl;
-    final mediaquery = MediaQuery.of(context);
     final textTheme = Theme.of(context).textTheme;
 
     return GestureDetector(
-      onTap: () {
-        ref.read(movieDetailsControllerProvider.notifier).initialize(movie);
-
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => MovieDetailsPage(movie: movie),
-          ),
-        );
-      },
+      onTap: onTap,
       child: Stack(
         children: [
           imgUrl == null
@@ -71,23 +56,25 @@ class MovieGridItem extends ConsumerWidget {
                   ),
                 )
               : Positioned.fill(
-                  child: Hero(
-                    tag: movie.id ?? movie.title ?? 0,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: CachedNetworkImage(
-                        memCacheWidth: mediaquery.size.width ~/ (count * 0.8),
-                        imageUrl: imgUrl,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) =>
-                            const Center(child: CircularProgressIndicator()),
-                        errorWidget: (context, url, error) =>
-                            const Icon(TablerIcons.photo_cancel),
-                      ),
-                    ),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      var memWidth = constraints.maxWidth;
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: CachedNetworkImage(
+                          memCacheWidth: memWidth.toInt(),
+                          imageUrl: imgUrl!,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) =>
+                              const Center(child: CircularProgressIndicator()),
+                          errorWidget: (context, url, error) =>
+                              const Icon(TablerIcons.photo_cancel),
+                        ),
+                      );
+                    },
                   ),
                 ),
-          if (movie.ratings?.imdb?.value != null)
+          if (ratings != null)
             Positioned(
               top: 8,
               right: 8,
@@ -107,7 +94,7 @@ class MovieGridItem extends ConsumerWidget {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      movie.ratings?.imdb?.value.toString() ?? 'N/A',
+                      ratings?.toString() ?? 'N/A',
                       style: textTheme.bodySmall?.copyWith(color: Colors.white),
                     ),
                   ],
@@ -148,13 +135,13 @@ class MovieGridItem extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    movie.title ?? 'Unknown Movie',
+                    title ?? 'Unknown Title',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: textTheme.titleMedium?.copyWith(color: Colors.white),
                   ),
                   Text(
-                    movie.year?.toString() ?? 'Unknown Year',
+                    year?.toString() ?? 'Unknown Year',
                     style: textTheme.bodySmall?.copyWith(color: Colors.white70),
                   ),
                 ],

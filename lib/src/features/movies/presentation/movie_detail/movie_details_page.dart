@@ -22,13 +22,6 @@ class _MovieDetailsPageState extends ConsumerState<MovieDetailsPage> {
   @override
   void initState() {
     super.initState();
-
-    // Use a microtask to update the state after the build is complete
-    Future.microtask(() {
-      ref
-          .read(movieDetailsControllerProvider.notifier)
-          .initialize(widget.movie);
-    });
   }
 
   @override
@@ -43,40 +36,44 @@ class _MovieDetailsPageState extends ConsumerState<MovieDetailsPage> {
             .remoteUrl ??
         '';
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            titleSpacing: 0,
-            title: Text("Movie Details"),
-            floating: true,
-            snap: true,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () => Navigator.of(context).pop(),
+      body: Hero(
+        tag: movie.id ?? movie.title ?? 0,
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              titleSpacing: 0,
+              title: Text("Movie Details"),
+              floating: true,
+              snap: true,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
             ),
-          ),
 
-          SliverPadding(
-            padding: EdgeInsets.all(12),
-            sliver: SliverMasonryGrid.extent(
-              maxCrossAxisExtent: 600,
-              mainAxisSpacing: 12.0,
-              crossAxisSpacing: 12.0,
-              itemBuilder: (context, index) {
-                final widgets = [
-                  MovieHeader(posterUrl: posterUrl, movie: movie),
-                  MovieActionCard(movie: movie),
-                  MovieOverviewCard(overview: movie.overview),
-                  MovieInfoCard(movie: movie),
-                  MediaInfoCard(movie: movie),
-                  const SizedBox(height: 16),
-                ];
-                return widgets[index];
-              },
-              childCount: 6, // One less than series since we don't have seasons
+            SliverPadding(
+              padding: EdgeInsets.all(12),
+              sliver: SliverMasonryGrid.extent(
+                maxCrossAxisExtent: 600,
+                mainAxisSpacing: 12.0,
+                crossAxisSpacing: 12.0,
+                itemBuilder: (context, index) {
+                  final widgets = [
+                    MovieHeader(posterUrl: posterUrl, movie: movie),
+                    MovieActionCard(movie: movie),
+                    MovieOverviewCard(overview: movie.overview),
+                    MovieInfoCard(movie: movie),
+                    MediaInfoCard(movie: movie),
+                    const SizedBox(height: 16),
+                  ];
+                  return widgets[index];
+                },
+                childCount:
+                    6, // One less than series since we don't have seasons
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

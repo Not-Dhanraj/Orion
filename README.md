@@ -33,7 +33,7 @@ A modern, responsive, and feature-rich cross-platform client for Radarr and Sona
   <tr>
     <td><img src="screenshots/Queue.png" alt="Queue" width="100%"/></td>
     <td><img src="screenshots/Seasons.png" alt="Seasons Page" width="100%"/></td>
-    <td><img src="screenshots/Settings.png" alt="Settings" width="100%"/></td>
+    
   </tr>
 </table>
 

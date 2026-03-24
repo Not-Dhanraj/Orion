@@ -34,14 +34,14 @@ dependencies:
   cupertino_icons: ^1.0.8
   dynamic_color: ^1.8.1
   entry: ^1.0.1
-  flex_color_scheme: ^8.2.0
+  flex_color_scheme: ^8.4.0
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.6.1
   flutter_staggered_grid_view: ^0.7.0
   flutter_tabler_icons:
     git: https://github.com/agil3st/flutter_tabler_icons.git
-  google_fonts: ^6.2.1
+  google_fonts: ^8.0.2
   hive_ce: ^2.11.3
   hive_ce_flutter: ^2.3.1
   intl: ^0.19.0
@@ -55,11 +55,45 @@ dependencies:
 
 dev_dependencies:
   build_runner: ^2.5.4
+  flutter_launcher_icons: ^0.14.4
   flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
   hive_ce_generator: ^1.9.3
-  flutter_launcher_icons: ^0.14.4
+  icons_launcher: ^3.1.0
+
+
+
+
+
+icons_launcher:
+  image_path: 'assets/icon/icon.png'
+  platforms:
+    android:
+      enable: true
+      image_path: 'assets/icon/icon.png'
+      notification_image: "assets/icon/fg.png"
+      # adaptive_background_color: '#ffffff'
+      adaptive_background_image: 'assets/icon/bg.png'
+      adaptive_foreground_image: 'assets/icon/fg.png'
+      adaptive_monochrome_image: 'assets/icon/fg.png'
+    ios:
+      enable: false
+    web:
+      enable: true
+      image_path: 'assets/icon/icon.png'
+      favicon_path: 'assets/icon/icon.png'
+    macos:
+      enable: false
+      image_path: 'assets/icon/icon.png'
+    windows:
+      enable: true
+      image_path: 'assets/icon/icon.png'
+    linux:
+      enable: true
+      image_path: 'assets/icon/icon.png'
+
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -73,6 +107,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/icon/
+    - assets/icon/icon.png
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

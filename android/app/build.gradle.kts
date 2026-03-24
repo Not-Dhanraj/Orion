@@ -16,7 +16,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.example.client"
+    namespace = "com.codenamedp.orion"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 

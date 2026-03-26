@@ -23,10 +23,6 @@ class MovieMinimumAvailabilityDropdown extends ConsumerWidget {
       margin: const EdgeInsets.symmetric(vertical: 4),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
-        // side: BorderSide(
-        //   color: theme.colorScheme.outline.withAlpha(30),
-        //   width: 1,
-        // ),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),

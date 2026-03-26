@@ -56,7 +56,6 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
       ),
       body: CustomScrollView(
         slivers: [
-          // Header section
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
@@ -77,7 +76,6 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
             ),
           ),
 
-          // Grid section
           SliverPadding(
             padding: const EdgeInsets.all(12),
             sliver: SliverMasonryGrid.extent(
@@ -136,17 +134,9 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                     formState: _radarrFormKey,
                     primaryColor: Colors.orange,
                   ),
-                  // Add more _AuthCard widgets here as needed
                 ];
                 return items[index];
               },
-              // gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              //   maxCrossAxisExtent: 660,
-              //   mainAxisExtent: 420,
-              //   mainAxisSpacing: 16,
-              //   crossAxisSpacing: 16,
-              // ),
-              // delegate: SliverChildListDelegate([]),
             ),
           ),
         ],

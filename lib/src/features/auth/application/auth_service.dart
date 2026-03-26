@@ -131,7 +131,6 @@ class AuthService {
     String apiKey,
     ServiceType serviceType,
   ) async {
-    // First validate the connection
     if (serviceType == ServiceType.sonarr) {
       await makeSonarrRequest(url, apiKey);
       await configureSonarr(url, apiKey);

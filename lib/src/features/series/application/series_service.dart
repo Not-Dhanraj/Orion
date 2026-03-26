@@ -159,7 +159,6 @@ class SeriesService {
   }
 }
 
-// Provider for the SeriesService
 final seriesServiceProvider = Provider<SeriesService>((ref) {
   return SeriesService(ref);
 });

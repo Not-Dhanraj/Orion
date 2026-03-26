@@ -154,8 +154,6 @@ class _MediaReleaseWidgetState extends ConsumerState<MediaReleaseWidget> {
                           child: InkWell(
                             borderRadius: BorderRadius.circular(12),
                             onTap: () {
-                              // Toggle expanded state for this item
-                              // (This would require a state variable to track expanded items)
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -190,7 +188,6 @@ class _MediaReleaseWidgetState extends ConsumerState<MediaReleaseWidget> {
                                             children: [
                                               Row(
                                                 children: [
-                                                  // Quality indicator - now more compact
                                                   Container(
                                                     padding:
                                                         const EdgeInsets.symmetric(
@@ -245,7 +242,6 @@ class _MediaReleaseWidgetState extends ConsumerState<MediaReleaseWidget> {
                                                 ],
                                               ),
                                               const SizedBox(height: 4),
-                                              // Size and age in a row
                                               Wrap(
                                                 spacing: 12,
                                                 children: [
@@ -302,7 +298,6 @@ class _MediaReleaseWidgetState extends ConsumerState<MediaReleaseWidget> {
                                             ],
                                           ),
                                         ),
-                                        // Action buttons
                                         Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.end,
@@ -440,7 +435,6 @@ class _MediaReleaseWidgetState extends ConsumerState<MediaReleaseWidget> {
 
                                     const SizedBox(height: 8),
 
-                                    // Additional details in a grid layout - more compact for mobile
                                     Wrap(
                                       spacing: 6,
                                       runSpacing: 6,
@@ -460,7 +454,6 @@ class _MediaReleaseWidgetState extends ConsumerState<MediaReleaseWidget> {
                                                 .last,
                                             compact: true,
                                           ),
-                                        // Language information for series
                                         if (widget.formatLanguages != null &&
                                             release.languages != null)
                                           _buildReleaseInfoTag(

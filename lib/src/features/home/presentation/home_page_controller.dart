@@ -69,7 +69,6 @@ class HomePageController extends Notifier<HomePageItems> {
         label: 'Settings',
       ),
     );
-    // await Future.delayed(const Duration(seconds: 2));
     return HomePageItems(pages: pages, navItems: navItems);
   }
 }

@@ -69,7 +69,6 @@ class _QueuePageState extends ConsumerState<QueuePage> {
                     child: Center(child: Text('No items in queue')),
                   );
                 }
-                // Use ScrollNotificationInterceptor for RefreshIndicator to work with slivers
                 return SliverPadding(
                   padding: EdgeInsets.zero,
                   sliver: QueueListWidget(items: queueItems),

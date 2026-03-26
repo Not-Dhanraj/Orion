@@ -10,7 +10,6 @@ class SeriesAddController extends AsyncNotifier<SeriesAddState> {
     try {
       final seriesService = ref.watch(seriesServiceProvider);
 
-      // Fetch both quality profiles and root folders
       final qualityProfiles = await seriesService.fetchQualityProfiles();
       final rootFolders = await seriesService.fetchRootFolders();
 
@@ -40,7 +39,6 @@ class SeriesAddController extends AsyncNotifier<SeriesAddState> {
       final seriesService = ref.read(seriesServiceProvider);
       final results = await seriesService.searchSeries(query);
 
-      // Filter out series that are already in the library
       final allSeries = await seriesService.fetchAllSeries();
       final filteredResults = results
           .where(
@@ -68,7 +66,6 @@ class SeriesAddController extends AsyncNotifier<SeriesAddState> {
           errorMessage: 'Failed to search series: ${e.toString()}',
         ),
       );
-      // Rethrow the exception so it can be caught by the UI
       rethrow;
     }
   }
@@ -133,12 +130,10 @@ class SeriesAddController extends AsyncNotifier<SeriesAddState> {
         .where((series) => series.tvdbId != addedSeries.tvdbId)
         .toList();
 
-    // Force a rebuild with the updated list
     if (state.value != null) {
       state = AsyncData(
         state.value!.copyWith(
           searchResults: updatedResults,
-          // Reset any selection state to ensure clean UI
           selectedSeries: null,
           isCreating: false,
         ),

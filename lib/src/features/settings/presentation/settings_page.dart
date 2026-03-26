@@ -193,7 +193,6 @@ class SettingsPage extends ConsumerWidget {
                     ).colorScheme.onSurfaceVariant.withCustomOpacity(0.6),
                   ),
                 ),
-                // Add some bottom padding
                 const SizedBox(height: 16),
               ]),
             ),

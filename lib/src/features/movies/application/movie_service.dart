@@ -202,7 +202,6 @@ class MovieService {
   }
 }
 
-// Provider for the MovieService
 final movieServiceProvider = Provider<MovieService>((ref) {
   return MovieService(ref);
 });

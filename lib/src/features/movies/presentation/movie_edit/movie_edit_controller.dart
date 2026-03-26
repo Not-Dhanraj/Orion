@@ -14,13 +14,11 @@ class MovieEditControllerNotifier
     final qualityProfiles = await movieService.fetchQualityProfiles();
     final rootFolders = await movieService.fetchRootFolders();
     
-    // Fetch the latest movie data if we have an ID
     MovieResource updatedMovie = movie;
     if (movie.id != null) {
       try {
         updatedMovie = await movieService.fetchMovieById(movie.id!);
       } catch (e) {
-        // If fetching fails, just use the provided movie object
       }
     }
     
@@ -69,7 +67,6 @@ class MovieEditControllerNotifier
       return true;
     } catch (e) {
       state = AsyncError(e, StackTrace.current);
-      // Show error message
       return false;
     } finally {
       state = AsyncData(state.value!.copyWith(isLoading: false));

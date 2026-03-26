@@ -50,7 +50,6 @@ class _SeriesAddPageState extends ConsumerState<SeriesAddPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Search bar with integrated button
                 TextField(
                   controller: _searchController,
                   focusNode: _searchFocusNode,
@@ -74,7 +73,6 @@ class _SeriesAddPageState extends ConsumerState<SeriesAddPage> {
                             tooltip: 'Clear search',
                             onPressed: () {
                               _searchController.clear();
-                              // Clear search results but don't trigger a new search
                               if (_hasSearched) {
                                 ref
                                     .read(seriesAddControllerProvider.notifier)
@@ -160,14 +158,12 @@ class _SeriesAddPageState extends ConsumerState<SeriesAddPage> {
 
                 SizedBox(height: 8),
 
-                // Status message - no longer showing here as we'll display errors in a dialog
                 if (state.isSearching)
                   const Padding(
                     padding: EdgeInsets.all(16.0),
                     child: Center(child: CircularProgressIndicator()),
                   ),
 
-                // Search results
                 if (!state.isSearching && _hasSearched)
                   Expanded(
                     child: Builder(
@@ -233,7 +229,6 @@ class _SeriesAddPageState extends ConsumerState<SeriesAddPage> {
                     ),
                   ),
 
-                // Initial instructions
                 if (!_hasSearched && !state.isSearching)
                   Expanded(
                     child: Center(
@@ -278,7 +273,5 @@ class _SeriesAddPageState extends ConsumerState<SeriesAddPage> {
     );
   }
 
-  // Helper method to build info badges
 
-  // Helper method to get status color
 }

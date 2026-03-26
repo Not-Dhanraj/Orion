@@ -78,7 +78,6 @@ class MovieRepository {
   }
   
   Future<void> deleteMovieFile(int movieId) async {
-    // First we need to get the movie file ID
     final movieResponse = await _api.getMovieApi().apiV3MovieIdGet(id: movieId);
     final movie = movieResponse.data;
     
@@ -86,7 +85,6 @@ class MovieRepository {
       throw Exception('Movie file not found');
     }
     
-    // Then we can delete the file using the moviefile endpoint
     await _api.getMovieFileApi().apiV3MoviefileIdDelete(
       id: movie.movieFile!.id!,
     );

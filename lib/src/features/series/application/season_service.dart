@@ -130,12 +130,10 @@ class SeasonService {
   }
 }
 
-// Provider for the SeasonRepository
 final seasonRepositoryProvider = Provider<SeasonRepository>((ref) {
   return SeasonRepository(ref.watch(seriesApiProvider));
 });
 
-// Provider for the SeasonService
 final seasonServiceProvider = Provider<SeasonService>((ref) {
   return SeasonService(ref);
 });

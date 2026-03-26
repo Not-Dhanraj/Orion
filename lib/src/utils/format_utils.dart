@@ -19,26 +19,22 @@ class FormatUtils {
     final now = DateTime.now();
     final difference = dateTime.difference(now);
 
-    // If it's today, show just the time
     if (dateTime.day == now.day &&
         dateTime.month == now.month &&
         dateTime.year == now.year) {
       return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
     }
 
-    // If it's within the next 24 hours
     if (difference.inHours < 24 && difference.inHours > 0) {
       return '${difference.inHours}h ${difference.inMinutes.remainder(60)}m';
     }
 
-    // If it's tomorrow
     if (dateTime.day == now.day + 1 &&
         dateTime.month == now.month &&
         dateTime.year == now.year) {
       return 'Tomorrow ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
     }
 
-    // Otherwise show the date
     return '${dateTime.month}/${dateTime.day} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
   }
 

@@ -10,7 +10,6 @@ class MovieAddController extends AsyncNotifier<MovieAddState> {
     try {
       final movieService = ref.watch(movieServiceProvider);
 
-      // Fetch both quality profiles and root folders
       final qualityProfiles = await movieService.fetchQualityProfiles();
       final rootFolders = await movieService.fetchRootFolders();
 
@@ -40,7 +39,6 @@ class MovieAddController extends AsyncNotifier<MovieAddState> {
       final movieService = ref.read(movieServiceProvider);
       final results = await movieService.searchMovies(query);
 
-      // Filter out movies that are already in the library
       final allMovies = await movieService.fetchAllMovies();
       final filteredResults = results
           .where(
@@ -68,7 +66,6 @@ class MovieAddController extends AsyncNotifier<MovieAddState> {
           errorMessage: 'Failed to search movies: ${e.toString()}',
         ),
       );
-      // Rethrow the exception so it can be caught by the UI
       rethrow;
     }
   }
@@ -131,12 +128,10 @@ class MovieAddController extends AsyncNotifier<MovieAddState> {
         .where((movie) => movie.tmdbId != addedMovie.tmdbId)
         .toList();
 
-    // Force a rebuild with the updated list
     if (state.value != null) {
       state = AsyncData(
         state.value!.copyWith(
           searchResults: updatedResults,
-          // Reset any selection state to ensure clean UI
           selectedMovie: null,
           isCreating: false,
         ),

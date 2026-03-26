@@ -19,11 +19,8 @@ class SeriesHomeController extends AsyncNotifier<List<SeriesResource>> {
       state = AsyncData(seriesList);
     } catch (e) {
       state = AsyncError(e, StackTrace.current);
-      // Handle error, e.g., show a message to the user
     }
   }
-
-  // Removed getPoster method as it's now handled directly in the widget
 }
 
 final seriesHomeControllerProvider =

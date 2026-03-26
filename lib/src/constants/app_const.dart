@@ -10,5 +10,4 @@ class AppConst {
   final radarrCredKey = 'radarr_credentials_key';
 
   final themeModeKey = 'theme_mode_key';
-  final useDynamicColorKey = 'dynamic_color_key';
 }

@@ -51,7 +51,6 @@ class _MovieAddPageState extends ConsumerState<MovieAddPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Search bar with integrated button
                 TextField(
                   controller: _searchController,
                   focusNode: _searchFocusNode,
@@ -76,7 +75,6 @@ class _MovieAddPageState extends ConsumerState<MovieAddPage> {
                             tooltip: 'Clear search',
                             onPressed: () {
                               _searchController.clear();
-                              // Clear search results but don't trigger a new search
                               if (_hasSearched) {
                                 ref
                                     .read(movieAddControllerProvider.notifier)
@@ -162,14 +160,12 @@ class _MovieAddPageState extends ConsumerState<MovieAddPage> {
 
                 const SizedBox(height: 8),
 
-                // Status message
                 if (state.isSearching)
                   const Padding(
                     padding: EdgeInsets.all(16.0),
                     child: Center(child: CircularProgressIndicator()),
                   ),
 
-                // Search results
                 if (!state.isSearching && _hasSearched)
                   Expanded(
                     child: Builder(
@@ -235,7 +231,6 @@ class _MovieAddPageState extends ConsumerState<MovieAddPage> {
                     ),
                   ),
 
-                // Initial instructions
                 if (!_hasSearched && !state.isSearching)
                   Expanded(
                     child: Center(

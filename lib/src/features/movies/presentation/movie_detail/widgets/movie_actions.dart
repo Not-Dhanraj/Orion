@@ -235,7 +235,6 @@ class MovieActionCard extends ConsumerWidget {
                     );
                   },
                 ),
-                // Show either "Downloaded" or "Releases" button based on if the movie has a file
                 if (movie.hasFile == true && movie.movieFile != null)
                   _ActionWidget(
                     icon: Icons.file_download_done,
@@ -319,7 +318,6 @@ class MovieActionCard extends ConsumerWidget {
     List<ReleaseResource> releases,
     MovieResource movie,
   ) {
-    // Get a reference to the movieService
     final movieService = ref.read(movieServiceProvider);
     showDialog(
       context: context,
@@ -361,7 +359,6 @@ class MovieActionCard extends ConsumerWidget {
               Navigator.of(context).pop(); // Close the dialog
 
               try {
-                // Show loading dialog
                 showDialog(
                   context: context,
                   barrierDismissible: false,
@@ -377,14 +374,11 @@ class MovieActionCard extends ConsumerWidget {
                   ),
                 );
 
-                // Call the movie service to delete the file
                 await ref.read(movieServiceProvider).deleteMovieFile(movie.id!);
 
-                // Close the loading dialog
                 if (context.mounted) {
                   Navigator.of(context).pop();
 
-                  // Show success message
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Expanded(
@@ -404,7 +398,6 @@ class MovieActionCard extends ConsumerWidget {
                   );
                 }
               } catch (e) {
-                // Show error message
                 if (context.mounted) {
                   Navigator.of(
                     context,

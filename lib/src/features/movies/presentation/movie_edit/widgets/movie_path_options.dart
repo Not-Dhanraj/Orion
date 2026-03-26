@@ -14,7 +14,6 @@ class MoviePathOptions extends ConsumerWidget {
     required this.onMovieChanged,
   });
 
-  // This method filters out duplicate paths in root folders
   List<RootFolderResource> _getUniqueRootFolders() {
     final uniquePaths = <String>{};
     final uniqueFolders = <RootFolderResource>[];
@@ -26,9 +25,7 @@ class MoviePathOptions extends ConsumerWidget {
       }
     }
 
-    // Make sure the current path is included in the items
     if (movie.path != null && !uniquePaths.contains(movie.path)) {
-      // Create a temporary RootFolderResource with the current path
       final currentPathFolder = RootFolderResource((b) => b..path = movie.path);
       uniqueFolders.add(currentPathFolder);
     }

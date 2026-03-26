@@ -56,7 +56,6 @@ class SeasonRepository {
     required int seasonNumber,
     required bool monitored,
   }) async {
-    // First, get the current series to update its seasons
     final seriesResponse = await _api.getSeriesApi().apiV3SeriesIdGet(
       id: seriesId,
     );
@@ -67,7 +66,6 @@ class SeasonRepository {
 
     final series = seriesResponse.data!;
 
-    // Update the specified season's monitoring status
     final updatedSeasons = series.seasons?.map((season) {
       if (season.seasonNumber == seasonNumber) {
         return season.rebuild((s) => s..monitored = monitored);
@@ -75,12 +73,10 @@ class SeasonRepository {
       return season;
     }).toBuiltList();
 
-    // Create updated series with the modified seasons
     final updatedSeries = series.rebuild(
       (s) => s..seasons = updatedSeasons?.toBuilder(),
     );
 
-    // Send the updated series to the API
     final response = await _api.getSeriesApi().apiV3SeriesIdPut(
       id: seriesId.toString(),
       seriesResource: updatedSeries,

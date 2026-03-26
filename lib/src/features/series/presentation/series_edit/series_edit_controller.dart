@@ -55,7 +55,6 @@ class SeriesEditControllerNotifier
       return true;
     } catch (e) {
       state = AsyncError(e, StackTrace.current);
-      // Show error message
       return false;
     } finally {
       state = AsyncData(state.value!.copyWith(isLoading: false));

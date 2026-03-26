@@ -48,7 +48,6 @@ class MovieAddForm extends ConsumerWidget {
                   ),
                   child: Column(
                     children: [
-                      // Monitored switch
                       CustomSwitchTile(
                         title: 'Monitored',
                         subtitle: 'Download this movie automatically',
@@ -70,7 +69,6 @@ class MovieAddForm extends ConsumerWidget {
                             .withCustomOpacity(0.5),
                       ),
 
-                      // Monitor Type dropdown
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -193,7 +191,6 @@ class MovieAddForm extends ConsumerWidget {
                             .withCustomOpacity(0.5),
                       ),
 
-                      // Search for movie switch
                       CustomSwitchTile(
                         title: 'Search for Movie',
                         subtitle: 'Start searching for the movie right away',
@@ -220,7 +217,6 @@ class MovieAddForm extends ConsumerWidget {
 
         const SizedBox(height: 8),
 
-        // Movie Path Card
         Card(
           elevation: 3,
           shadowColor: theme.colorScheme.shadow.withAlpha(40),
@@ -236,7 +232,6 @@ class MovieAddForm extends ConsumerWidget {
                   margin: const EdgeInsets.all(2),
                   child: Column(
                     children: [
-                      // Root Folder Path
                       if (rootFolders.isNotEmpty)
                         DropdownButtonFormField<String>(
                           value: updatedMovie.rootFolderPath,
@@ -285,7 +280,6 @@ class MovieAddForm extends ConsumerWidget {
 
         const SizedBox(height: 8),
 
-        // Minimum Availability Card
         Card(
           elevation: 3,
           shadowColor: theme.colorScheme.shadow.withAlpha(40),
@@ -353,7 +347,6 @@ class MovieAddForm extends ConsumerWidget {
 
         const SizedBox(height: 8),
 
-        // Quality Profile Card
         Card(
           elevation: 3,
           shadowColor: theme.colorScheme.shadow.withAlpha(40),

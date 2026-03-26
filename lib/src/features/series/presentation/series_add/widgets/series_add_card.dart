@@ -90,7 +90,6 @@ class SeriesAddCard extends ConsumerWidget {
                         ),
                 ),
 
-                // Gradient overlay
                 Positioned.fill(
                   child: Container(
                     decoration: BoxDecoration(
@@ -107,7 +106,6 @@ class SeriesAddCard extends ConsumerWidget {
                   ),
                 ),
 
-                // Title and badges
                 Positioned(
                   bottom: 0,
                   left: 0,
@@ -134,7 +132,6 @@ class SeriesAddCard extends ConsumerWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 8),
-                        // Info badges
                         Wrap(
                           spacing: 8,
                           runSpacing: 8,
@@ -165,7 +162,6 @@ class SeriesAddCard extends ConsumerWidget {
                   ),
                 ),
 
-                // Add button overlay in top right
                 Positioned(
                   top: 12,
                   right: 12,
@@ -202,7 +198,6 @@ class SeriesAddCard extends ConsumerWidget {
               ],
             ),
 
-            // Overview section
             if (series.overview != null && series.overview!.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -254,7 +249,6 @@ class SeriesAddCard extends ConsumerWidget {
     ref.read(seriesAddControllerProvider.notifier).selectSeries(series);
     final theme = Theme.of(context);
 
-    // Then show the dialog
     showDialog(
       context: context,
       builder: (context) {
@@ -263,10 +257,6 @@ class SeriesAddCard extends ConsumerWidget {
         final qualityProfiles = state?.qualityProfiles ?? [];
 
         return Dialog.fullscreen(
-          // shape: RoundedRectangleBorder(
-          //   borderRadius: BorderRadius.circular(12),
-          // ),
-          // clipBehavior: Clip.antiAlias,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.9,
             constraints: BoxConstraints(
@@ -325,7 +315,6 @@ class SeriesAddCard extends ConsumerWidget {
                   ),
                 ),
 
-                // Configuration form
                 Flexible(
                   child: Padding(
                     padding: const EdgeInsets.all(8),
@@ -348,7 +337,6 @@ class SeriesAddCard extends ConsumerWidget {
                   ),
                 ),
 
-                // Action buttons
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,

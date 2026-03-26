@@ -24,7 +24,6 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
   void initState() {
     super.initState();
 
-    // Create a placeholder tab controller that will be replaced when data loads
     _tabController = TabController(length: 1, vsync: this);
   }
 
@@ -48,14 +47,12 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
       error: (error, stackTrace) =>
           CustomErrorPage(errorMessage: error.toString()),
       data: (state) {
-        // Setup tab controller when data is available
         if (state.seasons.isEmpty) {
           return CustomErrorPage(
             errorMessage: 'No seasons found for this series.',
           );
         }
 
-        // Initialize tab controller if needed
         if (_tabController.length != state.seasons.length) {
           _tabController = TabController(
             length: state.seasons.length,
@@ -74,7 +71,6 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
           _tabController.animateTo(state.selectedSeasonIndex);
         }
 
-        // Get the currently selected season
         final selectedSeason = state.selectedSeason;
         if (selectedSeason == null) {
           return CustomErrorPage(
@@ -164,7 +160,6 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
                 icon: const Icon(Icons.refresh),
                 tooltip: 'Refresh',
                 onPressed: () {
-                  // Invalidate the provider to force a rebuild
                   ref.invalidate(
                     seasonPageControllerProvider(state.seriesResource),
                   );
@@ -253,11 +248,9 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
           ),
           body: RefreshIndicator(
             onRefresh: () async {
-              // Invalidate the provider to force a rebuild
               ref.invalidate(
                 seasonPageControllerProvider(state.seriesResource),
               );
-              // Wait a bit to let the UI refresh
               await Future.delayed(const Duration(milliseconds: 100));
             },
             child: Builder(
@@ -416,7 +409,6 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  // Monitor/Unmonitor Button
                                   IconButton(
                                     icon: Icon(
                                       episode.monitored == true
@@ -439,7 +431,6 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
                                           ], !(episode.monitored ?? false));
                                     },
                                   ),
-                                  // Download/Search Button
                                   IconButton(
                                     icon: Icon(
                                       hasFile
@@ -517,7 +508,6 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
                                       }
                                     },
                                   ),
-                                  // Delete File Button (if file exists)
                                   if (hasFile)
                                     IconButton(
                                       icon: Icon(

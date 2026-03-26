@@ -21,7 +21,6 @@ class MovieEditPage extends ConsumerWidget {
     final controller = ref.watch(movieEditControllerProvider(movie));
 
     return Dialog(
-      // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
         constraints: const BoxConstraints(maxWidth: 600),
         child: controller.when(
@@ -138,7 +137,6 @@ class MovieEditPage extends ConsumerWidget {
                       FilledButton(
                         onPressed: state.hasChanges
                             ? () async {
-                                // Show loading dialog
                                 showDialog(
                                   context: context,
                                   barrierDismissible: false,
@@ -158,15 +156,12 @@ class MovieEditPage extends ConsumerWidget {
                                   ),
                                 );
 
-                                // Save changes
                                 final success = await controller.saveChanges();
 
-                                // Close the loading dialog
                                 if (context.mounted) {
                                   Navigator.of(context).pop();
                                 }
 
-                                // Show result and close edit dialog if successful
                                 if (context.mounted) {
                                   if (success) {
                                     ScaffoldMessenger.of(context).showSnackBar(

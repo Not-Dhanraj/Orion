@@ -137,7 +137,6 @@ class SeriesEditPage extends ConsumerWidget {
                     FilledButton(
                       onPressed: state.hasChanges
                           ? () async {
-                              // Show loading dialog
                               showDialog(
                                 context: context,
                                 barrierDismissible: false,
@@ -156,7 +155,6 @@ class SeriesEditPage extends ConsumerWidget {
                                 ),
                               );
 
-                              // Save changes
                               final success = await ref
                                   .read(
                                     seriesEditControllerProvider(
@@ -165,12 +163,10 @@ class SeriesEditPage extends ConsumerWidget {
                                   )
                                   .saveChanges();
 
-                              // Close the loading dialog
                               if (context.mounted) {
                                 Navigator.of(context).pop();
                               }
 
-                              // Show result and close edit dialog if successful
                               if (context.mounted) {
                                 if (success) {
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -249,11 +245,6 @@ class SeriesEditPage extends ConsumerWidget {
           error: (error, stack) => Center(
             child: ErrorWidgetCe(
               errorMessage: error.toString(),
-              // onRetry: () {
-              //   ref.invalidate(
-              //     seriesEditControllerProvider(series.id!),
-              //   );
-              // },
             ),
           ),
         ),

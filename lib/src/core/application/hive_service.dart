@@ -10,9 +10,7 @@ class HiveService {
   Future<void> init() async {
     await Hive.initFlutter();
 
-    // Register adapters only if not already registered
     try {
-      // Check if adapters are already registered by their typeId
       if (!_isAdapterRegistered(1)) {
         Hive.registerAdapter(SonarrCredentialsAdapter());
       }
@@ -21,27 +19,22 @@ class HiveService {
         Hive.registerAdapter(RadarrCredentialsAdapter());
       }
     } catch (e) {
-      // Log any errors
       debugPrint('Error registering adapters: $e');
     }
 
     var appConst = AppConst();
 
-    // Open boxes
     await Hive.openBox(appConst.sonarrBox);
     await Hive.openBox(appConst.radarrBox);
     await Hive.openBox(appConst.credentialsBox);
 
-    // Open theme settings box
     await Hive.openBox(themeBoxName);
   }
 
-  // Helper method to check if an adapter is already registered
   bool _isAdapterRegistered(int typeId) {
     try {
       return Hive.isAdapterRegistered(typeId);
     } catch (_) {
-      // If we can't check, assume it's not registered
       return false;
     }
   }

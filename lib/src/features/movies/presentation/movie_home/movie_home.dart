@@ -1,8 +1,8 @@
 import 'package:client/src/features/movies/presentation/movie_detail/movie_details_controller.dart';
 import 'package:client/src/features/movies/presentation/movie_detail/movie_details_page.dart';
 import 'package:client/src/features/movies/presentation/movie_add/movie_add_page.dart';
-import 'package:client/src/shared/error_widget.dart';
 import 'package:client/src/shared/widgets/media_grid_items.dart';
+import 'package:client/src/shared/widgets/orion_error_state.dart';
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -91,7 +91,7 @@ class MovieHome extends ConsumerWidget {
                   child: Center(child: CircularProgressIndicator()),
                 ),
                 error: (error, stackTrace) => SliverFillRemaining(
-                  child: ErrorWidgetCe(errorMessage: error.toString()),
+                  child: OrionErrorState(error: error, stackTrace: stackTrace),
                 ),
               ),
             ],

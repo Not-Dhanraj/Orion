@@ -1,7 +1,7 @@
 import 'package:client/src/features/auth/presentation/auth_page.dart';
 import 'package:client/src/features/auth/presentation/splash/splash_controller.dart';
+import 'package:client/src/features/auth/domain/splash_data.dart';
 import 'package:client/src/features/home/presentation/home_page.dart';
-import 'package:client/src/features/home/presentation/home_page_controller.dart';
 import 'package:client/src/shared/widgets/orion_error_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -50,16 +50,15 @@ class SplashPage extends ConsumerWidget {
                     ref.invalidate(splashControllerProvider);
                   },
                 ),
-                data: (route) {
+                data: (splashData) {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
-                    final homeController = ref.read(homePageControllerProvider);
-                    switch (route) {
+                    switch (splashData.route) {
                       case SplashRoute.homePage:
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                             builder: (context) => HomePage(
-                              pages: homeController.pages,
-                              bottomNavItems: homeController.navItems,
+                              pages: splashData.homePageItems!.pages,
+                              bottomNavItems: splashData.homePageItems!.navItems,
                             ),
                           ),
                         );

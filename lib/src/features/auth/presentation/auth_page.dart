@@ -1,6 +1,5 @@
 import 'package:client/src/features/auth/presentation/auth_controller.dart';
-import 'package:client/src/features/home/presentation/home_page.dart';
-import 'package:client/src/features/home/presentation/home_page_controller.dart';
+import 'package:client/src/features/auth/presentation/splash/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -169,14 +168,9 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                           authState.radarrConfigured)
                       ? null
                       : () {
-                          final data = ref.read(homePageControllerProvider);
-
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
-                              builder: (context) => HomePage(
-                                pages: data.pages,
-                                bottomNavItems: data.navItems,
-                              ),
+                              builder: (context) => const SplashPage(),
                             ),
                           );
                         },

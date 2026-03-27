@@ -7,6 +7,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<HomeNavItem> navItems;
   final int currentIndex;
   final void Function(int index) onPressed;
+  final bool showBottomBorder;
 
   const HomeAppBar({
     super.key,
@@ -14,6 +15,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.navItems,
     required this.currentIndex,
     required this.onPressed,
+    this.showBottomBorder = true,
   });
 
   @override
@@ -23,12 +25,18 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final cs = context.colorScheme;
 
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeInOut,
       height: kToolbarHeight + 5 + context.padding.top,
       padding: EdgeInsets.only(top: context.padding.top, left: 24, right: 12),
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: cs.primary.withValues(alpha: 0.15)),
+          bottom: BorderSide(
+            color: cs.primary.withValues(
+              alpha: showBottomBorder ? 0.15 : 0.0,
+            ),
+          ),
         ),
       ),
       child: Row(

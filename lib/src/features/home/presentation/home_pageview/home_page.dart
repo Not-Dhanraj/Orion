@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:client/src/features/home/domain/home_nav_item.dart';
+import 'package:client/src/features/home/presentation/library/library_page.dart';
 import 'package:client/src/utils/context_extensions.dart';
 import 'widgets/home_appbar.dart';
 import 'widgets/home_bottom_nav.dart';
@@ -42,6 +43,8 @@ class _HomePageState extends ConsumerState<HomePage> {
         navItems: widget.navItems,
         currentIndex: _currentIndex,
         onPressed: _onNav,
+        showBottomBorder:
+            widget.navItems[_currentIndex].page is! LibraryPage,
       ),
       body: Center(
         child: ConstrainedBox(

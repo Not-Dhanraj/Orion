@@ -18,7 +18,7 @@ class LibraryPage extends StatefulWidget {
 }
 
 class _LibraryPageState extends State<LibraryPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   late TabController _tabController;
   late List<String> _tabs;
 
@@ -36,32 +36,35 @@ class _LibraryPageState extends State<LibraryPage>
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            ListenableBuilder(
-              listenable: _tabController,
-              builder: (context, _) => LibrarySegmentedControl(
-                tabs: _tabs,
-                activeIndex: _tabController.index,
-                onIndexChanged: (int index) {
-                  _tabController.animateTo(index, duration: Duration.zero);
-                },
-              ),
+      body: Column(
+        children: [
+          ListenableBuilder(
+            listenable: _tabController,
+            builder: (context, _) => LibrarySegmentedControl(
+              tabs: _tabs,
+              activeIndex: _tabController.index,
+              onIndexChanged: (int index) {
+                _tabController.animateTo(index, duration: Duration.zero);
+              },
             ),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  if (widget.hasSonarr) const SeriesLibraryPage(),
-                  if (widget.hasRadarr) const MovieLibraryPage(),
-                ],
-              ),
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                if (widget.hasSonarr) SeriesLibraryPage(),
+                if (widget.hasRadarr) MovieLibraryPage(),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

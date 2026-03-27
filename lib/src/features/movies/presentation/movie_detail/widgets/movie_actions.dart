@@ -1,6 +1,6 @@
 import 'package:client/src/features/movies/application/movie_service.dart';
 import 'package:client/src/features/movies/presentation/movie_edit/movie_edit_page.dart';
-import 'package:client/src/features/movies/presentation/movie_home/movie_home_controller.dart';
+import 'package:client/src/features/movies/presentation/movie_library/movie_library_controller.dart';
 import 'package:client/src/shared/widgets/media_release_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -144,7 +144,9 @@ class MovieActionCard extends ConsumerWidget {
                                           addImportListExclusion,
                                         );
 
-                                    ref.invalidate(movieHomeControllerProvider);
+                                    ref.invalidate(
+                                      movieLibraryControllerProvider,
+                                    );
                                     await Future.delayed(
                                       Duration(milliseconds: 500),
                                     );

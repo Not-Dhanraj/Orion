@@ -1,7 +1,7 @@
 import 'package:client/src/features/movies/application/movie_service.dart';
 import 'package:client/src/features/movies/domain/movie_edit_state.dart';
 import 'package:client/src/features/movies/presentation/movie_detail/movie_details_controller.dart';
-import 'package:client/src/features/movies/presentation/movie_home/movie_home_controller.dart';
+import 'package:client/src/features/movies/presentation/movie_library/movie_library_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr/radarr.dart';
 
@@ -13,15 +13,14 @@ class MovieEditControllerNotifier
     await Future.delayed(const Duration(milliseconds: 500));
     final qualityProfiles = await movieService.fetchQualityProfiles();
     final rootFolders = await movieService.fetchRootFolders();
-    
+
     MovieResource updatedMovie = movie;
     if (movie.id != null) {
       try {
         updatedMovie = await movieService.fetchMovieById(movie.id!);
-      } catch (e) {
-      }
+      } catch (e) {}
     }
-    
+
     return MovieEditState(
       movie: updatedMovie,
       hasChanges: false,
@@ -63,7 +62,7 @@ class MovieEditControllerNotifier
         ),
       );
 
-      ref.invalidate(movieHomeControllerProvider);
+      ref.invalidate(movieLibraryControllerProvider);
       return true;
     } catch (e) {
       state = AsyncError(e, StackTrace.current);

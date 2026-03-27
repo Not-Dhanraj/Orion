@@ -1,0 +1,67 @@
+import 'package:client/src/shared/widgets/library/library_item_row.dart';
+import 'package:client/src/shared/widgets/library/library_section_header.dart';
+import 'package:client/src/features/movies/presentation/movie_detail/movie_details_controller.dart';
+import 'package:client/src/features/movies/presentation/movie_detail/movie_details_page.dart';
+import 'package:client/src/features/movies/presentation/movie_library/movie_library_controller.dart';
+import 'package:client/src/utils/context_extensions.dart';
+import 'package:client/src/shared/widgets/orion_error_state.dart';
+import 'package:client/src/utils/movie_utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:radarr/radarr.dart';
+
+class MovieLibraryPage extends ConsumerWidget {
+  const MovieLibraryPage({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final async = ref.watch(movieLibraryControllerProvider);
+
+    return async.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (err, stack) => Center(
+        child: OrionErrorState(
+          error: err,
+          stackTrace: stack,
+          onRetry: () => ref.invalidate(movieLibraryControllerProvider),
+        ),
+      ),
+      data: (movies) {
+        if (movies.isEmpty) {
+          return const Center(child: Text('No movies in your library.'));
+        }
+
+        return ListView.builder(
+          padding: EdgeInsets.symmetric(
+            horizontal: context.isDesktop ? 32 : 16,
+          ),
+          itemCount: movies.length + 1,
+          itemBuilder: (context, index) {
+            if (index == movies.length) return const SizedBox(height: 30);
+
+            final item = movies[index];
+            if (item is String) return LibrarySectionHeader(letter: item);
+
+            final movieItem = item as MovieResource;
+            return LibraryItemRow(
+              title: movieItem.title ?? '',
+              year: '${movieItem.year ?? ''}',
+              posterUrl: movieItem.remotePosterUrlLink,
+              statusColor: movieItem.statusColor,
+              onTap: () {
+                ref
+                    .read(movieDetailsControllerProvider.notifier)
+                    .initialize(movieItem);
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => MovieDetailsPage(movie: movieItem),
+                  ),
+                );
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+}

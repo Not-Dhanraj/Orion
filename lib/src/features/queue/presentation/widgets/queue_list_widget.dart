@@ -1,6 +1,6 @@
 import 'package:client/src/features/queue/domain/queue_item.dart';
 import 'package:client/src/features/queue/presentation/queue_home_controller.dart';
-import 'package:client/src/shared/utils/string_extension.dart';
+import 'package:client/src/utils/string_extension.dart';
 import 'package:client/src/utils/format_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -1,4 +1,4 @@
-import 'package:client/src/shared/utils/string_extension.dart';
+import 'package:client/src/utils/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:radarr/radarr.dart';
 import 'package:with_opacity/with_opacity.dart';

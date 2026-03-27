@@ -1,6 +1,6 @@
 import 'package:client/src/features/movies/application/movie_service.dart';
 import 'package:client/src/features/movies/domain/movie_add_state.dart';
-import 'package:client/src/features/movies/presentation/movie_home/movie_home_controller.dart';
+import 'package:client/src/features/movies/presentation/movie_library/movie_library_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr/radarr.dart';
 
@@ -104,7 +104,7 @@ class MovieAddController extends AsyncNotifier<MovieAddState> {
     try {
       final movieService = ref.read(movieServiceProvider);
       await movieService.createMovie(movie);
-      ref.invalidate(movieHomeControllerProvider);
+      ref.invalidate(movieLibraryControllerProvider);
 
       state = AsyncData(state.value!.copyWith(isCreating: false));
       removeMovieFromResults(movie);

@@ -1,7 +1,7 @@
 import 'package:client/src/features/series/application/series_service.dart';
 import 'package:client/src/features/series/domain/series_edit_state.dart';
 import 'package:client/src/features/series/presentation/series_detail/series_details_controller.dart';
-import 'package:client/src/features/series/presentation/series_home/series_home_controller.dart';
+import 'package:client/src/features/series/presentation/series_library/series_library_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
 
@@ -51,7 +51,7 @@ class SeriesEditControllerNotifier
         ),
       );
 
-      ref.invalidate(seriesHomeControllerProvider);
+      ref.invalidate(seriesLibraryControllerProvider);
       return true;
     } catch (e) {
       state = AsyncError(e, StackTrace.current);

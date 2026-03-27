@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:client/src/features/home/domain/home_nav_item.dart';
-import 'package:client/src/shared/utils/context_extensions.dart';
+import 'package:client/src/utils/context_extensions.dart';
 
 class HomeBotttomNav extends StatelessWidget {
   final List<HomeNavItem> navItems;

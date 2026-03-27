@@ -1,5 +1,5 @@
 import 'package:client/src/features/movies/presentation/movie_add/movie_add_controller.dart';
-import 'package:client/src/shared/utils/string_extension.dart';
+import 'package:client/src/utils/string_extension.dart';
 import 'package:client/src/shared/widgets/custom_switch_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

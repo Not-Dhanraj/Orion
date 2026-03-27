@@ -1,12 +1,12 @@
 import 'package:client/src/features/auth/presentation/auth_page.dart';
 import 'package:client/src/features/auth/presentation/splash/splash_controller.dart';
 import 'package:client/src/features/auth/domain/splash_data.dart';
-import 'package:client/src/features/home/presentation/pageview/home_page.dart';
+import 'package:client/src/features/home/presentation/home_pageview/home_page.dart';
 import 'package:client/src/shared/widgets/orion_error_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:client/src/features/movies/presentation/movie_home/movie_home_controller.dart';
-import 'package:client/src/features/series/presentation/series_home/series_home_controller.dart';
+import 'package:client/src/features/movies/presentation/movie_library/movie_library_controller.dart';
+import 'package:client/src/features/series/presentation/series_library/series_library_controller.dart';
 import 'widgets/init_background.dart';
 import 'widgets/init_footer.dart';
 
@@ -45,8 +45,8 @@ class SplashPage extends ConsumerWidget {
                   error: err,
                   stackTrace: stack,
                   onRetry: () {
-                    ref.invalidate(movieHomeControllerProvider);
-                    ref.invalidate(seriesHomeControllerProvider);
+                    ref.invalidate(movieLibraryControllerProvider);
+                    ref.invalidate(seriesLibraryControllerProvider);
                     ref.invalidate(splashControllerProvider);
                   },
                 ),
@@ -85,7 +85,8 @@ class SplashPage extends ConsumerWidget {
               ),
             ),
           ),
-          if (splashState.isLoading) const InitFooter(),
+          if (splashState.isLoading || !splashState.hasError)
+            const InitFooter(),
         ],
       ),
     );

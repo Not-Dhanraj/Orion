@@ -1,16 +1,15 @@
 import 'package:client/src/core/application/enabled_provider.dart';
 import 'package:client/src/core/application/hive_service.dart';
 import 'package:client/src/features/calendar/presentation/calendar_home_controller.dart';
-import 'package:client/src/features/movies/presentation/movie_home/movie_home_controller.dart';
-import 'package:client/src/features/series/presentation/series_home/series_home_controller.dart';
+import 'package:client/src/features/movies/presentation/movie_library/movie_library_controller.dart';
+import 'package:client/src/features/series/presentation/series_library/series_library_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:client/src/features/auth/domain/splash_data.dart';
 import 'package:client/src/features/home/domain/home_nav_item.dart';
+import 'package:client/src/features/home/presentation/library/library_page.dart';
 import 'package:client/src/features/calendar/presentation/calendar_page.dart';
-import 'package:client/src/features/movies/presentation/movie_home/movie_home.dart';
 import 'package:client/src/features/queue/presentation/queue_page.dart';
-import 'package:client/src/features/series/presentation/series_home/series_home.dart';
 import 'package:client/src/features/settings/presentation/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
@@ -28,8 +27,8 @@ final splashControllerProvider = FutureProvider.autoDispose<SplashData>((
 
   await Future.wait([
     ref.read(calendarHomeControllerProvider.future),
-    if (enabled.sonarr) ref.read(seriesHomeControllerProvider.future),
-    if (enabled.radarr) ref.read(movieHomeControllerProvider.future),
+    if (enabled.sonarr) ref.read(seriesLibraryControllerProvider.future),
+    if (enabled.radarr) ref.read(movieLibraryControllerProvider.future),
   ]);
 
   return SplashData(
@@ -52,25 +51,13 @@ List<HomeNavItem> _buildNavItems(bool hasSonarr, bool hasRadarr) {
     );
   }
 
-  if (hasSonarr) {
-    add(
-      const SeriesHome(),
-      TablerIcons.device_tv,
-      TablerIcons.device_tv_filled,
-      'TV Shows',
-    );
-  }
-
-  if (hasRadarr) {
-    add(
-      const MovieHome(),
-      TablerIcons.video,
-      TablerIcons.video_filled,
-      'Movies',
-    );
-  }
-
   if (hasSonarr || hasRadarr) {
+    add(
+      LibraryPage(hasSonarr: hasSonarr, hasRadarr: hasRadarr),
+      TablerIcons.bookmarks,
+      TablerIcons.bookmarks_filled,
+      'Library',
+    );
     add(
       const QueuePage(),
       TablerIcons.layout_list,

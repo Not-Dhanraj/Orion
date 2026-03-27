@@ -2,7 +2,7 @@ import 'package:client/src/exceptions/repository_exception.dart';
 import 'package:client/src/features/series/data/season_repository.dart';
 import 'package:client/src/core/application/api_provider.dart';
 import 'package:client/src/features/series/presentation/series_detail/series_details_controller.dart';
-import 'package:client/src/features/series/presentation/series_home/series_home_controller.dart';
+import 'package:client/src/features/series/presentation/series_library/series_library_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
 
@@ -100,7 +100,7 @@ class SeasonService {
         seasonNumber: seasonNumber,
         monitored: monitored,
       );
-      _ref.invalidate(seriesHomeControllerProvider);
+      _ref.invalidate(seriesLibraryControllerProvider);
       _ref.read(seriesDetailsControllerProvider.notifier).initialize(result);
       return result;
     } catch (e, stackTrace) {

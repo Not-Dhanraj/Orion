@@ -1,6 +1,6 @@
 import 'package:client/src/features/series/application/series_service.dart';
 import 'package:client/src/features/series/domain/series_add_state.dart';
-import 'package:client/src/features/series/presentation/series_home/series_home_controller.dart';
+import 'package:client/src/features/series/presentation/series_library/series_library_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
 
@@ -106,7 +106,7 @@ class SeriesAddController extends AsyncNotifier<SeriesAddState> {
     try {
       final seriesService = ref.read(seriesServiceProvider);
       await seriesService.createSeries(series);
-      ref.invalidate(seriesHomeControllerProvider);
+      ref.invalidate(seriesLibraryControllerProvider);
 
       state = AsyncData(state.value!.copyWith(isCreating: false));
       removeSeriesFromResults(series);

@@ -171,6 +171,13 @@ class AppTheme {
         scrolledUnderElevation: 0,
         foregroundColor: AppColorsLight.contentPrimary,
       ),
+      iconButtonTheme: IconButtonThemeData(
+        style: ButtonStyle(
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+          ),
+        ),
+      ),
       extensions: [
         StatusColors(
           success: AppColorsLight.green500,
@@ -350,6 +357,13 @@ class AppTheme {
           info: AppColors.gray500,
         ),
       ],
+      iconButtonTheme: IconButtonThemeData(
+        style: ButtonStyle(
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+          ),
+        ),
+      ),
     );
   }
 }

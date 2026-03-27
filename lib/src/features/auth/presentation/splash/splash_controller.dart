@@ -6,7 +6,7 @@ import 'package:client/src/features/series/presentation/series_home/series_home_
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:client/src/features/auth/domain/splash_data.dart';
-import 'package:client/src/features/home/domain/home_page_items.dart';
+import 'package:client/src/features/home/domain/home_nav_item.dart';
 import 'package:client/src/features/calendar/presentation/calendar_page.dart';
 import 'package:client/src/features/movies/presentation/movie_home/movie_home.dart';
 import 'package:client/src/features/queue/presentation/queue_page.dart';
@@ -34,18 +34,17 @@ final splashControllerProvider = FutureProvider.autoDispose<SplashData>((
 
   return SplashData(
     route: SplashRoute.homePage,
-    homePageItems: _buildHomeItems(enabled.sonarr, enabled.radarr),
+    navItems: _buildNavItems(enabled.sonarr, enabled.radarr),
   );
 });
 
-HomePageItems _buildHomeItems(bool hasSonarr, bool hasRadarr) {
-  final pages = <Widget>[];
-  final navItems = <BottomNavigationBarItem>[];
+List<HomeNavItem> _buildNavItems(bool hasSonarr, bool hasRadarr) {
+  final items = <HomeNavItem>[];
 
-  void addPage(Widget page, IconData icon, IconData activeIcon, String label) {
-    pages.add(page);
-    navItems.add(
-      BottomNavigationBarItem(
+  void add(Widget page, IconData icon, IconData activeIcon, String label) {
+    items.add(
+      HomeNavItem(
+        page: page,
         icon: Icon(icon),
         activeIcon: Icon(activeIcon),
         label: label,
@@ -54,7 +53,7 @@ HomePageItems _buildHomeItems(bool hasSonarr, bool hasRadarr) {
   }
 
   if (hasSonarr) {
-    addPage(
+    add(
       const SeriesHome(),
       TablerIcons.device_tv,
       TablerIcons.device_tv_filled,
@@ -63,7 +62,7 @@ HomePageItems _buildHomeItems(bool hasSonarr, bool hasRadarr) {
   }
 
   if (hasRadarr) {
-    addPage(
+    add(
       const MovieHome(),
       TablerIcons.video,
       TablerIcons.video_filled,
@@ -72,13 +71,13 @@ HomePageItems _buildHomeItems(bool hasSonarr, bool hasRadarr) {
   }
 
   if (hasSonarr || hasRadarr) {
-    addPage(
+    add(
       const QueuePage(),
       TablerIcons.layout_list,
       TablerIcons.layout_list_filled,
       'Queue',
     );
-    addPage(
+    add(
       const CalendarPage(),
       TablerIcons.calendar_month,
       TablerIcons.calendar_month_filled,
@@ -86,12 +85,12 @@ HomePageItems _buildHomeItems(bool hasSonarr, bool hasRadarr) {
     );
   }
 
-  addPage(
+  add(
     const SettingsPage(),
     TablerIcons.settings,
     TablerIcons.settings_filled,
     'Settings',
   );
 
-  return HomePageItems(pages: pages, navItems: navItems);
+  return items;
 }

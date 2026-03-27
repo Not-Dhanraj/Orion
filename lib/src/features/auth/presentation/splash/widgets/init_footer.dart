@@ -1,3 +1,4 @@
+import 'package:client/src/constants/app_const.dart';
 import 'package:flutter/material.dart';
 
 class InitFooter extends StatefulWidget {
@@ -7,7 +8,8 @@ class InitFooter extends StatefulWidget {
   State<InitFooter> createState() => _InitFooterState();
 }
 
-class _InitFooterState extends State<InitFooter> with SingleTickerProviderStateMixin {
+class _InitFooterState extends State<InitFooter>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   @override
@@ -48,7 +50,9 @@ class _InitFooterState extends State<InitFooter> with SingleTickerProviderStateM
                 double localValue = (slideValue * 2) % 1; // 0.0 to 1.0
 
                 return FractionallySizedBox(
-                  alignment: sideFlip == 0 ? Alignment.centerLeft : Alignment.centerRight,
+                  alignment: sideFlip == 0
+                      ? Alignment.centerLeft
+                      : Alignment.centerRight,
                   widthFactor: sideFlip == 0 ? localValue : (1 - localValue),
                   child: Container(
                     decoration: BoxDecoration(
@@ -72,7 +76,7 @@ class _InitFooterState extends State<InitFooter> with SingleTickerProviderStateM
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'v2.4.0-STABLE',
+                    AppConst().appVersion.toUpperCase(),
                     style: tt.labelSmall!.copyWith(color: cs.primary),
                   ),
                   const SizedBox(width: 12),
@@ -91,7 +95,7 @@ class _InitFooterState extends State<InitFooter> with SingleTickerProviderStateM
               ),
               const SizedBox(height: 4),
               Text(
-                'BUILD NO: 151',
+                'BUILD NO: ${AppConst().buildNo}',
                 style: tt.labelSmall!.copyWith(
                   fontSize: 9,
                   color: cs.onSurface.withValues(alpha: 0.3),

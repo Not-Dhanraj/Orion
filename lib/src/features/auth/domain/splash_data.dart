@@ -1,10 +1,10 @@
-import 'package:client/src/features/home/domain/home_page_items.dart';
+import 'package:client/src/features/home/domain/home_nav_item.dart';
 
 enum SplashRoute { authPage, homePage }
 
 class SplashData {
   final SplashRoute route;
-  final HomePageItems? homePageItems;
+  final List<HomeNavItem>? navItems;
 
-  const SplashData({required this.route, this.homePageItems});
+  const SplashData({required this.route, this.navItems});
 }

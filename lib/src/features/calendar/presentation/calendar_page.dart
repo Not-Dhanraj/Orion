@@ -2,7 +2,7 @@ import 'package:client/src/features/calendar/domain/calendar_item.dart';
 import 'package:client/src/features/calendar/presentation/calendar_home_controller.dart';
 import 'package:client/src/features/calendar/presentation/widgets/calendar_events_widget.dart';
 import 'package:client/src/features/calendar/presentation/widgets/calendar_view_widget.dart';
-import 'package:client/src/shared/widgets/error_message.dart';
+import 'package:client/src/shared/widgets/orion_error_state.dart';
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -119,8 +119,9 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                 child: Center(child: CircularProgressIndicator()),
               ),
               error: (error, stackTrace) => SliverFillRemaining(
-                child: ErrorMessage(
-                  message: 'Error loading calendar: $error',
+                child: OrionErrorState(
+                  error: error,
+                  stackTrace: stackTrace,
                   onRetry: _refreshCalendar,
                 ),
               ),

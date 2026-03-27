@@ -1,6 +1,6 @@
 import 'package:client/src/features/queue/presentation/queue_home_controller.dart';
 import 'package:client/src/features/queue/presentation/widgets/queue_list_widget.dart';
-import 'package:client/src/shared/widgets/error_message.dart';
+import 'package:client/src/shared/widgets/orion_error_state.dart';
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -78,8 +78,9 @@ class _QueuePageState extends ConsumerState<QueuePage> {
                 child: Center(child: CircularProgressIndicator()),
               ),
               error: (error, stackTrace) => SliverFillRemaining(
-                child: ErrorMessage(
-                  message: 'Error loading queue: $error',
+                child: OrionErrorState(
+                  error: error,
+                  stackTrace: stackTrace,
                   onRetry: _refreshQueue,
                 ),
               ),

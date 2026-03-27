@@ -1,7 +1,7 @@
 import 'package:client/src/exceptions/auth_exception.dart';
 import 'package:client/src/features/auth/application/auth_service.dart';
 import 'package:client/src/features/auth/domain/auth_state.dart';
-import 'package:client/src/shared/utils/url_validator.dart';
+import 'package:client/src/shared/utils/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -89,7 +89,7 @@ class AuthController extends Notifier<AuthState> {
   }
 
   String? urlValidatorCheck(String? value) {
-    return UrlValidator.validate(value);
+    return value?.validate();
   }
 
   /// Helper method to display error messages in a snackbar

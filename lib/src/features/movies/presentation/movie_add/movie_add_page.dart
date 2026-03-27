@@ -1,6 +1,6 @@
 import 'package:client/src/features/movies/presentation/movie_add/movie_add_controller.dart';
 import 'package:client/src/features/movies/presentation/movie_add/widgets/movie_add_card.dart';
-import 'package:client/src/shared/page/custom_error_page.dart';
+import 'package:client/src/shared/widgets/orion_error_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -43,8 +43,11 @@ class _MovieAddPageState extends ConsumerState<MovieAddPage> {
       appBar: AppBar(title: const Text('Add New Movie')),
       body: movieAddState.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) =>
-            CustomErrorPage(errorMessage: error.toString()),
+        error: (error, stackTrace) => Scaffold(
+          body: Center(
+            child: OrionErrorState(error: error, stackTrace: stackTrace),
+          ),
+        ),
         data: (state) {
           return Padding(
             padding: const EdgeInsets.all(16.0),

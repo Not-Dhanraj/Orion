@@ -1,7 +1,7 @@
 import 'package:client/src/features/series/presentation/season/season_page_controller.dart';
 import 'package:client/src/shared/widgets/media_release_widget.dart';
 import 'package:built_collection/built_collection.dart';
-import 'package:client/src/shared/widgets/orion_error_state.dart';
+import 'package:client/src/shared/widgets/custom_error_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
@@ -46,7 +46,7 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
       loading: () => _buildLoadingScaffold(),
       error: (error, stackTrace) => Scaffold(
         body: Center(
-          child: OrionErrorState(error: error, stackTrace: stackTrace),
+          child: CustomErrorState(error: error, stackTrace: stackTrace),
         ),
       ),
 
@@ -54,7 +54,7 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
         if (state.seasons.isEmpty) {
           return Scaffold(
             body: Center(
-              child: OrionErrorState(
+              child: CustomErrorState(
                 error: 'No seasons found for this series.',
               ),
             ),
@@ -83,7 +83,9 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
         if (selectedSeason == null) {
           return Scaffold(
             body: Center(
-              child: OrionErrorState(error: "No season found for this series."),
+              child: CustomErrorState(
+                error: "No season found for this series.",
+              ),
             ),
           );
         }

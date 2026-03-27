@@ -1,4 +1,5 @@
 import 'package:client/src/constants/app_const.dart';
+import 'package:client/src/shared/widgets/animated_progress_bar.dart';
 import 'package:flutter/material.dart';
 
 class InitFooter extends StatefulWidget {
@@ -37,38 +38,7 @@ class _InitFooterState extends State<InitFooter>
       right: 0,
       child: Column(
         children: [
-          Container(
-            width: 256,
-            height: 2,
-            color: cs.surfaceContainerHighest,
-            child: AnimatedBuilder(
-              animation: _controller,
-              builder: (context, child) {
-                // Creates a looping slide effect
-                final slideValue = _controller.value;
-                int sideFlip = (slideValue * 2).floor(); // 0 or 1
-                double localValue = (slideValue * 2) % 1; // 0.0 to 1.0
-
-                return FractionallySizedBox(
-                  alignment: sideFlip == 0
-                      ? Alignment.centerLeft
-                      : Alignment.centerRight,
-                  widthFactor: sideFlip == 0 ? localValue : (1 - localValue),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: cs.primary,
-                      boxShadow: [
-                        BoxShadow(
-                          color: cs.primary.withValues(alpha: 0.5),
-                          blurRadius: 15,
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
+          AnimatedProgressBar(animation: _controller),
           const SizedBox(height: 16),
           Column(
             children: [

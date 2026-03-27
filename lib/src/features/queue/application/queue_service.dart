@@ -10,58 +10,55 @@ class QueueService {
   final RadarrQueueRepository? radarrRepo;
   final SonarrQueueRepository? sonarrRepo;
 
-  QueueService(Ref ref, {this.radarrRepo, this.sonarrRepo});
+  QueueService({this.radarrRepo, this.sonarrRepo});
 
   bool get isRadarrEnabled => radarrRepo != null;
-
   bool get isSonarrEnabled => sonarrRepo != null;
+
+  Future<void> _fetchAndAppend<T>({
+    required Future<List<T>> Function() fetch,
+    required QueueItem Function(T) mapper,
+    required List<QueueItem> target,
+    required String errorMessage,
+  }) async {
+    try {
+      final items = await fetch();
+      target.addAll(items.map(mapper));
+    } catch (e, stackTrace) {
+      if (e is RepositoryException) rethrow;
+      throw RepositoryException(errorMessage, error: e, stackTrace: stackTrace);
+    }
+  }
 
   Future<List<QueueItem>> getQueueItems({int? page, int? pageSize = 50}) async {
     final List<QueueItem> combinedQueue = [];
 
     if (isRadarrEnabled) {
-      try {
-        final radarrQueue = await radarrRepo!.getQueue(
+      await _fetchAndAppend(
+        fetch: () => radarrRepo!.getQueue(
           page: page,
           pageSize: pageSize,
           includeMovie: true,
-        );
-
-        combinedQueue.addAll(
-          radarrQueue.map((item) => QueueItem.fromRadarr(item)),
-        );
-      } catch (e, stackTrace) {
-        throw RepositoryException(
-          'Error fetching Radarr queue',
-          error: e,
-          stackTrace: stackTrace,
-        );
-      }
+        ),
+        mapper: QueueItem.fromRadarr,
+        target: combinedQueue,
+        errorMessage: 'Error fetching Radarr queue',
+      );
     }
 
     if (isSonarrEnabled) {
-      try {
-        final sonarrQueue = await sonarrRepo!.getQueue(
+      await _fetchAndAppend(
+        fetch: () => sonarrRepo!.getQueue(
           page: page,
           pageSize: pageSize,
           includeSeries: true,
           includeEpisode: true,
-        );
-
-        combinedQueue.addAll(
-          sonarrQueue.map((item) => QueueItem.fromSonarr(item)),
-        );
-      } catch (e, stackTrace) {
-        throw RepositoryException(
-          'Error fetching Sonarr queue',
-          error: e,
-          stackTrace: stackTrace,
-        );
-      }
+        ),
+        mapper: QueueItem.fromSonarr,
+        target: combinedQueue,
+        errorMessage: 'Error fetching Sonarr queue',
+      );
     }
-
-    combinedQueue.sort((a, b) => b.progress.compareTo(a.progress));
-
     return combinedQueue;
   }
 
@@ -70,23 +67,27 @@ class QueueService {
     bool removeFromClient = true,
     bool blacklist = false,
   }) async {
+    assert(
+      (item.isRadarr && isRadarrEnabled) || (!item.isRadarr && isSonarrEnabled),
+      'deleteQueueItem called with mismatched item/service state',
+    );
+
     try {
-      if (item.isRadarr && isRadarrEnabled) {
+      if (item.isRadarr) {
         await radarrRepo!.deleteQueueItem(
           id: item.id,
           removeFromClient: removeFromClient,
           blacklist: blacklist,
         );
-      } else if (!item.isRadarr && isSonarrEnabled) {
+      } else {
         await sonarrRepo!.deleteQueueItem(
           id: item.id,
           removeFromClient: removeFromClient,
           blacklist: blacklist,
         );
-      } else {
-        throw RepositoryException('Service not available');
       }
     } catch (e, stackTrace) {
+      if (e is RepositoryException) rethrow;
       throw RepositoryException(
         'Error deleting queue item',
         error: e,
@@ -96,7 +97,7 @@ class QueueService {
   }
 }
 
-final queueServiceProvider = Provider<QueueService>((ref) {
+final queueServiceProvider = Provider.autoDispose<QueueService>((ref) {
   final enabled = ref.watch(enabledNotifierProvider);
 
   RadarrQueueRepository? radarrRepo;
@@ -112,5 +113,5 @@ final queueServiceProvider = Provider<QueueService>((ref) {
     sonarrRepo = SonarrQueueRepository(sonarrApi);
   }
 
-  return QueueService(ref, radarrRepo: radarrRepo, sonarrRepo: sonarrRepo);
+  return QueueService(radarrRepo: radarrRepo, sonarrRepo: sonarrRepo);
 });

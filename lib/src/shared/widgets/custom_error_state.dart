@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class OrionErrorState extends StatefulWidget {
+class CustomErrorState extends StatefulWidget {
   final Object error;
   final StackTrace? stackTrace;
   final String? title;
   final VoidCallback? onRetry;
 
-  const OrionErrorState({
+  const CustomErrorState({
     super.key,
     required this.error,
     this.stackTrace,
@@ -16,10 +16,10 @@ class OrionErrorState extends StatefulWidget {
   });
 
   @override
-  State<OrionErrorState> createState() => _OrionErrorStateState();
+  State<CustomErrorState> createState() => _CustomErrorStateState();
 }
 
-class _OrionErrorStateState extends State<OrionErrorState> {
+class _CustomErrorStateState extends State<CustomErrorState> {
   bool _copied = false;
 
   String get _errorText {

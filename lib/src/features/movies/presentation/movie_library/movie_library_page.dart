@@ -4,7 +4,7 @@ import 'package:client/src/features/movies/presentation/movie_detail/movie_detai
 import 'package:client/src/features/movies/presentation/movie_detail/movie_details_page.dart';
 import 'package:client/src/features/movies/presentation/movie_library/movie_library_controller.dart';
 import 'package:client/src/utils/context_extensions.dart';
-import 'package:client/src/shared/widgets/orion_error_state.dart';
+import 'package:client/src/shared/widgets/custom_error_state.dart';
 import 'package:client/src/utils/movie_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,7 +20,7 @@ class MovieLibraryPage extends ConsumerWidget {
     return async.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (err, stack) => Center(
-        child: OrionErrorState(
+        child: CustomErrorState(
           error: err,
           stackTrace: stack,
           onRetry: () => ref.invalidate(movieLibraryControllerProvider),

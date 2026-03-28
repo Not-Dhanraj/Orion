@@ -1,19 +1,21 @@
 import 'package:client/src/constants/app_const.dart';
 import 'package:client/src/core/application/hive_service.dart';
 import 'package:client/src/core/domain/credentials.dart';
-import 'package:client/src/features/settings/domain/service_settings.dart';
+import 'package:client/src/features/settings/application/settings_service.dart';
+import 'package:client/src/features/settings/domain/settings_data.dart';
+import 'package:client/src/utils/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 
-class ServiceSettingsNotifier extends Notifier<ServiceSettings> {
+class SettingsController extends Notifier<SettingsData> {
   @override
-  ServiceSettings build() {
+  SettingsData build() {
     final hiveService = ref.watch(hiveProvider);
     final radarrCredentials = hiveService.getRadarrCredentials();
     final sonarrCredentials = hiveService.getSonarrCredentials();
 
-    return ServiceSettings(
+    return SettingsData(
       radarrCredentials: radarrCredentials,
       sonarrCredentials: sonarrCredentials,
     );
@@ -21,25 +23,53 @@ class ServiceSettingsNotifier extends Notifier<ServiceSettings> {
 
   Future<void> updateRadarrCredentials(String url, String apiKey) async {
     final hiveService = ref.read(hiveProvider);
-    final normalizedUrl = _normalizeUrl(url);
+    final normalizedUrl = url.toNormalizedUrl();
     final credentials = RadarrCredentials(
       radarrUrl: normalizedUrl,
       radarrApi: apiKey,
     );
-    await hiveService.saveRadarrCredentials(credentials);
 
+    await hiveService.saveRadarrCredentials(credentials);
+    state = state.copyWith(radarrCredentials: credentials);
+  }
+
+  Future<void> validateAndUpdateSonarrCredentials(
+    String url,
+    String apiKey,
+  ) async {
+    final service = ref.read(settingsServiceProvider);
+    await service.validateAndSaveSonarrCredentials(url, apiKey);
+    final normalizedUrl = url.toNormalizedUrl();
+    final credentials = SonarrCredentials(
+      sonarrUrl: normalizedUrl,
+      sonarrApi: apiKey,
+    );
+    state = state.copyWith(sonarrCredentials: credentials);
+  }
+
+  Future<void> validateAndUpdateRadarrCredentials(
+    String url,
+    String apiKey,
+  ) async {
+    final service = ref.read(settingsServiceProvider);
+    await service.validateAndSaveRadarrCredentials(url, apiKey);
+    final normalizedUrl = url.toNormalizedUrl();
+    final credentials = RadarrCredentials(
+      radarrUrl: normalizedUrl,
+      radarrApi: apiKey,
+    );
     state = state.copyWith(radarrCredentials: credentials);
   }
 
   Future<void> updateSonarrCredentials(String url, String apiKey) async {
     final hiveService = ref.read(hiveProvider);
-    final normalizedUrl = _normalizeUrl(url);
+    final normalizedUrl = url.toNormalizedUrl();
     final credentials = SonarrCredentials(
       sonarrUrl: normalizedUrl,
       sonarrApi: apiKey,
     );
-    await hiveService.saveSonarrCredentials(credentials);
 
+    await hiveService.saveSonarrCredentials(credentials);
     state = state.copyWith(sonarrCredentials: credentials);
   }
 
@@ -74,20 +104,9 @@ class ServiceSettingsNotifier extends Notifier<ServiceSettings> {
       debugPrint('Error deleting Sonarr service: $e');
     }
   }
-
-  String _normalizeUrl(String url) {
-    var normalizedUrl = url.trim();
-    if (!normalizedUrl.startsWith('http')) {
-      normalizedUrl = 'http://$normalizedUrl';
-    }
-    if (normalizedUrl.endsWith('/')) {
-      normalizedUrl = normalizedUrl.substring(0, normalizedUrl.length - 1);
-    }
-    return normalizedUrl;
-  }
 }
 
-final serviceSettingsProvider =
-    NotifierProvider<ServiceSettingsNotifier, ServiceSettings>(
-      () => ServiceSettingsNotifier(),
+final settingsControllerProvider =
+    NotifierProvider<SettingsController, SettingsData>(
+      () => SettingsController(),
     );

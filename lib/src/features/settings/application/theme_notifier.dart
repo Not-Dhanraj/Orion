@@ -4,40 +4,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce/hive.dart';
 
-class ThemeModeNotifier extends StateNotifier<ThemeMode> {
+class ThemeModeNotifier extends Notifier<ThemeMode> {
   static const String _themeBoxName = HiveService.themeBoxName;
+  final _appConst = AppConst();
 
-  ThemeModeNotifier() : super(ThemeMode.system) {
-    _tryLoadTheme();
-  }
-
-  var appconst = AppConst();
-
-  void _tryLoadTheme() {
+  @override
+  ThemeMode build() {
     try {
       if (Hive.isBoxOpen(_themeBoxName)) {
         final box = Hive.box(_themeBoxName);
         final themeValue = box.get(
-          appconst.themeModeKey,
+          _appConst.themeModeKey,
           defaultValue: ThemeMode.system.index,
         );
-
-        state = ThemeMode.values[themeValue];
-      } else {
-        state = ThemeMode.system;
+        return ThemeMode.values[themeValue];
       }
     } catch (e) {
-      debugPrint('Error while Loading Theme: $e');
+      debugPrint('Error while loading theme: $e');
     }
+    return ThemeMode.system;
   }
 
   Future<void> setThemeMode(ThemeMode mode) async {
     final box = Hive.box(_themeBoxName);
-    await box.put(appconst.themeModeKey, mode.index);
+    await box.put(_appConst.themeModeKey, mode.index);
     state = mode;
   }
 }
 
-final themeModeProvider = StateNotifierProvider<ThemeModeNotifier, ThemeMode>(
-  (ref) => ThemeModeNotifier(),
+final themeModeProvider = NotifierProvider<ThemeModeNotifier, ThemeMode>(
+  ThemeModeNotifier.new,
 );

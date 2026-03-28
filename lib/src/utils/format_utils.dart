@@ -1,6 +1,4 @@
-/// Utility class for formatting various types of data
 class FormatUtils {
-  /// Format a file size from bytes to a human-readable string
   static String formatFileSize(double bytes) {
     const suffixes = ['B', 'KB', 'MB', 'GB', 'TB'];
     var i = 0;
@@ -14,7 +12,6 @@ class FormatUtils {
     return '${size.toStringAsFixed(1)} ${suffixes[i]}';
   }
 
-  /// Format a DateTime to a human-readable string
   static String formatDateTime(DateTime dateTime) {
     final now = DateTime.now();
     final difference = dateTime.difference(now);
@@ -38,7 +35,6 @@ class FormatUtils {
     return '${dateTime.month}/${dateTime.day} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
   }
 
-  /// Format a percentage value
   static String formatPercentage(double value) {
     return '${value.toStringAsFixed(1)}%';
   }

@@ -292,7 +292,7 @@ class MovieActionCard extends ConsumerWidget {
           .getReleases(movieId: movie.id!);
 
       if (context.mounted) {
-        Navigator.of(context).pop(); // Close the loading dialog
+        Navigator.of(context).pop();
 
         if (releases.isEmpty) {
           ScaffoldMessenger.of(
@@ -305,7 +305,7 @@ class MovieActionCard extends ConsumerWidget {
       }
     } catch (error) {
       if (context.mounted) {
-        Navigator.of(context).pop(); // Close the loading dialog
+        Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error loading releases: ${error.toString()}'),

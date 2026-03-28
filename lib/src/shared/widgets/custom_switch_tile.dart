@@ -31,10 +31,7 @@ class CustomSwitchTile extends StatelessWidget {
       ),
       value: value,
       onChanged: onChanged,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     );
   }
 }

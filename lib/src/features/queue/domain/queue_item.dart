@@ -51,8 +51,9 @@ class QueueItem {
   factory QueueItem.fromSonarr(sonarr.QueueResource resource) {
     final episodeTitle = resource.episode?.title;
     final seriesTitle = resource.series?.title ?? 'Unknown Series';
-    final title =
-        episodeTitle != null ? '$seriesTitle — $episodeTitle' : seriesTitle;
+    final title = episodeTitle != null
+        ? '$seriesTitle — $episodeTitle'
+        : seriesTitle;
 
     return QueueItem(
       id: resource.id ?? 0,
@@ -76,12 +77,10 @@ class QueueItem {
     return ((size! - sizeRemaining!) / size!) * 100;
   }
 
-  /// Resolved display label for this item's current state.
   String get displayStatus {
     final s = status.toLowerCase();
     final tds = trackedDownloadStatus?.toLowerCase();
 
-    // Stalled = downloading but the tracker reports a problem
     if (s == 'downloading' && (tds == 'warning' || tds == 'error')) {
       return 'Stalled';
     }
@@ -113,6 +112,5 @@ class QueueItem {
   bool get isDownloading => status.toLowerCase() == 'downloading';
   bool get isStalled =>
       isDownloading &&
-      (trackedDownloadStatus == 'warning' ||
-          trackedDownloadStatus == 'error');
+      (trackedDownloadStatus == 'warning' || trackedDownloadStatus == 'error');
 }

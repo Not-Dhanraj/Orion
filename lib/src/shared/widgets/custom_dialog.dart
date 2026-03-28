@@ -5,15 +5,21 @@ class CustomDialog extends StatelessWidget {
   final String title;
   final String heading;
   final String body;
+  final Widget? bodyWidget;
+
   final List<Widget> actions;
 
   const CustomDialog({
     super.key,
     required this.title,
     required this.heading,
-    required this.body,
+    this.body = '',
+    this.bodyWidget,
     required this.actions,
-  });
+  }) : assert(
+         body != '' || bodyWidget != null,
+         'Provide either body text or a bodyWidget',
+       );
 
   @override
   Widget build(BuildContext context) {
@@ -63,13 +69,14 @@ class CustomDialog extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 4),
-                        Text(
-                          body,
-                          style: tt.bodySmall!.copyWith(
-                            fontSize: 11,
-                            height: 1.4,
-                          ),
-                        ),
+                        bodyWidget ??
+                            Text(
+                              body,
+                              style: tt.bodySmall!.copyWith(
+                                fontSize: 11,
+                                height: 1.4,
+                              ),
+                            ),
                       ],
                     ),
                   ),

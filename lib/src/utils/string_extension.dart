@@ -31,4 +31,27 @@ extension StringExtension on String {
 
     return null;
   }
+
+  String toNormalizedUrl() {
+    var url = trim();
+
+    if (!url.toLowerCase().startsWith('http')) {
+      url = 'http://$url';
+    }
+
+    url = url.trimRight().replaceAll(RegExp(r'/+$'), '');
+    return url;
+  }
+
+  String get maskServerUrl {
+    try {
+      final uri = Uri.parse(this);
+      final host = uri.host;
+      final preview = host.substring(0, (host.length / 2.5).ceil());
+      final port = uri.hasPort ? ':${uri.port}' : '';
+      return '${uri.scheme}://$preview***$port';
+    } catch (_) {
+      return '***';
+    }
+  }
 }

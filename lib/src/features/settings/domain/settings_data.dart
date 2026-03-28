@@ -1,16 +1,16 @@
 import 'package:client/src/core/domain/credentials.dart';
 
-class ServiceSettings {
+class SettingsData {
   final RadarrCredentials? radarrCredentials;
   final SonarrCredentials? sonarrCredentials;
 
-  ServiceSettings({this.radarrCredentials, this.sonarrCredentials});
+  SettingsData({this.radarrCredentials, this.sonarrCredentials});
 
-  ServiceSettings copyWith({
+  SettingsData copyWith({
     RadarrCredentials? radarrCredentials,
     SonarrCredentials? sonarrCredentials,
   }) {
-    return ServiceSettings(
+    return SettingsData(
       radarrCredentials: radarrCredentials ?? this.radarrCredentials,
       sonarrCredentials: sonarrCredentials ?? this.sonarrCredentials,
     );

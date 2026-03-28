@@ -50,7 +50,7 @@ class MovieLibraryController extends AsyncNotifier<List<dynamic>> {
   // }
 }
 
-final movieLibraryControllerProvider =
+final movieLibraryController =
     AsyncNotifierProvider<MovieLibraryController, List<dynamic>>(() {
       return MovieLibraryController();
     });

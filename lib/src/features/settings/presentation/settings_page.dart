@@ -29,7 +29,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final settingsController = ref.watch(settingsControllerProvider);
+    final settings = ref.watch(settingsController);
     final themeMode = ref.watch(themeModeProvider);
     final tt = Theme.of(context).textTheme;
     final cs = Theme.of(context).colorScheme;
@@ -82,16 +82,16 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 const SizedBox(height: 32),
                 SettingsSectionHeader(
                   title: 'SONARR CONFIGURATION',
-                  isActive: settingsController.sonarrCredentials != null,
+                  isActive: settings.sonarrCredentials != null,
                 ),
                 const SizedBox(height: 12),
-                if (settingsController.sonarrCredentials != null) ...[
+                if (settings.sonarrCredentials != null) ...[
                   SettingsRowGroup(
                     rows: [
                       SettingsRow(
                         label: 'Server URL',
                         trailing: SettingsReadonlyValue(
-                          value: settingsController
+                          value: settings
                               .sonarrCredentials!
                               .sonarrUrl
                               .maskServerUrl,
@@ -109,12 +109,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     child: ServiceActionRow(
                       onEdit: () => _showServerConfigSheet(
                         serviceName: 'Sonarr',
-                        initialUrl:
-                            settingsController.sonarrCredentials!.sonarrUrl,
-                        initialApiKey:
-                            settingsController.sonarrCredentials!.sonarrApi,
+                        initialUrl: settings.sonarrCredentials!.sonarrUrl,
+                        initialApiKey: settings.sonarrCredentials!.sonarrApi,
                         onSave: (url, api) => ref
-                            .read(settingsControllerProvider.notifier)
+                            .read(settingsController.notifier)
                             .validateAndUpdateSonarrCredentials(url, api),
                       ),
                       onDelete: () => _showDeleteConfirmationSheet(
@@ -126,7 +124,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                             type: CustomSnackbarType.warning,
                           );
                           await ref
-                              .read(settingsControllerProvider.notifier)
+                              .read(settingsController.notifier)
                               .deleteSonarrService();
                         },
                       ),
@@ -140,23 +138,23 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       initialUrl: '',
                       initialApiKey: '',
                       onSave: (url, api) => ref
-                          .read(settingsControllerProvider.notifier)
+                          .read(settingsController.notifier)
                           .validateAndUpdateSonarrCredentials(url, api),
                     ),
                   ),
                 const SizedBox(height: 32),
                 SettingsSectionHeader(
                   title: 'RADARR CONFIGURATION',
-                  isActive: settingsController.radarrCredentials != null,
+                  isActive: settings.radarrCredentials != null,
                 ),
                 const SizedBox(height: 12),
-                if (settingsController.radarrCredentials != null) ...[
+                if (settings.radarrCredentials != null) ...[
                   SettingsRowGroup(
                     rows: [
                       SettingsRow(
                         label: 'Server URL',
                         trailing: SettingsReadonlyValue(
-                          value: settingsController
+                          value: settings
                               .radarrCredentials!
                               .radarrUrl
                               .maskServerUrl,
@@ -172,18 +170,16 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   ServiceActionRow(
                     onEdit: () => _showServerConfigSheet(
                       serviceName: 'Radarr',
-                      initialUrl:
-                          settingsController.radarrCredentials!.radarrUrl,
-                      initialApiKey:
-                          settingsController.radarrCredentials!.radarrApi,
+                      initialUrl: settings.radarrCredentials!.radarrUrl,
+                      initialApiKey: settings.radarrCredentials!.radarrApi,
                       onSave: (url, api) => ref
-                          .read(settingsControllerProvider.notifier)
+                          .read(settingsController.notifier)
                           .validateAndUpdateRadarrCredentials(url, api),
                     ),
                     onDelete: () => _showDeleteConfirmationSheet(
                       serviceName: 'Radarr',
                       onConfirm: () => ref
-                          .read(settingsControllerProvider.notifier)
+                          .read(settingsController.notifier)
                           .deleteRadarrService(),
                     ),
                   ),
@@ -195,7 +191,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       initialUrl: '',
                       initialApiKey: '',
                       onSave: (url, api) => ref
-                          .read(settingsControllerProvider.notifier)
+                          .read(settingsController.notifier)
                           .validateAndUpdateRadarrCredentials(url, api),
                     ),
                   ),

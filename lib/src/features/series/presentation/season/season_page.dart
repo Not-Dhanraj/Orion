@@ -38,9 +38,7 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final seasonPageState = ref.watch(
-      seasonPageControllerProvider(widget.series),
-    );
+    final seasonPageState = ref.watch(seasonPageController(widget.series));
 
     return seasonPageState.when(
       loading: () => _buildLoadingScaffold(),
@@ -71,7 +69,7 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
           _tabController.addListener(() {
             if (!_tabController.indexIsChanging) {
               ref
-                  .read(seasonPageControllerProvider(widget.series).notifier)
+                  .read(seasonPageController(widget.series).notifier)
                   .setSelectedSeasonIndex(_tabController.index);
             }
           });
@@ -159,9 +157,7 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
                     : 'Not Monitored',
                 onPressed: () {
                   ref
-                      .read(
-                        seasonPageControllerProvider(widget.series).notifier,
-                      )
+                      .read(seasonPageController(widget.series).notifier)
                       .toggleSeasonMonitoring(
                         selectedSeason.seasonNumber,
                         !(selectedSeason.seasonResource.monitored ?? false),
@@ -172,9 +168,7 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
                 icon: const Icon(Icons.refresh),
                 tooltip: 'Refresh',
                 onPressed: () {
-                  ref.invalidate(
-                    seasonPageControllerProvider(state.seriesResource),
-                  );
+                  ref.invalidate(seasonPageController(state.seriesResource));
                 },
               ),
               Builder(
@@ -214,11 +208,7 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
                           },
                         );
                         var result = await ref
-                            .read(
-                              seasonPageControllerProvider(
-                                widget.series,
-                              ).notifier,
-                            )
+                            .read(seasonPageController(widget.series).notifier)
                             .loadReleases(
                               seriesId: widget.series.id,
                               seasonNumber: selectedSeason.seasonNumber,
@@ -260,9 +250,7 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
           ),
           body: RefreshIndicator(
             onRefresh: () async {
-              ref.invalidate(
-                seasonPageControllerProvider(state.seriesResource),
-              );
+              ref.invalidate(seasonPageController(state.seriesResource));
               await Future.delayed(const Duration(milliseconds: 100));
             },
             child: Builder(
@@ -434,7 +422,7 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
                                     onPressed: () {
                                       ref
                                           .read(
-                                            seasonPageControllerProvider(
+                                            seasonPageController(
                                               widget.series,
                                             ).notifier,
                                           )
@@ -481,7 +469,7 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
                                         );
                                         var result = await ref
                                             .read(
-                                              seasonPageControllerProvider(
+                                              seasonPageController(
                                                 widget.series,
                                               ).notifier,
                                             )
@@ -647,7 +635,7 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
               Navigator.of(context).pop();
               if (episode.episodeFile?.id != null) {
                 ref
-                    .read(seasonPageControllerProvider(widget.series).notifier)
+                    .read(seasonPageController(widget.series).notifier)
                     .deleteEpisodeFile(episode.episodeFile!.id!);
               }
             },
@@ -667,9 +655,7 @@ class _SeasonPageState extends ConsumerState<SeasonPage>
     int seasonNumber,
     final SeriesResource series,
   ) {
-    final seasonController = ref.read(
-      seasonPageControllerProvider(series).notifier,
-    );
+    final seasonController = ref.read(seasonPageController(series).notifier);
 
     showDialog(
       context: context,

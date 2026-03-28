@@ -12,10 +12,10 @@ class CalendarPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final calendarState = ref.watch(calendarHomeControllerProvider);
+    final calendarState = ref.watch(calendarHomeController);
     final tt = Theme.of(context).textTheme;
     final cs = Theme.of(context).colorScheme;
-    final notifier = ref.read(calendarHomeControllerProvider.notifier);
+    final notifier = ref.read(calendarHomeController.notifier);
 
     return Entry.opacity(
       child: calendarState.when(

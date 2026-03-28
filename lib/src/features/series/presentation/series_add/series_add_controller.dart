@@ -101,7 +101,7 @@ class SeriesAddController extends AsyncNotifier<SeriesAddState> {
     try {
       final seriesService = ref.read(seriesServiceProvider);
       await seriesService.createSeries(series);
-      ref.invalidate(seriesLibraryControllerProvider);
+      ref.invalidate(seriesLibraryController);
 
       state = AsyncData(state.value!.copyWith(isCreating: false));
       removeSeriesFromResults(series);
@@ -136,7 +136,7 @@ class SeriesAddController extends AsyncNotifier<SeriesAddState> {
   }
 }
 
-final seriesAddControllerProvider =
+final seriesAddController =
     AsyncNotifierProvider<SeriesAddController, SeriesAddState>(() {
       return SeriesAddController();
     });

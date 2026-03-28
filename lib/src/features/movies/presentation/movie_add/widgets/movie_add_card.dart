@@ -16,8 +16,7 @@ class MovieAddCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final isCreating =
-        ref.watch(movieAddControllerProvider).value?.isCreating ?? false;
+    final isCreating = ref.watch(movieAddController).value?.isCreating ?? false;
 
     final year = movie.year;
     final status = movie.status;
@@ -247,20 +246,17 @@ class MovieAddCard extends ConsumerWidget {
     MovieResource movie,
     WidgetRef ref,
   ) async {
-    ref.read(movieAddControllerProvider.notifier).selectMovie(movie);
+    ref.read(movieAddController.notifier).selectMovie(movie);
     final theme = Theme.of(context);
 
-    final initialMovie = ref
-        .read(movieAddControllerProvider)
-        .value
-        ?.selectedMovie;
+    final initialMovie = ref.read(movieAddController).value?.selectedMovie;
 
     await showDialog(
       context: context,
       builder: (dialogContext) {
         return Consumer(
           builder: (context, dialogRef, _) {
-            final state = dialogRef.watch(movieAddControllerProvider).value;
+            final state = dialogRef.watch(movieAddController).value;
             final selectedMovie = state?.selectedMovie ?? initialMovie;
 
             return Dialog.fullscreen(
@@ -410,14 +406,17 @@ class MovieAddCard extends ConsumerWidget {
                                       },
                                     );
 
-                                    try {
-                                      await dialogRef
-                                          .read(
-                                            movieAddControllerProvider.notifier,
-                                          )
-                                          .addMovie(selectedMovie);
+                                    await dialogRef
+                                        .read(movieAddController.notifier)
+                                        .addMovie(selectedMovie);
 
-                                      if (context.mounted) {
+                                    if (context.mounted) {
+                                      Navigator.of(context).pop();
+
+                                      final addState = dialogRef
+                                          .read(movieAddController)
+                                          .value;
+                                      if (addState?.errorMessage == null) {
                                         ScaffoldMessenger.of(
                                           context,
                                         ).showSnackBar(
@@ -442,34 +441,23 @@ class MovieAddCard extends ConsumerWidget {
                                             ),
                                           ),
                                         );
+                                        // Pop the add dialog
                                         Navigator.of(context).pop();
-                                        Navigator.of(context).pop();
-                                      }
-                                    } catch (e) {
-                                      if (context.mounted) {
+                                      } else {
                                         ScaffoldMessenger.of(
                                           context,
                                         ).showSnackBar(
                                           SnackBar(
                                             content: Text(
-                                              'Failed to add movie: ${e.toString()}',
+                                              'Failed to add: ${addState?.errorMessage}',
                                             ),
                                             backgroundColor: theme
                                                 .colorScheme
                                                 .errorContainer,
                                             behavior: SnackBarBehavior.floating,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            ),
                                             margin: const EdgeInsets.all(16),
-                                            duration: const Duration(
-                                              seconds: 4,
-                                            ),
                                           ),
                                         );
-                                        Navigator.of(context).pop();
-                                        Navigator.of(context).pop();
                                       }
                                     }
                                   },

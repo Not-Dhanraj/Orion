@@ -50,7 +50,7 @@ class SeriesLibraryController extends AsyncNotifier<List<dynamic>> {
   // }
 }
 
-final seriesLibraryControllerProvider =
+final seriesLibraryController =
     AsyncNotifierProvider<SeriesLibraryController, List<dynamic>>(() {
       return SeriesLibraryController();
     });

@@ -99,7 +99,7 @@ class MovieAddController extends AsyncNotifier<MovieAddState> {
     try {
       final movieService = ref.read(movieServiceProvider);
       await movieService.createMovie(movie);
-      ref.invalidate(movieLibraryControllerProvider);
+      ref.invalidate(movieLibraryController);
 
       state = AsyncData(state.value!.copyWith(isCreating: false));
       removeMovieFromResults(movie);
@@ -134,7 +134,7 @@ class MovieAddController extends AsyncNotifier<MovieAddState> {
   }
 }
 
-final movieAddControllerProvider =
+final movieAddController =
     AsyncNotifierProvider<MovieAddController, MovieAddState>(() {
       return MovieAddController();
     });

@@ -15,14 +15,12 @@ class SeriesEditPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var theme = Theme.of(context);
-    final seriesEditController = ref.watch(
-      seriesEditControllerProvider(series.id!),
-    );
+    final editController = ref.watch(seriesEditController(series.id!));
 
     return Dialog(
       child: Container(
         constraints: const BoxConstraints(maxWidth: 600),
-        child: seriesEditController.when(
+        child: editController.when(
           data: (state) => Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,11 +82,7 @@ class SeriesEditPage extends ConsumerWidget {
                           series: state.series ?? SeriesResource(),
                           onSeriesChanged: (updatedSeries) {
                             ref
-                                .read(
-                                  seriesEditControllerProvider(
-                                    series.id!,
-                                  ).notifier,
-                                )
+                                .read(seriesEditController(series.id!).notifier)
                                 .updateSeries(updatedSeries);
                           },
                         ),
@@ -98,11 +92,7 @@ class SeriesEditPage extends ConsumerWidget {
                           qualityProfiles: state.qualityProfiles,
                           onSeriesChanged: (updatedSeries) {
                             ref
-                                .read(
-                                  seriesEditControllerProvider(
-                                    series.id!,
-                                  ).notifier,
-                                )
+                                .read(seriesEditController(series.id!).notifier)
                                 .updateSeries(updatedSeries);
                           },
                         ),
@@ -111,11 +101,7 @@ class SeriesEditPage extends ConsumerWidget {
                           series: state.series ?? SeriesResource(),
                           onSeriesChanged: (updatedSeries) {
                             ref
-                                .read(
-                                  seriesEditControllerProvider(
-                                    series.id!,
-                                  ).notifier,
-                                )
+                                .read(seriesEditController(series.id!).notifier)
                                 .updateSeries(updatedSeries);
                           },
                         ),
@@ -157,9 +143,7 @@ class SeriesEditPage extends ConsumerWidget {
 
                               final success = await ref
                                   .read(
-                                    seriesEditControllerProvider(
-                                      series.id!,
-                                    ).notifier,
+                                    seriesEditController(series.id!).notifier,
                                   )
                                   .saveChanges();
 

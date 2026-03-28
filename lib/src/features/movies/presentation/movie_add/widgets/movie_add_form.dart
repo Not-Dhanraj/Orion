@@ -13,7 +13,7 @@ class MovieAddForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final movieState = ref.watch(movieAddControllerProvider);
+    final movieState = ref.watch(movieAddController);
     final updatedMovie = movieState.value?.selectedMovie ?? movie;
     final theme = Theme.of(context);
     final qualityProfiles = movieState.value?.qualityProfiles ?? [];
@@ -57,7 +57,7 @@ class MovieAddForm extends ConsumerWidget {
                             (b) => b..monitored = value,
                           );
                           ref
-                              .read(movieAddControllerProvider.notifier)
+                              .read(movieAddController.notifier)
                               .updateSelectedMovie(newMovie);
                         },
                       ),
@@ -149,27 +149,28 @@ class MovieAddForm extends ConsumerWidget {
                                                   ),
                                                 );
                                               }).toList(),
-                                              onChanged: (MonitorTypes? newValue) {
-                                                if (newValue != null) {
-                                                  final newMovie = updatedMovie
-                                                      .rebuild(
-                                                        (b) => b
-                                                          ..addOptions.update(
-                                                            (b2) => b2
-                                                              ..monitor =
-                                                                  newValue,
-                                                          ),
-                                                      );
-                                                  ref
-                                                      .read(
-                                                        movieAddControllerProvider
-                                                            .notifier,
-                                                      )
-                                                      .updateSelectedMovie(
-                                                        newMovie,
-                                                      );
-                                                }
-                                              },
+                                              onChanged:
+                                                  (MonitorTypes? newValue) {
+                                                    if (newValue != null) {
+                                                      final newMovie =
+                                                          updatedMovie.rebuild(
+                                                            (b) => b
+                                                              ..addOptions.update(
+                                                                (b2) => b2
+                                                                  ..monitor =
+                                                                      newValue,
+                                                              ),
+                                                          );
+                                                      ref
+                                                          .read(
+                                                            movieAddController
+                                                                .notifier,
+                                                          )
+                                                          .updateSelectedMovie(
+                                                            newMovie,
+                                                          );
+                                                    }
+                                                  },
                                             ),
                                           ),
                                         ),
@@ -203,7 +204,7 @@ class MovieAddForm extends ConsumerWidget {
                               ),
                           );
                           ref
-                              .read(movieAddControllerProvider.notifier)
+                              .read(movieAddController.notifier)
                               .updateSelectedMovie(newMovie);
                         },
                       ),
@@ -265,7 +266,7 @@ class MovieAddForm extends ConsumerWidget {
                                 (b) => b..rootFolderPath = value,
                               );
                               ref
-                                  .read(movieAddControllerProvider.notifier)
+                                  .read(movieAddController.notifier)
                                   .updateSelectedMovie(newMovie);
                             }
                           },
@@ -334,7 +335,7 @@ class MovieAddForm extends ConsumerWidget {
                           (b) => b..minimumAvailability = value,
                         );
                         ref
-                            .read(movieAddControllerProvider.notifier)
+                            .read(movieAddController.notifier)
                             .updateSelectedMovie(newMovie);
                       }
                     },
@@ -397,7 +398,7 @@ class MovieAddForm extends ConsumerWidget {
                                 (b) => b..qualityProfileId = value,
                               );
                               ref
-                                  .read(movieAddControllerProvider.notifier)
+                                  .read(movieAddController.notifier)
                                   .updateSelectedMovie(newMovie);
                             }
                           },

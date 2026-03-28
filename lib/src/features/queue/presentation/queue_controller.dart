@@ -50,7 +50,7 @@ class QueueHomeController extends AutoDisposeAsyncNotifier<List<QueueItem>> {
   }
 }
 
-final queueHomeControllerProvider =
+final queueHomeController =
     AsyncNotifierProvider.autoDispose<QueueHomeController, List<QueueItem>>(
       QueueHomeController.new,
     );

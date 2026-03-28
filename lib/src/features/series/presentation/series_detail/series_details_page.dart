@@ -27,7 +27,7 @@ class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final series = ref.watch(seriesDetailsControllerProvider);
+    final series = ref.watch(seriesDetailsController);
     final posterUrl =
         series.images
             ?.firstWhere(

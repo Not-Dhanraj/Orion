@@ -36,7 +36,7 @@ class _SeriesAddPageState extends ConsumerState<SeriesAddPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final seriesAddState = ref.watch(seriesAddControllerProvider);
+    final seriesAddState = ref.watch(seriesAddController);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Add New Series')),
@@ -78,7 +78,7 @@ class _SeriesAddPageState extends ConsumerState<SeriesAddPage> {
                               _searchController.clear();
                               if (_hasSearched) {
                                 ref
-                                    .read(seriesAddControllerProvider.notifier)
+                                    .read(seriesAddController.notifier)
                                     .searchSeries('');
                                 setState(() {
                                   _hasSearched = false;
@@ -94,7 +94,7 @@ class _SeriesAddPageState extends ConsumerState<SeriesAddPage> {
                             onPressed: () {
                               if (_searchController.text.isNotEmpty) {
                                 ref
-                                    .read(seriesAddControllerProvider.notifier)
+                                    .read(seriesAddController.notifier)
                                     .searchSeries(_searchController.text);
                                 setState(() {
                                   _hasSearched = true;
@@ -117,44 +117,12 @@ class _SeriesAddPageState extends ConsumerState<SeriesAddPage> {
                   ),
                   onSubmitted: (value) async {
                     if (value.isNotEmpty) {
-                      try {
-                        await ref
-                            .read(seriesAddControllerProvider.notifier)
-                            .searchSeries(value);
-                        setState(() {
-                          _hasSearched = true;
-                        });
-                      } catch (e) {
-                        if (context.mounted) {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: Row(
-                                children: [
-                                  Icon(
-                                    Icons.error,
-                                    color: theme.colorScheme.error,
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Text('Error'),
-                                ],
-                              ),
-                              content: Text(
-                                'Failed to search: ${e.toString()}',
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.of(context).pop(),
-                                  child: Text('OK'),
-                                ),
-                              ],
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                            ),
-                          );
-                        }
-                      }
+                      await ref
+                          .read(seriesAddController.notifier)
+                          .searchSeries(value);
+                      setState(() {
+                        _hasSearched = true;
+                      });
                     }
                   },
                 ),

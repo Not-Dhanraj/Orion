@@ -27,7 +27,7 @@ class _MovieDetailsPageState extends ConsumerState<MovieDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final movie = ref.watch(movieDetailsControllerProvider);
+    final movie = ref.watch(movieDetailsController);
     final posterUrl =
         movie.images
             ?.firstWhere(

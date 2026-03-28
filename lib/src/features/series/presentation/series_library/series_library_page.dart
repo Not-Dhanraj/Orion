@@ -15,7 +15,7 @@ class SeriesLibraryPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final async = ref.watch(seriesLibraryControllerProvider);
+    final async = ref.watch(seriesLibraryController);
 
     return async.when(
       loading: () => const Center(child: CircularProgressIndicator()),
@@ -23,7 +23,7 @@ class SeriesLibraryPage extends ConsumerWidget {
         child: CustomErrorState(
           error: err,
           stackTrace: stack,
-          onRetry: () => ref.invalidate(seriesLibraryControllerProvider),
+          onRetry: () => ref.invalidate(seriesLibraryController),
         ),
       ),
       data: (series) {
@@ -51,7 +51,7 @@ class SeriesLibraryPage extends ConsumerWidget {
               statusColor: seriesItem.statusColor,
               onTap: () {
                 ref
-                    .read(seriesDetailsControllerProvider.notifier)
+                    .read(seriesDetailsController.notifier)
                     .initialize(seriesItem);
                 Navigator.of(context).push(
                   MaterialPageRoute(

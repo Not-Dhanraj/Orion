@@ -20,7 +20,7 @@ class SeriesConfigurationForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final seriesState = ref.watch(seriesAddControllerProvider);
+    final seriesState = ref.watch(seriesAddController);
     final updatedSeries = seriesState.value?.selectedSeries ?? series;
     final theme = Theme.of(context);
 

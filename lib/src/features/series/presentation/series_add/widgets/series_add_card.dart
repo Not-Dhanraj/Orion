@@ -16,7 +16,7 @@ class SeriesAddCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isCreating =
-        ref.watch(seriesAddControllerProvider).value?.isCreating ?? false;
+        ref.watch(seriesAddController).value?.isCreating ?? false;
 
     final year = series.year;
     final status = series.status;
@@ -246,13 +246,13 @@ class SeriesAddCard extends ConsumerWidget {
     SeriesResource series,
     WidgetRef ref,
   ) {
-    ref.read(seriesAddControllerProvider.notifier).selectSeries(series);
+    ref.read(seriesAddController.notifier).selectSeries(series);
     final theme = Theme.of(context);
 
     showDialog(
       context: context,
       builder: (context) {
-        final state = ref.watch(seriesAddControllerProvider).value;
+        final state = ref.watch(seriesAddController).value;
         final selectedSeries = state?.selectedSeries;
         final qualityProfiles = state?.qualityProfiles ?? [];
 
@@ -324,7 +324,7 @@ class SeriesAddCard extends ConsumerWidget {
                             qualityProfiles: qualityProfiles,
                             onSeriesChanged: (updatedSeries) {
                               ref
-                                  .read(seriesAddControllerProvider.notifier)
+                                  .read(seriesAddController.notifier)
                                   .updateSelectedSeries(updatedSeries);
                             },
                           )
@@ -409,21 +409,24 @@ class SeriesAddCard extends ConsumerWidget {
                                   },
                                 );
 
-                                try {
-                                  final seriesToAdd = ref
-                                      .read(seriesAddControllerProvider)
-                                      .maybeWhen(
-                                        data: (data) =>
-                                            data.selectedSeries ??
-                                            SeriesResource(),
-                                        orElse: () => SeriesResource(),
-                                      );
-                                  await ref
-                                      .read(
-                                        seriesAddControllerProvider.notifier,
-                                      )
-                                      .addSeries(seriesToAdd);
-                                  if (context.mounted) {
+                                final seriesToAdd = ref
+                                    .read(seriesAddController)
+                                    .maybeWhen(
+                                      data: (data) =>
+                                          data.selectedSeries ??
+                                          SeriesResource(),
+                                      orElse: () => SeriesResource(),
+                                    );
+                                await ref
+                                    .read(seriesAddController.notifier)
+                                    .addSeries(seriesToAdd);
+                                if (context.mounted) {
+                                  Navigator.of(context).pop();
+
+                                  final addState = ref
+                                      .read(seriesAddController)
+                                      .value;
+                                  if (addState?.errorMessage == null) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Row(
@@ -459,32 +462,21 @@ class SeriesAddCard extends ConsumerWidget {
                                         ),
                                       ),
                                     );
+                                    // Pop add dialog
                                     Navigator.of(context).pop();
-                                    Navigator.of(context).pop();
-                                  }
-                                } catch (e) {
-                                  if (context.mounted) {
+                                  } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                          'Failed to add series: ${e.toString()}',
+                                          'Failed to add: ${addState?.errorMessage}',
                                         ),
                                         backgroundColor:
                                             theme.colorScheme.errorContainer,
                                         behavior: SnackBarBehavior.floating,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            12,
-                                          ),
-                                        ),
                                         margin: const EdgeInsets.all(16),
-                                        duration: const Duration(seconds: 4),
                                       ),
                                     );
-                                    Navigator.of(context).pop();
-                                    Navigator.of(context).pop();
                                   }
-                                  return;
                                 }
                               },
                       ),

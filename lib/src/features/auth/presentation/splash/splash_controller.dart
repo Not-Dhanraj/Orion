@@ -14,9 +14,7 @@ import 'package:client/src/features/settings/presentation/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 
-final splashControllerProvider = FutureProvider.autoDispose<SplashData>((
-  ref,
-) async {
+final splashController = FutureProvider.autoDispose<SplashData>((ref) async {
   await ref.read(hiveProvider).init();
   final enabled = ref.read(enabledNotifierProvider);
 
@@ -26,9 +24,9 @@ final splashControllerProvider = FutureProvider.autoDispose<SplashData>((
   }
 
   await Future.wait([
-    ref.read(calendarHomeControllerProvider.future),
-    if (enabled.sonarr) ref.read(seriesLibraryControllerProvider.future),
-    if (enabled.radarr) ref.read(movieLibraryControllerProvider.future),
+    ref.read(calendarHomeController.future),
+    if (enabled.sonarr) ref.read(seriesLibraryController.future),
+    if (enabled.radarr) ref.read(movieLibraryController.future),
   ]);
 
   return SplashData(

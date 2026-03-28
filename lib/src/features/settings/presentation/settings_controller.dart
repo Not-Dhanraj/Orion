@@ -113,7 +113,6 @@ class SettingsController extends Notifier<SettingsData> {
   }
 }
 
-final settingsControllerProvider =
-    NotifierProvider<SettingsController, SettingsData>(
-      () => SettingsController(),
-    );
+final settingsController = NotifierProvider<SettingsController, SettingsData>(
+  () => SettingsController(),
+);

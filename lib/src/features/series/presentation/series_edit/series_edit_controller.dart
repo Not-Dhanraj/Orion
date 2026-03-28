@@ -40,9 +40,7 @@ class SeriesEditControllerNotifier
           .read(seriesServiceProvider)
           .updateSeries(state.value!.series!);
 
-      ref
-          .read(seriesDetailsControllerProvider.notifier)
-          .initialize(updatedSeries);
+      ref.read(seriesDetailsController.notifier).initialize(updatedSeries);
       state = AsyncData(
         SeriesEditState(
           series: updatedSeries,
@@ -51,7 +49,7 @@ class SeriesEditControllerNotifier
         ),
       );
 
-      ref.invalidate(seriesLibraryControllerProvider);
+      ref.invalidate(seriesLibraryController);
       return true;
     } catch (e) {
       state = AsyncError(e, StackTrace.current);
@@ -60,7 +58,7 @@ class SeriesEditControllerNotifier
   }
 }
 
-final seriesEditControllerProvider =
+final seriesEditController =
     AutoDisposeAsyncNotifierProviderFamily<
       SeriesEditControllerNotifier,
       SeriesEditState,

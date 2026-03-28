@@ -15,7 +15,7 @@ class SplashPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final splashState = ref.watch(splashControllerProvider);
+    final splashState = ref.watch(splashController);
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -45,9 +45,9 @@ class SplashPage extends ConsumerWidget {
                   error: err,
                   stackTrace: stack,
                   onRetry: () {
-                    ref.invalidate(movieLibraryControllerProvider);
-                    ref.invalidate(seriesLibraryControllerProvider);
-                    ref.invalidate(splashControllerProvider);
+                    ref.invalidate(movieLibraryController);
+                    ref.invalidate(seriesLibraryController);
+                    ref.invalidate(splashController);
                   },
                 ),
                 data: (splashData) {

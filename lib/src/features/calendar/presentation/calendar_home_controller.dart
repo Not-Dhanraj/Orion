@@ -4,7 +4,7 @@ import 'package:client/src/features/calendar/domain/calendar_ui_models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-final calendarHomeControllerProvider =
+final calendarHomeController =
     AsyncNotifierProvider<CalendarHomeController, CalendarHomeState>(
       CalendarHomeController.new,
     );

@@ -18,7 +18,7 @@ class MovieEditPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final controller = ref.watch(movieEditControllerProvider(movie));
+    final controller = ref.watch(movieEditController(movie));
 
     return Dialog(
       child: Container(
@@ -26,9 +26,7 @@ class MovieEditPage extends ConsumerWidget {
         child: controller.when(
           data: (state) {
             final theme = Theme.of(context);
-            final controller = ref.read(
-              movieEditControllerProvider(movie).notifier,
-            );
+            final controller = ref.read(movieEditController(movie).notifier);
             final movieData = state.movie;
 
             if (movieData == null) {

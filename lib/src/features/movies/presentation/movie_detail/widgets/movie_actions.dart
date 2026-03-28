@@ -1,6 +1,5 @@
-import 'package:client/src/features/movies/application/movie_service.dart';
+import 'package:client/src/features/movies/presentation/movie_detail/movie_details_controller.dart';
 import 'package:client/src/features/movies/presentation/movie_edit/movie_edit_page.dart';
-import 'package:client/src/features/movies/presentation/movie_library/movie_library_controller.dart';
 import 'package:client/src/shared/widgets/media_release_widget.dart';
 import 'package:client/src/shared/widgets/custom_dialog.dart';
 import 'package:flutter/material.dart';
@@ -121,42 +120,22 @@ class MovieActionCard extends ConsumerWidget {
                               ),
                               TextButton(
                                 onPressed: () async {
+                                  Navigator.of(context).pop();
                                   try {
-                                    showDialog(
-                                      context: context,
-                                      barrierDismissible: false,
-                                      builder: (context) => const AlertDialog(
-                                        content: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            CircularProgressIndicator(),
-                                            SizedBox(height: 16),
-                                            Text('Deleting series...'),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-
                                     await ref
-                                        .read(movieServiceProvider)
+                                        .read(movieDetailsController.notifier)
                                         .deleteMovie(
-                                          movie.id!,
-                                          deleteFiles,
-                                          addImportListExclusion,
+                                          deleteFiles: deleteFiles,
+                                          addImportListExclusion:
+                                              addImportListExclusion,
                                         );
 
-                                    ref.invalidate(
-                                      movieLibraryControllerProvider,
-                                    );
                                     await Future.delayed(
-                                      Duration(milliseconds: 500),
+                                      const Duration(milliseconds: 500),
                                     );
                                     if (context.mounted) {
                                       final scaffoldMessenger =
                                           ScaffoldMessenger.of(context);
-
-                                      Navigator.of(context).pop();
-                                      Navigator.of(context).pop();
                                       Navigator.of(context).pop();
 
                                       scaffoldMessenger.showSnackBar(
@@ -192,8 +171,6 @@ class MovieActionCard extends ConsumerWidget {
                                     }
                                   } catch (e) {
                                     if (context.mounted) {
-                                      Navigator.of(context).pop();
-
                                       ScaffoldMessenger.of(
                                         context,
                                       ).showSnackBar(
@@ -207,7 +184,7 @@ class MovieActionCard extends ConsumerWidget {
                                               const SizedBox(width: 12),
                                               Expanded(
                                                 child: Text(
-                                                  'Failed to delete series: ${e.toString()}',
+                                                  'Failed to delete movie: ${e.toString()}',
                                                   style: const TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                   ),
@@ -288,8 +265,8 @@ class MovieActionCard extends ConsumerWidget {
 
     try {
       final releases = await ref
-          .read(movieServiceProvider)
-          .getReleases(movieId: movie.id!);
+          .read(movieDetailsController.notifier)
+          .getReleases();
 
       if (context.mounted) {
         Navigator.of(context).pop();
@@ -321,7 +298,6 @@ class MovieActionCard extends ConsumerWidget {
     List<ReleaseResource> releases,
     MovieResource movie,
   ) {
-    final movieService = ref.read(movieServiceProvider);
     showDialog(
       context: context,
       builder: (context) => Dialog.fullscreen(
@@ -329,10 +305,9 @@ class MovieActionCard extends ConsumerWidget {
           releases: releases,
           title: movie.title ?? 'Unknown',
           onDownloadRelease: (indexerId, guid) async {
-            return movieService.downloadRelease(
-              indexerId: indexerId,
-              guid: guid,
-            );
+            return ref
+                .read(movieDetailsController.notifier)
+                .downloadRelease(indexerId: indexerId, guid: guid);
           },
         ),
       ),
@@ -367,8 +342,8 @@ class MovieActionCard extends ConsumerWidget {
                 Navigator.of(context).pop();
                 try {
                   await ref
-                      .read(movieServiceProvider)
-                      .deleteMovieFile(movie.id!);
+                      .read(movieDetailsController.notifier)
+                      .deleteMovieFile();
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(

@@ -150,7 +150,7 @@ class QueueItemWidget extends ConsumerWidget {
     void remove({required bool fromClient, required bool blacklist}) {
       Navigator.of(context).pop();
       ref
-          .read(queueHomeControllerProvider.notifier)
+          .read(queueHomeController.notifier)
           .removeItem(item, removeFromClient: fromClient, blacklist: blacklist);
     }
 

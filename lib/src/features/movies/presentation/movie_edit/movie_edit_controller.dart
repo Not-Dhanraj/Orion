@@ -48,9 +48,7 @@ class MovieEditControllerNotifier
           .read(movieServiceProvider)
           .updateMovie(state.value!.movie!);
 
-      ref
-          .read(movieDetailsControllerProvider.notifier)
-          .initialize(updatedMovie);
+      ref.read(movieDetailsController.notifier).initialize(updatedMovie);
       state = AsyncData(
         MovieEditState(
           movie: updatedMovie,
@@ -60,7 +58,7 @@ class MovieEditControllerNotifier
         ),
       );
 
-      ref.invalidate(movieLibraryControllerProvider);
+      ref.invalidate(movieLibraryController);
       return true;
     } catch (e) {
       state = AsyncError(e, StackTrace.current);
@@ -69,7 +67,7 @@ class MovieEditControllerNotifier
   }
 }
 
-final movieEditControllerProvider =
+final movieEditController =
     AutoDisposeAsyncNotifierProviderFamily<
       MovieEditControllerNotifier,
       MovieEditState,

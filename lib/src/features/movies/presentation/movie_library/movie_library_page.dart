@@ -15,7 +15,7 @@ class MovieLibraryPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final async = ref.watch(movieLibraryControllerProvider);
+    final async = ref.watch(movieLibraryController);
 
     return async.when(
       loading: () => const Center(child: CircularProgressIndicator()),
@@ -23,7 +23,7 @@ class MovieLibraryPage extends ConsumerWidget {
         child: CustomErrorState(
           error: err,
           stackTrace: stack,
-          onRetry: () => ref.invalidate(movieLibraryControllerProvider),
+          onRetry: () => ref.invalidate(movieLibraryController),
         ),
       ),
       data: (movies) {
@@ -49,9 +49,7 @@ class MovieLibraryPage extends ConsumerWidget {
               posterUrl: movieItem.remotePosterUrlLink,
               statusColor: movieItem.statusColor,
               onTap: () {
-                ref
-                    .read(movieDetailsControllerProvider.notifier)
-                    .initialize(movieItem);
+                ref.read(movieDetailsController.notifier).initialize(movieItem);
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) => MovieDetailsPage(movie: movieItem),

@@ -12,7 +12,7 @@ class QueuePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final queueState = ref.watch(queueHomeControllerProvider);
+    final queueState = ref.watch(queueHomeController);
 
     return Scaffold(
       body: queueState.when(
@@ -35,7 +35,7 @@ class QueuePage extends ConsumerWidget {
             error: err,
             stackTrace: stack,
             onRetry: () =>
-                ref.read(queueHomeControllerProvider.notifier).refreshQueue(),
+                ref.read(queueHomeController.notifier).refreshQueue(),
           ),
         ),
         data: (items) => _QueueBody(items: items, queueState: queueState),
@@ -53,8 +53,7 @@ class _QueueBody extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return RefreshIndicator(
-      onRefresh: () =>
-          ref.read(queueHomeControllerProvider.notifier).refreshQueue(),
+      onRefresh: () => ref.read(queueHomeController.notifier).refreshQueue(),
       child: Column(
         children: [
           SizedBox(

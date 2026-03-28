@@ -100,8 +100,8 @@ class SeasonService {
         seasonNumber: seasonNumber,
         monitored: monitored,
       );
-      _ref.invalidate(seriesLibraryControllerProvider);
-      _ref.read(seriesDetailsControllerProvider.notifier).initialize(result);
+      _ref.invalidate(seriesLibraryController);
+      _ref.read(seriesDetailsController.notifier).initialize(result);
       return result;
     } catch (e, stackTrace) {
       throw RepositoryException(

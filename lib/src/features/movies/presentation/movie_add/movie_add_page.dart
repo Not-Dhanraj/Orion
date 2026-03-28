@@ -37,7 +37,7 @@ class _MovieAddPageState extends ConsumerState<MovieAddPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final movieAddState = ref.watch(movieAddControllerProvider);
+    final movieAddState = ref.watch(movieAddController);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Add New Movie')),
@@ -80,7 +80,7 @@ class _MovieAddPageState extends ConsumerState<MovieAddPage> {
                               _searchController.clear();
                               if (_hasSearched) {
                                 ref
-                                    .read(movieAddControllerProvider.notifier)
+                                    .read(movieAddController.notifier)
                                     .searchMovies('');
                                 setState(() {
                                   _hasSearched = false;
@@ -96,7 +96,7 @@ class _MovieAddPageState extends ConsumerState<MovieAddPage> {
                             onPressed: () {
                               if (_searchController.text.isNotEmpty) {
                                 ref
-                                    .read(movieAddControllerProvider.notifier)
+                                    .read(movieAddController.notifier)
                                     .searchMovies(_searchController.text);
                                 setState(() {
                                   _hasSearched = true;
@@ -119,44 +119,12 @@ class _MovieAddPageState extends ConsumerState<MovieAddPage> {
                   ),
                   onSubmitted: (value) async {
                     if (value.isNotEmpty) {
-                      try {
-                        await ref
-                            .read(movieAddControllerProvider.notifier)
-                            .searchMovies(value);
-                        setState(() {
-                          _hasSearched = true;
-                        });
-                      } catch (e) {
-                        if (context.mounted) {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: Row(
-                                children: [
-                                  Icon(
-                                    Icons.error,
-                                    color: theme.colorScheme.error,
-                                  ),
-                                  const SizedBox(width: 12),
-                                  const Text('Error'),
-                                ],
-                              ),
-                              content: Text(
-                                'Failed to search: ${e.toString()}',
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.of(context).pop(),
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                            ),
-                          );
-                        }
-                      }
+                      await ref
+                          .read(movieAddController.notifier)
+                          .searchMovies(value);
+                      setState(() {
+                        _hasSearched = true;
+                      });
                     }
                   },
                 ),

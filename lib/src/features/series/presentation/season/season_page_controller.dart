@@ -223,7 +223,7 @@ class SeasonPageController
   }
 }
 
-final seasonPageControllerProvider =
+final seasonPageController =
     AutoDisposeAsyncNotifierProviderFamily<
       SeasonPageController,
       SeasonPageState,

@@ -33,7 +33,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authControllerProvider);
+    final authState = ref.watch(authController);
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -94,10 +94,10 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                         ? null
                         : () async {
                             if (_sonarrFormKey.currentState!.validate()) {
-                              var authController = ref.read(
-                                authControllerProvider.notifier,
+                              var authenticationController = ref.read(
+                                authController.notifier,
                               );
-                              await authController.updateSonarr(
+                              await authenticationController.updateSonarr(
                                 _sonarrUrlController.text,
                                 _sonarrApiKeyController.text,
                                 context,
@@ -120,7 +120,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                         : () {
                             if (_radarrFormKey.currentState!.validate()) {
                               ref
-                                  .read(authControllerProvider.notifier)
+                                  .read(authController.notifier)
                                   .updateRadarr(
                                     _radarrUrlController.text,
                                     _radarrApiKeyController.text,
@@ -220,7 +220,7 @@ class _AuthCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var theme = Theme.of(context);
-    final authState = ref.watch(authControllerProvider);
+    final authState = ref.watch(authController);
     final errorMessage = type == 'Sonarr'
         ? authState.sonarrError
         : authState.radarrError;
@@ -280,9 +280,8 @@ class _AuthCard extends ConsumerWidget {
                 controller: urlController,
                 labelText: '$type URL',
                 hintText: 'http://your-server:port',
-                validator: (value) => ref
-                    .read(authControllerProvider.notifier)
-                    .urlValidatorCheck(value),
+                validator: (value) =>
+                    ref.read(authController.notifier).urlValidatorCheck(value),
                 icon: TablerIcons.link,
                 helperText:
                     'Example: http://localhost:port or https://yourdomain.xyz',

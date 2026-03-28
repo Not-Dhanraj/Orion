@@ -33,8 +33,8 @@ class SeriesEditControllerNotifier
   Future<bool> saveChanges() async {
     if (state.value?.series == null) return false;
 
+    state = AsyncData(state.value!.copyWith(isLoading: true));
     try {
-      state = AsyncData(state.value!.copyWith(isLoading: true));
       await Future.delayed(const Duration(milliseconds: 500));
       var updatedSeries = await ref
           .read(seriesServiceProvider)
@@ -56,8 +56,6 @@ class SeriesEditControllerNotifier
     } catch (e) {
       state = AsyncError(e, StackTrace.current);
       return false;
-    } finally {
-      state = AsyncData(state.value!.copyWith(isLoading: false));
     }
   }
 }

@@ -25,7 +25,6 @@ class QueueService {
       final items = await fetch();
       target.addAll(items.map(mapper));
     } catch (e, stackTrace) {
-      if (e is RepositoryException) rethrow;
       throw RepositoryException(errorMessage, error: e, stackTrace: stackTrace);
     }
   }
@@ -87,7 +86,6 @@ class QueueService {
         );
       }
     } catch (e, stackTrace) {
-      if (e is RepositoryException) rethrow;
       throw RepositoryException(
         'Error deleting queue item',
         error: e,

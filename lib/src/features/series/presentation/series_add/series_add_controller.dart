@@ -7,20 +7,16 @@ import 'package:sonarr/sonarr.dart';
 class SeriesAddController extends AsyncNotifier<SeriesAddState> {
   @override
   Future<SeriesAddState> build() async {
-    try {
-      final seriesService = ref.watch(seriesServiceProvider);
+    final seriesService = ref.watch(seriesServiceProvider);
 
-      final qualityProfiles = await seriesService.fetchQualityProfiles();
-      final rootFolders = await seriesService.fetchRootFolders();
+    final qualityProfiles = await seriesService.fetchQualityProfiles();
+    final rootFolders = await seriesService.fetchRootFolders();
 
-      await Future.delayed(const Duration(milliseconds: 500));
-      return SeriesAddState(
-        qualityProfiles: qualityProfiles,
-        rootFolders: rootFolders,
-      );
-    } catch (e) {
-      return SeriesAddState(errorMessage: e.toString());
-    }
+    await Future.delayed(const Duration(milliseconds: 500));
+    return SeriesAddState(
+      qualityProfiles: qualityProfiles,
+      rootFolders: rootFolders,
+    );
   }
 
   Future<void> searchSeries(String query) async {
@@ -66,7 +62,6 @@ class SeriesAddController extends AsyncNotifier<SeriesAddState> {
           errorMessage: 'Failed to search series: ${e.toString()}',
         ),
       );
-      rethrow;
     }
   }
 
@@ -117,7 +112,6 @@ class SeriesAddController extends AsyncNotifier<SeriesAddState> {
           errorMessage: 'Failed to add series: ${e.toString()}',
         ),
       );
-      rethrow;
     }
   }
 

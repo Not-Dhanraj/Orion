@@ -16,9 +16,7 @@ class MovieEditControllerNotifier
 
     MovieResource updatedMovie = movie;
     if (movie.id != null) {
-      try {
-        updatedMovie = await movieService.fetchMovieById(movie.id!);
-      } catch (e) {}
+      updatedMovie = await movieService.fetchMovieById(movie.id!);
     }
 
     return MovieEditState(
@@ -43,8 +41,8 @@ class MovieEditControllerNotifier
   Future<bool> saveChanges() async {
     if (state.value?.movie == null) return false;
 
+    state = AsyncData(state.value!.copyWith(isLoading: true));
     try {
-      state = AsyncData(state.value!.copyWith(isLoading: true));
       await Future.delayed(const Duration(milliseconds: 500));
       var updatedMovie = await ref
           .read(movieServiceProvider)
@@ -67,8 +65,6 @@ class MovieEditControllerNotifier
     } catch (e) {
       state = AsyncError(e, StackTrace.current);
       return false;
-    } finally {
-      state = AsyncData(state.value!.copyWith(isLoading: false));
     }
   }
 }

@@ -7,20 +7,16 @@ import 'package:radarr/radarr.dart';
 class MovieAddController extends AsyncNotifier<MovieAddState> {
   @override
   Future<MovieAddState> build() async {
-    try {
-      final movieService = ref.watch(movieServiceProvider);
+    final movieService = ref.watch(movieServiceProvider);
 
-      final qualityProfiles = await movieService.fetchQualityProfiles();
-      final rootFolders = await movieService.fetchRootFolders();
+    final qualityProfiles = await movieService.fetchQualityProfiles();
+    final rootFolders = await movieService.fetchRootFolders();
 
-      await Future.delayed(const Duration(milliseconds: 500));
-      return MovieAddState(
-        qualityProfiles: qualityProfiles,
-        rootFolders: rootFolders,
-      );
-    } catch (e) {
-      return MovieAddState(errorMessage: e.toString());
-    }
+    await Future.delayed(const Duration(milliseconds: 500));
+    return MovieAddState(
+      qualityProfiles: qualityProfiles,
+      rootFolders: rootFolders,
+    );
   }
 
   Future<void> searchMovies(String query) async {
@@ -66,7 +62,6 @@ class MovieAddController extends AsyncNotifier<MovieAddState> {
           errorMessage: 'Failed to search movies: ${e.toString()}',
         ),
       );
-      rethrow;
     }
   }
 
@@ -115,7 +110,6 @@ class MovieAddController extends AsyncNotifier<MovieAddState> {
           errorMessage: 'Failed to add movie: ${e.toString()}',
         ),
       );
-      rethrow;
     }
   }
 

@@ -18,8 +18,6 @@ class SettingsService {
     try {
       final validator = _ref.read(settingsValidationRepositoryProvider);
       await validator.validateSonarr(normalizedUrl, apiKey);
-    } on RepositoryException {
-      rethrow;
     } catch (e, st) {
       throw RepositoryException(
         'Failed to validate Sonarr connection',
@@ -51,8 +49,6 @@ class SettingsService {
     try {
       final validator = _ref.read(settingsValidationRepositoryProvider);
       await validator.validateRadarr(normalizedUrl, apiKey);
-    } on RepositoryException {
-      rethrow;
     } catch (e, st) {
       throw RepositoryException(
         'Failed to validate Radarr connection',

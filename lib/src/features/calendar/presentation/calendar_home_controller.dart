@@ -1,102 +1,237 @@
-import 'dart:async';
-
 import 'package:client/src/features/calendar/application/calendar_service.dart';
 import 'package:client/src/features/calendar/domain/calendar_item.dart';
-import 'package:flutter/foundation.dart';
+import 'package:client/src/features/calendar/domain/calendar_ui_models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 final calendarHomeControllerProvider =
-    AsyncNotifierProvider<CalendarHomeController, List<CalendarItem>>(() {
-      return CalendarHomeController();
-    });
+    AsyncNotifierProvider<CalendarHomeController, CalendarHomeState>(
+      CalendarHomeController.new,
+    );
 
-class CalendarHomeController extends AsyncNotifier<List<CalendarItem>> {
-  Timer? _autoRefreshTimer;
-  DateTime? _startDate;
-  DateTime? _endDate;
-  DateTime focusedDay = DateTime.now();
+class CalendarHomeState {
+  final List<CalendarDay> days;
+  final List<CalendarEpisodeEntry> entries;
+  final String windowLabel;
+  final bool canGoPrev;
+  final bool canGoNext;
+  final int selectedDayIndex;
+
+  const CalendarHomeState({
+    required this.days,
+    required this.entries,
+    required this.windowLabel,
+    required this.canGoPrev,
+    required this.canGoNext,
+    required this.selectedDayIndex,
+  });
+
+  CalendarHomeState copyWith({
+    List<CalendarDay>? days,
+    List<CalendarEpisodeEntry>? entries,
+    String? windowLabel,
+    bool? canGoPrev,
+    bool? canGoNext,
+    int? selectedDayIndex,
+  }) => CalendarHomeState(
+    days: days ?? this.days,
+    entries: entries ?? this.entries,
+    windowLabel: windowLabel ?? this.windowLabel,
+    canGoPrev: canGoPrev ?? this.canGoPrev,
+    canGoNext: canGoNext ?? this.canGoNext,
+    selectedDayIndex: selectedDayIndex ?? this.selectedDayIndex,
+  );
+}
+
+class CalendarHomeController extends AsyncNotifier<CalendarHomeState> {
+  static final _today = DateTime(
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+  );
+  static final _minDay = DateTime(_today.year, _today.month - 12);
+  static final _maxDay = DateTime(_today.year, _today.month + 12, 28);
+  static const _weekdayLabels = [
+    'MON',
+    'TUE',
+    'WED',
+    'THU',
+    'FRI',
+    'SAT',
+    'SUN',
+  ];
+
+  late DateTime _windowStart;
+  late DateTime _fetchedMonth;
+  late DateTime _startDate;
+  late DateTime _endDate;
+  int _selectedDayIndex = 0;
   bool includeUnmonitored = true;
+  List<CalendarItem> _cachedItems = [];
 
   @override
-  Future<List<CalendarItem>> build() async {
-    final calendarService = ref.watch(calendarServiceProvider);
+  Future<CalendarHomeState> build() async {
+    _windowStart = _mondayOf(_today);
+    _fetchedMonth = DateTime(_windowStart.year, _windowStart.month);
+    _updateDateRange(_fetchedMonth);
+    // Select today's position: Mon=0, Tue=1, … Sun=6
+    _selectedDayIndex = _today.weekday - 1;
 
-    _setDefaultDateRange();
+    final items = await ref
+        .watch(calendarServiceProvider)
+        .getCalendarItems(
+          start: _startDate,
+          end: _endDate,
+          includeUnmonitored: includeUnmonitored,
+        );
 
-    _startAutoRefresh();
-
-    ref.onDispose(() {
-      _stopAutoRefresh();
-    });
-
-    return await calendarService.getCalendarItems(
-      start: _startDate,
-      end: _endDate,
-      includeUnmonitored: includeUnmonitored,
-    );
-  }
-
-  void _setDefaultDateRange() {
-    final now = DateTime.now();
-    focusedDay = now;
-
-    final previousMonth = DateTime(now.year, now.month - 1, 1);
-
-    final nextMonth = DateTime(now.year, now.month + 2, 0);
-
-    _startDate = previousMonth;
-    _endDate = nextMonth;
-  }
-
-  void _startAutoRefresh() {
-    _stopAutoRefresh();
-
-    _autoRefreshTimer = Timer.periodic(
-      const Duration(minutes: 5),
-      (_) => refreshCalendar(),
-    );
-  }
-
-  void _stopAutoRefresh() {
-    _autoRefreshTimer?.cancel();
-    _autoRefreshTimer = null;
+    return _buildState(items);
   }
 
   Future<void> refreshCalendar() async {
-    final calendarService = ref.read(calendarServiceProvider);
+    ref.invalidateSelf();
+    await future;
+  }
 
-    try {
-      final calendarItems = await calendarService.getCalendarItems(
-        start: _startDate,
-        end: _endDate,
-        includeUnmonitored: includeUnmonitored,
-      );
+  void selectDay(int index) {
+    final current = state.valueOrNull;
+    if (current == null) return;
+    _selectedDayIndex = index.clamp(0, 6);
+    state = AsyncValue.data(
+      current.copyWith(
+        selectedDayIndex: _selectedDayIndex,
+        entries: _buildEntriesForDay(
+          _cachedItems,
+          current.days[_selectedDayIndex],
+        ),
+      ),
+    );
+  }
 
-      state = AsyncValue.data(calendarItems);
-    } catch (e, stackTrace) {
-      if (!state.hasValue) {
-        state = AsyncValue.error(e, stackTrace);
-      } else {
-        debugPrint('Background refresh error: $e');
-      }
+  Future<void> shiftBack() async {
+    if (!_canGoPrev) return;
+    _windowStart = _windowStart.subtract(const Duration(days: 7));
+    _selectedDayIndex = 0;
+    await _maybeRefetch();
+  }
+
+  Future<void> shiftForward() async {
+    if (!_canGoNext) return;
+    _windowStart = _windowStart.add(const Duration(days: 7));
+    _selectedDayIndex = 0;
+    await _maybeRefetch();
+  }
+
+  bool get _canGoPrev => _windowStart.isAfter(_minDay);
+  bool get _canGoNext =>
+      _windowStart.add(const Duration(days: 7)).isBefore(_maxDay);
+
+  Future<void> _maybeRefetch() async {
+    final mid = _windowStart.add(const Duration(days: 3));
+    final midMonth = DateTime(mid.year, mid.month);
+    if (midMonth != _fetchedMonth) {
+      _fetchedMonth = midMonth;
+      _updateDateRange(midMonth);
     }
+
+    state = AsyncValue.data(_buildState(_cachedItems));
+
+    await refreshCalendar();
   }
 
-  Future<void> updateDateRange(DateTime focusedDay) async {
-    focusedDay = focusedDay;
-
-    final startYear = focusedDay.month == 1
-        ? focusedDay.year - 1
-        : focusedDay.year;
-    final startMonth = focusedDay.month == 1 ? 12 : focusedDay.month - 1;
-    _startDate = DateTime(startYear, startMonth, 1);
-
-    final endYear = focusedDay.month == 12
-        ? focusedDay.year + 1
-        : focusedDay.year;
-    final endMonth = focusedDay.month == 12 ? 1 : focusedDay.month + 1;
-    _endDate = DateTime(endYear, endMonth + 1, 0);
-
-    return refreshCalendar();
+  void _updateDateRange(DateTime month) {
+    final prev = DateTime(month.year, month.month - 1);
+    _startDate = DateTime(prev.year, prev.month, 1);
+    final next = DateTime(month.year, month.month + 1);
+    _endDate = DateTime(next.year, next.month + 1, 0, 23, 59, 59);
   }
+
+  CalendarHomeState _buildState(List<CalendarItem> items) {
+    _cachedItems = items;
+    final days = _buildDays(items);
+    final selectedDay = days[_selectedDayIndex.clamp(0, 6)];
+    return CalendarHomeState(
+      days: days,
+      entries: _buildEntriesForDay(items, selectedDay),
+      windowLabel: _windowLabel(),
+      canGoPrev: _canGoPrev,
+      canGoNext: _canGoNext,
+      selectedDayIndex: _selectedDayIndex,
+    );
+  }
+
+  List<CalendarDay> _buildDays(List<CalendarItem> items) {
+    final eventDates = <String>{
+      for (final item in items)
+        if (item.airDate != null)
+          '${item.airDate!.year}-${item.airDate!.month}-${item.airDate!.day}',
+    };
+
+    return List.generate(7, (i) {
+      final date = _windowStart.add(Duration(days: i));
+      final weekday = (date.weekday - 1) % 7;
+      return CalendarDay(
+        day: date.day,
+        date: date,
+        weekdayLabel: _weekdayLabels[weekday],
+        isToday: date == _today,
+        hasEvents: eventDates.contains(
+          '${date.year}-${date.month}-${date.day}',
+        ),
+      );
+    });
+  }
+
+  List<CalendarEpisodeEntry> _buildEntriesForDay(
+    List<CalendarItem> items,
+    CalendarDay day,
+  ) {
+    final now = DateTime.now();
+    return items
+        .where((item) {
+          final d = item.airDate;
+          return d != null &&
+              d.year == day.date.year &&
+              d.month == day.date.month &&
+              d.day == day.date.day;
+        })
+        .map((item) => _toEntry(item, now))
+        .toList();
+  }
+
+  CalendarEpisodeEntry _toEntry(CalendarItem item, DateTime now) {
+    final EpisodeStatus status;
+    if (item.hasFile) {
+      status = EpisodeStatus.watched;
+    } else if (item.airDate != null && item.airDate!.isBefore(now)) {
+      status = EpisodeStatus.available;
+    } else {
+      status = EpisodeStatus.upcoming;
+    }
+
+    return CalendarEpisodeEntry(
+      title: (item.isRadarr ? item.title : (item.seriesTitle ?? item.title))
+          .toUpperCase(),
+      seasonEpisode: item.isRadarr
+          ? 'MOVIE'
+          : (item.episodeNumberFormatted ?? 'EPISODE'),
+      timeInfo: item.airDate != null
+          ? DateFormat('HH:mm · MMM d').format(item.airDate!)
+          : 'TBA',
+      posterUrl: item.posterPath,
+      status: status,
+    );
+  }
+
+  String _windowLabel() {
+    final end = _windowStart.add(const Duration(days: 6));
+    if (_windowStart.month == end.month && _windowStart.year == end.year) {
+      return DateFormat('MMMM_yyyy').format(_windowStart).toUpperCase();
+    }
+    return '${DateFormat('MMM').format(_windowStart)}_${DateFormat('MMM_yyyy').format(end)}'
+        .toUpperCase();
+  }
+
+  static DateTime _mondayOf(DateTime d) =>
+      d.subtract(Duration(days: d.weekday - 1));
 }

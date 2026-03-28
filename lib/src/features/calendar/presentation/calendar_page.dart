@@ -1,220 +1,193 @@
-import 'package:client/src/features/calendar/domain/calendar_item.dart';
 import 'package:client/src/features/calendar/presentation/calendar_home_controller.dart';
-import 'package:client/src/features/calendar/presentation/widgets/calendar_events_widget.dart';
-import 'package:client/src/features/calendar/presentation/widgets/calendar_view_widget.dart';
+import 'package:client/src/features/calendar/presentation/widgets/calendar_date_strip.dart';
+import 'package:client/src/features/calendar/presentation/widgets/calendar_episode_card.dart';
 import 'package:client/src/shared/widgets/custom_error_state.dart';
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:intl/intl.dart';
 
-class CalendarPage extends ConsumerStatefulWidget {
+class CalendarPage extends ConsumerWidget {
   const CalendarPage({super.key});
 
   @override
-  ConsumerState<CalendarPage> createState() => _CalendarPageState();
-}
-
-class _CalendarPageState extends ConsumerState<CalendarPage> {
-  bool _isRefreshing = false;
-  DateTime _focusedDay = DateTime.now();
-  DateTime _selectedDay = DateTime.now();
-  CalendarFormat _calendarFormat = CalendarFormat.month;
-
-  List<CalendarItem> _selectedDayEvents = [];
-  List<CalendarItem> _upcomingWeekEvents = [];
-  List<CalendarItem>? _allItems;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  Future<void> _refreshCalendar() async {
-    if (_isRefreshing) return;
-
-    setState(() => _isRefreshing = true);
-    await ref.read(calendarHomeControllerProvider.notifier).refreshCalendar();
-
-    if (mounted) {
-      await Future.delayed(const Duration(milliseconds: 300));
-      setState(() {
-        _isRefreshing = false;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final calendarState = ref.watch(calendarHomeControllerProvider);
+    final tt = Theme.of(context).textTheme;
+    final cs = Theme.of(context).colorScheme;
+    final notifier = ref.read(calendarHomeControllerProvider.notifier);
 
     return Entry.opacity(
-      child: RefreshIndicator(
-        onRefresh: _refreshCalendar,
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              title: Row(
-                children: [
-                  const Text('Calendar'),
-                  if (_isRefreshing) ...[
-                    const SizedBox(width: 8),
-                    const SizedBox(
-                      width: 12,
-                      height: 12,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Refreshing...',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                ],
-              ),
-              actions: [
-                IconButton(
-                  icon: const Icon(TablerIcons.refresh),
-                  onPressed: _refreshCalendar,
-                  tooltip: 'Force refresh now',
-                ),
-              ],
-              floating: true,
-              snap: true,
-            ),
-            calendarState.when(
-              data: (calendarItems) {
-                _allItems = calendarItems;
-                _selectedDayEvents = _getEventsForDay(
-                  _selectedDay,
-                  calendarItems,
-                );
-                _upcomingWeekEvents = _getUpcomingWeekEvents(calendarItems);
-
-                return SliverList(
-                  delegate: SliverChildListDelegate([
+      child: calendarState.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => CustomErrorState(
+          error: error,
+          stackTrace: stack,
+          onRetry: () => notifier.refreshCalendar(),
+        ),
+        data: (calState) => RefreshIndicator(
+          onRefresh: notifier.refreshCalendar,
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 80),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 900),
+                child: Column(
+                  children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: CalendarViewWidget(
-                        items: calendarItems,
-                        focusedDay: _focusedDay,
-                        selectedDay: _selectedDay,
-                        calendarFormat: _calendarFormat,
-                        onDaySelected: _onDaySelected,
-                        onViewChanged: _onCalendarFormatChanged,
+                      padding: const EdgeInsets.fromLTRB(24, 32, 24, 20),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  calState.windowLabel,
+                                  style: tt.headlineLarge!.copyWith(
+                                    letterSpacing: -1.5,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'TRACKING ACTIVE',
+                                  style: tt.labelSmall!.copyWith(
+                                    color: cs.primary.withValues(alpha: 0.65),
+                                    letterSpacing: 2.5,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          _NavButton(
+                            icon: Icons.chevron_left,
+                            onTap: calState.canGoPrev
+                                ? notifier.shiftBack
+                                : null,
+                          ),
+                          const SizedBox(width: 8),
+                          _NavButton(
+                            icon: Icons.chevron_right,
+                            onTap: calState.canGoNext
+                                ? notifier.shiftForward
+                                : null,
+                          ),
+                        ],
                       ),
                     ),
-                    if (_selectedDayEvents.isEmpty)
-                      const Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: Text('No upcoming releases for selected day.'),
-                        ),
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: CalendarDateStrip(
+                        days: calState.days,
+                        selectedIndex: calState.selectedDayIndex,
+                        onDaySelected: notifier.selectDay,
                       ),
-                  ]),
-                );
-              },
-              loading: () => const SliverFillRemaining(
-                child: Center(child: CircularProgressIndicator()),
-              ),
-              error: (error, stackTrace) => SliverFillRemaining(
-                child: CustomErrorState(
-                  error: error,
-                  stackTrace: stackTrace,
-                  onRetry: _refreshCalendar,
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              height: 1,
+                              color: cs.outlineVariant.withValues(alpha: 0.3),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Text(
+                              DateFormat('EEE, MMM d')
+                                  .format(
+                                    calState
+                                        .days[calState.selectedDayIndex]
+                                        .date,
+                                  )
+                                  .toUpperCase()
+                                  .replaceAll(' ', '_'),
+                              style: tt.labelSmall!.copyWith(
+                                color: cs.primary,
+                                letterSpacing: 2.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              height: 1,
+                              color: cs.outlineVariant.withValues(alpha: 0.3),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    if (calState.entries.isEmpty)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 32,
+                        ),
+                        child: Center(
+                          child: Text(
+                            'NO TRANSMISSIONS SCHEDULED',
+                            style: tt.labelSmall!.copyWith(
+                              color: cs.outline,
+                              letterSpacing: 2.0,
+                            ),
+                          ),
+                        ),
+                      )
+                    else
+                      ListView.separated(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: calState.entries.length,
+                        separatorBuilder: (_, __) => const SizedBox(height: 12),
+                        itemBuilder: (_, i) =>
+                            CalendarEpisodeCard(episode: calState.entries[i]),
+                      ),
+                  ],
                 ),
               ),
             ),
-
-            if (calendarState is AsyncData && _selectedDayEvents.isNotEmpty)
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                  child: Text(
-                    'Selected Day',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            if (calendarState is AsyncData && _selectedDayEvents.isNotEmpty)
-              CalendarEventsWidget(events: _selectedDayEvents, showDate: false),
-
-            if (calendarState is AsyncData && _upcomingWeekEvents.isNotEmpty)
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                  child: Text(
-                    'Coming This Week',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            if (calendarState is AsyncData && _upcomingWeekEvents.isNotEmpty)
-              CalendarEventsWidget(events: _upcomingWeekEvents, showDate: true),
-          ],
+          ),
         ),
       ),
     );
   }
+}
 
-  List<CalendarItem> _getEventsForDay(
-    DateTime day,
-    List<CalendarItem> allItems,
-  ) {
-    final normalizedDay = DateTime(day.year, day.month, day.day);
-    return allItems.where((item) {
-      if (item.airDate == null) return false;
-      final itemDate = DateTime(
-        item.airDate!.year,
-        item.airDate!.month,
-        item.airDate!.day,
-      );
-      return normalizedDay.isAtSameMomentAs(itemDate);
-    }).toList();
-  }
+class _NavButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback? onTap;
+  const _NavButton({required this.icon, required this.onTap});
 
-  List<CalendarItem> _getUpcomingWeekEvents(List<CalendarItem> allItems) {
-    final today = DateTime.now();
-    final startOfToday = DateTime(today.year, today.month, today.day);
-    final endOfWeek = startOfToday.add(const Duration(days: 7));
-
-    return allItems.where((item) {
-      if (item.airDate == null) return false;
-      final itemDate = DateTime(
-        item.airDate!.year,
-        item.airDate!.month,
-        item.airDate!.day,
-      );
-      return itemDate.isAfter(startOfToday) && itemDate.isBefore(endOfWeek);
-    }).toList();
-  }
-
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    if (!isSameDay(_selectedDay, selectedDay)) {
-      setState(() {
-        _selectedDay = selectedDay;
-        _focusedDay = focusedDay;
-
-        if (_allItems != null) {
-          _selectedDayEvents = _getEventsForDay(selectedDay, _allItems!);
-        }
-      });
-    }
-  }
-
-  void _onCalendarFormatChanged(DateTime focusedDay, CalendarFormat format) {
-    setState(() {
-      _calendarFormat = format;
-      _focusedDay = focusedDay;
-    });
-
-    ref
-        .read(calendarHomeControllerProvider.notifier)
-        .updateDateRange(focusedDay);
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final enabled = onTap != null;
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedOpacity(
+        opacity: enabled ? 1.0 : 0.35,
+        duration: const Duration(milliseconds: 150),
+        child: Container(
+          width: 40,
+          height: 40,
+          color: cs.surfaceContainer,
+          child: Icon(icon, color: cs.onSurfaceVariant, size: 20),
+        ),
+      ),
+    );
   }
 }

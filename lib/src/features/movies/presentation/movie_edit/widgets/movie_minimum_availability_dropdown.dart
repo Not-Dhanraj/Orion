@@ -60,7 +60,7 @@ class MovieMinimumAvailabilityDropdown extends ConsumerWidget {
             DropdownButtonFormField<MovieStatusType>(
               borderRadius: BorderRadius.circular(12),
               isExpanded: true,
-              value: currentMinimumAvailability,
+              initialValue: currentMinimumAvailability,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),

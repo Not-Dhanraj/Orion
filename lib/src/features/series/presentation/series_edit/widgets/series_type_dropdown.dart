@@ -70,7 +70,7 @@ class SeriesTypeDropdown extends StatelessWidget {
               ),
             ),
             DropdownButtonFormField<SeriesTypes>(
-              value: series.seriesType ?? SeriesTypes.standard,
+              initialValue: series.seriesType ?? SeriesTypes.standard,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),

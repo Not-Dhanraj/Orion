@@ -235,7 +235,7 @@ class MovieAddForm extends ConsumerWidget {
                     children: [
                       if (rootFolders.isNotEmpty)
                         DropdownButtonFormField<String>(
-                          value: updatedMovie.rootFolderPath,
+                          initialValue: updatedMovie.rootFolderPath,
                           borderRadius: BorderRadius.circular(12),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -299,7 +299,7 @@ class MovieAddForm extends ConsumerWidget {
                   padding: const EdgeInsets.all(4),
                   margin: const EdgeInsets.all(2),
                   child: DropdownButtonFormField<MovieStatusType>(
-                    value:
+                    initialValue:
                         updatedMovie.minimumAvailability ??
                         MovieStatusType.released,
                     borderRadius: BorderRadius.circular(12),
@@ -367,7 +367,7 @@ class MovieAddForm extends ConsumerWidget {
                   margin: const EdgeInsets.all(2),
                   child: qualityProfiles.isNotEmpty
                       ? DropdownButtonFormField<int>(
-                          value: updatedMovie.qualityProfileId,
+                          initialValue: updatedMovie.qualityProfileId,
                           borderRadius: BorderRadius.circular(12),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(

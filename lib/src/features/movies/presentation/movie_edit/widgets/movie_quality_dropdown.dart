@@ -67,7 +67,7 @@ class QualityProfileDropdown extends ConsumerWidget {
                 final currentQualityProfileId = movie.qualityProfileId;
 
                 return DropdownButtonFormField<int>(
-                  value: currentQualityProfileId ?? 1,
+                  initialValue: currentQualityProfileId ?? 1,
                   borderRadius: BorderRadius.circular(12),
                   isExpanded: true,
                   decoration: InputDecoration(

@@ -83,7 +83,7 @@ class MoviePathOptions extends ConsumerWidget {
               ),
             ),
             DropdownButtonFormField<String>(
-              value: currentPath,
+              initialValue: currentPath,
               borderRadius: BorderRadius.circular(12),
               isExpanded: true,
               decoration: InputDecoration(

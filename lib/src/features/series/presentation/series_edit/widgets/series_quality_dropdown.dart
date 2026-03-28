@@ -59,7 +59,7 @@ class SeriesQualityProfileDropdown extends ConsumerWidget {
                 final currentQualityProfileId = series.qualityProfileId;
 
                 return DropdownButtonFormField<int>(
-                  value: currentQualityProfileId ?? 1,
+                  initialValue: currentQualityProfileId ?? 1,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),

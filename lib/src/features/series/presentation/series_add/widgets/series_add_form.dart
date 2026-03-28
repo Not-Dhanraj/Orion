@@ -220,7 +220,7 @@ class SeriesConfigurationForm extends ConsumerWidget {
                 ),
                 const SizedBox(height: 8),
                 DropdownButtonFormField<int>(
-                  value: updatedSeries.qualityProfileId,
+                  initialValue: updatedSeries.qualityProfileId,
                   borderRadius: BorderRadius.circular(12),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
@@ -269,7 +269,7 @@ class SeriesConfigurationForm extends ConsumerWidget {
                 const SizedBox(height: 8),
 
                 DropdownButtonFormField<SeriesTypes>(
-                  value: updatedSeries.seriesType ?? SeriesTypes.standard,
+                  initialValue: updatedSeries.seriesType ?? SeriesTypes.standard,
                   borderRadius: BorderRadius.circular(12),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(

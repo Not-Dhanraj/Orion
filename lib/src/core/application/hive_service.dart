@@ -20,6 +20,7 @@ class HiveService {
       }
     } catch (e) {
       debugPrint('Error registering adapters: $e');
+      rethrow;
     }
 
     var appConst = AppConst();

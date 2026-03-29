@@ -261,9 +261,8 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       builder: (_) => ServiceConfigSheet(
         serviceName: serviceName,
         isRadarr: serviceName == 'Radarr',
-        urlController: TextEditingController(text: initialUrl),
-        apiController: TextEditingController(text: initialApiKey),
-        formKey: GlobalKey<FormState>(),
+        initialUrl: initialUrl,
+        initialApiKey: initialApiKey,
         onSave: onSave,
       ),
     );

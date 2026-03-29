@@ -4,51 +4,8 @@ import 'package:client/src/features/calendar/domain/calendar_ui_models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-final calendarHomeController =
-    AsyncNotifierProvider<CalendarHomeController, CalendarHomeState>(
-      CalendarHomeController.new,
-    );
-
-class CalendarHomeState {
-  final List<CalendarDay> days;
-  final List<CalendarEpisodeEntry> entries;
-  final String windowLabel;
-  final bool canGoPrev;
-  final bool canGoNext;
-  final int selectedDayIndex;
-
-  const CalendarHomeState({
-    required this.days,
-    required this.entries,
-    required this.windowLabel,
-    required this.canGoPrev,
-    required this.canGoNext,
-    required this.selectedDayIndex,
-  });
-
-  CalendarHomeState copyWith({
-    List<CalendarDay>? days,
-    List<CalendarEpisodeEntry>? entries,
-    String? windowLabel,
-    bool? canGoPrev,
-    bool? canGoNext,
-    int? selectedDayIndex,
-  }) => CalendarHomeState(
-    days: days ?? this.days,
-    entries: entries ?? this.entries,
-    windowLabel: windowLabel ?? this.windowLabel,
-    canGoPrev: canGoPrev ?? this.canGoPrev,
-    canGoNext: canGoNext ?? this.canGoNext,
-    selectedDayIndex: selectedDayIndex ?? this.selectedDayIndex,
-  );
-}
-
 class CalendarHomeController extends AsyncNotifier<CalendarHomeState> {
-  static final _today = DateTime(
-    DateTime.now().year,
-    DateTime.now().month,
-    DateTime.now().day,
-  );
+  static final _today = _dateOnly(DateTime.now());
   static final _minDay = DateTime(_today.year, _today.month - 12);
   static final _maxDay = DateTime(_today.year, _today.month + 12, 28);
   static const _weekdayLabels = [
@@ -74,7 +31,6 @@ class CalendarHomeController extends AsyncNotifier<CalendarHomeState> {
     _windowStart = _mondayOf(_today);
     _fetchedMonth = DateTime(_windowStart.year, _windowStart.month);
     _updateDateRange(_fetchedMonth);
-    // Select today's position: Mon=0, Tue=1, … Sun=6
     _selectedDayIndex = _today.weekday - 1;
 
     final items = await ref
@@ -108,23 +64,19 @@ class CalendarHomeController extends AsyncNotifier<CalendarHomeState> {
     );
   }
 
-  Future<void> shiftBack() async {
-    if (!_canGoPrev) return;
-    _windowStart = _windowStart.subtract(const Duration(days: 7));
-    _selectedDayIndex = 0;
-    await _maybeRefetch();
-  }
-
-  Future<void> shiftForward() async {
-    if (!_canGoNext) return;
-    _windowStart = _windowStart.add(const Duration(days: 7));
-    _selectedDayIndex = 0;
-    await _maybeRefetch();
-  }
+  Future<void> shiftBack() => _shift(-7);
+  Future<void> shiftForward() => _shift(7);
 
   bool get _canGoPrev => _windowStart.isAfter(_minDay);
   bool get _canGoNext =>
       _windowStart.add(const Duration(days: 7)).isBefore(_maxDay);
+
+  Future<void> _shift(int days) async {
+    if (days < 0 && !_canGoPrev || days > 0 && !_canGoNext) return;
+    _windowStart = _windowStart.add(Duration(days: days));
+    _selectedDayIndex = 0;
+    await _maybeRefetch();
+  }
 
   Future<void> _maybeRefetch() async {
     final mid = _windowStart.add(const Duration(days: 3));
@@ -133,26 +85,28 @@ class CalendarHomeController extends AsyncNotifier<CalendarHomeState> {
       _fetchedMonth = midMonth;
       _updateDateRange(midMonth);
     }
-
     state = AsyncValue.data(_buildState(_cachedItems));
-
-    await refreshCalendar();
+    final items = await ref
+        .read(calendarServiceProvider)
+        .getCalendarItems(
+          start: _startDate,
+          end: _endDate,
+          includeUnmonitored: includeUnmonitored,
+        );
+    state = AsyncValue.data(_buildState(items));
   }
 
   void _updateDateRange(DateTime month) {
-    final prev = DateTime(month.year, month.month - 1);
-    _startDate = DateTime(prev.year, prev.month, 1);
-    final next = DateTime(month.year, month.month + 1);
-    _endDate = DateTime(next.year, next.month + 1, 0, 23, 59, 59);
+    _startDate = DateTime(month.year, month.month - 1);
+    _endDate = DateTime(month.year, month.month + 2, 0, 23, 59, 59);
   }
 
   CalendarHomeState _buildState(List<CalendarItem> items) {
     _cachedItems = items;
     final days = _buildDays(items);
-    final selectedDay = days[_selectedDayIndex.clamp(0, 6)];
     return CalendarHomeState(
       days: days,
-      entries: _buildEntriesForDay(items, selectedDay),
+      entries: _buildEntriesForDay(items, days[_selectedDayIndex.clamp(0, 6)]),
       windowLabel: _windowLabel(),
       canGoPrev: _canGoPrev,
       canGoNext: _canGoNext,
@@ -161,23 +115,19 @@ class CalendarHomeController extends AsyncNotifier<CalendarHomeState> {
   }
 
   List<CalendarDay> _buildDays(List<CalendarItem> items) {
-    final eventDates = <String>{
+    final eventDates = {
       for (final item in items)
-        if (item.airDate != null)
-          '${item.airDate!.year}-${item.airDate!.month}-${item.airDate!.day}',
+        if (item.airDate != null) _dateKey(item.airDate!),
     };
 
     return List.generate(7, (i) {
       final date = _windowStart.add(Duration(days: i));
-      final weekday = (date.weekday - 1) % 7;
       return CalendarDay(
         day: date.day,
         date: date,
-        weekdayLabel: _weekdayLabels[weekday],
+        weekdayLabel: _weekdayLabels[(date.weekday - 1) % 7],
         isToday: date == _today,
-        hasEvents: eventDates.contains(
-          '${date.year}-${date.month}-${date.day}',
-        ),
+        hasEvents: eventDates.contains(_dateKey(date)),
       );
     });
   }
@@ -188,27 +138,16 @@ class CalendarHomeController extends AsyncNotifier<CalendarHomeState> {
   ) {
     final now = DateTime.now();
     return items
-        .where((item) {
-          final d = item.airDate;
-          return d != null &&
-              d.year == day.date.year &&
-              d.month == day.date.month &&
-              d.day == day.date.day;
-        })
+        .where(
+          (item) =>
+              item.airDate != null &&
+              _dateKey(item.airDate!) == _dateKey(day.date),
+        )
         .map((item) => _toEntry(item, now))
         .toList();
   }
 
   CalendarEpisodeEntry _toEntry(CalendarItem item, DateTime now) {
-    final EpisodeStatus status;
-    if (item.hasFile) {
-      status = EpisodeStatus.watched;
-    } else if (item.airDate != null && item.airDate!.isBefore(now)) {
-      status = EpisodeStatus.available;
-    } else {
-      status = EpisodeStatus.upcoming;
-    }
-
     return CalendarEpisodeEntry(
       title: (item.isRadarr ? item.title : (item.seriesTitle ?? item.title))
           .toUpperCase(),
@@ -219,19 +158,35 @@ class CalendarHomeController extends AsyncNotifier<CalendarHomeState> {
           ? DateFormat('HH:mm · MMM d').format(item.airDate!)
           : 'TBA',
       posterUrl: item.posterPath,
-      status: status,
+      status: _statusFor(item, now),
     );
+  }
+
+  EpisodeStatus _statusFor(CalendarItem item, DateTime now) {
+    if (item.hasFile) return EpisodeStatus.watched;
+    if (item.airDate != null && item.airDate!.isBefore(now)) {
+      return EpisodeStatus.available;
+    }
+    return EpisodeStatus.upcoming;
   }
 
   String _windowLabel() {
     final end = _windowStart.add(const Duration(days: 6));
-    if (_windowStart.month == end.month && _windowStart.year == end.year) {
-      return DateFormat('MMMM_yyyy').format(_windowStart).toUpperCase();
-    }
-    return '${DateFormat('MMM').format(_windowStart)}_${DateFormat('MMM_yyyy').format(end)}'
-        .toUpperCase();
+    final sameMonthYear =
+        _windowStart.month == end.month && _windowStart.year == end.year;
+    return sameMonthYear
+        ? DateFormat('MMMM yyyy').format(_windowStart).toUpperCase()
+        : '${DateFormat('MMM').format(_windowStart)} ${DateFormat('MMM yyyy').format(end)}'
+              .toUpperCase();
   }
 
+  static String _dateKey(DateTime d) => '${d.year}-${d.month}-${d.day}';
+  static DateTime _dateOnly(DateTime d) => DateTime(d.year, d.month, d.day);
   static DateTime _mondayOf(DateTime d) =>
       d.subtract(Duration(days: d.weekday - 1));
 }
+
+final calendarHomeController =
+    AsyncNotifierProvider<CalendarHomeController, CalendarHomeState>(
+      CalendarHomeController.new,
+    );

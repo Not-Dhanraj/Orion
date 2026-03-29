@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/src/features/calendar/domain/calendar_ui_models.dart';
 import 'package:flutter/material.dart';
 
@@ -46,8 +47,11 @@ class _HorizontalLayout extends StatelessWidget {
   final CalendarEpisodeEntry episode;
   final ColorScheme cs;
   final TextTheme tt;
-  const _HorizontalLayout(
-      {required this.episode, required this.cs, required this.tt});
+  const _HorizontalLayout({
+    required this.episode,
+    required this.cs,
+    required this.tt,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +60,9 @@ class _HorizontalLayout extends StatelessWidget {
       children: [
         _PosterThumbnail(posterUrl: episode.posterUrl, status: episode.status),
         const SizedBox(width: 24),
-        Expanded(child: _EpisodeInfo(episode: episode, cs: cs, tt: tt)),
+        Expanded(
+          child: _EpisodeInfo(episode: episode, cs: cs, tt: tt),
+        ),
       ],
     );
   }
@@ -66,8 +72,11 @@ class _VerticalLayout extends StatelessWidget {
   final CalendarEpisodeEntry episode;
   final ColorScheme cs;
   final TextTheme tt;
-  const _VerticalLayout(
-      {required this.episode, required this.cs, required this.tt});
+  const _VerticalLayout({
+    required this.episode,
+    required this.cs,
+    required this.tt,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +87,9 @@ class _VerticalLayout extends StatelessWidget {
           width: double.infinity,
           height: 128,
           child: _PosterThumbnail(
-              posterUrl: episode.posterUrl, status: episode.status),
+            posterUrl: episode.posterUrl,
+            status: episode.status,
+          ),
         ),
         const SizedBox(height: 16),
         _EpisodeInfo(episode: episode, cs: cs, tt: tt),
@@ -103,25 +114,33 @@ class _PosterThumbnail extends StatelessWidget {
       color: cs.surfaceContainerHighest,
       child: posterUrl != null
           ? ColorFiltered(
-              colorFilter: isWatched
-                  ? const ColorFilter.matrix([
-                      0.2126, 0.7152, 0.0722, 0, 0,
-                      0.2126, 0.7152, 0.0722, 0, 0,
-                      0.2126, 0.7152, 0.0722, 0, 0,
-                      0, 0, 0, 0.5, 0,
-                    ])
-                  : const ColorFilter.matrix([
-                      0.2126, 0.7152, 0.0722, 0, 0,
-                      0.2126, 0.7152, 0.0722, 0, 0,
-                      0.2126, 0.7152, 0.0722, 0, 0,
-                      0, 0, 0, 0.65, 0,
-                    ]),
-              child: Image.network(
-                posterUrl!,
+              colorFilter: ColorFilter.matrix([
+                0.2126,
+                0.7152,
+                0.0722,
+                0,
+                0,
+                0.2126,
+                0.7152,
+                0.0722,
+                0,
+                0,
+                0.2126,
+                0.7152,
+                0.0722,
+                0,
+                0,
+                0,
+                0,
+                0,
+                isWatched ? 0.5 : 0.65,
+                0,
+              ]),
+              child: CachedNetworkImage(
+                imageUrl: posterUrl!,
                 fit: BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity,
-                errorBuilder: (_, __, ___) => _PlaceholderPoster(cs: cs),
+                memCacheWidth: 192,
+                errorWidget: (_, _, _) => _PlaceholderPoster(cs: cs),
               ),
             )
           : _PlaceholderPoster(cs: cs),
@@ -148,8 +167,11 @@ class _EpisodeInfo extends StatelessWidget {
   final CalendarEpisodeEntry episode;
   final ColorScheme cs;
   final TextTheme tt;
-  const _EpisodeInfo(
-      {required this.episode, required this.cs, required this.tt});
+  const _EpisodeInfo({
+    required this.episode,
+    required this.cs,
+    required this.tt,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -174,8 +196,10 @@ class _EpisodeInfo extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   color: cs.primary.withValues(alpha: 0.12),
                   child: Text(
                     episode.seasonEpisode,
@@ -216,7 +240,11 @@ class _StatusChip extends StatelessWidget {
         'DOWNLOADED',
         false,
       ),
-      EpisodeStatus.available => (Icons.download_outlined, 'AVAILABLE', true),
+      EpisodeStatus.available => (
+        Icons.check_circle_outline,
+        'AVAILABLE',
+        true,
+      ),
       EpisodeStatus.upcoming => (Icons.schedule_outlined, 'UPCOMING', false),
     };
 
@@ -232,8 +260,11 @@ class _StatusChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 14,
-              color: isPrimary ? cs.onPrimary : cs.onSurfaceVariant),
+          Icon(
+            icon,
+            size: 14,
+            color: isPrimary ? cs.onPrimary : cs.onSurfaceVariant,
+          ),
           const SizedBox(width: 6),
           Text(
             label,

@@ -7,18 +7,16 @@ import 'package:flutter/material.dart';
 class ServiceConfigSheet extends StatefulWidget {
   final String serviceName;
   final bool isRadarr;
-  final TextEditingController urlController;
-  final TextEditingController apiController;
-  final GlobalKey<FormState> formKey;
+  final String initialUrl;
+  final String initialApiKey;
   final Future<void> Function(String url, String apiKey) onSave;
 
   const ServiceConfigSheet({
     super.key,
     required this.serviceName,
     required this.isRadarr,
-    required this.urlController,
-    required this.apiController,
-    required this.formKey,
+    required this.initialUrl,
+    required this.initialApiKey,
     required this.onSave,
   });
 
@@ -27,8 +25,25 @@ class ServiceConfigSheet extends StatefulWidget {
 }
 
 class _ServiceConfigSheetState extends State<ServiceConfigSheet> {
+  late final TextEditingController _urlController;
+  late final TextEditingController _apiController;
+  final _formKey = GlobalKey<FormState>();
   bool _obscureApi = true;
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _urlController = TextEditingController(text: widget.initialUrl);
+    _apiController = TextEditingController(text: widget.initialApiKey);
+  }
+
+  @override
+  void dispose() {
+    _urlController.dispose();
+    _apiController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +63,7 @@ class _ServiceConfigSheetState extends State<ServiceConfigSheet> {
         ),
         padding: const EdgeInsets.fromLTRB(24, 28, 24, 32),
         child: Form(
-          key: widget.formKey,
+          key: _formKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -68,7 +83,7 @@ class _ServiceConfigSheetState extends State<ServiceConfigSheet> {
               ),
               const SizedBox(height: 24),
               CustomTextField(
-                controller: widget.urlController,
+                controller: _urlController,
                 hint: widget.isRadarr
                     ? 'http://192.168.1.x:7878'
                     : 'http://192.168.1.x:8989',
@@ -79,7 +94,7 @@ class _ServiceConfigSheetState extends State<ServiceConfigSheet> {
               ),
               const SizedBox(height: 16),
               CustomTextField(
-                controller: widget.apiController,
+                controller: _apiController,
                 hint: 'API Key',
                 obscure: _obscureApi,
                 enabled: !_isLoading,
@@ -116,13 +131,13 @@ class _ServiceConfigSheetState extends State<ServiceConfigSheet> {
   }
 
   Future<void> _save() async {
-    if (!(widget.formKey.currentState?.validate() ?? false)) return;
+    if (!(_formKey.currentState?.validate() ?? false)) return;
     setState(() => _isLoading = true);
 
     try {
       await widget.onSave(
-        widget.urlController.text.trim(),
-        widget.apiController.text.trim(),
+        _urlController.text.trim(),
+        _apiController.text.trim(),
       );
       if (mounted) Navigator.of(context).pop();
     } on RepositoryException catch (e) {

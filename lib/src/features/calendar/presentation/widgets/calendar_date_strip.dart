@@ -18,25 +18,31 @@ class CalendarDateStrip extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
     final tt = Theme.of(context).textTheme;
 
+    const double gap = 8;
+    final int count = days.length;
+
     return SizedBox(
       height: 96,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            for (int i = 0; i < days.length; i++) ...[
-              if (i > 0) const SizedBox(width: 8),
-              _DayCell(
-                day: days[i],
-                isSelected: i == selectedIndex,
-                onTap: () => onDaySelected(i),
-                cs: cs,
-                tt: tt,
-              ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final computed = (constraints.maxWidth - gap * (count - 1)) / count;
+          return Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              for (int i = 0; i < count; i++) ...[
+                if (i > 0) const SizedBox(width: gap),
+                _DayCell(
+                  day: days[i],
+                  isSelected: i == selectedIndex,
+                  onTap: () => onDaySelected(i),
+                  cs: cs,
+                  tt: tt,
+                  width: computed,
+                ),
+              ],
             ],
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -48,6 +54,7 @@ class _DayCell extends StatelessWidget {
   final VoidCallback onTap;
   final ColorScheme cs;
   final TextTheme tt;
+  final double width;
 
   const _DayCell({
     required this.day,
@@ -55,6 +62,7 @@ class _DayCell extends StatelessWidget {
     required this.onTap,
     required this.cs,
     required this.tt,
+    required this.width,
   });
 
   @override
@@ -64,7 +72,7 @@ class _DayCell extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeOut,
-        width: 60,
+        width: width,
         height: 88,
         decoration: BoxDecoration(
           color: isSelected ? cs.primary : cs.surfaceContainerLow,

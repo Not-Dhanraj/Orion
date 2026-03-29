@@ -53,6 +53,11 @@ class SeriesSearchBar extends StatelessWidget {
                 icon: Icon(Icons.clear, color: cs.outline, size: 20),
                 onPressed: onClear,
                 tooltip: 'Clear',
+                constraints: const BoxConstraints(),
+                padding: const EdgeInsets.all(5),
+                // style: const ButtonStyle(
+                //   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                // ),
               ),
             if (controller.text.isNotEmpty) SizedBox(width: 8),
 

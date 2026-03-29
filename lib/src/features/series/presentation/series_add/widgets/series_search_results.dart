@@ -163,6 +163,15 @@ class _ResultsList extends ConsumerWidget {
     SeriesResource series,
   ) async {
     ref.read(seriesAddController.notifier).selectSeriesToState(series);
-    await SeriesAddDialog.show(context, series);
+    // await SeriesAddDialog.show(context, series);
+
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Colors.transparent,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+      builder: (_) => SeriesAddDialog(series: series),
+    );
   }
 }

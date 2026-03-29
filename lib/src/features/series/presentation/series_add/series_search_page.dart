@@ -77,7 +77,7 @@ class _SeriesAddPageState extends ConsumerState<SeriesAddPage> {
                   children: [
                     SeriesSheetHeader(
                       onClose: () => Navigator.of(context).pop(),
-                      title: 'Add Series',
+                      title: 'Search Series',
                     ),
                     SizedBox(height: 4),
                   ],

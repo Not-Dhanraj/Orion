@@ -11,17 +11,6 @@ class SeriesAddDialog extends ConsumerWidget {
 
   const SeriesAddDialog({super.key, required this.series});
 
-  static Future<void> show(BuildContext context, SeriesResource series) {
-    return showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      backgroundColor: Colors.transparent,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-      builder: (_) => SeriesAddDialog(series: series),
-    );
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cs = Theme.of(context).colorScheme;
@@ -31,9 +20,9 @@ class SeriesAddDialog extends ConsumerWidget {
     final isCreating = state?.isCreating ?? false;
 
     return DraggableScrollableSheet(
-      initialChildSize: 0.92,
+      initialChildSize: 0.85,
+      maxChildSize: .85,
       minChildSize: 0.5,
-      maxChildSize: 1.0,
       expand: false,
       builder: (context, _) {
         return Container(

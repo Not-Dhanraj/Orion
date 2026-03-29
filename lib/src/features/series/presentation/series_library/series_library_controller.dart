@@ -2,6 +2,7 @@ import 'package:client/src/features/series/application/series_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
 
+// Contains String as well as SeriesResource as this directly provides the build list to UI without multipe builds
 class SeriesLibraryController extends AsyncNotifier<List<dynamic>> {
   @override
   Future<List<dynamic>> build() async {

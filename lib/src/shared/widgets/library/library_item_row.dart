@@ -68,7 +68,7 @@ class _LibraryItemRowState extends State<LibraryItemRow> {
                     child: widget.posterUrl != null
                         ? CachedNetworkImage(
                             imageUrl: widget.posterUrl!,
-                            memCacheWidth: 40,
+                            memCacheWidth: 60,
                             fit: BoxFit.fill,
                             errorWidget: (context, _, _) => Container(
                               decoration: const BoxDecoration(

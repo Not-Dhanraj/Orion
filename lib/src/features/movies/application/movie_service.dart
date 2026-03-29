@@ -187,7 +187,7 @@ class MovieService {
       );
     }
   }
-  
+
   Future<void> deleteMovieFile(int movieId) async {
     try {
       final movieRepository = _ref.read(movieRepositoryProvider);

@@ -22,7 +22,7 @@ class MovieEditPage extends ConsumerWidget {
 
     return Dialog(
       child: Container(
-        constraints: const BoxConstraints(maxWidth: 600),
+        constraints: const BoxConstraints(maxWidth: 800),
         child: controller.when(
           data: (state) {
             final theme = Theme.of(context);

@@ -153,8 +153,7 @@ class _MediaReleaseWidgetState extends ConsumerState<MediaReleaseWidget> {
                           ),
                           child: InkWell(
                             borderRadius: BorderRadius.circular(12),
-                            onTap: () {
-                            },
+                            onTap: () {},
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),

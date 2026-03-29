@@ -43,8 +43,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         navItems: widget.navItems,
         currentIndex: _currentIndex,
         onPressed: _onNav,
-        showBottomBorder:
-            widget.navItems[_currentIndex].page is! LibraryPage,
+        showBottomBorder: widget.navItems[_currentIndex].page is! LibraryPage,
       ),
       body: Center(
         child: ConstrainedBox(

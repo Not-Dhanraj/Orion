@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:client/src/shared/widgets/common/custom_switch.dart';
 class CustomSwitchTile extends StatelessWidget {
   final String title;
   final String subtitle;
@@ -18,7 +18,7 @@ class CustomSwitchTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return SwitchListTile(
+    return ListTile(
       title: Text(
         title,
         style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w500),
@@ -29,8 +29,11 @@ class CustomSwitchTile extends StatelessWidget {
           color: theme.colorScheme.onSurfaceVariant,
         ),
       ),
-      value: value,
-      onChanged: onChanged,
+      trailing: CustomSwitch(
+        value: value,
+        onChanged: onChanged,
+      ),
+      onTap: () => onChanged(!value),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     );
   }

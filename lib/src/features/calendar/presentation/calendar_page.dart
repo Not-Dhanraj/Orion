@@ -32,7 +32,7 @@ class CalendarPage extends ConsumerWidget {
             padding: const EdgeInsets.fromLTRB(0, 0, 0, 80),
             child: Center(
               child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 900),
+                constraints: const BoxConstraints(maxWidth: 800),
                 child: Column(
                   children: [
                     Padding(

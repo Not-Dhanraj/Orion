@@ -4,6 +4,7 @@ import 'package:client/src/features/queue/presentation/widgets/queue_item_widget
 import 'package:client/src/shared/widgets/animated_progress_bar.dart';
 import 'package:client/src/shared/widgets/custom_error_state.dart';
 import 'package:client/src/utils/context_extensions.dart';
+import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,30 +16,58 @@ class QueuePage extends ConsumerWidget {
     final queueState = ref.watch(queueHomeController);
 
     return Scaffold(
-      body: queueState.when(
-        skipLoadingOnReload: false,
-        loading: () => Stack(
-          children: [
-            Align(
-              alignment: AlignmentGeometry.topCenter,
-              child: SizedBox(
-                height: 1.5,
-                width: 512,
-                child: AnimatedProgressBar(width: context.screenWidth),
+      body: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 800),
+        child: queueState.when(
+          skipLoadingOnReload: false,
+          loading: () => Stack(
+            children: [
+              Column(
+                children: [
+                  Align(
+                    alignment: AlignmentGeometry.topCenter,
+                    child: SizedBox(
+                      height: 1.5,
+                      width: 800,
+                      child: AnimatedProgressBar(width: context.screenWidth),
+                    ),
+                  ),
+                  _QueueHeader(itemCount: 0, reqPadding: true),
+                ],
               ),
-            ),
-            const Center(child: Text('Loading')),
-          ],
-        ),
-        error: (err, stack) => Center(
-          child: CustomErrorState(
-            error: err,
-            stackTrace: stack,
-            onRetry: () =>
-                ref.read(queueHomeController.notifier).refreshQueue(),
+              const Center(child: Text('Loading')),
+            ],
+          ),
+          error: (err, stack) => Stack(
+            children: [
+              Column(
+                children: [
+                  if (queueState.isLoading)
+                    Align(
+                      alignment: AlignmentGeometry.topCenter,
+                      child: SizedBox(
+                        height: 1.5,
+                        width: 800,
+                        child: AnimatedProgressBar(width: context.screenWidth),
+                      ),
+                    ),
+                  _QueueHeader(itemCount: 0, reqPadding: true),
+                ],
+              ),
+              Center(
+                child: CustomErrorState(
+                  error: err,
+                  stackTrace: stack,
+                  onRetry: () =>
+                      ref.read(queueHomeController.notifier).refreshQueue(),
+                ),
+              ),
+            ],
+          ),
+          data: (items) => Entry.opacity(
+            child: _QueueBody(items: items, queueState: queueState),
           ),
         ),
-        data: (items) => _QueueBody(items: items, queueState: queueState),
       ),
     );
   }
@@ -58,7 +87,7 @@ class _QueueBody extends ConsumerWidget {
         children: [
           SizedBox(
             height: 1.5,
-            width: 512,
+            width: 800,
             child: AnimatedOpacity(
               opacity: queueState.isLoading ? 1 : 0,
               duration: Duration(milliseconds: 200),
@@ -89,15 +118,7 @@ class _EmptyState extends StatelessWidget {
         height: MediaQuery.of(context).size.height * 0.8,
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 512),
-                  child: const _QueueHeader(itemCount: 0),
-                ),
-              ),
-            ),
+            _QueueHeader(itemCount: 0, reqPadding: true),
             Expanded(
               child: Center(
                 child: Column(
@@ -154,74 +175,80 @@ class _ItemList extends StatelessWidget {
 
 class _QueueHeader extends StatelessWidget {
   final int itemCount;
-  const _QueueHeader({required this.itemCount});
+  final bool reqPadding;
+  const _QueueHeader({required this.itemCount, this.reqPadding = false});
 
   @override
   Widget build(BuildContext context) {
     final tt = Theme.of(context).textTheme;
     final cs = Theme.of(context).colorScheme;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'QUEUE',
-              style: tt.displayLarge!.copyWith(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                letterSpacing: -0.5,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Row(
-              children: [
-                Container(
-                  width: 8,
-                  height: 8,
-                  decoration: BoxDecoration(
-                    color: itemCount > 0 ? cs.primary : cs.outline,
-                    shape: BoxShape.circle,
-                  ),
+    return Padding(
+      padding: reqPadding
+          ? const EdgeInsets.fromLTRB(16, 24, 16, 120)
+          : EdgeInsetsGeometry.zero,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'QUEUE',
+                style: tt.displayLarge!.copyWith(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: -0.5,
                 ),
-                const SizedBox(width: 8),
-                Text(
-                  itemCount > 0
-                      ? '$itemCount ITEM${itemCount == 1 ? '' : 'S'} ACTIVE'
-                      : 'IDLE',
-                  style: tt.labelSmall!.copyWith(
-                    color: itemCount > 0 ? cs.primary : cs.outline,
-                    fontWeight: FontWeight.bold,
+              ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  Container(
+                    width: 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: itemCount > 0 ? cs.primary : cs.outline,
+                      shape: BoxShape.circle,
+                    ),
                   ),
+                  const SizedBox(width: 8),
+                  Text(
+                    itemCount > 0
+                        ? '$itemCount ITEM${itemCount == 1 ? '' : 'S'} ACTIVE'
+                        : 'IDLE',
+                    style: tt.labelSmall!.copyWith(
+                      color: itemCount > 0 ? cs.primary : cs.outline,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                ],
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                'ITEMS',
+                style: tt.labelSmall!.copyWith(
+                  fontSize: 10,
+                  color: cs.onSurfaceVariant,
                 ),
-                const SizedBox(height: 4),
-              ],
-            ),
-          ],
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              'ITEMS',
-              style: tt.labelSmall!.copyWith(
-                fontSize: 10,
-                color: cs.onSurfaceVariant,
               ),
-            ),
-            Text(
-              '$itemCount',
-              style: tt.displaySmall!.copyWith(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+              Text(
+                '$itemCount',
+                style: tt.displaySmall!.copyWith(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

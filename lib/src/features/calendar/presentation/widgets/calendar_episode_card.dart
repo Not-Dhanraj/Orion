@@ -10,11 +10,11 @@ class CalendarEpisodeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final tt = Theme.of(context).textTheme;
-    final isWatched = episode.status == EpisodeStatus.watched;
+    final hasFile = episode.status == EpisodeStatus.hasFile;
 
     return AnimatedOpacity(
       duration: const Duration(milliseconds: 200),
-      opacity: isWatched ? 0.75 : 1.0,
+      opacity: hasFile ? 0.75 : 1.0,
       child: Container(
         decoration: BoxDecoration(color: cs.surfaceContainerLow),
         clipBehavior: Clip.hardEdge,
@@ -106,7 +106,7 @@ class _PosterThumbnail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final isWatched = status == EpisodeStatus.watched;
+    final hasFile = status == EpisodeStatus.hasFile;
 
     return Container(
       width: 192,
@@ -133,7 +133,7 @@ class _PosterThumbnail extends StatelessWidget {
                 0,
                 0,
                 0,
-                isWatched ? 0.5 : 0.65,
+                hasFile ? 0.5 : 0.65,
                 0,
               ]),
               child: CachedNetworkImage(
@@ -235,7 +235,7 @@ class _StatusChip extends StatelessWidget {
     final tt = Theme.of(context).textTheme;
 
     final (icon, label, isPrimary) = switch (status) {
-      EpisodeStatus.watched => (
+      EpisodeStatus.hasFile => (
         Icons.check_circle_outline,
         'DOWNLOADED',
         false,

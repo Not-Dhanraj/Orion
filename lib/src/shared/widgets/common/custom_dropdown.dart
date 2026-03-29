@@ -61,20 +61,24 @@ class _CustomDropdownState extends State<CustomDropdown> {
                           color: cs.outlineVariant.withValues(alpha: 0.3),
                         ),
                       ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: widget.items
-                            .map(
-                              (item) => _DropdownItem(
-                                label: item,
-                                isSelected: item == widget.value,
-                                onTap: () {
-                                  widget.onChanged(item);
-                                  _close();
-                                },
-                              ),
-                            )
-                            .toList(),
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxHeight: 280),
+                        child: ListView(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          children: widget.items
+                              .map(
+                                (item) => _DropdownItem(
+                                  label: item,
+                                  isSelected: item == widget.value,
+                                  onTap: () {
+                                    widget.onChanged(item);
+                                    _close();
+                                  },
+                                ),
+                              )
+                              .toList(),
+                        ),
                       ),
                     ),
                   ),

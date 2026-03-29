@@ -1,4 +1,4 @@
-enum EpisodeStatus { upcoming, available, watched }
+enum EpisodeStatus { upcoming, available, hasFile }
 
 class CalendarDay {
   final int day;

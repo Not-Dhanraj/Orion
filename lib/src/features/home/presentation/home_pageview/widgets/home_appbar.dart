@@ -33,9 +33,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: cs.primary.withValues(
-              alpha: showBottomBorder ? 0.15 : 0.0,
-            ),
+            color: cs.primary.withValues(alpha: showBottomBorder ? 0.15 : 0.0),
           ),
         ),
       ),

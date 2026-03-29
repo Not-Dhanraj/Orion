@@ -22,9 +22,7 @@ class SeriesQualityProfileDropdown extends ConsumerWidget {
       elevation: 3,
       shadowColor: theme.colorScheme.shadow.withAlpha(40),
       margin: const EdgeInsets.symmetric(vertical: 4),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

@@ -163,7 +163,7 @@ class CalendarHomeController extends AsyncNotifier<CalendarHomeState> {
   }
 
   EpisodeStatus _statusFor(CalendarItem item, DateTime now) {
-    if (item.hasFile) return EpisodeStatus.watched;
+    if (item.hasFile) return EpisodeStatus.hasFile;
     if (item.airDate != null && item.airDate!.isBefore(now)) {
       return EpisodeStatus.available;
     }

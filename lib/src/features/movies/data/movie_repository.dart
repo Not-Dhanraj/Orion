@@ -61,7 +61,9 @@ class MovieRepository {
     return response.data;
   }
 
-  Future<BuiltList<ReleaseResource>?> getReleases({required int movieId}) async {
+  Future<BuiltList<ReleaseResource>?> getReleases({
+    required int movieId,
+  }) async {
     var response = await _api.getReleaseApi().apiV3ReleaseGet(movieId: movieId);
     return response.data;
   }
@@ -71,20 +73,24 @@ class MovieRepository {
     required String guid,
   }) async {
     await _api.getReleaseApi().apiV3ReleasePost(
-      releaseResource: ReleaseResource((r) => r
-        ..indexerId = indexerId
-        ..guid = guid),
+      releaseResource: ReleaseResource(
+        (r) => r
+          ..indexerId = indexerId
+          ..guid = guid,
+      ),
     );
   }
-  
+
   Future<void> deleteMovieFile(int movieId) async {
     final movieResponse = await _api.getMovieApi().apiV3MovieIdGet(id: movieId);
     final movie = movieResponse.data;
-    
-    if (movie == null || movie.movieFile == null || movie.movieFile?.id == null) {
+
+    if (movie == null ||
+        movie.movieFile == null ||
+        movie.movieFile?.id == null) {
       throw Exception('Movie file not found');
     }
-    
+
     await _api.getMovieFileApi().apiV3MoviefileIdDelete(
       id: movie.movieFile!.id!,
     );

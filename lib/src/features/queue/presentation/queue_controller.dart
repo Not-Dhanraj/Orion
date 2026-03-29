@@ -19,7 +19,6 @@ class QueueHomeController extends AutoDisposeAsyncNotifier<List<QueueItem>> {
 
   Future<void> refreshQueue() async {
     ref.invalidateSelf();
-
     await future;
   }
 
@@ -35,14 +34,6 @@ class QueueHomeController extends AutoDisposeAsyncNotifier<List<QueueItem>> {
         removeFromClient: removeFromClient,
         blacklist: blacklist,
       );
-
-      state.whenData((currentItems) {
-        state = AsyncValue.data([
-          ...currentItems..removeWhere(
-            (i) => i.id == item.id && i.isRadarr == item.isRadarr,
-          ),
-        ]);
-      });
       ref.invalidateSelf();
     } catch (e, st) {
       state = AsyncValue.error(e, st);

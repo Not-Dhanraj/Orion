@@ -1,5 +1,6 @@
 import 'package:client/src/features/series/presentation/series_add/series_add_controller.dart';
 import 'package:client/src/shared/widgets/common/custom_dropdown.dart';
+import 'package:client/src/shared/widgets/common/sheet_form_widgets.dart';
 import 'package:client/src/shared/widgets/custom_switch_tile.dart';
 import 'package:client/src/utils/string_extension.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +10,14 @@ import 'package:sonarr/sonarr.dart';
 class SeriesConfigurationForm extends ConsumerWidget {
   final SeriesResource series;
   final List<QualityProfileResource> qualityProfiles;
+  final List<RootFolderResource> rootFolders;
+
   final Function(SeriesResource) onSeriesChanged;
 
   const SeriesConfigurationForm({
     super.key,
     required this.series,
+    required this.rootFolders,
     required this.qualityProfiles,
     required this.onSeriesChanged,
   });
@@ -22,15 +26,12 @@ class SeriesConfigurationForm extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final seriesState = ref.watch(seriesAddController);
     final updatedSeries = seriesState.value?.selectedSeries ?? series;
-    final cs = Theme.of(context).colorScheme;
-    final tt = Theme.of(context).textTheme;
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
       children: [
-        _SectionHeader(label: 'BASIC OPTIONS', cs: cs, tt: tt),
-        _OutlinedSection(
-          cs: cs,
+        FormSectionHeader(label: 'BASIC OPTIONS'),
+        OutlinedFormSection(
           children: [
             CustomSwitchTile(
               title: 'Season Folder',
@@ -40,10 +41,8 @@ class SeriesConfigurationForm extends ConsumerWidget {
                 updatedSeries.rebuild((b) => b..seasonFolder = value),
               ),
             ),
-            _RowDivider(cs: cs),
-            _LabeledDropdownRow(
-              cs: cs,
-              tt: tt,
+            FormRowDivider(),
+            LabeledDropdownRow(
               label: 'Episodes to Monitor',
               subtitle: 'Which episodes to monitor when adding',
               child: CustomDropdown(
@@ -66,18 +65,35 @@ class SeriesConfigurationForm extends ConsumerWidget {
                 },
               ),
             ),
+            FormRowDivider(),
+            LabeledDropdownRow(
+              label: 'Type',
+              subtitle: 'Affects how episodes are matched',
+              child: CustomDropdown(
+                value: (updatedSeries.seriesType ?? SeriesTypes.standard).name
+                    .capitalizeByWord(),
+                items: SeriesTypes.values
+                    .map((t) => t.name.capitalizeByWord())
+                    .toList(),
+                onChanged: (newValue) {
+                  final selected = SeriesTypes.values.firstWhere(
+                    (t) => t.name.capitalizeByWord() == newValue,
+                  );
+                  onSeriesChanged(
+                    updatedSeries.rebuild((b) => b..seriesType = selected),
+                  );
+                },
+              ),
+            ),
           ],
         ),
 
         const SizedBox(height: 20),
 
-        _SectionHeader(label: 'QUALITY PROFILE', cs: cs, tt: tt),
-        _OutlinedSection(
-          cs: cs,
+        FormSectionHeader(label: 'QUALITY AND PATH'),
+        OutlinedFormSection(
           children: [
-            _LabeledDropdownRow(
-              cs: cs,
-              tt: tt,
+            LabeledDropdownRow(
               label: 'Profile',
               subtitle: 'Quality profile to use for downloads',
               child: CustomDropdown(
@@ -103,32 +119,29 @@ class SeriesConfigurationForm extends ConsumerWidget {
                 },
               ),
             ),
-          ],
-        ),
-
-        const SizedBox(height: 20),
-
-        _SectionHeader(label: 'SERIES TYPE', cs: cs, tt: tt),
-        _OutlinedSection(
-          cs: cs,
-          children: [
-            _LabeledDropdownRow(
-              cs: cs,
-              tt: tt,
-              label: 'Type',
-              subtitle: 'Affects how episodes are matched',
+            FormRowDivider(),
+            LabeledDropdownRow(
+              label: 'Movie Path',
+              subtitle: 'Where the movie should be saved',
               child: CustomDropdown(
-                value: (updatedSeries.seriesType ?? SeriesTypes.standard).name
-                    .capitalizeByWord(),
-                items: SeriesTypes.values
-                    .map((t) => t.name.capitalizeByWord())
-                    .toList(),
+                value: rootFolders.isEmpty
+                    ? 'Unknown'
+                    : (rootFolders
+                              .firstWhere(
+                                (f) => f.path == updatedSeries.rootFolderPath,
+                                orElse: () => rootFolders.first,
+                              )
+                              .path ??
+                          'Unknown'),
+                items: rootFolders.map((f) => f.path ?? 'Unknown').toList(),
                 onChanged: (newValue) {
-                  final selected = SeriesTypes.values.firstWhere(
-                    (t) => t.name.capitalizeByWord() == newValue,
+                  final selected = rootFolders.firstWhere(
+                    (f) => f.path == newValue,
                   );
                   onSeriesChanged(
-                    updatedSeries.rebuild((b) => b..seriesType = selected),
+                    updatedSeries.rebuild(
+                      (b) => b..rootFolderPath = selected.path,
+                    ),
                   );
                 },
               ),
@@ -138,9 +151,8 @@ class SeriesConfigurationForm extends ConsumerWidget {
 
         const SizedBox(height: 20),
 
-        _SectionHeader(label: 'SEARCH OPTIONS', cs: cs, tt: tt),
-        _OutlinedSection(
-          cs: cs,
+        FormSectionHeader(label: 'SEARCH OPTIONS'),
+        OutlinedFormSection(
           children: [
             CustomSwitchTile(
               title: 'Search for Missing Episodes',
@@ -155,7 +167,7 @@ class SeriesConfigurationForm extends ConsumerWidget {
                 ),
               ),
             ),
-            _RowDivider(cs: cs),
+            FormRowDivider(),
             CustomSwitchTile(
               title: 'Search for Cutoff Unmet',
               subtitle: 'Search for episodes below the quality cutoff',
@@ -174,104 +186,6 @@ class SeriesConfigurationForm extends ConsumerWidget {
           ],
         ),
       ],
-    );
-  }
-}
-
-class _SectionHeader extends StatelessWidget {
-  final String label;
-  final ColorScheme cs;
-  final TextTheme tt;
-
-  const _SectionHeader({
-    required this.label,
-    required this.cs,
-    required this.tt,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Text(
-        label,
-        style: tt.labelSmall!.copyWith(
-          color: cs.primary,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 1.5,
-        ),
-      ),
-    );
-  }
-}
-
-class _OutlinedSection extends StatelessWidget {
-  final List<Widget> children;
-  final ColorScheme cs;
-
-  const _OutlinedSection({required this.children, required this.cs});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: cs.outlineVariant.withValues(alpha: 0.4)),
-      ),
-      child: Column(mainAxisSize: MainAxisSize.min, children: children),
-    );
-  }
-}
-
-class _RowDivider extends StatelessWidget {
-  final ColorScheme cs;
-  const _RowDivider({required this.cs});
-
-  @override
-  Widget build(BuildContext context) {
-    return Divider(
-      height: 1,
-      indent: 16,
-      endIndent: 16,
-      color: cs.outlineVariant.withValues(alpha: 0.4),
-    );
-  }
-}
-
-class _LabeledDropdownRow extends StatelessWidget {
-  final ColorScheme cs;
-  final TextTheme tt;
-  final String label;
-  final String subtitle;
-  final Widget child;
-
-  const _LabeledDropdownRow({
-    required this.cs,
-    required this.tt,
-    required this.label,
-    required this.subtitle,
-    required this.child,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: tt.bodyMedium!.copyWith(fontWeight: FontWeight.w600),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            subtitle,
-            style: tt.bodySmall!.copyWith(color: cs.onSurfaceVariant),
-          ),
-          const SizedBox(height: 10),
-          child,
-        ],
-      ),
     );
   }
 }

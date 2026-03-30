@@ -1,440 +1,170 @@
 import 'package:client/src/features/movies/presentation/movie_add/movie_add_controller.dart';
-import 'package:client/src/utils/string_extension.dart';
+import 'package:client/src/shared/widgets/common/custom_dropdown.dart';
+import 'package:client/src/shared/widgets/common/sheet_form_widgets.dart';
 import 'package:client/src/shared/widgets/custom_switch_tile.dart';
+import 'package:client/src/utils/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr/radarr.dart';
-import 'package:with_opacity/with_opacity.dart';
 
-class MovieAddForm extends ConsumerWidget {
+class MovieConfigurationForm extends ConsumerWidget {
   final MovieResource movie;
+  final List<QualityProfileResource> qualityProfiles;
+  final List<RootFolderResource> rootFolders;
+  final Function(MovieResource) onMovieChanged;
 
-  const MovieAddForm({super.key, required this.movie});
+  const MovieConfigurationForm({
+    super.key,
+    required this.movie,
+    required this.qualityProfiles,
+    required this.rootFolders,
+    required this.onMovieChanged,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final movieState = ref.watch(movieAddController);
     final updatedMovie = movieState.value?.selectedMovie ?? movie;
-    final theme = Theme.of(context);
-    final qualityProfiles = movieState.value?.qualityProfiles ?? [];
-    final rootFolders = movieState.value?.rootFolders ?? [];
 
     return ListView(
-      shrinkWrap: true,
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
       children: [
-        Card(
-          elevation: 3,
-          shadowColor: theme.colorScheme.shadow.withAlpha(40),
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              children: [
-                _buildSectionTitle(
-                  context,
-                  'Monitoring Options',
-                  Icons.visibility,
-                ),
-                const SizedBox(height: 8),
-
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  margin: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: theme.colorScheme.outline.withAlpha(100),
-                      width: 1,
+        FormSectionHeader(label: 'BASIC OPTIONS'),
+        OutlinedFormSection(
+          children: [
+            LabeledDropdownRow(
+              label: 'Monitor',
+              subtitle: 'Select how to monitor this movie',
+              child: CustomDropdown(
+                value:
+                    (updatedMovie.addOptions?.monitor ?? MonitorTypes.movieOnly)
+                        .name
+                        .capitalizeByWord(),
+                items: MonitorTypes.values
+                    .map((t) => t.name.capitalizeByWord())
+                    .toList(),
+                onChanged: (newValue) {
+                  final newType = MonitorTypes.values.firstWhere(
+                    (t) => t.name.capitalizeByWord() == newValue,
+                  );
+                  onMovieChanged(
+                    updatedMovie.rebuild(
+                      (b) =>
+                          b..addOptions.update((b2) => b2..monitor = newType),
                     ),
-                  ),
-                  child: Column(
-                    children: [
-                      CustomSwitchTile(
-                        title: 'Monitored',
-                        subtitle: 'Download this movie automatically',
-                        value: updatedMovie.monitored ?? false,
-                        onChanged: (value) {
-                          final newMovie = updatedMovie.rebuild(
-                            (b) => b..monitored = value,
-                          );
-                          ref
-                              .read(movieAddController.notifier)
-                              .updateSelectedMovie(newMovie);
-                        },
-                      ),
-                      Divider(
-                        height: 1,
-                        indent: 12,
-                        endIndent: 12,
-                        color: theme.colorScheme.outlineVariant
-                            .withCustomOpacity(0.5),
-                      ),
-
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: const Text('Monitor'),
-                                ),
-                                const SizedBox(height: 4),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Select how to monitor this movie',
-                                    style: theme.textTheme.bodySmall?.copyWith(
-                                      color: theme.colorScheme.onSurfaceVariant,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Builder(
-                                    builder: (_) {
-                                      final currentValue =
-                                          updatedMovie.addOptions?.monitor ??
-                                          MonitorTypes.movieOnly;
-
-                                      return Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            8,
-                                          ),
-                                          color: theme
-                                              .colorScheme
-                                              .surfaceContainerHighest,
-                                        ),
-                                        child: SizedBox(
-                                          width: 150,
-                                          child: DropdownButtonHideUnderline(
-                                            child: DropdownButton<MonitorTypes>(
-                                              value: currentValue,
-                                              isDense: true,
-                                              isExpanded: true,
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              dropdownColor: theme
-                                                  .colorScheme
-                                                  .surfaceContainerHighest,
-                                              items: MonitorTypes.values.map((
-                                                type,
-                                              ) {
-                                                String label = type
-                                                    .toString()
-                                                    .capitalizeByWord()
-                                                    .split('.')
-                                                    .last;
-
-                                                return DropdownMenuItem(
-                                                  value: type,
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.symmetric(
-                                                          horizontal: 8.0,
-                                                        ),
-                                                    child: Text(
-                                                      label,
-                                                      style: theme
-                                                          .textTheme
-                                                          .bodyMedium,
-                                                    ),
-                                                  ),
-                                                );
-                                              }).toList(),
-                                              onChanged:
-                                                  (MonitorTypes? newValue) {
-                                                    if (newValue != null) {
-                                                      final newMovie =
-                                                          updatedMovie.rebuild(
-                                                            (b) => b
-                                                              ..addOptions.update(
-                                                                (b2) => b2
-                                                                  ..monitor =
-                                                                      newValue,
-                                                              ),
-                                                          );
-                                                      ref
-                                                          .read(
-                                                            movieAddController
-                                                                .notifier,
-                                                          )
-                                                          .updateSelectedMovie(
-                                                            newMovie,
-                                                          );
-                                                    }
-                                                  },
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      Divider(
-                        height: 1,
-                        indent: 12,
-                        endIndent: 12,
-                        color: theme.colorScheme.outlineVariant
-                            .withCustomOpacity(0.5),
-                      ),
-
-                      CustomSwitchTile(
-                        title: 'Search for Movie',
-                        subtitle: 'Start searching for the movie right away',
-                        value: updatedMovie.addOptions?.searchForMovie ?? true,
-                        onChanged: (value) {
-                          final newMovie = updatedMovie.rebuild(
-                            (b) => b
-                              ..addOptions.update(
-                                (b2) => b2..searchForMovie = value,
-                              ),
-                          );
-                          ref
-                              .read(movieAddController.notifier)
-                              .updateSelectedMovie(newMovie);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                  );
+                },
+              ),
             ),
-          ),
-        ),
-
-        const SizedBox(height: 8),
-
-        Card(
-          elevation: 3,
-          shadowColor: theme.colorScheme.shadow.withAlpha(40),
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              children: [
-                _buildSectionTitle(context, 'Movie Path', Icons.folder),
-                const SizedBox(height: 8),
-
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  margin: const EdgeInsets.all(2),
-                  child: Column(
-                    children: [
-                      if (rootFolders.isNotEmpty)
-                        DropdownButtonFormField<String>(
-                          initialValue: updatedMovie.rootFolderPath,
-                          borderRadius: BorderRadius.circular(12),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide.none,
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 16,
-                            ),
-                            filled: true,
-                            fillColor: theme.colorScheme.surface,
-                          ),
-                          items: rootFolders
-                              .map(
-                                (folder) => DropdownMenuItem<String>(
-                                  value: folder.path,
-                                  child: Text(
-                                    folder.path ?? 'Unknown Path',
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (value) {
-                            if (value != null) {
-                              final newMovie = updatedMovie.rebuild(
-                                (b) => b..rootFolderPath = value,
-                              );
-                              ref
-                                  .read(movieAddController.notifier)
-                                  .updateSelectedMovie(newMovie);
-                            }
-                          },
-                        ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-
-        const SizedBox(height: 8),
-
-        Card(
-          elevation: 3,
-          shadowColor: theme.colorScheme.shadow.withAlpha(40),
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              children: [
-                _buildSectionTitle(
-                  context,
-                  'Minimum Availability',
-                  Icons.date_range,
-                ),
-                const SizedBox(height: 8),
-
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  margin: const EdgeInsets.all(2),
-                  child: DropdownButtonFormField<MovieStatusType>(
-                    initialValue:
-                        updatedMovie.minimumAvailability ??
-                        MovieStatusType.released,
-                    borderRadius: BorderRadius.circular(12),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 16,
-                      ),
-                      filled: true,
-                      fillColor: theme.colorScheme.surface,
+            FormRowDivider(),
+            LabeledDropdownRow(
+              label: 'Minimum Availability',
+              subtitle: 'When the movie is considered available',
+              child: CustomDropdown(
+                value:
+                    (updatedMovie.minimumAvailability ??
+                            MovieStatusType.released)
+                        .name
+                        .capitalizeByWord(),
+                items: [
+                  MovieStatusType.announced,
+                  MovieStatusType.inCinemas,
+                  MovieStatusType.released,
+                ].map((t) => t.name.capitalizeByWord()).toList(),
+                onChanged: (newValue) {
+                  final newType = [
+                    MovieStatusType.announced,
+                    MovieStatusType.inCinemas,
+                    MovieStatusType.released,
+                  ].firstWhere((t) => t.name.capitalizeByWord() == newValue);
+                  onMovieChanged(
+                    updatedMovie.rebuild(
+                      (b) => b..minimumAvailability = newType,
                     ),
-                    items: [
-                      DropdownMenuItem(
-                        value: MovieStatusType.announced,
-                        child: const Text('Announced'),
-                      ),
-                      DropdownMenuItem(
-                        value: MovieStatusType.inCinemas,
-                        child: const Text('In Cinemas'),
-                      ),
-                      DropdownMenuItem(
-                        value: MovieStatusType.released,
-                        child: const Text('Released'),
-                      ),
-                    ],
-                    onChanged: (value) {
-                      if (value != null) {
-                        final newMovie = updatedMovie.rebuild(
-                          (b) => b..minimumAvailability = value,
-                        );
-                        ref
-                            .read(movieAddController.notifier)
-                            .updateSelectedMovie(newMovie);
-                      }
-                    },
-                  ),
-                ),
-              ],
+                  );
+                },
+              ),
             ),
-          ),
+          ],
         ),
 
-        const SizedBox(height: 8),
+        const SizedBox(height: 20),
 
-        Card(
-          elevation: 3,
-          shadowColor: theme.colorScheme.shadow.withAlpha(40),
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              children: [
-                _buildSectionTitle(
-                  context,
-                  'Quality Profile',
-                  Icons.high_quality,
-                ),
-                const SizedBox(height: 8),
-
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  margin: const EdgeInsets.all(2),
-                  child: qualityProfiles.isNotEmpty
-                      ? DropdownButtonFormField<int>(
-                          initialValue: updatedMovie.qualityProfileId,
-                          borderRadius: BorderRadius.circular(12),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide.none,
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 16,
-                            ),
-                            filled: true,
-                            fillColor: theme.colorScheme.surface,
-                          ),
-                          items: qualityProfiles
-                              .map(
-                                (profile) => DropdownMenuItem<int>(
-                                  value: profile.id,
-                                  child: Text(
-                                    profile.name ?? 'Unknown Profile',
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
+        FormSectionHeader(label: 'QUALITY & PATH'),
+        OutlinedFormSection(
+          children: [
+            LabeledDropdownRow(
+              label: 'Profile',
+              subtitle: 'Quality profile to use for downloads',
+              child: CustomDropdown(
+                value: qualityProfiles.isEmpty
+                    ? 'Unknown'
+                    : (qualityProfiles
+                              .firstWhere(
+                                (p) => p.id == updatedMovie.qualityProfileId,
+                                orElse: () => qualityProfiles.first,
                               )
-                              .toList(),
-                          onChanged: (value) {
-                            if (value != null) {
-                              final newMovie = updatedMovie.rebuild(
-                                (b) => b..qualityProfileId = value,
-                              );
-                              ref
-                                  .read(movieAddController.notifier)
-                                  .updateSelectedMovie(newMovie);
-                            }
-                          },
-                        )
-                      : const Center(
-                          child: Text('No quality profiles available'),
-                        ),
-                ),
-              ],
+                              .name ??
+                          'Unknown'),
+                items: qualityProfiles.map((p) => p.name ?? 'Unknown').toList(),
+                onChanged: (newValue) {
+                  final selected = qualityProfiles.firstWhere(
+                    (p) => p.name == newValue,
+                  );
+                  onMovieChanged(
+                    updatedMovie.rebuild(
+                      (b) => b..qualityProfileId = selected.id,
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
+            FormRowDivider(),
+            LabeledDropdownRow(
+              label: 'Movie Path',
+              subtitle: 'Where the movie should be saved',
+              child: CustomDropdown(
+                value: rootFolders.isEmpty
+                    ? 'Unknown'
+                    : (rootFolders
+                              .firstWhere(
+                                (f) => f.path == updatedMovie.rootFolderPath,
+                                orElse: () => rootFolders.first,
+                              )
+                              .path ??
+                          'Unknown'),
+                items: rootFolders.map((f) => f.path ?? 'Unknown').toList(),
+                onChanged: (newValue) {
+                  final selected = rootFolders.firstWhere(
+                    (f) => f.path == newValue,
+                  );
+                  onMovieChanged(
+                    updatedMovie.rebuild(
+                      (b) => b..rootFolderPath = selected.path,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
-      ],
-    );
-  }
+        const SizedBox(height: 20),
 
-  Widget _buildSectionTitle(BuildContext context, String title, IconData icon) {
-    final theme = Theme.of(context);
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primaryContainer.withAlpha(100),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Icon(icon, size: 20, color: theme.colorScheme.primary),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Text(
-            title,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w600,
+        FormSectionHeader(label: 'SEARCH OPTIONS'),
+        OutlinedFormSection(
+          children: [
+            CustomSwitchTile(
+              title: 'Search for Movie',
+              subtitle: 'Start searching for missing movie',
+              value: updatedMovie.addOptions?.searchForMovie ?? true,
+              onChanged: (value) => onMovieChanged(
+                updatedMovie.rebuild(
+                  (b) =>
+                      b..addOptions.update((b2) => b2..searchForMovie = value),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ],
     );

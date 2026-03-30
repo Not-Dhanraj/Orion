@@ -4,137 +4,92 @@ import 'package:client/src/features/movies/presentation/movie_library/movie_libr
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr/radarr.dart';
 
-class MovieAddController extends AsyncNotifier<MovieAddState> {
+class MovieAddController extends AutoDisposeAsyncNotifier<MovieAddState> {
   @override
   Future<MovieAddState> build() async {
     final movieService = ref.watch(movieServiceProvider);
-
     final qualityProfiles = await movieService.fetchQualityProfiles();
     final rootFolders = await movieService.fetchRootFolders();
-
+    final allMovies = await movieService.fetchAllMovies();
     await Future.delayed(const Duration(milliseconds: 500));
     return MovieAddState(
       qualityProfiles: qualityProfiles,
       rootFolders: rootFolders,
+      allMovies: allMovies,
     );
   }
 
   Future<void> searchMovies(String query) async {
     if (query.isEmpty) {
-      state = AsyncData(
-        state.value!.copyWith(searchResults: [], errorMessage: null),
-      );
+      state = AsyncData(state.requireValue.copyWith(searchResults: null));
       return;
     }
 
-    state = AsyncData(
-      state.value!.copyWith(isSearching: true, errorMessage: null),
-    );
+    state = AsyncData(state.requireValue.copyWith(isSearching: true));
 
     try {
-      final movieService = ref.read(movieServiceProvider);
-      final results = await movieService.searchMovies(query);
-
-      final allMovies = await movieService.fetchAllMovies();
-      final filteredResults = results
-          .where(
-            (searchResult) => !allMovies.any(
-              (existingMovie) =>
-                  existingMovie.tmdbId == searchResult.tmdbId ||
-                  (existingMovie.title?.toLowerCase() ==
-                          searchResult.title?.toLowerCase() &&
-                      existingMovie.year == searchResult.year),
-            ),
-          )
-          .toList();
+      final results = await ref.read(movieServiceProvider).searchMovies(query);
+      final addedIds = results
+          .where((r) => state.requireValue.isAlreadyAdded(r))
+          .map((r) => r.tmdbId)
+          .toSet();
 
       state = AsyncData(
-        state.value!.copyWith(
-          searchResults: filteredResults,
+        state.requireValue.copyWith(
+          searchResults: results,
           isSearching: false,
-          errorMessage: null, // Clear any previous error
+          addedIds: addedIds,
         ),
       );
-    } catch (e) {
-      state = AsyncData(
-        state.value!.copyWith(
-          isSearching: false,
-          errorMessage: 'Failed to search movies: ${e.toString()}',
-        ),
-      );
+    } catch (e, st) {
+      state = AsyncError(e, st);
     }
   }
 
-  void selectMovie(MovieResource movie) {
+  void selectMovieToState(MovieResource movie) {
     movie = movie.rebuild(
       (b) => b
-        ..monitored = true
+        ..monitored = movie.addOptions?.monitor != MonitorTypes.none
         ..minimumAvailability = MovieStatusType.released
-        ..rootFolderPath = state.value!.rootFolders!.first.path
+        ..rootFolderPath = state.requireValue.rootFolders!.first.path
         ..addOptions.update(
           (b2) => b2
-            ..searchForMovie = true
+            ..searchForMovie = false
             ..monitor = MonitorTypes.movieOnly,
         ),
     );
 
-    if (state.value?.qualityProfiles?.isNotEmpty == true) {
+    if (state.valueOrNull?.qualityProfiles?.isNotEmpty == true) {
       movie = movie.rebuild(
-        (b) => b..qualityProfileId = state.value!.qualityProfiles!.first.id,
+        (b) =>
+            b..qualityProfileId = state.requireValue.qualityProfiles!.first.id,
       );
     }
 
-    state = AsyncData(state.value!.copyWith(selectedMovie: movie));
+    state = AsyncData(state.requireValue.copyWith(selectedMovie: movie));
   }
 
-  void updateSelectedMovie(MovieResource updatedMovie) {
-    state = AsyncData(state.value!.copyWith(selectedMovie: updatedMovie));
+  void updateSelectedMovieInState(MovieResource updatedMovie) {
+    state = AsyncData(state.requireValue.copyWith(selectedMovie: updatedMovie));
   }
 
-  Future<void> addMovie(MovieResource movie) async {
-    state = AsyncData(
-      state.value!.copyWith(isCreating: true, errorMessage: null),
-    );
+  Future<bool> addMovie(MovieResource movie) async {
+    state = AsyncData(state.requireValue.copyWith(isCreating: true));
 
     try {
-      final movieService = ref.read(movieServiceProvider);
-      await movieService.createMovie(movie);
+      await ref.read(movieServiceProvider).createMovie(movie);
       ref.invalidate(movieLibraryController);
-
-      state = AsyncData(state.value!.copyWith(isCreating: false));
-      removeMovieFromResults(movie);
-    } catch (e) {
-      state = AsyncData(
-        state.value!.copyWith(
-          isCreating: false,
-          errorMessage: 'Failed to add movie: ${e.toString()}',
-        ),
-      );
-    }
-  }
-
-  /// Removes a movie from the search results after it has been successfully added
-  void removeMovieFromResults(MovieResource addedMovie) {
-    if (state.value?.searchResults == null) return;
-
-    final currentResults = state.value!.searchResults!;
-    final updatedResults = currentResults
-        .where((movie) => movie.tmdbId != addedMovie.tmdbId)
-        .toList();
-
-    if (state.value != null) {
-      state = AsyncData(
-        state.value!.copyWith(
-          searchResults: updatedResults,
-          selectedMovie: null,
-          isCreating: false,
-        ),
-      );
+      await Future.wait([ref.read(movieLibraryController.future)]);
+      state = AsyncData(state.requireValue.copyWith(isCreating: false));
+      return true;
+    } catch (e, st) {
+      state = AsyncError(e, st);
+      return false;
     }
   }
 }
 
 final movieAddController =
-    AsyncNotifierProvider<MovieAddController, MovieAddState>(() {
-      return MovieAddController();
-    });
+    AutoDisposeAsyncNotifierProvider<MovieAddController, MovieAddState>(
+      MovieAddController.new,
+    );

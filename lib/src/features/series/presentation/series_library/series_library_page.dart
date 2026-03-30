@@ -87,7 +87,7 @@ class SeriesLibraryPage extends ConsumerWidget {
       isScrollControlled: true,
       useSafeArea: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => const SeriesAddPage(),
+      builder: (_) => const SeriesSearchPage(),
     );
   }
 }

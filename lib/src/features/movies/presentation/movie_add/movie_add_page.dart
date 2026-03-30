@@ -1,248 +1,166 @@
 import 'package:client/src/features/movies/presentation/movie_add/movie_add_controller.dart';
-import 'package:client/src/features/movies/presentation/movie_add/widgets/movie_add_card.dart';
+import 'package:client/src/shared/widgets/common/sheet_search_bar.dart';
+import 'package:client/src/features/movies/presentation/movie_add/widgets/movie_search_results.dart';
+import 'package:client/src/shared/widgets/common/sheet_header.dart';
+import 'package:client/src/shared/widgets/animated_progress_bar.dart';
 import 'package:client/src/shared/widgets/custom_error_state.dart';
+import 'package:client/src/utils/context_extensions.dart';
+import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
-import 'package:with_opacity/with_opacity.dart';
 
-class MovieAddPage extends ConsumerStatefulWidget {
-  const MovieAddPage({super.key});
+class MovieSearchPage extends ConsumerStatefulWidget {
+  const MovieSearchPage({super.key});
 
   @override
-  ConsumerState<MovieAddPage> createState() => _MovieAddPageState();
+  ConsumerState<MovieSearchPage> createState() => _MovieSearchPageState();
 }
 
-class _MovieAddPageState extends ConsumerState<MovieAddPage> {
+class _MovieSearchPageState extends ConsumerState<MovieSearchPage> {
   final TextEditingController _searchController = TextEditingController();
-  final FocusNode _searchFocusNode = FocusNode();
-  bool _hasSearched = false;
+  final FocusNode _searchFocus = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _searchFocusNode.requestFocus();
-    });
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => _searchFocus.requestFocus(),
+    );
   }
 
   @override
   void dispose() {
     _searchController.dispose();
-    _searchFocusNode.dispose();
+    _searchFocus.dispose();
     super.dispose();
+  }
+
+  void _triggerSearch() {
+    final q = _searchController.text.trim();
+    if (q.isNotEmpty) {
+      ref.read(movieAddController.notifier).searchMovies(q);
+    }
+  }
+
+  void _clearSearch() {
+    _searchController.clear();
+    ref.read(movieAddController.notifier).searchMovies('');
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final movieAddState = ref.watch(movieAddController);
+    final cs = Theme.of(context).colorScheme;
+    final asyncState = ref.watch(movieAddController);
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Add New Movie')),
-      body: movieAddState.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) => Scaffold(
-          body: Center(
-            child: CustomErrorState(error: error, stackTrace: stackTrace),
-          ),
-        ),
-        data: (state) {
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  controller: _searchController,
-                  focusNode: _searchFocusNode,
-                  decoration: InputDecoration(
-                    hintText: 'Search for a movie by name...',
-                    prefixIcon: Icon(
-                      Icons.search,
-                      color: theme.colorScheme.primary,
+    return DraggableScrollableSheet(
+      initialChildSize: 0.92,
+      minChildSize: 0.5,
+      maxChildSize: 1.0,
+      expand: false,
+      builder: (context, _) {
+        return Container(
+          color: cs.surface,
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: cs.surfaceContainerLow,
+                  border: Border(
+                    bottom: BorderSide(
+                      color: cs.outlineVariant.withValues(alpha: 0.4),
                     ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide.none,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    SheetHeader(
+                      onClose: () => Navigator.of(context).pop(),
+                      title: 'Search Movies',
                     ),
-                    fillColor: theme.colorScheme.surfaceContainerLow,
-                    filled: true,
-                    suffixIcon: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (_searchController.text.isNotEmpty)
-                          IconButton(
-                            icon: const Icon(TablerIcons.x),
-                            tooltip: 'Clear search',
-                            onPressed: () {
-                              _searchController.clear();
-                              if (_hasSearched) {
-                                ref
-                                    .read(movieAddController.notifier)
-                                    .searchMovies('');
-                                setState(() {
-                                  _hasSearched = false;
-                                });
-                              }
-                            },
-                          ),
-                        Container(
-                          margin: const EdgeInsets.only(right: 5),
-                          height: 40,
-                          width: 80,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              if (_searchController.text.isNotEmpty) {
-                                ref
-                                    .read(movieAddController.notifier)
-                                    .searchMovies(_searchController.text);
-                                setState(() {
-                                  _hasSearched = true;
-                                });
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: theme.colorScheme.primary,
-                              foregroundColor: theme.colorScheme.onPrimary,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                    SizedBox(height: 4),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: asyncState.when(
+                  loading: () => Stack(
+                    children: [
+                      Column(
+                        children: [
+                          Align(
+                            alignment: AlignmentGeometry.topCenter,
+                            child: SizedBox(
+                              height: 1.5,
+                              width: 800,
+                              child: AnimatedProgressBar(
+                                width: context.screenWidth,
                               ),
-                              padding: EdgeInsets.zero,
                             ),
-                            child: const Text('Search'),
+                          ),
+                        ],
+                      ),
+                      const Center(child: Text('Loading')),
+                    ],
+                  ),
+                  error: (e, stk) => Center(
+                    child: CustomErrorState(error: e, stackTrace: stk),
+                  ),
+                  data: (state) => Entry.opacity(
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          child: AnimatedOpacity(
+                            opacity: state.isCreating || state.isSearching
+                                ? 1
+                                : 0,
+                            duration: Duration(milliseconds: 300),
+                            child: SizedBox(
+                              height: 1.5,
+                              width: 800,
+                              child: AnimatedProgressBar(
+                                width: context.screenWidth,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 800),
+                            child: SizedBox.expand(
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                      16,
+                                      16,
+                                      16,
+                                      0,
+                                    ),
+                                    child: SheetSearchBar(
+                                      controller: _searchController,
+                                      focusNode: _searchFocus,
+                                      isSearching: state.isSearching,
+                                      hintText: 'Search for a Movie by name…',
+                                      onSearch: _triggerSearch,
+                                      onClear: _clearSearch,
+                                    ),
+                                  ),
+                                  Expanded(child: MovieSearchBody()),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  onSubmitted: (value) async {
-                    if (value.isNotEmpty) {
-                      await ref
-                          .read(movieAddController.notifier)
-                          .searchMovies(value);
-                      setState(() {
-                        _hasSearched = true;
-                      });
-                    }
-                  },
                 ),
-
-                const SizedBox(height: 8),
-
-                if (state.isSearching)
-                  const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Center(child: CircularProgressIndicator()),
-                  ),
-
-                if (!state.isSearching && _hasSearched)
-                  Expanded(
-                    child: Builder(
-                      builder: (context) {
-                        final theme = Theme.of(context);
-
-                        if (state.searchResults == null ||
-                            state.searchResults!.isEmpty) {
-                          return Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.search_off,
-                                  size: 80,
-                                  color: theme.colorScheme.error
-                                      .withCustomOpacity(0.7),
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  'No movies found',
-                                  style: theme.textTheme.headlineSmall
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color:
-                                            theme.colorScheme.onErrorContainer,
-                                      ),
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(height: 12),
-                                Text(
-                                  'Try different keywords or check if the movie is already in your library',
-                                  style: theme.textTheme.bodyLarge?.copyWith(
-                                    color: theme.colorScheme.onErrorContainer,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(height: 12),
-                                FilledButton.icon(
-                                  icon: const Icon(TablerIcons.refresh),
-                                  label: const Text('Try Another Search'),
-                                  onPressed: () {
-                                    _searchController.clear();
-                                    _searchFocusNode.requestFocus();
-                                  },
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-                        return MasonryGridView.extent(
-                          maxCrossAxisExtent: 500,
-                          crossAxisSpacing: 0,
-                          mainAxisSpacing: 0,
-                          itemCount: state.searchResults!.length,
-                          itemBuilder: (context, index) {
-                            final movie = state.searchResults![index];
-                            return MovieAddCard(movie: movie);
-                          },
-                        );
-                      },
-                    ),
-                  ),
-
-                if (!_hasSearched && !state.isSearching)
-                  Expanded(
-                    child: Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.movie_filter,
-                            size: 80,
-                            color: theme.colorScheme.primary.withCustomOpacity(
-                              0.6,
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-                          Text(
-                            'Search for a movie to add',
-                            style: theme.textTheme.headlineSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: theme.colorScheme.onSurface,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            'Enter the name of a movie in the search box above and press the Search button',
-                            style: theme.textTheme.bodyLarge?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 24),
-                        ],
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          );
-        },
-      ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

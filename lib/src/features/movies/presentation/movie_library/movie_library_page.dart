@@ -69,13 +69,7 @@ class MovieLibraryPage extends ConsumerWidget {
               child: SafeArea(
                 top: false,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const MovieAddPage(),
-                      ),
-                    );
-                  },
+                  onPressed: () => _showMovieSearchSheet(context),
                   child: const Text('SEARCH'),
                 ),
               ),
@@ -83,6 +77,17 @@ class MovieLibraryPage extends ConsumerWidget {
           ],
         );
       },
+    );
+  }
+
+  Future<void> _showMovieSearchSheet(BuildContext context) {
+    return showModalBottomSheet<void>(
+      context: context,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => const MovieSearchPage(),
     );
   }
 }

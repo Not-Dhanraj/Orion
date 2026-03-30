@@ -1,22 +1,22 @@
-import 'package:client/src/features/series/presentation/series_add/series_add_controller.dart';
-import 'package:client/src/features/series/presentation/series_add/widgets/series_add_form.dart';
-import 'package:client/src/features/series/presentation/series_add/widgets/series_sheet_header.dart';
+import 'package:client/src/features/movies/presentation/movie_add/movie_add_controller.dart';
+import 'package:client/src/features/movies/presentation/movie_add/widgets/movie_add_form.dart';
 import 'package:client/src/shared/widgets/common/custom_snackbar.dart';
 import 'package:client/src/shared/widgets/common/sheet_footer.dart';
+import 'package:client/src/shared/widgets/common/sheet_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:radarr/radarr.dart';
 
-class SeriesAddDialog extends ConsumerWidget {
-  final SeriesResource series;
+class MovieAddDialog extends ConsumerWidget {
+  final MovieResource movie;
 
-  const SeriesAddDialog({super.key, required this.series});
+  const MovieAddDialog({super.key, required this.movie});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cs = Theme.of(context).colorScheme;
-    final state = ref.watch(seriesAddController).value;
-    final selectedSeries = state?.selectedSeries;
+    final state = ref.watch(movieAddController).value;
+    final selectedMovie = state?.selectedMovie;
     final isCreating = state?.isCreating ?? false;
 
     return DraggableScrollableSheet(
@@ -41,29 +41,29 @@ class SeriesAddDialog extends ConsumerWidget {
                 child: Column(
                   children: [
                     SizedBox(height: 3),
-                    SeriesSheetHeader(
+                    SheetHeader(
                       onClose: () => Navigator.of(context).pop(),
-                      title: series.title ?? 'Unknown',
-                      label: 'ADD SERIES',
+                      title: movie.title ?? 'Unknown',
+                      label: 'ADD MOVIE',
                     ),
                     SizedBox(height: 6),
                   ],
                 ),
               ),
               Expanded(
-                child: selectedSeries == null
+                child: selectedMovie == null
                     ? const Center(child: CircularProgressIndicator())
                     : Center(
                         child: ConstrainedBox(
                           constraints: const BoxConstraints(maxWidth: 800),
                           child: SizedBox.expand(
-                            child: SeriesConfigurationForm(
-                              series: selectedSeries,
-                              rootFolders: state?.rootFolders ?? [],
+                            child: MovieConfigurationForm(
+                              movie: selectedMovie,
                               qualityProfiles: state?.qualityProfiles ?? [],
-                              onSeriesChanged: (updated) => ref
-                                  .read(seriesAddController.notifier)
-                                  .updateSelectedSeriesInState(updated),
+                              rootFolders: state?.rootFolders ?? [],
+                              onMovieChanged: (updated) => ref
+                                  .read(movieAddController.notifier)
+                                  .updateSelectedMovieInState(updated),
                             ),
                           ),
                         ),
@@ -71,11 +71,11 @@ class SeriesAddDialog extends ConsumerWidget {
               ),
               SheetFooter(
                 isLoading: isCreating,
-                isDisabled: selectedSeries == null,
-                confirmLabel: 'ADD SERIES',
+                isDisabled: selectedMovie == null,
+                confirmLabel: 'ADD MOVIE',
                 confirmIcon: Icons.add,
                 onCancel: () => Navigator.of(context).pop(),
-                onConfirm: () => _doAdd(context, ref, selectedSeries!, cs),
+                onConfirm: () => _doAdd(context, ref, selectedMovie!, cs),
               ),
             ],
           ),
@@ -87,27 +87,27 @@ class SeriesAddDialog extends ConsumerWidget {
   Future<void> _doAdd(
     BuildContext context,
     WidgetRef ref,
-    SeriesResource seriesToAdd,
+    MovieResource movieToAdd,
     ColorScheme cs,
   ) async {
     final success = await ref
-        .read(seriesAddController.notifier)
-        .addSeries(seriesToAdd);
+        .read(movieAddController.notifier)
+        .addMovie(movieToAdd);
 
     if (!context.mounted) return;
 
     if (success) {
       Navigator.of(context).pop();
-      Navigator.of(context).pop();
+      Navigator.of(context).pop(); // Pops the search sheet too, returning to library
       CustomSnackbar.show(
         context,
-        message: 'Successfully added "${series.title}"',
+        message: 'Successfully added "${movie.title}"',
         type: CustomSnackbarType.success,
       );
     } else {
       CustomSnackbar.show(
         context,
-        message: 'Failed to add series',
+        message: 'Failed to add movie',
         type: CustomSnackbarType.error,
       );
     }

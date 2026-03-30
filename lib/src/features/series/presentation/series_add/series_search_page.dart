@@ -9,14 +9,14 @@ import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SeriesAddPage extends ConsumerStatefulWidget {
-  const SeriesAddPage({super.key});
+class SeriesSearchPage extends ConsumerStatefulWidget {
+  const SeriesSearchPage({super.key});
 
   @override
-  ConsumerState<SeriesAddPage> createState() => _SeriesAddPageState();
+  ConsumerState<SeriesSearchPage> createState() => _SeriesSearchPageState();
 }
 
-class _SeriesAddPageState extends ConsumerState<SeriesAddPage> {
+class _SeriesSearchPageState extends ConsumerState<SeriesSearchPage> {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocus = FocusNode();
 

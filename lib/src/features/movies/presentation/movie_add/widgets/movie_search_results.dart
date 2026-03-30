@@ -1,19 +1,18 @@
-import 'package:client/src/features/series/domain/series_add_state.dart';
-import 'package:client/src/features/series/presentation/series_add/series_add_controller.dart';
-import 'package:client/src/features/series/presentation/series_add/series_add_dialog.dart';
-import 'package:client/src/features/series/presentation/series_add/widgets/series_result_item.dart';
-import 'package:client/src/utils/series_utils.dart';
+import 'package:client/src/features/movies/domain/movie_add_state.dart';
+import 'package:client/src/features/movies/presentation/movie_add/movie_add_controller.dart';
+import 'package:client/src/features/movies/presentation/movie_add/movie_add_dialog.dart';
+import 'package:client/src/features/movies/presentation/movie_add/widgets/movie_result_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:radarr/radarr.dart';
 import 'package:with_opacity/with_opacity.dart';
 
-class SeriesSearchBody extends ConsumerWidget {
-  const SeriesSearchBody({super.key});
+class MovieSearchBody extends ConsumerWidget {
+  const MovieSearchBody({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(seriesAddController).requireValue;
+    final state = ref.watch(movieAddController).requireValue;
     final results = state.searchResults;
 
     if (results == null) return const _EmptyPrompt();
@@ -36,18 +35,18 @@ class _EmptyPrompt extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
-            Icons.video_collection_outlined,
+            Icons.movie_filter_rounded,
             size: 72,
             color: cs.primary.withCustomOpacity(0.4),
           ),
           const SizedBox(height: 20),
           Text(
-            'Search for a TV series to add',
+            'Search for a Movie to add',
             style: tt.titleMedium!.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Text(
-            'Enter a series name above and press SEARCH.',
+            'Enter a movie name above and press SEARCH.',
             style: tt.bodyMedium!.copyWith(color: cs.onSurfaceVariant),
           ),
         ],
@@ -75,12 +74,12 @@ class _NoResults extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Text(
-            'No series found',
+            'No movies found',
             style: tt.titleMedium!.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Text(
-            'Try different keywords or check if the series is already in your library.',
+            'Try different keywords or check if the movie is already in your library.',
             style: tt.bodyMedium!.copyWith(color: cs.onSurfaceVariant),
             textAlign: TextAlign.center,
           ),
@@ -91,8 +90,8 @@ class _NoResults extends StatelessWidget {
 }
 
 class _ResultsList extends ConsumerWidget {
-  final List<SeriesResource> results;
-  final SeriesAddState state;
+  final List<MovieResource> results;
+  final MovieAddState state;
 
   const _ResultsList({required this.results, required this.state});
 
@@ -132,17 +131,32 @@ class _ResultsList extends ConsumerWidget {
             itemCount: results.length,
             separatorBuilder: (_, _) => const SizedBox(height: 8),
             itemBuilder: (context, index) {
-              final series = results[index];
-              final isAdded = state.addedIds?.contains(series.tvdbId) ?? false;
-              return SeriesResultItem(
-                series: series,
-                subtitle: _buildSubtitle(series),
-                imageUrl: series.remotePosterUrlLink ?? "",
+              final movie = results[index];
+              final isAdded = state.addedIds?.contains(movie.tmdbId) ?? false;
+              final imageUrl = movie.images?.isNotEmpty == true
+                  ? movie.images!
+                            .firstWhere(
+                              (i) => i.coverType == MediaCoverTypes.poster,
+                              orElse: () => movie.images!.firstWhere(
+                                (i) =>
+                                    i.coverType == MediaCoverTypes.poster ||
+                                    i.coverType == MediaCoverTypes.banner,
+                                orElse: () => movie.images!.first,
+                              ),
+                            )
+                            .remoteUrl ??
+                        ""
+                  : "";
+
+              return MovieResultItem(
+                movie: movie,
+                subtitle: _buildSubtitle(movie),
+                imageUrl: imageUrl,
                 isAdded: isAdded,
                 isCreating: state.isCreating,
                 onAdd: isAdded
                     ? null
-                    : () => _openAddDialog(context, ref, series),
+                    : () => _openAddDialog(context, ref, movie),
               );
             },
           ),
@@ -151,19 +165,17 @@ class _ResultsList extends ConsumerWidget {
     );
   }
 
-  String _buildSubtitle(SeriesResource series) => [
-    if (series.year != null) series.year.toString(),
-    if (series.network?.isNotEmpty == true) series.network!.toUpperCase(),
-    if (series.status != null) series.status!.name.toUpperCase(),
+  String _buildSubtitle(MovieResource movie) => [
+    if (movie.year != null) movie.year.toString(),
+    if (movie.status != null) movie.status!.name.toUpperCase(),
   ].join(' • ');
 
   Future<void> _openAddDialog(
     BuildContext context,
     WidgetRef ref,
-    SeriesResource series,
+    MovieResource movie,
   ) async {
-    ref.read(seriesAddController.notifier).selectSeriesToState(series);
-    // await SeriesAddDialog.show(context, series);
+    ref.read(movieAddController.notifier).selectMovieToState(movie);
 
     await showModalBottomSheet<void>(
       context: context,
@@ -171,7 +183,7 @@ class _ResultsList extends ConsumerWidget {
       useSafeArea: true,
       backgroundColor: Colors.transparent,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-      builder: (_) => SeriesAddDialog(series: series),
+      builder: (_) => MovieAddDialog(movie: movie),
     );
   }
 }

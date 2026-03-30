@@ -6,7 +6,7 @@ import 'package:client/src/utils/series_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
-import 'package:with_opacity/with_opacity.dart';
+import 'package:client/src/shared/widgets/indicators/empty_state_widget.dart';
 
 class SeriesSearchBody extends ConsumerWidget {
   const SeriesSearchBody({super.key});
@@ -16,77 +16,23 @@ class SeriesSearchBody extends ConsumerWidget {
     final state = ref.watch(seriesAddController).requireValue;
     final results = state.searchResults;
 
-    if (results == null) return const _EmptyPrompt();
-    if (results.isEmpty) return const _NoResults();
+    if (results == null) {
+      return const EmptyStateWidget(
+        icon: Icons.video_collection_outlined,
+        title: 'Search for a TV series to add',
+        subtitle: 'Enter a series name above and press SEARCH.',
+      );
+    }
+    if (results.isEmpty) {
+      return const EmptyStateWidget(
+        icon: Icons.search_off_rounded,
+        title: 'No series found',
+        subtitle:
+            'Try different keywords or check if the series is already in your library.',
+      );
+    }
 
     return _ResultsList(results: results, state: state);
-  }
-}
-
-class _EmptyPrompt extends StatelessWidget {
-  const _EmptyPrompt();
-
-  @override
-  Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    final tt = Theme.of(context).textTheme;
-
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.video_collection_outlined,
-            size: 72,
-            color: cs.primary.withCustomOpacity(0.4),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            'Search for a TV series to add',
-            style: tt.titleMedium!.copyWith(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Enter a series name above and press SEARCH.',
-            style: tt.bodyMedium!.copyWith(color: cs.onSurfaceVariant),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _NoResults extends StatelessWidget {
-  const _NoResults();
-
-  @override
-  Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    final tt = Theme.of(context).textTheme;
-
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.search_off_rounded,
-            size: 72,
-            color: cs.primary.withCustomOpacity(0.4),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            'No series found',
-            style: tt.titleMedium!.copyWith(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Try different keywords or check if the series is already in your library.',
-            style: tt.bodyMedium!.copyWith(color: cs.onSurfaceVariant),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
   }
 }
 

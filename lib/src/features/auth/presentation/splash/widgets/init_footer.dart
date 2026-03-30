@@ -1,5 +1,5 @@
 import 'package:client/src/constants/app_const.dart';
-import 'package:client/src/shared/widgets/animated_progress_bar.dart';
+import 'package:client/src/shared/widgets/indicators/animated_progress_bar.dart';
 import 'package:flutter/material.dart';
 
 class InitFooter extends StatefulWidget {

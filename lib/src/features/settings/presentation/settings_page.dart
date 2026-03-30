@@ -5,7 +5,7 @@ import 'package:client/src/features/settings/presentation/widgets/settings_about
 import 'package:client/src/features/settings/presentation/widgets/settings_item_widgets.dart';
 import 'package:client/src/features/settings/presentation/widgets/settings_row.dart';
 import 'package:client/src/features/settings/presentation/widgets/settings_section_header.dart';
-import 'package:client/src/shared/widgets/common/custom_snackbar.dart';
+import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/utils/context_extensions.dart';
 import 'package:client/src/utils/string_extension.dart';
 import 'package:entry/entry.dart';

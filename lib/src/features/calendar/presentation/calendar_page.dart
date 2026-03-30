@@ -1,7 +1,7 @@
 import 'package:client/src/features/calendar/presentation/calendar_home_controller.dart';
 import 'package:client/src/features/calendar/presentation/widgets/calendar_date_strip.dart';
 import 'package:client/src/features/calendar/presentation/widgets/calendar_episode_card.dart';
-import 'package:client/src/shared/widgets/custom_error_state.dart';
+import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

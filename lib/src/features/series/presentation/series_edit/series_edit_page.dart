@@ -3,7 +3,7 @@ import 'package:client/src/features/series/presentation/series_edit/series_edit_
 import 'package:client/src/features/series/presentation/series_edit/widgets/series_monitoring_options.dart';
 import 'package:client/src/features/series/presentation/series_edit/widgets/series_quality_dropdown.dart';
 import 'package:client/src/features/series/presentation/series_edit/widgets/series_type_dropdown.dart';
-import 'package:client/src/shared/widgets/custom_error_state.dart';
+import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';

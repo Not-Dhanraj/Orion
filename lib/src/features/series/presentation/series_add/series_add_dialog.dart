@@ -1,8 +1,8 @@
 import 'package:client/src/features/series/presentation/series_add/series_add_controller.dart';
 import 'package:client/src/features/series/presentation/series_add/widgets/series_add_form.dart';
-import 'package:client/src/features/series/presentation/series_add/widgets/series_sheet_header.dart';
-import 'package:client/src/shared/widgets/common/custom_snackbar.dart';
-import 'package:client/src/shared/widgets/common/sheet_footer.dart';
+import 'package:client/src/shared/widgets/sheets/sheet_header.dart';
+import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
+import 'package:client/src/shared/widgets/sheets/sheet_footer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
@@ -41,7 +41,7 @@ class SeriesAddDialog extends ConsumerWidget {
                 child: Column(
                   children: [
                     SizedBox(height: 3),
-                    SeriesSheetHeader(
+                    SheetHeader(
                       onClose: () => Navigator.of(context).pop(),
                       title: series.title ?? 'Unknown',
                       label: 'ADD SERIES',

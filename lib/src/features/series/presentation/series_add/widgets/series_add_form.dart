@@ -1,7 +1,6 @@
 import 'package:client/src/features/series/presentation/series_add/series_add_controller.dart';
-import 'package:client/src/shared/widgets/common/custom_dropdown.dart';
-import 'package:client/src/shared/widgets/common/sheet_form_widgets.dart';
-import 'package:client/src/shared/widgets/custom_switch_tile.dart';
+import 'package:client/src/shared/widgets/sheets/sheet_form_widgets.dart';
+import 'package:client/src/shared/widgets/inputs/custom_switch_tile.dart';
 import 'package:client/src/utils/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -42,48 +41,32 @@ class SeriesConfigurationForm extends ConsumerWidget {
               ),
             ),
             FormRowDivider(),
-            LabeledDropdownRow(
+            GenericDropdownRow<MonitorTypes>(
               label: 'Episodes to Monitor',
               subtitle: 'Which episodes to monitor when adding',
-              child: CustomDropdown(
-                value: (updatedSeries.addOptions?.monitor ?? MonitorTypes.all)
-                    .name
-                    .capitalizeByWord(),
-                items: MonitorTypes.values
-                    .map((t) => t.name.capitalizeByWord())
-                    .toList(),
-                onChanged: (newValue) {
-                  final newType = MonitorTypes.values.firstWhere(
-                    (t) => t.name.capitalizeByWord() == newValue,
-                  );
-                  onSeriesChanged(
-                    updatedSeries.rebuild(
-                      (b) =>
-                          b..addOptions.update((b2) => b2..monitor = newType),
-                    ),
-                  );
-                },
-              ),
+              value: updatedSeries.addOptions?.monitor ?? MonitorTypes.all,
+              items: MonitorTypes.values.toList(),
+              itemToString: (t) => t.name.capitalizeByWord(),
+              onChanged: (newType) {
+                onSeriesChanged(
+                  updatedSeries.rebuild(
+                    (b) => b..addOptions.update((b2) => b2..monitor = newType),
+                  ),
+                );
+              },
             ),
             FormRowDivider(),
-            LabeledDropdownRow(
+            GenericDropdownRow<SeriesTypes>(
               label: 'Type',
               subtitle: 'Affects how episodes are matched',
-              child: CustomDropdown(
-                value: (updatedSeries.seriesType ?? SeriesTypes.standard).name
-                    .capitalizeByWord(),
-                items: SeriesTypes.values
-                    .map((t) => t.name.capitalizeByWord())
-                    .toList(),
-                onChanged: (newValue) {
-                  final selected = SeriesTypes.values.firstWhere(
-                    (t) => t.name.capitalizeByWord() == newValue,
-                  );
-                  onSeriesChanged(
-                    updatedSeries.rebuild((b) => b..seriesType = selected),
-                  );
-                },
-              ),
+              value: updatedSeries.seriesType ?? SeriesTypes.standard,
+              items: SeriesTypes.values.toList(),
+              itemToString: (t) => t.name.capitalizeByWord(),
+              onChanged: (selected) {
+                onSeriesChanged(
+                  updatedSeries.rebuild((b) => b..seriesType = selected),
+                );
+              },
             ),
           ],
         ),
@@ -93,58 +76,34 @@ class SeriesConfigurationForm extends ConsumerWidget {
         FormSectionHeader(label: 'QUALITY AND PATH'),
         OutlinedFormSection(
           children: [
-            LabeledDropdownRow(
+            GenericDropdownRow<QualityProfileResource>(
               label: 'Profile',
               subtitle: 'Quality profile to use for downloads',
-              child: CustomDropdown(
-                value: qualityProfiles.isEmpty
-                    ? 'Unknown'
-                    : (qualityProfiles
-                              .firstWhere(
-                                (p) => p.id == updatedSeries.qualityProfileId,
-                                orElse: () => qualityProfiles.first,
-                              )
-                              .name ??
-                          'Unknown'),
-                items: qualityProfiles.map((p) => p.name ?? 'Unknown').toList(),
-                onChanged: (newValue) {
-                  final selected = qualityProfiles.firstWhere(
-                    (p) => p.name == newValue,
-                  );
-                  onSeriesChanged(
-                    updatedSeries.rebuild(
-                      (b) => b..qualityProfileId = selected.id,
-                    ),
-                  );
-                },
-              ),
+              value: qualityProfiles.where((p) => p.id == updatedSeries.qualityProfileId).firstOrNull,
+              items: qualityProfiles,
+              itemToString: (p) => p.name ?? 'Unknown',
+              onChanged: (selected) {
+                onSeriesChanged(
+                  updatedSeries.rebuild(
+                    (b) => b..qualityProfileId = selected.id,
+                  ),
+                );
+              },
             ),
             FormRowDivider(),
-            LabeledDropdownRow(
-              label: 'Movie Path',
-              subtitle: 'Where the movie should be saved',
-              child: CustomDropdown(
-                value: rootFolders.isEmpty
-                    ? 'Unknown'
-                    : (rootFolders
-                              .firstWhere(
-                                (f) => f.path == updatedSeries.rootFolderPath,
-                                orElse: () => rootFolders.first,
-                              )
-                              .path ??
-                          'Unknown'),
-                items: rootFolders.map((f) => f.path ?? 'Unknown').toList(),
-                onChanged: (newValue) {
-                  final selected = rootFolders.firstWhere(
-                    (f) => f.path == newValue,
-                  );
-                  onSeriesChanged(
-                    updatedSeries.rebuild(
-                      (b) => b..rootFolderPath = selected.path,
-                    ),
-                  );
-                },
-              ),
+            GenericDropdownRow<RootFolderResource>(
+              label: 'Series Path',
+              subtitle: 'Where the series should be saved',
+              value: rootFolders.where((f) => f.path == updatedSeries.rootFolderPath).firstOrNull,
+              items: rootFolders,
+              itemToString: (f) => f.path ?? 'Unknown',
+              onChanged: (selected) {
+                onSeriesChanged(
+                  updatedSeries.rebuild(
+                    (b) => b..rootFolderPath = selected.path,
+                  ),
+                );
+              },
             ),
           ],
         ),

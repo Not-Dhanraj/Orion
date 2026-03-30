@@ -1,7 +1,7 @@
 import 'package:client/src/features/series/presentation/season/season_page_controller.dart';
-import 'package:client/src/shared/widgets/media_release_widget.dart';
+import 'package:client/src/shared/widgets/misc/media_release_widget.dart';
 import 'package:built_collection/built_collection.dart';
-import 'package:client/src/shared/widgets/custom_error_state.dart';
+import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';

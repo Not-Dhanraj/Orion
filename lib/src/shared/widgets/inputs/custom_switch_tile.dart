@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:client/src/shared/widgets/common/custom_switch.dart';
+import 'package:client/src/shared/widgets/inputs/custom_switch.dart';
 class CustomSwitchTile extends StatelessWidget {
   final String title;
   final String subtitle;

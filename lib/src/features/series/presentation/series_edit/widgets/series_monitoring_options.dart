@@ -1,8 +1,7 @@
+import 'package:client/src/shared/widgets/inputs/custom_switch_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:sonarr/sonarr.dart';
 import 'package:with_opacity/with_opacity.dart';
-
-import '../../../../../shared/widgets/custom_switch_tile.dart';
 
 class SeriesMonitoringOptions extends StatelessWidget {
   final SeriesResource series;

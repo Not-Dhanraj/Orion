@@ -1,6 +1,6 @@
 import 'package:client/src/features/series/presentation/series_detail/series_details_controller.dart';
 import 'package:client/src/features/series/presentation/series_detail/widgets/series_actions.dart';
-import 'package:client/src/shared/widgets/detail_page_header.dart';
+import 'package:client/src/shared/widgets/misc/detail_page_header.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'widgets/media_info_card.dart';
 import 'widgets/series_info_card.dart';

@@ -2,7 +2,7 @@ import 'package:client/src/features/auth/presentation/auth_page.dart';
 import 'package:client/src/features/auth/presentation/splash/splash_controller.dart';
 import 'package:client/src/features/auth/domain/splash_data.dart';
 import 'package:client/src/features/home/presentation/home_pageview/home_page.dart';
-import 'package:client/src/shared/widgets/custom_error_state.dart';
+import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:client/src/features/movies/presentation/movie_library/movie_library_controller.dart';

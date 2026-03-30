@@ -3,7 +3,7 @@ import 'package:client/src/features/movies/presentation/movie_detail/widgets/med
 import 'package:client/src/features/movies/presentation/movie_detail/widgets/movie_actions.dart';
 import 'package:client/src/features/movies/presentation/movie_detail/widgets/movie_info_card.dart';
 import 'package:client/src/features/movies/presentation/movie_detail/widgets/movie_overview_card.dart';
-import 'package:client/src/shared/widgets/detail_page_header.dart';
+import 'package:client/src/shared/widgets/misc/detail_page_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';

@@ -1,3 +1,4 @@
+import 'package:client/src/shared/widgets/inputs/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 
 class FormSectionHeader extends StatelessWidget {
@@ -58,36 +59,68 @@ class FormRowDivider extends StatelessWidget {
   }
 }
 
-class LabeledDropdownRow extends StatelessWidget {
-  final String label;
-  final String subtitle;
-  final Widget child;
-
-  const LabeledDropdownRow({
+class GenericDropdownRow<T> extends StatelessWidget {
+  const GenericDropdownRow({
     super.key,
     required this.label,
     required this.subtitle,
-    required this.child,
+    required this.items,
+    required this.itemToString,
+    required this.onChanged,
+    this.value,
+    this.fallbackValue = 'Unknown',
   });
+
+  final String label;
+  final String subtitle;
+  final T? value;
+  final List<T> items;
+  final String Function(T) itemToString;
+  final void Function(T) onChanged;
+  final String fallbackValue;
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final tt = Theme.of(context).textTheme;
 
+    final valueString = value != null
+        ? itemToString(value as T)
+        : items.isNotEmpty
+        ? itemToString(items.first)
+        : fallbackValue;
+
+    final dropdownItems = items.isNotEmpty
+        ? items.map(itemToString).toList()
+        : [fallbackValue];
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: tt.bodyMedium!.copyWith(fontWeight: FontWeight.w600)),
+          Text(
+            label,
+            style: tt.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+          ),
           const SizedBox(height: 2),
           Text(
             subtitle,
-            style: tt.bodySmall!.copyWith(color: cs.onSurfaceVariant),
+            style: tt.bodySmall?.copyWith(color: cs.onSurfaceVariant),
           ),
           const SizedBox(height: 10),
-          child,
+          CustomDropdown(
+            value: valueString,
+            items: dropdownItems,
+            onChanged: (newValue) {
+              if (items.isEmpty) return;
+              final selected = items.firstWhere(
+                (i) => itemToString(i) == newValue,
+                orElse: () => items.first,
+              );
+              onChanged(selected);
+            },
+          ),
         ],
       ),
     );

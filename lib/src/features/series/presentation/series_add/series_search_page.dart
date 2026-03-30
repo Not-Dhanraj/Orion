@@ -1,9 +1,9 @@
 import 'package:client/src/features/series/presentation/series_add/series_add_controller.dart';
-import 'package:client/src/features/series/presentation/series_add/widgets/series_search_bar.dart';
+import 'package:client/src/shared/widgets/sheets/sheet_search_bar.dart';
 import 'package:client/src/features/series/presentation/series_add/widgets/series_search_results.dart';
-import 'package:client/src/features/series/presentation/series_add/widgets/series_sheet_header.dart';
-import 'package:client/src/shared/widgets/animated_progress_bar.dart';
-import 'package:client/src/shared/widgets/custom_error_state.dart';
+import 'package:client/src/shared/widgets/sheets/sheet_header.dart';
+import 'package:client/src/shared/widgets/indicators/animated_progress_bar.dart';
+import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
 import 'package:client/src/utils/context_extensions.dart';
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +75,7 @@ class _SeriesSearchPageState extends ConsumerState<SeriesSearchPage> {
                 ),
                 child: Column(
                   children: [
-                    SeriesSheetHeader(
+                    SheetHeader(
                       onClose: () => Navigator.of(context).pop(),
                       title: 'Search Series',
                     ),
@@ -138,10 +138,11 @@ class _SeriesSearchPageState extends ConsumerState<SeriesSearchPage> {
                                       16,
                                       0,
                                     ),
-                                    child: SeriesSearchBar(
+                                    child: SheetSearchBar(
                                       controller: _searchController,
                                       focusNode: _searchFocus,
                                       isSearching: state.isSearching,
+                                      hintText: 'Search for a TV series by name…',
                                       onSearch: _triggerSearch,
                                       onClear: _clearSearch,
                                     ),

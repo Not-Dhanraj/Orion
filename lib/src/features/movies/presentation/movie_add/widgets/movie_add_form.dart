@@ -1,7 +1,6 @@
 import 'package:client/src/features/movies/presentation/movie_add/movie_add_controller.dart';
-import 'package:client/src/shared/widgets/common/custom_dropdown.dart';
-import 'package:client/src/shared/widgets/common/sheet_form_widgets.dart';
-import 'package:client/src/shared/widgets/custom_switch_tile.dart';
+import 'package:client/src/shared/widgets/sheets/sheet_form_widgets.dart';
+import 'package:client/src/shared/widgets/inputs/custom_switch_tile.dart';
 import 'package:client/src/utils/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,58 +31,38 @@ class MovieConfigurationForm extends ConsumerWidget {
         FormSectionHeader(label: 'BASIC OPTIONS'),
         OutlinedFormSection(
           children: [
-            LabeledDropdownRow(
+            GenericDropdownRow<MonitorTypes>(
               label: 'Monitor',
               subtitle: 'Select how to monitor this movie',
-              child: CustomDropdown(
-                value:
-                    (updatedMovie.addOptions?.monitor ?? MonitorTypes.movieOnly)
-                        .name
-                        .capitalizeByWord(),
-                items: MonitorTypes.values
-                    .map((t) => t.name.capitalizeByWord())
-                    .toList(),
-                onChanged: (newValue) {
-                  final newType = MonitorTypes.values.firstWhere(
-                    (t) => t.name.capitalizeByWord() == newValue,
-                  );
-                  onMovieChanged(
-                    updatedMovie.rebuild(
-                      (b) =>
-                          b..addOptions.update((b2) => b2..monitor = newType),
-                    ),
-                  );
-                },
-              ),
+              value: updatedMovie.addOptions?.monitor ?? MonitorTypes.movieOnly,
+              items: MonitorTypes.values.toList(),
+              itemToString: (t) => t.name.capitalizeByWord(),
+              onChanged: (newType) {
+                onMovieChanged(
+                  updatedMovie.rebuild(
+                    (b) => b..addOptions.update((b2) => b2..monitor = newType),
+                  ),
+                );
+              },
             ),
             FormRowDivider(),
-            LabeledDropdownRow(
+            GenericDropdownRow<MovieStatusType>(
               label: 'Minimum Availability',
               subtitle: 'When the movie is considered available',
-              child: CustomDropdown(
-                value:
-                    (updatedMovie.minimumAvailability ??
-                            MovieStatusType.released)
-                        .name
-                        .capitalizeByWord(),
-                items: [
-                  MovieStatusType.announced,
-                  MovieStatusType.inCinemas,
-                  MovieStatusType.released,
-                ].map((t) => t.name.capitalizeByWord()).toList(),
-                onChanged: (newValue) {
-                  final newType = [
-                    MovieStatusType.announced,
-                    MovieStatusType.inCinemas,
-                    MovieStatusType.released,
-                  ].firstWhere((t) => t.name.capitalizeByWord() == newValue);
-                  onMovieChanged(
-                    updatedMovie.rebuild(
-                      (b) => b..minimumAvailability = newType,
-                    ),
-                  );
-                },
-              ),
+              value: updatedMovie.minimumAvailability ?? MovieStatusType.released,
+              items: [
+                MovieStatusType.announced,
+                MovieStatusType.inCinemas,
+                MovieStatusType.released,
+              ],
+              itemToString: (t) => t.name.capitalizeByWord(),
+              onChanged: (newType) {
+                onMovieChanged(
+                  updatedMovie.rebuild(
+                    (b) => b..minimumAvailability = newType,
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -93,58 +72,34 @@ class MovieConfigurationForm extends ConsumerWidget {
         FormSectionHeader(label: 'QUALITY & PATH'),
         OutlinedFormSection(
           children: [
-            LabeledDropdownRow(
+            GenericDropdownRow<QualityProfileResource>(
               label: 'Profile',
               subtitle: 'Quality profile to use for downloads',
-              child: CustomDropdown(
-                value: qualityProfiles.isEmpty
-                    ? 'Unknown'
-                    : (qualityProfiles
-                              .firstWhere(
-                                (p) => p.id == updatedMovie.qualityProfileId,
-                                orElse: () => qualityProfiles.first,
-                              )
-                              .name ??
-                          'Unknown'),
-                items: qualityProfiles.map((p) => p.name ?? 'Unknown').toList(),
-                onChanged: (newValue) {
-                  final selected = qualityProfiles.firstWhere(
-                    (p) => p.name == newValue,
-                  );
-                  onMovieChanged(
-                    updatedMovie.rebuild(
-                      (b) => b..qualityProfileId = selected.id,
-                    ),
-                  );
-                },
-              ),
+              value: qualityProfiles.where((p) => p.id == updatedMovie.qualityProfileId).firstOrNull,
+              items: qualityProfiles,
+              itemToString: (p) => p.name ?? 'Unknown',
+              onChanged: (selected) {
+                onMovieChanged(
+                  updatedMovie.rebuild(
+                    (b) => b..qualityProfileId = selected.id,
+                  ),
+                );
+              },
             ),
             FormRowDivider(),
-            LabeledDropdownRow(
+            GenericDropdownRow<RootFolderResource>(
               label: 'Movie Path',
               subtitle: 'Where the movie should be saved',
-              child: CustomDropdown(
-                value: rootFolders.isEmpty
-                    ? 'Unknown'
-                    : (rootFolders
-                              .firstWhere(
-                                (f) => f.path == updatedMovie.rootFolderPath,
-                                orElse: () => rootFolders.first,
-                              )
-                              .path ??
-                          'Unknown'),
-                items: rootFolders.map((f) => f.path ?? 'Unknown').toList(),
-                onChanged: (newValue) {
-                  final selected = rootFolders.firstWhere(
-                    (f) => f.path == newValue,
-                  );
-                  onMovieChanged(
-                    updatedMovie.rebuild(
-                      (b) => b..rootFolderPath = selected.path,
-                    ),
-                  );
-                },
-              ),
+              value: rootFolders.where((f) => f.path == updatedMovie.rootFolderPath).firstOrNull,
+              items: rootFolders,
+              itemToString: (f) => f.path ?? 'Unknown',
+              onChanged: (selected) {
+                onMovieChanged(
+                  updatedMovie.rebuild(
+                    (b) => b..rootFolderPath = selected.path,
+                  ),
+                );
+              },
             ),
           ],
         ),

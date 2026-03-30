@@ -1,7 +1,7 @@
 import 'package:client/src/features/movies/presentation/movie_detail/movie_details_controller.dart';
 import 'package:client/src/features/movies/presentation/movie_edit/movie_edit_page.dart';
-import 'package:client/src/shared/widgets/media_release_widget.dart';
-import 'package:client/src/shared/widgets/custom_dialog.dart';
+import 'package:client/src/shared/widgets/misc/media_release_widget.dart';
+import 'package:client/src/shared/widgets/dialogs/custom_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';

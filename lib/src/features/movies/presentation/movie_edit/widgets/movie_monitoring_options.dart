@@ -1,4 +1,4 @@
-import 'package:client/src/shared/widgets/custom_switch_tile.dart';
+import 'package:client/src/shared/widgets/inputs/custom_switch_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr/radarr.dart';

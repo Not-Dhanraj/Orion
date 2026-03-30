@@ -5,7 +5,7 @@ import 'package:client/src/features/movies/presentation/movie_add/widgets/movie_
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr/radarr.dart';
-import 'package:with_opacity/with_opacity.dart';
+import 'package:client/src/shared/widgets/indicators/empty_state_widget.dart';
 
 class MovieSearchBody extends ConsumerWidget {
   const MovieSearchBody({super.key});
@@ -15,77 +15,23 @@ class MovieSearchBody extends ConsumerWidget {
     final state = ref.watch(movieAddController).requireValue;
     final results = state.searchResults;
 
-    if (results == null) return const _EmptyPrompt();
-    if (results.isEmpty) return const _NoResults();
+    if (results == null) {
+      return const EmptyStateWidget(
+        icon: Icons.movie_filter_rounded,
+        title: 'Search for a Movie to add',
+        subtitle: 'Enter a movie name above and press SEARCH.',
+      );
+    }
+    if (results.isEmpty) {
+      return const EmptyStateWidget(
+        icon: Icons.search_off_rounded,
+        title: 'No movies found',
+        subtitle:
+            'Try different keywords or check if the movie is already in your library.',
+      );
+    }
 
     return _ResultsList(results: results, state: state);
-  }
-}
-
-class _EmptyPrompt extends StatelessWidget {
-  const _EmptyPrompt();
-
-  @override
-  Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    final tt = Theme.of(context).textTheme;
-
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.movie_filter_rounded,
-            size: 72,
-            color: cs.primary.withCustomOpacity(0.4),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            'Search for a Movie to add',
-            style: tt.titleMedium!.copyWith(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Enter a movie name above and press SEARCH.',
-            style: tt.bodyMedium!.copyWith(color: cs.onSurfaceVariant),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _NoResults extends StatelessWidget {
-  const _NoResults();
-
-  @override
-  Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    final tt = Theme.of(context).textTheme;
-
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.search_off_rounded,
-            size: 72,
-            color: cs.primary.withCustomOpacity(0.4),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            'No movies found',
-            style: tt.titleMedium!.copyWith(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Try different keywords or check if the movie is already in your library.',
-            style: tt.bodyMedium!.copyWith(color: cs.onSurfaceVariant),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
   }
 }
 

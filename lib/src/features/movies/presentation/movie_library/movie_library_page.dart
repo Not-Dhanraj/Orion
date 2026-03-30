@@ -5,7 +5,7 @@ import 'package:client/src/features/movies/presentation/movie_detail/movie_detai
 import 'package:client/src/features/movies/presentation/movie_detail/movie_details_page.dart';
 import 'package:client/src/features/movies/presentation/movie_library/movie_library_controller.dart';
 import 'package:client/src/utils/context_extensions.dart';
-import 'package:client/src/shared/widgets/custom_error_state.dart';
+import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
 import 'package:client/src/utils/movie_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

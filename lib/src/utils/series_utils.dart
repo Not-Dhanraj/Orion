@@ -32,3 +32,23 @@ extension SeriesResourceUtils on SeriesResource {
     }
   }
 }
+
+enum SeasonStatus { complete, unmonitored, unfinished }
+
+extension SeasonStatusExtension on SeasonStatus {
+  String get label => switch (this) {
+        SeasonStatus.complete => 'COMPLETE',
+        SeasonStatus.unmonitored => 'UNMONITORED',
+        SeasonStatus.unfinished => 'UNFINISHED',
+      };
+}
+
+SeasonStatus resolveSeasonStatus(SeasonResource season) {
+  final fileCount = season.statistics?.episodeFileCount ?? 0;
+  final episodeCount = season.statistics?.episodeCount ?? 0;
+
+  if (season.monitored == false) return SeasonStatus.unmonitored;
+  if (episodeCount > 0 && fileCount == episodeCount) return SeasonStatus.complete;
+
+  return SeasonStatus.unfinished;
+}

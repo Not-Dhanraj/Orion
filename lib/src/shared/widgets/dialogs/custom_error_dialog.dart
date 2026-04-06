@@ -71,7 +71,6 @@ class CustomErrorDialog extends StatelessWidget {
                             style: tt.bodySmall!.copyWith(
                               fontSize: 11,
                               height: 1.6,
-                              fontFamily: 'JetBrains Mono',
                               color: cs.error.withValues(alpha: 0.9),
                             ),
                           ),

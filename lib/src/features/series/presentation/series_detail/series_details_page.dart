@@ -3,10 +3,14 @@ import 'package:client/src/features/series/presentation/series_edit/series_edit_
 import 'package:client/src/features/series/presentation/series_detail/widgets/media_hero_header.dart';
 import 'package:client/src/features/series/presentation/series_detail/widgets/media_specs_grid.dart';
 import 'package:client/src/features/series/presentation/series_detail/widgets/media_telemetry.dart';
-import 'package:client/src/features/series/presentation/series_detail/widgets/season_accordion.dart';
+import 'package:client/src/features/series/presentation/season/widgets/season_accordion.dart';
+import 'package:client/src/shared/widgets/dialogs/custom_dialog.dart';
+import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/utils/series_utils.dart';
+import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:sonarr/sonarr.dart';
 
 class SeriesDetailsPage extends ConsumerStatefulWidget {
@@ -19,135 +23,52 @@ class SeriesDetailsPage extends ConsumerStatefulWidget {
 }
 
 class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
+  Future<void> _deleteSeries({
+    required BuildContext context,
+    required SeriesResource series,
+    required bool deleteFiles,
+    required bool addImportListExclusion,
+  }) async {
+    try {
+      await ref
+          .read(seriesDetailsController.notifier)
+          .deleteSeries(
+            deleteFiles: deleteFiles,
+            addImportListExclusion: addImportListExclusion,
+          );
+      await Future.delayed(const Duration(milliseconds: 500));
+      if (context.mounted) {
+        Navigator.of(context).pop();
+        CustomSnackbar.show(
+          context,
+          message: 'Successfully deleted "${series.title}"',
+          type: CustomSnackbarType.success,
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        CustomSnackbar.show(
+          context,
+          message: 'Failed to delete series: ${e.toString()}',
+          type: CustomSnackbarType.error,
+        );
+      }
+    }
+  }
+
   void _confirmDelete(BuildContext context, SeriesResource series) {
     showDialog(
       context: context,
-      builder: (context) {
-        bool deleteFiles = false;
-        bool addImportListExclusion = false;
-
-        return StatefulBuilder(
-          builder: (context, setState) => AlertDialog(
-            title: const Text('Delete Series'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Are you sure you want to delete this series?'),
-                const SizedBox(height: 16),
-                CheckboxListTile(
-                  title: const Text('Delete Files'),
-                  value: deleteFiles,
-                  onChanged: (value) {
-                    setState(() {
-                      deleteFiles = value ?? false;
-                    });
-                  },
-                  contentPadding: EdgeInsets.zero,
-                  dense: true,
-                ),
-                CheckboxListTile(
-                  title: const Text('Add Import List Exclusion'),
-                  value: addImportListExclusion,
-                  onChanged: (value) {
-                    setState(() {
-                      addImportListExclusion = value ?? false;
-                    });
-                  },
-                  contentPadding: EdgeInsets.zero,
-                  dense: true,
-                ),
-              ],
+      builder: (_) => _DeleteSeriesDialog(
+        series: series,
+        onConfirm: ({required deleteFiles, required addImportListExclusion}) =>
+            _deleteSeries(
+              context: context,
+              series: series,
+              deleteFiles: deleteFiles,
+              addImportListExclusion: addImportListExclusion,
             ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                  try {
-                    await ref
-                        .read(seriesDetailsController.notifier)
-                        .deleteSeries(
-                          deleteFiles: deleteFiles,
-                          addImportListExclusion: addImportListExclusion,
-                        );
-
-                    await Future.delayed(const Duration(milliseconds: 500));
-                    if (context.mounted) {
-                      final scaffoldMessenger = ScaffoldMessenger.of(context);
-                      Navigator.of(context).pop();
-
-                      scaffoldMessenger.showSnackBar(
-                        SnackBar(
-                          content: Row(
-                            children: [
-                              const Icon(
-                                Icons.check_circle,
-                                color: Colors.white,
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Text(
-                                  'Successfully deleted "${series.title}"',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          backgroundColor: Colors.red.shade600,
-                          behavior: SnackBarBehavior.floating,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          margin: const EdgeInsets.all(16),
-                          duration: const Duration(seconds: 4),
-                        ),
-                      );
-                    }
-                  } catch (e) {
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Row(
-                            children: [
-                              const Icon(
-                                Icons.error_outline,
-                                color: Colors.white,
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Text(
-                                  'Failed to delete series: ${e.toString()}',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          backgroundColor: Colors.red,
-                          behavior: SnackBarBehavior.floating,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          margin: const EdgeInsets.all(16),
-                          duration: const Duration(seconds: 5),
-                        ),
-                      );
-                    }
-                  }
-                },
-                child: const Text('Delete'),
-              ),
-            ],
-          ),
-        );
-      },
+      ),
     );
   }
 
@@ -162,55 +83,144 @@ class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
         : 0.0;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Series Details'), centerTitle: false),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 120),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 800),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                MediaHeroHeader(
-                  title: series.title ?? 'UNKNOWN',
-                  agency: series.network ?? 'UNKNOWN',
-                  posterUrl: series.remotePosterUrlLink ?? '',
-                  syncProgress: syncProgress,
-                  onEdit: () {
-                    showDialog(
-                      context: context,
-                      builder: (dialogContext) {
-                        return SeriesEditPage(series: series);
-                      },
-                    );
-                  },
-                  onDelete: () => _confirmDelete(context, series),
-                ),
-                const SizedBox(height: 32),
-                if (series.seasons != null)
-                  ...series.seasons!.reversed.map((season) {
-                    final sFiles = season.statistics?.episodeFileCount ?? 0;
-                    final sCount = season.statistics?.episodeCount ?? 0;
-                    final status = resolveSeasonStatus(season);
+      appBar: AppBar(
+        title: const Text('Series Details'),
+        centerTitle: false,
+        leading: IconButton(
+          icon: const Icon(TablerIcons.arrow_left),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
+      body: Entry.opacity(
+        duration: const Duration(milliseconds: 300),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 120),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 800),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  MediaHeroHeader(
+                    title: series.title ?? 'UNKNOWN',
+                    agency: series.network ?? 'UNKNOWN',
+                    posterUrl: series.remotePosterUrlLink ?? '',
+                    syncProgress: syncProgress,
+                    onEdit: () {
+                      showDialog(
+                        context: context,
+                        builder: (dialogContext) {
+                          return SeriesEditPage(series: series);
+                        },
+                      );
+                    },
+                    onDelete: () => _confirmDelete(context, series),
+                  ),
+                  const SizedBox(height: 32),
+                  if (series.seasons != null)
+                    ...series.seasons!.reversed.map((season) {
+                      final sFiles = season.statistics?.episodeFileCount ?? 0;
+                      final sCount = season.statistics?.episodeCount ?? 0;
+                      final status = resolveSeasonStatus(season);
 
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: SeasonAccordion(
-                        seriesId: series.id ?? 0,
-                        seasonNumber: season.seasonNumber ?? 0,
-                        episodeCount: '$sFiles/$sCount',
-                        status: status.label,
-                        initiallyExpanded: false,
-                      ),
-                    );
-                  }),
-                const SizedBox(height: 32),
-                MediaSpecsGrid(series: series),
-                const SizedBox(height: 48),
-                MediaTelemetry(series: series),
-              ],
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: SeasonAccordion(
+                          series: series,
+                          seasonNumber: season.seasonNumber ?? 0,
+                          episodeCount: '$sFiles/$sCount',
+                          status: status.label,
+                          initiallyExpanded: false,
+                        ),
+                      );
+                    }),
+                  const SizedBox(height: 32),
+                  MediaSpecsGrid(series: series),
+                  const SizedBox(height: 48),
+                  MediaTelemetry(series: series),
+                ],
+              ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DeleteSeriesDialog extends StatefulWidget {
+  final SeriesResource series;
+  final void Function({
+    required bool deleteFiles,
+    required bool addImportListExclusion,
+  })
+  onConfirm;
+
+  const _DeleteSeriesDialog({required this.series, required this.onConfirm});
+
+  @override
+  State<_DeleteSeriesDialog> createState() => _DeleteSeriesDialogState();
+}
+
+class _DeleteSeriesDialogState extends State<_DeleteSeriesDialog> {
+  bool _deleteFiles = false;
+  bool _addImportListExclusion = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 600),
+        child: CustomDialog(
+          title: 'DELETE SERIES',
+          heading: 'Confirm deletion of "${widget.series.title}"',
+          bodyWidget: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('Are you sure you want to delete this series?'),
+              const SizedBox(height: 12),
+              CheckboxListTile(
+                title: const Text('Delete Files'),
+                value: _deleteFiles,
+                onChanged: (v) => setState(() => _deleteFiles = v ?? false),
+                contentPadding: EdgeInsets.zero,
+                dense: true,
+              ),
+              CheckboxListTile(
+                title: const Text('Add Import List Exclusion'),
+                value: _addImportListExclusion,
+                onChanged: (v) =>
+                    setState(() => _addImportListExclusion = v ?? false),
+                contentPadding: EdgeInsets.zero,
+                dense: true,
+              ),
+            ],
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            OutlinedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                widget.onConfirm(
+                  deleteFiles: _deleteFiles,
+                  addImportListExclusion: _addImportListExclusion,
+                );
+              },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: cs.error,
+                side: BorderSide(color: cs.error.withValues(alpha: 0.4)),
+              ),
+              child: const Text('DELETE'),
+            ),
+          ],
         ),
       ),
     );

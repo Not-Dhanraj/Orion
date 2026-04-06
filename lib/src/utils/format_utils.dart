@@ -12,6 +12,11 @@ class FormatUtils {
     return '${size.toStringAsFixed(1)} ${suffixes[i]}';
   }
 
+  /// Returns a zero-padded 2-digit episode number string (e.g. 01, 12).
+  /// Falls back to '00' when [n] is null.
+  static String formatEpisodeNumber(int? n) =>
+      n?.toString().padLeft(2, '0') ?? '00';
+
   static String formatDateTime(DateTime dateTime) {
     final now = DateTime.now();
     final difference = dateTime.difference(now);

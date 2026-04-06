@@ -6,13 +6,17 @@ class CustomDialog extends StatelessWidget {
   final String heading;
   final String body;
   final Widget? bodyWidget;
+  final bool includeIcon;
+  final bool isDismissable;
 
   final List<Widget> actions;
 
   const CustomDialog({
     super.key,
     required this.title,
+    this.includeIcon = true,
     required this.heading,
+    this.isDismissable = false,
     this.body = '',
     this.bodyWidget,
     required this.actions,
@@ -44,18 +48,19 @@ class CustomDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _DialogTitleBar(title: title),
+            _DialogTitleBar(title: title, isDismissable: isDismissable),
             Padding(
-              padding: EdgeInsets.all(context.isDesktop ? 24 : 18),
+              padding: EdgeInsets.all(context.isDesktop ? 24 : 14),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    width: 48,
-                    height: 48,
-                    color: cs.primary.withValues(alpha: 0.1),
-                    child: Icon(Icons.priority_high, color: cs.primary),
-                  ),
+                  if (includeIcon)
+                    Container(
+                      width: 48,
+                      height: 48,
+                      color: cs.primary.withValues(alpha: 0.1),
+                      child: Icon(Icons.priority_high, color: cs.primary),
+                    ),
                   const SizedBox(width: 16),
                   Expanded(
                     child: Column(
@@ -83,7 +88,7 @@ class CustomDialog extends StatelessWidget {
                 ],
               ),
             ),
-            _DialogFooter(actions: actions),
+            if (actions.isNotEmpty) _DialogFooter(actions: actions),
           ],
         ),
       ),
@@ -93,7 +98,8 @@ class CustomDialog extends StatelessWidget {
 
 class _DialogTitleBar extends StatelessWidget {
   final String title;
-  const _DialogTitleBar({required this.title});
+  final bool isDismissable;
+  const _DialogTitleBar({required this.title, required this.isDismissable});
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +107,7 @@ class _DialogTitleBar extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
       decoration: BoxDecoration(
         color: cs.surfaceBright,
         border: Border(
@@ -119,12 +125,13 @@ class _DialogTitleBar extends StatelessWidget {
               letterSpacing: 2.0,
             ),
           ),
-          IconButton(
-            icon: Icon(Icons.close, size: 16, color: cs.onSurfaceVariant),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
+          if (isDismissable)
+            IconButton(
+              icon: Icon(Icons.close, size: 16, color: cs.onSurfaceVariant),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
         ],
       ),
     );
@@ -140,7 +147,7 @@ class _DialogFooter extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: cs.surfaceContainer,
         border: Border(

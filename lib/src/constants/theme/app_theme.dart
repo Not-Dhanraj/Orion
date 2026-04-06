@@ -106,7 +106,7 @@ class AppTheme {
           foregroundColor: AppColorsLight.onPrimary,
           elevation: 0,
           shape: _zeroShape,
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
           textStyle: GoogleFonts.jetBrainsMono(
             fontSize: 13,
             fontWeight: FontWeight.w700,
@@ -120,7 +120,7 @@ class AppTheme {
             color: AppColorsLight.outline.withValues(alpha: 0.4),
           ),
           shape: _zeroShape,
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
           textStyle: GoogleFonts.jetBrainsMono(
             fontSize: 13,
             fontWeight: FontWeight.w700,
@@ -132,7 +132,7 @@ class AppTheme {
           foregroundColor: AppColorsLight.onSurfaceVariant,
           shape: _zeroShape,
           backgroundColor: AppColorsLight.surfaceContainer,
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
           textStyle: GoogleFonts.jetBrainsMono(
             fontSize: 13,
             fontWeight: FontWeight.w700,
@@ -287,7 +287,7 @@ class AppTheme {
           foregroundColor: AppColors.onPrimary,
           elevation: 0,
           shape: _zeroShape,
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
           textStyle: GoogleFonts.jetBrainsMono(
             fontSize: 13,
             fontWeight: FontWeight.w700,
@@ -299,7 +299,7 @@ class AppTheme {
           foregroundColor: AppColors.primary,
           side: BorderSide(color: AppColors.outline.withValues(alpha: 0.4)),
           shape: _zeroShape,
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
           textStyle: GoogleFonts.jetBrainsMono(
             fontSize: 13,
             fontWeight: FontWeight.w700,
@@ -311,7 +311,7 @@ class AppTheme {
           foregroundColor: AppColors.onSurfaceVariant,
           shape: _zeroShape,
           backgroundColor: AppColors.surfaceContainer,
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
           textStyle: GoogleFonts.jetBrainsMono(
             fontSize: 13,
             fontWeight: FontWeight.w700,

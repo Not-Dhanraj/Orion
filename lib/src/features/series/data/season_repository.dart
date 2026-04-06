@@ -1,4 +1,6 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:client/src/core/application/api_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
 
 class SeasonRepository {
@@ -46,11 +48,6 @@ class SeasonRepository {
     return response.data ?? BuiltList<ReleaseResource>([]);
   }
 
-  /// Update monitoring status for a specific season
-  ///
-  /// [seriesId] The ID of the series
-  /// [seasonNumber] The season number to update
-  /// [monitored] Whether to monitor or unmonitor the season
   Future<SeriesResource> updateSeriesSeasons({
     required int seriesId,
     required int seasonNumber,
@@ -102,3 +99,7 @@ class SeasonRepository {
     );
   }
 }
+
+final seasonRepositoryProvider = Provider<SeasonRepository>((ref) {
+  return SeasonRepository(ref.watch(seriesApiProvider));
+});

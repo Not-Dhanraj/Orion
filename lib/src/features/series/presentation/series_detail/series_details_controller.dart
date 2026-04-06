@@ -1,4 +1,3 @@
-import 'package:client/src/features/series/application/season_service.dart';
 import 'package:client/src/features/series/application/series_service.dart';
 import 'package:client/src/features/series/presentation/series_library/series_library_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,8 +25,3 @@ final seriesDetailsController =
     StateNotifierProvider<SeriesDetailsControllerNotifier, SeriesResource>(
       (ref) => SeriesDetailsControllerNotifier(ref),
     );
-
-final seriesEpisodesProvider = FutureProvider.family<List<EpisodeResource>, int>((ref, seriesId) async {
-  final service = ref.read(seasonServiceProvider);
-  return service.getEpisodes(seriesId: seriesId);
-});

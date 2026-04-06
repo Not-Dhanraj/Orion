@@ -1,6 +1,5 @@
 import 'package:client/src/exceptions/repository_exception.dart';
 import 'package:client/src/features/series/data/season_repository.dart';
-import 'package:client/src/core/application/api_provider.dart';
 import 'package:client/src/features/series/presentation/series_detail/series_details_controller.dart';
 import 'package:client/src/features/series/presentation/series_library/series_library_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +9,6 @@ class SeasonService {
   final Ref _ref;
   SeasonService(this._ref);
 
-  /// Get episodes for a series
   Future<List<EpisodeResource>> getEpisodes({
     required int seriesId,
     bool includeEpisodeFile = true,
@@ -31,7 +29,6 @@ class SeasonService {
     }
   }
 
-  /// Monitor or unmonitor episodes
   Future<void> monitorEpisodes({
     required List<int> episodeIds,
     required bool monitored,
@@ -51,7 +48,6 @@ class SeasonService {
     }
   }
 
-  /// Delete an episode file
   Future<void> deleteEpisodeFile({required int episodeId}) async {
     try {
       final seasonRepository = _ref.read(seasonRepositoryProvider);
@@ -87,7 +83,6 @@ class SeasonService {
     }
   }
 
-  /// Update monitoring status for a specific season
   Future<SeriesResource> updateSeasonMonitoring({
     required int seriesId,
     required int seasonNumber,
@@ -112,7 +107,6 @@ class SeasonService {
     }
   }
 
-  /// Download a release
   Future<void> downloadRelease({
     required int indexerId,
     required String guid,
@@ -129,10 +123,6 @@ class SeasonService {
     }
   }
 }
-
-final seasonRepositoryProvider = Provider<SeasonRepository>((ref) {
-  return SeasonRepository(ref.watch(seriesApiProvider));
-});
 
 final seasonServiceProvider = Provider<SeasonService>((ref) {
   return SeasonService(ref);

@@ -142,7 +142,8 @@ class _SeriesSearchPageState extends ConsumerState<SeriesSearchPage> {
                                       controller: _searchController,
                                       focusNode: _searchFocus,
                                       isSearching: state.isSearching,
-                                      hintText: 'Search for a TV series by name…',
+                                      hintText:
+                                          'Search for a TV series by name…',
                                       onSearch: _triggerSearch,
                                       onClear: _clearSearch,
                                     ),

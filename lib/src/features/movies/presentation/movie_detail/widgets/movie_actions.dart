@@ -2,6 +2,7 @@ import 'package:client/src/features/movies/presentation/movie_detail/movie_detai
 import 'package:client/src/features/movies/presentation/movie_edit/movie_edit_page.dart';
 import 'package:client/src/shared/widgets/misc/media_release_widget.dart';
 import 'package:client/src/shared/widgets/dialogs/custom_dialog.dart';
+import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
@@ -72,143 +73,99 @@ class MovieActionCard extends ConsumerWidget {
                   icon: TablerIcons.http_delete,
                   label: 'Delete',
                   onPressed: () {
+                    bool deleteFiles = false;
+                    bool addImportListExclusion = false;
+
                     showDialog(
                       context: context,
-                      builder: (context) {
-                        bool deleteFiles = false;
-                        bool addImportListExclusion = false;
-
+                      builder: (dialogContext) {
                         return StatefulBuilder(
-                          builder: (context, setState) => AlertDialog(
-                            title: const Text('Delete Movie'),
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Are you sure you want to delete this movie?',
+                          builder: (context, setDialogState) => Dialog(
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                            child: CustomDialog(
+                              title: 'DELETE MOVIE',
+                              heading: 'Confirm deletion of "${movie.title}"',
+                              bodyWidget: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Text(
+                                    'Are you sure you want to delete this movie?',
+                                  ),
+                                  const SizedBox(height: 12),
+                                  CheckboxListTile(
+                                    title: const Text('Delete Files'),
+                                    value: deleteFiles,
+                                    onChanged: (value) {
+                                      setDialogState(() {
+                                        deleteFiles = value ?? false;
+                                      });
+                                    },
+                                    contentPadding: EdgeInsets.zero,
+                                    dense: true,
+                                  ),
+                                  CheckboxListTile(
+                                    title: const Text('Add to Exclusion List'),
+                                    value: addImportListExclusion,
+                                    onChanged: (value) {
+                                      setDialogState(() {
+                                        addImportListExclusion = value ?? false;
+                                      });
+                                    },
+                                    contentPadding: EdgeInsets.zero,
+                                    dense: true,
+                                  ),
+                                ],
+                              ),
+                              actions: [
+                                FilledButton.tonal(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: const Text('Cancel'),
                                 ),
-                                const SizedBox(height: 16),
-                                CheckboxListTile(
-                                  title: const Text('Delete Files'),
-                                  value: deleteFiles,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      deleteFiles = value ?? false;
-                                    });
+                                FilledButton(
+                                  style: FilledButton.styleFrom(
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.error,
+                                  ),
+                                  onPressed: () async {
+                                    Navigator.of(context).pop();
+                                    try {
+                                      await ref
+                                          .read(movieDetailsController.notifier)
+                                          .deleteMovie(
+                                            deleteFiles: deleteFiles,
+                                            addImportListExclusion:
+                                                addImportListExclusion,
+                                          );
+
+                                      await Future.delayed(
+                                        const Duration(milliseconds: 500),
+                                      );
+                                      if (context.mounted) {
+                                        Navigator.of(context).pop();
+                                        CustomSnackbar.show(
+                                          context,
+                                          message:
+                                              'Successfully deleted "${movie.title}"',
+                                          type: CustomSnackbarType.success,
+                                        );
+                                      }
+                                    } catch (e) {
+                                      if (context.mounted) {
+                                        CustomSnackbar.show(
+                                          context,
+                                          message:
+                                              'Failed to delete movie: ${e.toString()}',
+                                          type: CustomSnackbarType.error,
+                                        );
+                                      }
+                                    }
                                   },
-                                  contentPadding: EdgeInsets.zero,
-                                  dense: true,
-                                ),
-                                CheckboxListTile(
-                                  title: const Text('Add to Exclusion List'),
-                                  value: addImportListExclusion,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      addImportListExclusion = value ?? false;
-                                    });
-                                  },
-                                  contentPadding: EdgeInsets.zero,
-                                  dense: true,
+                                  child: const Text('Delete'),
                                 ),
                               ],
                             ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.of(context).pop(),
-                                child: const Text('Cancel'),
-                              ),
-                              TextButton(
-                                onPressed: () async {
-                                  Navigator.of(context).pop();
-                                  try {
-                                    await ref
-                                        .read(movieDetailsController.notifier)
-                                        .deleteMovie(
-                                          deleteFiles: deleteFiles,
-                                          addImportListExclusion:
-                                              addImportListExclusion,
-                                        );
-
-                                    await Future.delayed(
-                                      const Duration(milliseconds: 500),
-                                    );
-                                    if (context.mounted) {
-                                      final scaffoldMessenger =
-                                          ScaffoldMessenger.of(context);
-                                      Navigator.of(context).pop();
-
-                                      scaffoldMessenger.showSnackBar(
-                                        SnackBar(
-                                          content: Row(
-                                            children: [
-                                              const Icon(
-                                                Icons.check_circle,
-                                                color: Colors.white,
-                                              ),
-                                              const SizedBox(width: 12),
-                                              Expanded(
-                                                child: Text(
-                                                  'Successfully deleted "${movie.title}"',
-                                                  style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          backgroundColor: Colors.red.shade600,
-                                          behavior: SnackBarBehavior.floating,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              12,
-                                            ),
-                                          ),
-                                          margin: const EdgeInsets.all(16),
-                                          duration: const Duration(seconds: 4),
-                                        ),
-                                      );
-                                    }
-                                  } catch (e) {
-                                    if (context.mounted) {
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
-                                        SnackBar(
-                                          content: Row(
-                                            children: [
-                                              const Icon(
-                                                Icons.error_outline,
-                                                color: Colors.white,
-                                              ),
-                                              const SizedBox(width: 12),
-                                              Expanded(
-                                                child: Text(
-                                                  'Failed to delete movie: ${e.toString()}',
-                                                  style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          backgroundColor: Colors.red,
-                                          behavior: SnackBarBehavior.floating,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              12,
-                                            ),
-                                          ),
-                                          margin: const EdgeInsets.all(16),
-                                          duration: const Duration(seconds: 5),
-                                        ),
-                                      );
-                                    }
-                                  }
-                                },
-                                child: const Text('Delete'),
-                              ),
-                            ],
                           ),
                         );
                       },
@@ -247,20 +204,24 @@ class MovieActionCard extends ConsumerWidget {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) {
-        return AlertDialog(
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(child: CircularProgressIndicator()),
-              const SizedBox(height: 12),
-              const Text('Searching for releases may take some time.'),
-            ],
+      builder: (_) => Dialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        child: CustomDialog(
+          title: 'SEARCHING',
+          heading: 'Searching for releases',
+          bodyWidget: const Padding(
+            padding: EdgeInsets.symmetric(vertical: 16.0),
+            child: Center(child: CircularProgressIndicator()),
           ),
-        );
-      },
+          actions: [
+            FilledButton.tonal(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel Search'),
+            ),
+          ],
+        ),
+      ),
     );
 
     try {
@@ -272,9 +233,11 @@ class MovieActionCard extends ConsumerWidget {
         Navigator.of(context).pop();
 
         if (releases.isEmpty) {
-          ScaffoldMessenger.of(
+          CustomSnackbar.show(
             context,
-          ).showSnackBar(const SnackBar(content: Text('No releases found')));
+            message: 'No releases found',
+            type: CustomSnackbarType.info,
+          );
           return;
         }
 
@@ -283,10 +246,10 @@ class MovieActionCard extends ConsumerWidget {
     } catch (error) {
       if (context.mounted) {
         Navigator.of(context).pop();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error loading releases: ${error.toString()}'),
-          ),
+        CustomSnackbar.show(
+          context,
+          message: 'Error loading releases: ${error.toString()}',
+          type: CustomSnackbarType.error,
         );
       }
     }
@@ -322,6 +285,8 @@ class MovieActionCard extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         child: CustomDialog(
           title: 'DELETE FILE',
           heading: 'Delete downloaded file?',
@@ -329,14 +294,13 @@ class MovieActionCard extends ConsumerWidget {
               'This will remove the file for "${movie.title}" from disk, '
               'but the movie will remain in Radarr.',
           actions: [
-            TextButton(
+            FilledButton.tonal(
               onPressed: () => Navigator.of(context).pop(),
               child: const Text('Cancel'),
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
+            FilledButton(
+              style: FilledButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.error,
-                foregroundColor: Theme.of(context).colorScheme.onError,
               ),
               onPressed: () async {
                 Navigator.of(context).pop();
@@ -345,30 +309,18 @@ class MovieActionCard extends ConsumerWidget {
                       .read(movieDetailsController.notifier)
                       .deleteMovieFile();
                   if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Deleted file for "${movie.title}"',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        backgroundColor: Colors.green.shade600,
-                        behavior: SnackBarBehavior.floating,
-                        margin: const EdgeInsets.all(16),
-                      ),
+                    CustomSnackbar.show(
+                      context,
+                      message: 'Deleted file for "${movie.title}"',
+                      type: CustomSnackbarType.success,
                     );
                   }
                 } catch (e) {
                   if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Failed to delete file: $e',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        backgroundColor: Colors.red,
-                        behavior: SnackBarBehavior.floating,
-                        margin: const EdgeInsets.all(16),
-                      ),
+                    CustomSnackbar.show(
+                      context,
+                      message: 'Failed to delete file: $e',
+                      type: CustomSnackbarType.error,
                     );
                   }
                 }

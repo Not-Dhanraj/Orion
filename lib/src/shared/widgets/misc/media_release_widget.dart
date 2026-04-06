@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:with_opacity/with_opacity.dart';
+import 'package:client/src/utils/format_utils.dart';
 
 class MediaReleaseWidget extends ConsumerStatefulWidget {
   /// This is deliberately typed as `List<dynamic>` to allow both
@@ -257,8 +258,8 @@ class _MediaReleaseWidgetState extends ConsumerState<MediaReleaseWidget> {
                                                       ),
                                                       const SizedBox(width: 4),
                                                       Text(
-                                                        _formatFileSize(
-                                                          release.size ?? 0,
+                                                        FormatUtils.formatFileSize(
+                                                          (release.size ?? 0).toDouble(),
                                                         ),
                                                         style: TextStyle(
                                                           fontSize: 12,
@@ -630,12 +631,4 @@ class _MediaReleaseWidgetState extends ConsumerState<MediaReleaseWidget> {
     }
   }
 
-  String _formatFileSize(int bytes) {
-    if (bytes < 1024) return '$bytes B';
-    if (bytes < 1024 * 1024) return '${(bytes / 1024).toStringAsFixed(1)} KB';
-    if (bytes < 1024 * 1024 * 1024) {
-      return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
-    }
-    return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(1)} GB';
-  }
 }

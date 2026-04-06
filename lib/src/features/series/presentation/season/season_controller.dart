@@ -8,8 +8,6 @@ class SeasonPageController
     extends AutoDisposeFamilyAsyncNotifier<SeasonPageState, SeriesResource> {
   @override
   Future<SeasonPageState> build(SeriesResource series) async {
-    ref.watch(seasonServiceProvider);
-
     final episodesBySeason = await _fetchEpisodesBySeason(series.id!);
     final seasons = _buildSeasonsList(series, episodesBySeason);
 
@@ -62,15 +60,6 @@ class SeasonPageController
     return seasons;
   }
 
-  void setSelectedSeasonIndex(int index) {
-    if (state.value == null) return;
-
-    final currentState = state.value!;
-    if (index >= 0 && index < currentState.seasons.length) {
-      state = AsyncData(currentState.copyWith(selectedSeasonIndex: index));
-    }
-  }
-
   Future<List<ReleaseResource>> loadReleases({
     int? seriesId,
     int? seasonNumber,
@@ -100,8 +89,6 @@ class SeasonPageController
     final currentState = state.requireValue;
 
     try {
-      state = const AsyncLoading();
-
       final updatedSeries = await ref
           .read(seasonServiceProvider)
           .updateSeasonMonitoring(
@@ -151,8 +138,6 @@ class SeasonPageController
     final currentState = state.requireValue;
 
     try {
-      state = const AsyncLoading();
-
       await ref
           .read(seasonServiceProvider)
           .monitorEpisodes(episodeIds: episodeIds, monitored: monitored);
@@ -182,8 +167,6 @@ class SeasonPageController
     final currentState = state.requireValue;
 
     try {
-      state = const AsyncLoading();
-
       await ref
           .read(seasonServiceProvider)
           .deleteEpisodeFile(episodeId: episodeId);

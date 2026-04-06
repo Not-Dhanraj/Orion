@@ -79,7 +79,9 @@ class SeriesConfigurationForm extends ConsumerWidget {
             GenericDropdownRow<QualityProfileResource>(
               label: 'Profile',
               subtitle: 'Quality profile to use for downloads',
-              value: qualityProfiles.where((p) => p.id == updatedSeries.qualityProfileId).firstOrNull,
+              value: qualityProfiles
+                  .where((p) => p.id == updatedSeries.qualityProfileId)
+                  .firstOrNull,
               items: qualityProfiles,
               itemToString: (p) => p.name ?? 'Unknown',
               onChanged: (selected) {
@@ -94,7 +96,9 @@ class SeriesConfigurationForm extends ConsumerWidget {
             GenericDropdownRow<RootFolderResource>(
               label: 'Series Path',
               subtitle: 'Where the series should be saved',
-              value: rootFolders.where((f) => f.path == updatedSeries.rootFolderPath).firstOrNull,
+              value: rootFolders
+                  .where((f) => f.path == updatedSeries.rootFolderPath)
+                  .firstOrNull,
               items: rootFolders,
               itemToString: (f) => f.path ?? 'Unknown',
               onChanged: (selected) {

@@ -1,6 +1,6 @@
 import 'package:client/src/features/series/domain/series_add_state.dart';
 import 'package:client/src/features/series/presentation/series_add/series_add_controller.dart';
-import 'package:client/src/features/series/presentation/series_add/series_add_dialog.dart';
+import 'package:client/src/features/series/presentation/series_add/series_add_sheet.dart';
 import 'package:client/src/features/series/presentation/series_add/widgets/series_result_item.dart';
 import 'package:client/src/utils/series_utils.dart';
 import 'package:flutter/material.dart';
@@ -71,24 +71,26 @@ class _ResultsList extends ConsumerWidget {
             ],
           ),
         ),
-        SizedBox(height: 4),
         Expanded(
-          child: ListView.separated(
+          child: ListView.builder(
+            shrinkWrap: false,
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
             itemCount: results.length,
-            separatorBuilder: (_, _) => const SizedBox(height: 8),
             itemBuilder: (context, index) {
               final series = results[index];
               final isAdded = state.addedIds?.contains(series.tvdbId) ?? false;
-              return SeriesResultItem(
-                series: series,
-                subtitle: _buildSubtitle(series),
-                imageUrl: series.remotePosterUrlLink ?? "",
-                isAdded: isAdded,
-                isCreating: state.isCreating,
-                onAdd: isAdded
-                    ? null
-                    : () => _openAddDialog(context, ref, series),
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: SeriesResultItem(
+                  series: series,
+                  subtitle: _buildSubtitle(series),
+                  imageUrl: series.remotePosterUrlLink ?? "",
+                  isAdded: isAdded,
+                  isCreating: state.isCreating,
+                  onAdd: isAdded
+                      ? null
+                      : () => _openAddDialog(context, ref, series),
+                ),
               );
             },
           ),
@@ -117,7 +119,7 @@ class _ResultsList extends ConsumerWidget {
       useSafeArea: true,
       backgroundColor: Colors.transparent,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-      builder: (_) => SeriesAddDialog(series: series),
+      builder: (_) => SeriesAddSheet(series: series),
     );
   }
 }

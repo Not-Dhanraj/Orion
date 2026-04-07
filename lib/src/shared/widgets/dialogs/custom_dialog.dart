@@ -16,7 +16,7 @@ class CustomDialog extends StatelessWidget {
     required this.title,
     this.includeIcon = true,
     required this.heading,
-    this.isDismissable = false,
+    this.isDismissable = true,
     this.body = '',
     this.bodyWidget,
     required this.actions,
@@ -107,7 +107,7 @@ class _DialogTitleBar extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       decoration: BoxDecoration(
         color: cs.surfaceBright,
         border: Border(

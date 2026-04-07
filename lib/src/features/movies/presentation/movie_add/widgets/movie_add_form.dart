@@ -26,6 +26,7 @@ class MovieConfigurationForm extends ConsumerWidget {
     final updatedMovie = movieState.value?.selectedMovie ?? movie;
 
     return ListView(
+      shrinkWrap: true,
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
       children: [
         FormSectionHeader(label: 'BASIC OPTIONS'),
@@ -49,7 +50,8 @@ class MovieConfigurationForm extends ConsumerWidget {
             GenericDropdownRow<MovieStatusType>(
               label: 'Minimum Availability',
               subtitle: 'When the movie is considered available',
-              value: updatedMovie.minimumAvailability ?? MovieStatusType.released,
+              value:
+                  updatedMovie.minimumAvailability ?? MovieStatusType.released,
               items: [
                 MovieStatusType.announced,
                 MovieStatusType.inCinemas,
@@ -58,9 +60,7 @@ class MovieConfigurationForm extends ConsumerWidget {
               itemToString: (t) => t.name.capitalizeByWord(),
               onChanged: (newType) {
                 onMovieChanged(
-                  updatedMovie.rebuild(
-                    (b) => b..minimumAvailability = newType,
-                  ),
+                  updatedMovie.rebuild((b) => b..minimumAvailability = newType),
                 );
               },
             ),
@@ -75,7 +75,9 @@ class MovieConfigurationForm extends ConsumerWidget {
             GenericDropdownRow<QualityProfileResource>(
               label: 'Profile',
               subtitle: 'Quality profile to use for downloads',
-              value: qualityProfiles.where((p) => p.id == updatedMovie.qualityProfileId).firstOrNull,
+              value: qualityProfiles
+                  .where((p) => p.id == updatedMovie.qualityProfileId)
+                  .firstOrNull,
               items: qualityProfiles,
               itemToString: (p) => p.name ?? 'Unknown',
               onChanged: (selected) {
@@ -90,7 +92,9 @@ class MovieConfigurationForm extends ConsumerWidget {
             GenericDropdownRow<RootFolderResource>(
               label: 'Movie Path',
               subtitle: 'Where the movie should be saved',
-              value: rootFolders.where((f) => f.path == updatedMovie.rootFolderPath).firstOrNull,
+              value: rootFolders
+                  .where((f) => f.path == updatedMovie.rootFolderPath)
+                  .firstOrNull,
               items: rootFolders,
               itemToString: (f) => f.path ?? 'Unknown',
               onChanged: (selected) {

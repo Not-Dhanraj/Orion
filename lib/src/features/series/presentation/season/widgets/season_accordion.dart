@@ -193,6 +193,8 @@ class _SeasonAccordionState extends ConsumerState<SeasonAccordion>
       return;
     }
 
+    bool dialogDismissed = false;
+
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -201,22 +203,24 @@ class _SeasonAccordionState extends ConsumerState<SeasonAccordion>
         elevation: 0,
         child: CustomDialog(
           title: 'SEARCHING',
-          isDismissable: false,
           heading: 'Searching for season releases',
-          bodyWidget: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4.0),
+          bodyWidget: const Padding(
+            padding: EdgeInsets.symmetric(vertical: 4.0),
             child: AnimatedLoadingText(),
           ),
           actions: const [],
         ),
       ),
-    );
+    ).then((_) => dialogDismissed = true);
 
     final controller = ref.read(seasonPageController(widget.series).notifier);
     var result = await controller.loadReleases(
       seriesId: widget.series.id,
       seasonNumber: widget.seasonNumber,
     );
+    
+    if (dialogDismissed) return;
+    
     result = result.where((release) => release.fullSeason == true).toList();
 
     if (context.mounted) {

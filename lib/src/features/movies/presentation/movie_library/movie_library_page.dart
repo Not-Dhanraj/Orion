@@ -1,4 +1,4 @@
-import 'package:client/src/features/movies/presentation/movie_add/movie_add_page.dart';
+import 'package:client/src/features/movies/presentation/movie_add/movie_search_page.dart';
 import 'package:client/src/shared/widgets/library/library_item_row.dart';
 import 'package:client/src/shared/widgets/library/library_section_header.dart';
 import 'package:client/src/features/movies/presentation/movie_detail/movie_details_controller.dart';

@@ -61,8 +61,10 @@ class MovieActionCard extends ConsumerWidget {
                   icon: TablerIcons.edit,
                   label: 'Edit',
                   onPressed: () {
-                    showDialog(
+                    showModalBottomSheet(
                       context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
                       builder: (context) {
                         return MovieEditPage(movie: movie);
                       },
@@ -119,15 +121,11 @@ class MovieActionCard extends ConsumerWidget {
                                 ],
                               ),
                               actions: [
-                                FilledButton.tonal(
+                                ElevatedButton(
                                   onPressed: () => Navigator.of(context).pop(),
                                   child: const Text('Cancel'),
                                 ),
-                                FilledButton(
-                                  style: FilledButton.styleFrom(
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.error,
-                                  ),
+                                OutlinedButton(
                                   onPressed: () async {
                                     Navigator.of(context).pop();
                                     try {
@@ -162,6 +160,15 @@ class MovieActionCard extends ConsumerWidget {
                                       }
                                     }
                                   },
+                                  style: OutlinedButton.styleFrom(
+                                    foregroundColor: Theme.of(
+                                      context,
+                                    ).colorScheme.error,
+                                    side: BorderSide(
+                                      color: Theme.of(context).colorScheme.error
+                                          .withValues(alpha: 0.4),
+                                    ),
+                                  ),
                                   child: const Text('Delete'),
                                 ),
                               ],
@@ -215,7 +222,7 @@ class MovieActionCard extends ConsumerWidget {
             child: Center(child: CircularProgressIndicator()),
           ),
           actions: [
-            FilledButton.tonal(
+            ElevatedButton(
               onPressed: () => Navigator.of(context).pop(),
               child: const Text('Cancel Search'),
             ),
@@ -294,14 +301,11 @@ class MovieActionCard extends ConsumerWidget {
               'This will remove the file for "${movie.title}" from disk, '
               'but the movie will remain in Radarr.',
           actions: [
-            FilledButton.tonal(
+            ElevatedButton(
               onPressed: () => Navigator.of(context).pop(),
               child: const Text('Cancel'),
             ),
-            FilledButton(
-              style: FilledButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.error,
-              ),
+            OutlinedButton(
               onPressed: () async {
                 Navigator.of(context).pop();
                 try {
@@ -325,6 +329,14 @@ class MovieActionCard extends ConsumerWidget {
                   }
                 }
               },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Theme.of(context).colorScheme.error,
+                side: BorderSide(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.error.withValues(alpha: 0.4),
+                ),
+              ),
               child: const Text('Delete'),
             ),
           ],

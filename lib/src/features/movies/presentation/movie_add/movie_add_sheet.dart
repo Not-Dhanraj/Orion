@@ -3,14 +3,15 @@ import 'package:client/src/features/movies/presentation/movie_add/widgets/movie_
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/shared/widgets/sheets/sheet_footer.dart';
 import 'package:client/src/shared/widgets/sheets/sheet_header.dart';
+import 'package:client/src/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr/radarr.dart';
 
-class MovieAddDialog extends ConsumerWidget {
+class MovieAddSheet extends ConsumerWidget {
   final MovieResource movie;
 
-  const MovieAddDialog({super.key, required this.movie});
+  const MovieAddSheet({super.key, required this.movie});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,15 +20,13 @@ class MovieAddDialog extends ConsumerWidget {
     final selectedMovie = state?.selectedMovie;
     final isCreating = state?.isCreating ?? false;
 
-    return DraggableScrollableSheet(
-      initialChildSize: 0.85,
-      maxChildSize: .85,
-      minChildSize: 0.5,
-      expand: false,
-      builder: (context, _) {
-        return Container(
-          color: cs.surface,
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: context.screenHeight * .85),
+      child: Container(
+        color: cs.surface,
+        child: SafeArea(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Container(
                 decoration: BoxDecoration(
@@ -50,22 +49,21 @@ class MovieAddDialog extends ConsumerWidget {
                   ],
                 ),
               ),
-              Expanded(
+              Flexible(
                 child: selectedMovie == null
-                    ? const Center(child: CircularProgressIndicator())
-                    : Center(
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 800),
-                          child: SizedBox.expand(
-                            child: MovieConfigurationForm(
-                              movie: selectedMovie,
-                              qualityProfiles: state?.qualityProfiles ?? [],
-                              rootFolders: state?.rootFolders ?? [],
-                              onMovieChanged: (updated) => ref
-                                  .read(movieAddController.notifier)
-                                  .updateSelectedMovieInState(updated),
-                            ),
-                          ),
+                    ? const Padding(
+                        padding: EdgeInsets.all(32),
+                        child: Center(child: CircularProgressIndicator()),
+                      )
+                    : ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 800),
+                        child: MovieConfigurationForm(
+                          movie: selectedMovie,
+                          qualityProfiles: state?.qualityProfiles ?? [],
+                          rootFolders: state?.rootFolders ?? [],
+                          onMovieChanged: (updated) => ref
+                              .read(movieAddController.notifier)
+                              .updateSelectedMovieInState(updated),
                         ),
                       ),
               ),
@@ -79,8 +77,8 @@ class MovieAddDialog extends ConsumerWidget {
               ),
             ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
@@ -98,7 +96,9 @@ class MovieAddDialog extends ConsumerWidget {
 
     if (success) {
       Navigator.of(context).pop();
-      Navigator.of(context).pop(); // Pops the search sheet too, returning to library
+      Navigator.of(
+        context,
+      ).pop(); // Pops the search sheet too, returning to library
       CustomSnackbar.show(
         context,
         message: 'Successfully added "${movie.title}"',

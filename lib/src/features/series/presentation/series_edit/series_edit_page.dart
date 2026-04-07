@@ -1,9 +1,12 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:client/src/core/widgets/loading_indicator.dart';
 import 'package:client/src/features/series/presentation/series_edit/series_edit_controller.dart';
-import 'package:client/src/features/series/presentation/series_edit/widgets/series_monitoring_options.dart';
-import 'package:client/src/features/series/presentation/series_edit/widgets/series_quality_dropdown.dart';
-import 'package:client/src/features/series/presentation/series_edit/widgets/series_type_dropdown.dart';
 import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
+import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
+import 'package:client/src/shared/widgets/sheets/sheet_footer.dart';
+import 'package:client/src/shared/widgets/sheets/sheet_form_widgets.dart';
+import 'package:client/src/shared/widgets/sheets/sheet_header.dart';
+import 'package:client/src/shared/widgets/inputs/custom_switch_tile.dart';
+import 'package:client/src/utils/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
@@ -14,223 +17,187 @@ class SeriesEditPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var theme = Theme.of(context);
-    final editController = ref.watch(seriesEditController(series.id!));
+    final cs = Theme.of(context).colorScheme;
+    final editStateAsync = ref.watch(seriesEditController(series.id!));
 
-    return Dialog(
-      child: Container(
-        constraints: const BoxConstraints(maxWidth: 600),
-        child: editController.when(
-          data: (state) => Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundImage: series.images?.isNotEmpty == true
-                          ? CachedNetworkImageProvider(
-                              series.images!.first.remoteUrl ?? '',
-                              maxWidth: 250,
-                            )
-                          : null,
-                      backgroundColor: theme.colorScheme.primaryContainer,
-                      child: series.images?.isEmpty == true
-                          ? Icon(Icons.tv, color: theme.colorScheme.primary)
-                          : null,
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            series.title ?? 'Unknown Series',
-                            style: theme.textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          if (series.year != null)
-                            Text(
-                              series.year.toString(),
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      icon: const Icon(Icons.close),
-                      tooltip: 'Close',
-                    ),
-                  ],
+    final isLoading = editStateAsync.value?.isLoading ?? false;
+    final hasChanges = editStateAsync.value?.hasChanges ?? false;
+    final state = editStateAsync.value;
+
+    return Container(
+      color: cs.surface,
+      child: SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: cs.surfaceContainerLow,
+                border: Border(
+                  bottom: BorderSide(
+                    color: cs.outlineVariant.withValues(alpha: 0.4),
+                  ),
                 ),
               ),
-              Flexible(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        SeriesMonitoringOptions(
-                          series: state.series ?? SeriesResource(),
-                          onSeriesChanged: (updatedSeries) {
-                            ref
-                                .read(seriesEditController(series.id!).notifier)
-                                .updateSeries(updatedSeries);
-                          },
-                        ),
-                        const SizedBox(height: 8),
-                        SeriesQualityProfileDropdown(
-                          series: state.series ?? SeriesResource(),
-                          qualityProfiles: state.qualityProfiles,
-                          onSeriesChanged: (updatedSeries) {
-                            ref
-                                .read(seriesEditController(series.id!).notifier)
-                                .updateSeries(updatedSeries);
-                          },
-                        ),
-                        const SizedBox(height: 8),
-                        SeriesTypeDropdown(
-                          series: state.series ?? SeriesResource(),
-                          onSeriesChanged: (updatedSeries) {
-                            ref
-                                .read(seriesEditController(series.id!).notifier)
-                                .updateSeries(updatedSeries);
-                          },
-                        ),
-                      ],
+              child: Column(
+                children: [
+                  const SizedBox(height: 3),
+                  SheetHeader(
+                    onClose: () => Navigator.of(context).pop(),
+                    title: series.title ?? 'Unknown',
+                    label: 'EDIT SERIES',
+                  ),
+                  const SizedBox(height: 6),
+                ],
+              ),
+            ),
+            Flexible(
+              child: AnimatedSize(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeOutCubic,
+                alignment: Alignment.topCenter,
+                child: editStateAsync.when(
+                  data: (state) {
+                    final seriesData = state.series ?? SeriesResource();
+                    final qualityProfiles = state.qualityProfiles;
+                    final controller = ref.read(
+                      seriesEditController(series.id!).notifier,
+                    );
+
+                    return ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 800),
+                      child: ListView(
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+                        children: [
+                          FormSectionHeader(label: 'BASIC OPTIONS'),
+                          OutlinedFormSection(
+                            children: [
+                              CustomSwitchTile(
+                                title: 'Monitored',
+                                subtitle:
+                                    'Download Monitored episodes in this series',
+                                value: seriesData.monitored ?? false,
+                                onChanged: (value) => controller.updateSeries(
+                                  seriesData.rebuild(
+                                    (b) => b..monitored = value,
+                                  ),
+                                ),
+                              ),
+                              FormRowDivider(),
+                              CustomSwitchTile(
+                                title: 'Season Folder',
+                                subtitle: 'Sort episodes into season folders',
+                                value: seriesData.seasonFolder ?? true,
+                                onChanged: (value) => controller.updateSeries(
+                                  seriesData.rebuild(
+                                    (b) => b..seasonFolder = value,
+                                  ),
+                                ),
+                              ),
+                              FormRowDivider(),
+                              GenericDropdownRow<SeriesTypes>(
+                                label: 'Type',
+                                subtitle: 'Affects how episodes are matched',
+                                value:
+                                    seriesData.seriesType ??
+                                    SeriesTypes.standard,
+                                items: SeriesTypes.values.toList(),
+                                itemToString: (t) => t.name.capitalizeByWord(),
+                                onChanged: (selected) =>
+                                    controller.updateSeries(
+                                      seriesData.rebuild(
+                                        (b) => b..seriesType = selected,
+                                      ),
+                                    ),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          FormSectionHeader(label: 'QUALITY'),
+                          OutlinedFormSection(
+                            children: [
+                              GenericDropdownRow<QualityProfileResource>(
+                                label: 'Profile',
+                                subtitle:
+                                    'Quality profile to use for downloads',
+                                value: qualityProfiles
+                                    .where(
+                                      (p) =>
+                                          p.id == seriesData.qualityProfileId,
+                                    )
+                                    .firstOrNull,
+                                items: qualityProfiles,
+                                itemToString: (p) => p.name ?? 'Unknown',
+                                onChanged: (selected) =>
+                                    controller.updateSeries(
+                                      seriesData.rebuild(
+                                        (b) =>
+                                            b..qualityProfileId = selected.id,
+                                      ),
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  loading: () => const SizedBox(
+                    height: 150,
+                    width: double.infinity,
+                    child: Center(child: LoadingIndicator()),
+                  ),
+                  error: (e, stk) => SizedBox(
+                    height: 150,
+                    width: double.infinity,
+                    child: Center(
+                      child: CustomErrorState(error: e, stackTrace: stk),
                     ),
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('Cancel'),
-                    ),
-                    const SizedBox(width: 8),
-                    FilledButton(
-                      onPressed: state.hasChanges
-                          ? () async {
-                              showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (dialogContext) => AlertDialog(
-                                  content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const CircularProgressIndicator(),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        'Saving changes...',
-                                        style: theme.textTheme.bodyLarge,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-
-                              final success = await ref
-                                  .read(
-                                    seriesEditController(series.id!).notifier,
-                                  )
-                                  .saveChanges();
-
-                              if (context.mounted) {
-                                Navigator.of(context).pop();
-                              }
-
-                              if (context.mounted) {
-                                if (success) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.check_circle,
-                                            color: Colors.white,
-                                          ),
-                                          const SizedBox(width: 12),
-                                          Expanded(
-                                            child: Text(
-                                              'Changes saved successfully',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      backgroundColor: Colors.green,
-                                      behavior: SnackBarBehavior.floating,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      margin: const EdgeInsets.all(16),
-                                      duration: const Duration(seconds: 4),
-                                    ),
-                                  );
-                                  Navigator.of(context).pop(true);
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.error_outline,
-                                            color: Colors.white,
-                                          ),
-                                          const SizedBox(width: 12),
-                                          Expanded(
-                                            child: Text(
-                                              'Failed to save changes',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      backgroundColor: Colors.red,
-                                      behavior: SnackBarBehavior.floating,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      margin: const EdgeInsets.all(16),
-                                      duration: const Duration(seconds: 4),
-                                    ),
-                                  );
-                                }
-                              }
-                            }
-                          : null,
-                      child: const Text('Save Changes'),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          loading: () => const Padding(
-            padding: EdgeInsets.all(24.0),
-            child: Center(child: CircularProgressIndicator()),
-          ),
-          error: (error, stack) => Center(
-            child: CustomErrorState(error: error, stackTrace: stack),
-          ),
+            ),
+            SheetFooter(
+              isLoading: isLoading,
+              isDisabled: !hasChanges || state == null,
+              confirmLabel: 'SAVE CHANGES',
+              confirmIcon: Icons.save,
+              onCancel: () => Navigator.of(context).pop(),
+              onConfirm: () => _doSave(context, ref, series.id!),
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  Future<void> _doSave(
+    BuildContext context,
+    WidgetRef ref,
+    int seriesId,
+  ) async {
+    final success = await ref
+        .read(seriesEditController(seriesId).notifier)
+        .saveChanges();
+
+    if (context.mounted) {
+      if (success) {
+        CustomSnackbar.show(
+          context,
+          message: 'Changes saved successfully',
+          type: CustomSnackbarType.success,
+        );
+        Navigator.of(context).pop(true);
+      } else {
+        CustomSnackbar.show(
+          context,
+          message: 'Failed to save changes',
+          type: CustomSnackbarType.error,
+        );
+      }
+    }
   }
 }

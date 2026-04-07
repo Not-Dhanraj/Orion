@@ -27,6 +27,7 @@ class SeriesConfigurationForm extends ConsumerWidget {
     final updatedSeries = seriesState.value?.selectedSeries ?? series;
 
     return ListView(
+      shrinkWrap: true,
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
       children: [
         FormSectionHeader(label: 'BASIC OPTIONS'),

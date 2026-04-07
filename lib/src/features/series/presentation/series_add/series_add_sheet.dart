@@ -3,14 +3,15 @@ import 'package:client/src/features/series/presentation/series_add/widgets/serie
 import 'package:client/src/shared/widgets/sheets/sheet_header.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/shared/widgets/sheets/sheet_footer.dart';
+import 'package:client/src/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
 
-class SeriesAddDialog extends ConsumerWidget {
+class SeriesAddSheet extends ConsumerWidget {
   final SeriesResource series;
 
-  const SeriesAddDialog({super.key, required this.series});
+  const SeriesAddSheet({super.key, required this.series});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,15 +20,13 @@ class SeriesAddDialog extends ConsumerWidget {
     final selectedSeries = state?.selectedSeries;
     final isCreating = state?.isCreating ?? false;
 
-    return DraggableScrollableSheet(
-      initialChildSize: 0.85,
-      maxChildSize: .85,
-      minChildSize: 0.5,
-      expand: false,
-      builder: (context, _) {
-        return Container(
-          color: cs.surface,
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: context.screenHeight * .85),
+      child: Container(
+        color: cs.surface,
+        child: SafeArea(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Container(
                 decoration: BoxDecoration(
@@ -50,22 +49,21 @@ class SeriesAddDialog extends ConsumerWidget {
                   ],
                 ),
               ),
-              Expanded(
+              Flexible(
                 child: selectedSeries == null
-                    ? const Center(child: CircularProgressIndicator())
-                    : Center(
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 800),
-                          child: SizedBox.expand(
-                            child: SeriesConfigurationForm(
-                              series: selectedSeries,
-                              rootFolders: state?.rootFolders ?? [],
-                              qualityProfiles: state?.qualityProfiles ?? [],
-                              onSeriesChanged: (updated) => ref
-                                  .read(seriesAddController.notifier)
-                                  .updateSelectedSeriesInState(updated),
-                            ),
-                          ),
+                    ? const Padding(
+                        padding: EdgeInsets.all(32),
+                        child: Center(child: CircularProgressIndicator()),
+                      )
+                    : ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 800),
+                        child: SeriesConfigurationForm(
+                          series: selectedSeries,
+                          rootFolders: state?.rootFolders ?? [],
+                          qualityProfiles: state?.qualityProfiles ?? [],
+                          onSeriesChanged: (updated) => ref
+                              .read(seriesAddController.notifier)
+                              .updateSelectedSeriesInState(updated),
                         ),
                       ),
               ),
@@ -79,8 +77,8 @@ class SeriesAddDialog extends ConsumerWidget {
               ),
             ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 

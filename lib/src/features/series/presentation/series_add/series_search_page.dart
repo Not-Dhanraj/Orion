@@ -54,15 +54,13 @@ class _SeriesSearchPageState extends ConsumerState<SeriesSearchPage> {
     final cs = Theme.of(context).colorScheme;
     final asyncState = ref.watch(seriesAddController);
 
-    return DraggableScrollableSheet(
-      initialChildSize: 0.92,
-      minChildSize: 0.5,
-      maxChildSize: 1.0,
-      expand: false,
-      builder: (context, _) {
-        return Container(
-          color: cs.surface,
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: context.screenHeight * .935),
+      child: Container(
+        color: cs.surface,
+        child: SafeArea(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Container(
                 decoration: BoxDecoration(
@@ -125,33 +123,29 @@ class _SeriesSearchPageState extends ConsumerState<SeriesSearchPage> {
                             ),
                           ),
                         ),
-                        Center(
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 800),
-                            child: SizedBox.expand(
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                      16,
-                                      16,
-                                      16,
-                                      0,
-                                    ),
-                                    child: SheetSearchBar(
-                                      controller: _searchController,
-                                      focusNode: _searchFocus,
-                                      isSearching: state.isSearching,
-                                      hintText:
-                                          'Search for a TV series by name…',
-                                      onSearch: _triggerSearch,
-                                      onClear: _clearSearch,
-                                    ),
-                                  ),
-                                  Expanded(child: SeriesSearchBody()),
-                                ],
+                        ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 800),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                  16,
+                                  16,
+                                  16,
+                                  0,
+                                ),
+                                child: SheetSearchBar(
+                                  controller: _searchController,
+                                  focusNode: _searchFocus,
+                                  isSearching: state.isSearching,
+                                  hintText: 'Search for a TV series by name…',
+                                  onSearch: _triggerSearch,
+                                  onClear: _clearSearch,
+                                ),
                               ),
-                            ),
+                              Flexible(child: SeriesSearchBody()),
+                            ],
                           ),
                         ),
                       ],
@@ -161,8 +155,8 @@ class _SeriesSearchPageState extends ConsumerState<SeriesSearchPage> {
               ),
             ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

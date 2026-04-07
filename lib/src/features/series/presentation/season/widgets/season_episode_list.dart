@@ -100,6 +100,8 @@ class _EpisodeListItem extends StatelessWidget {
       return;
     }
 
+    bool dialogDismissed = false;
+
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -107,22 +109,29 @@ class _EpisodeListItem extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 600),
+          constraints: const BoxConstraints(maxWidth: 600),
           child: CustomDialog(
             title: 'SEARCHING',
-            isDismissable: false,
             heading: 'Searching for releases',
-            bodyWidget: Padding(
+            bodyWidget: const Padding(
               padding: EdgeInsets.symmetric(vertical: 4.0),
               child: AnimatedLoadingText(),
             ),
-            actions: [],
+            actions: [
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Cancel Search'),
+              ),
+            ],
           ),
         ),
       ),
-    );
+    ).then((_) => dialogDismissed = true);
 
     var result = await controller.loadReleases(episodeId: episode.id);
+
+    if (dialogDismissed) return;
+
     result = result.where((r) => r.fullSeason == false).toList();
 
     if (context.mounted) {

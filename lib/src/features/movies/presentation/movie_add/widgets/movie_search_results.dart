@@ -1,7 +1,8 @@
 import 'package:client/src/features/movies/domain/movie_add_state.dart';
 import 'package:client/src/features/movies/presentation/movie_add/movie_add_controller.dart';
-import 'package:client/src/features/movies/presentation/movie_add/movie_add_dialog.dart';
+import 'package:client/src/features/movies/presentation/movie_add/movie_add_sheet.dart';
 import 'package:client/src/features/movies/presentation/movie_add/widgets/movie_result_item.dart';
+import 'package:client/src/utils/movie_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr/radarr.dart';
@@ -70,39 +71,25 @@ class _ResultsList extends ConsumerWidget {
             ],
           ),
         ),
-        SizedBox(height: 4),
         Expanded(
-          child: ListView.separated(
+          child: ListView.builder(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
             itemCount: results.length,
-            separatorBuilder: (_, _) => const SizedBox(height: 8),
             itemBuilder: (context, index) {
               final movie = results[index];
               final isAdded = state.addedIds?.contains(movie.tmdbId) ?? false;
-              final imageUrl = movie.images?.isNotEmpty == true
-                  ? movie.images!
-                            .firstWhere(
-                              (i) => i.coverType == MediaCoverTypes.poster,
-                              orElse: () => movie.images!.firstWhere(
-                                (i) =>
-                                    i.coverType == MediaCoverTypes.poster ||
-                                    i.coverType == MediaCoverTypes.banner,
-                                orElse: () => movie.images!.first,
-                              ),
-                            )
-                            .remoteUrl ??
-                        ""
-                  : "";
-
-              return MovieResultItem(
-                movie: movie,
-                subtitle: _buildSubtitle(movie),
-                imageUrl: imageUrl,
-                isAdded: isAdded,
-                isCreating: state.isCreating,
-                onAdd: isAdded
-                    ? null
-                    : () => _openAddDialog(context, ref, movie),
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: MovieResultItem(
+                  movie: movie,
+                  subtitle: _buildSubtitle(movie),
+                  imageUrl: movie.remotePosterUrlLink ?? '',
+                  isAdded: isAdded,
+                  isCreating: state.isCreating,
+                  onAdd: isAdded
+                      ? null
+                      : () => _openAddDialog(context, ref, movie),
+                ),
               );
             },
           ),
@@ -129,7 +116,7 @@ class _ResultsList extends ConsumerWidget {
       useSafeArea: true,
       backgroundColor: Colors.transparent,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-      builder: (_) => MovieAddDialog(movie: movie),
+      builder: (_) => MovieAddSheet(movie: movie),
     );
   }
 }

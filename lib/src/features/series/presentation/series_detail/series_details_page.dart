@@ -106,17 +106,23 @@ class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
                     agency: series.network ?? 'UNKNOWN',
                     posterUrl: series.remotePosterUrlLink ?? '',
                     syncProgress: syncProgress,
+                    isMonitored: series.monitored ?? false,
                     onEdit: () {
-                      showDialog(
+                      showModalBottomSheet(
                         context: context,
-                        builder: (dialogContext) {
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (context) {
                           return SeriesEditPage(series: series);
                         },
                       );
                     },
                     onDelete: () => _confirmDelete(context, series),
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 28),
+                  if (series.overview != null && series.overview!.isNotEmpty)
+                    _SeriesOverview(overview: series.overview!),
+                  const SizedBox(height: 28),
                   if (series.seasons != null)
                     ...series.seasons!.reversed.map((season) {
                       final sFiles = season.statistics?.episodeFileCount ?? 0;
@@ -144,6 +150,39 @@ class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _SeriesOverview extends StatelessWidget {
+  final String overview;
+  const _SeriesOverview({required this.overview});
+
+  @override
+  Widget build(BuildContext context) {
+    final tt = Theme.of(context).textTheme;
+    final cs = Theme.of(context).colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'OVERVIEW',
+          style: tt.labelSmall!.copyWith(
+            fontSize: 9,
+            letterSpacing: 2.0,
+            color: cs.outline,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          overview,
+          style: tt.bodyMedium!.copyWith(
+            color: cs.onSurfaceVariant,
+            height: 1.6,
+          ),
+        ),
+      ],
     );
   }
 }

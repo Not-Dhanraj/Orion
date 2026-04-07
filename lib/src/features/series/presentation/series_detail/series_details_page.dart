@@ -1,12 +1,14 @@
 import 'package:client/src/features/series/presentation/series_detail/series_details_controller.dart';
 import 'package:client/src/features/series/presentation/series_edit/series_edit_sheet.dart';
-import 'package:client/src/features/series/presentation/series_detail/widgets/media_hero_header.dart';
-import 'package:client/src/features/series/presentation/series_detail/widgets/media_specs_grid.dart';
-import 'package:client/src/features/series/presentation/series_detail/widgets/media_telemetry.dart';
 import 'package:client/src/features/series/presentation/season/widgets/season_accordion.dart';
-import 'package:client/src/shared/widgets/dialogs/custom_dialog.dart';
+import 'package:client/src/shared/domain/media_spec.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/shared/utils/series_utils.dart';
+import 'package:client/src/shared/widgets/media/media_delete_dialog.dart';
+import 'package:client/src/shared/widgets/media/media_hero_header.dart';
+import 'package:client/src/shared/widgets/media/media_overview.dart';
+import 'package:client/src/shared/widgets/media/media_specs_grid.dart';
+import 'package:client/src/shared/widgets/media/media_telemetry.dart';
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -59,8 +61,9 @@ class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
   void _confirmDelete(BuildContext context, SeriesResource series) {
     showDialog(
       context: context,
-      builder: (_) => _DeleteSeriesDialog(
-        series: series,
+      builder: (_) => MediaDeleteDialog(
+        title: 'SERIES',
+        heading: 'Confirm deletion of "${series.title}"',
         onConfirm: ({required deleteFiles, required addImportListExclusion}) =>
             _deleteSeries(
               context: context,
@@ -75,6 +78,7 @@ class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
   @override
   Widget build(BuildContext context) {
     final series = ref.watch(seriesDetailsController);
+    final cs = Theme.of(context).colorScheme;
 
     final episodeCount = series.statistics?.episodeCount ?? 0;
     final downloadedFiles = series.statistics?.episodeFileCount ?? 0;
@@ -104,24 +108,38 @@ class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
                   MediaHeroHeader(
                     title: series.title ?? 'UNKNOWN',
                     agency: series.network ?? 'UNKNOWN',
-                    posterUrl: series.remotePosterUrlLink ?? '',
+                    posterUrl: series.remotePosterUrlLink,
                     syncProgress: syncProgress,
                     isMonitored: series.monitored ?? false,
-                    onEdit: () {
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        builder: (context) {
-                          return SeriesEditSheet(series: series);
+                    actions: [
+                      OutlinedButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) {
+                              return SeriesEditSheet(series: series);
+                            },
+                          );
                         },
-                      );
-                    },
-                    onDelete: () => _confirmDelete(context, series),
+                        child: const Text('EDIT SERIES'),
+                      ),
+                      OutlinedButton(
+                        onPressed: () => _confirmDelete(context, series),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: cs.error,
+                          side: BorderSide(
+                            color: cs.error.withValues(alpha: 0.4),
+                          ),
+                        ),
+                        child: const Text('DELETE'),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 28),
                   if (series.overview != null && series.overview!.isNotEmpty)
-                    _SeriesOverview(overview: series.overview!),
+                    MediaOverview(overview: series.overview!),
                   const SizedBox(height: 28),
                   if (series.seasons != null)
                     ...series.seasons!.reversed.map((season) {
@@ -141,125 +159,98 @@ class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
                       );
                     }),
                   const SizedBox(height: 32),
-                  MediaSpecsGrid(series: series),
+                  MediaSpecsGrid(
+                    title: 'SERIES SPECS',
+                    specs: [
+                      MediaSpec(
+                        label: 'TYPE',
+                        value:
+                            series.seriesType?.name
+                                .toString()
+                                .split('.')
+                                .last
+                                .toUpperCase() ??
+                            'UNKNOWN',
+                      ),
+                      MediaSpec(
+                        label: 'STATUS',
+                        value:
+                            series.status?.name
+                                .toString()
+                                .split('.')
+                                .last
+                                .toUpperCase() ??
+                            'UNKNOWN',
+                      ),
+                      MediaSpec(
+                        label: 'RUNTIME',
+                        value: '${series.runtime ?? 0} MIN',
+                      ),
+                      MediaSpec(
+                        label: 'RATING',
+                        value: series.ratings?.value != null
+                            ? '${series.ratings!.value}/10'
+                            : 'N/A',
+                      ),
+                      MediaSpec(
+                        label: 'QUALITY',
+                        value: 'PROFILE ${series.qualityProfileId ?? 0}',
+                        isAccent: true,
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: 48),
-                  MediaTelemetry(series: series),
+                  MediaTelemetry(
+                    categories: [
+                      TelemetryCategory(
+                        title: 'STORAGE TELEMETRY',
+                        accentLeft: true,
+                        rows: [
+                          StatRow(
+                            label: 'Total Weight',
+                            value:
+                                '${((series.statistics?.sizeOnDisk ?? 0) / 1073741824).toStringAsFixed(1)} GB',
+                            accent: true,
+                          ),
+                          StatRow(
+                            label: 'Episodes',
+                            value:
+                                '${series.statistics?.episodeFileCount ?? 0} / ${series.statistics?.episodeCount ?? 0}',
+                          ),
+                        ],
+                      ),
+                      TelemetryCategory(
+                        title: 'METADATA HEALTH',
+                        rows: [
+                          StatRow(
+                            label: 'Network',
+                            value: series.network ?? 'UNKNOWN',
+                          ),
+                          StatRow(
+                            label: 'Year',
+                            value: '${series.year ?? 'UNKNOWN'}',
+                          ),
+                        ],
+                      ),
+                      TelemetryCategory(
+                        title: 'NETWORK NODE',
+                        rows: [
+                          StatRow(
+                            label: 'Language',
+                            value: series.originalLanguage?.name ?? 'UNKNOWN',
+                          ),
+                          StatRow(
+                            label: 'Path',
+                            value: series.path?.split('/').last ?? 'UNKNOWN',
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _SeriesOverview extends StatelessWidget {
-  final String overview;
-  const _SeriesOverview({required this.overview});
-
-  @override
-  Widget build(BuildContext context) {
-    final tt = Theme.of(context).textTheme;
-    final cs = Theme.of(context).colorScheme;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'OVERVIEW',
-          style: tt.labelSmall!.copyWith(
-            fontSize: 9,
-            letterSpacing: 2.0,
-            color: cs.outline,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          overview,
-          style: tt.bodyMedium!.copyWith(
-            color: cs.onSurfaceVariant,
-            height: 1.6,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _DeleteSeriesDialog extends StatefulWidget {
-  final SeriesResource series;
-  final void Function({
-    required bool deleteFiles,
-    required bool addImportListExclusion,
-  })
-  onConfirm;
-
-  const _DeleteSeriesDialog({required this.series, required this.onConfirm});
-
-  @override
-  State<_DeleteSeriesDialog> createState() => _DeleteSeriesDialogState();
-}
-
-class _DeleteSeriesDialogState extends State<_DeleteSeriesDialog> {
-  bool _deleteFiles = false;
-  bool _addImportListExclusion = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-
-    return Dialog(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 600),
-        child: CustomDialog(
-          title: 'DELETE SERIES',
-          heading: 'Confirm deletion of "${widget.series.title}"',
-          bodyWidget: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('Are you sure you want to delete this series?'),
-              const SizedBox(height: 12),
-              CheckboxListTile(
-                title: const Text('Delete Files'),
-                value: _deleteFiles,
-                onChanged: (v) => setState(() => _deleteFiles = v ?? false),
-                contentPadding: EdgeInsets.zero,
-                dense: true,
-              ),
-              CheckboxListTile(
-                title: const Text('Add Import List Exclusion'),
-                value: _addImportListExclusion,
-                onChanged: (v) =>
-                    setState(() => _addImportListExclusion = v ?? false),
-                contentPadding: EdgeInsets.zero,
-                dense: true,
-              ),
-            ],
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
-            ),
-            OutlinedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                widget.onConfirm(
-                  deleteFiles: _deleteFiles,
-                  addImportListExclusion: _addImportListExclusion,
-                );
-              },
-              style: OutlinedButton.styleFrom(
-                foregroundColor: cs.error,
-                side: BorderSide(color: cs.error.withValues(alpha: 0.4)),
-              ),
-              child: const Text('DELETE'),
-            ),
-          ],
         ),
       ),
     );

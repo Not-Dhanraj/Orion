@@ -5,12 +5,9 @@ import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/features/releases/domain/release_target.dart';
 import 'package:client/src/features/releases/presentation/release_controller.dart';
-import 'package:client/src/features/releases/domain/release_item.dart';
 import 'package:client/src/shared/widgets/sheets/sheet_header.dart';
-import 'package:client/src/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:with_opacity/with_opacity.dart';
 
 class ReleaseSheet extends ConsumerWidget {

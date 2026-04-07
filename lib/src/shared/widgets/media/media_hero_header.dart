@@ -5,22 +5,24 @@ import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 
 class MediaHeroHeader extends StatelessWidget {
   final String title;
-  final String agency;
-  final String posterUrl;
+  final String? agency;
+  final String? posterUrl;
   final double syncProgress;
   final bool isMonitored;
-  final VoidCallback onEdit;
-  final VoidCallback onDelete;
+  final String? syncStatusLabel;
+  final String? agencyLabel;
+  final List<Widget> actions;
 
   const MediaHeroHeader({
     super.key,
     required this.title,
-    required this.agency,
-    required this.posterUrl,
+    this.agency,
+    this.posterUrl,
     required this.syncProgress,
     this.isMonitored = false,
-    required this.onEdit,
-    required this.onDelete,
+    this.syncStatusLabel = 'SYNC STATUS',
+    this.agencyLabel = 'PRODUCTION NETWORK',
+    this.actions = const [],
   });
 
   @override
@@ -38,11 +40,10 @@ class MediaHeroHeader extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              posterUrl != ''
+              (posterUrl != null && posterUrl != '')
                   ? CachedNetworkImage(
-                      imageUrl: posterUrl,
+                      imageUrl: posterUrl!,
                       memCacheWidth: isMobile ? 180 : 234,
-
                       fit: BoxFit.fill,
                       errorWidget: (context, _, _) => Container(
                         decoration: const BoxDecoration(
@@ -89,14 +90,15 @@ class MediaHeroHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Text(
-          'PRODUCTION NETWORK // $agency',
-          style: tt.labelSmall!.copyWith(
-            letterSpacing: 2.0,
-            color: cs.primary,
-            fontWeight: FontWeight.bold,
+        if (agency != null)
+          Text(
+            '$agencyLabel // $agency',
+            style: tt.labelSmall!.copyWith(
+              letterSpacing: 2.0,
+              color: cs.primary,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
         const SizedBox(height: 8),
 
         Text(
@@ -115,7 +117,7 @@ class MediaHeroHeader extends StatelessWidget {
         const SizedBox(height: 20),
 
         ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 400),
+          constraints: const BoxConstraints(maxWidth: 400),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -123,7 +125,7 @@ class MediaHeroHeader extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'SYNC STATUS',
+                    syncStatusLabel!,
                     style: tt.labelSmall!.copyWith(
                       fontSize: 9,
                       color: cs.outline,
@@ -160,19 +162,11 @@ class MediaHeroHeader extends StatelessWidget {
         ),
         const SizedBox(height: 20),
 
-        Row(
-          children: [
-            ElevatedButton(onPressed: onEdit, child: const Text('EDIT SERIES')),
-            const SizedBox(width: 12),
-            OutlinedButton(
-              onPressed: onDelete,
-              style: OutlinedButton.styleFrom(
-                foregroundColor: cs.error,
-                side: BorderSide(color: cs.error.withValues(alpha: 0.4)),
-              ),
-              child: const Text('DELETE'),
-            ),
-          ],
+        Wrap(
+          spacing: 12,
+          runSpacing: 8,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: actions,
         ),
       ],
     );
@@ -241,51 +235,3 @@ class _MonitoredBadge extends StatelessWidget {
     );
   }
 }
-
-// class _HeroButton extends StatelessWidget {
-//   final String label;
-//   final bool isPrimary;
-//   final bool isDanger;
-//   final VoidCallback onPressed;
-
-//   const _HeroButton({
-//     required this.label,
-//     required this.isPrimary,
-//     this.isDanger = false,
-//     required this.onPressed,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final tt = Theme.of(context).textTheme;
-//     final cs = Theme.of(context).colorScheme;
-
-//     final primaryColor = isDanger ? cs.error : cs.primary;
-//     final onPrimaryColor = isDanger ? cs.onError : cs.onPrimary;
-
-//     return InkWell(
-//       onTap: onPressed,
-//       child: Container(
-//         height: 34,
-//         padding: const EdgeInsets.symmetric(horizontal: 20),
-//         decoration: BoxDecoration(
-//           color: isPrimary ? primaryColor : Colors.transparent,
-//           border: isPrimary
-//               ? null
-//               : Border.all(color: isDanger ? cs.error : cs.outlineVariant),
-//           borderRadius: BorderRadius.circular(2),
-//         ),
-//         child: Center(
-//           child: Text(
-//             label,
-//             style: tt.labelSmall!.copyWith(
-//               color: isPrimary ? onPrimaryColor : primaryColor,
-//               fontWeight: FontWeight.bold,
-//               letterSpacing: 1.0,
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

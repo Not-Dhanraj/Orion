@@ -1,12 +1,18 @@
 import 'package:client/src/features/movies/presentation/movie_detail/movie_details_controller.dart';
-import 'package:client/src/features/movies/presentation/movie_detail/widgets/media_info_card.dart';
-import 'package:client/src/features/movies/presentation/movie_detail/widgets/movie_actions.dart';
-import 'package:client/src/features/movies/presentation/movie_detail/widgets/movie_info_card.dart';
-import 'package:client/src/features/movies/presentation/movie_detail/widgets/movie_overview_card.dart';
-import 'package:client/src/shared/widgets/misc/detail_page_header.dart';
+import 'package:client/src/features/movies/presentation/movie_edit/movie_edit_sheet.dart';
+import 'package:client/src/features/releases/domain/release_target.dart';
+import 'package:client/src/features/releases/presentation/release_sheet.dart';
+import 'package:client/src/shared/domain/media_spec.dart';
+import 'package:client/src/shared/utils/movie_utils.dart';
+import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
+import 'package:client/src/shared/widgets/media/media_delete_dialog.dart';
+import 'package:client/src/shared/widgets/media/media_hero_header.dart';
+import 'package:client/src/shared/widgets/media/media_overview.dart';
+import 'package:client/src/shared/widgets/media/media_specs_grid.dart';
+import 'package:client/src/shared/widgets/media/media_telemetry.dart';
+import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:radarr/radarr.dart';
 
@@ -20,63 +26,239 @@ class MovieDetailsPage extends ConsumerStatefulWidget {
 }
 
 class _MovieDetailsPageState extends ConsumerState<MovieDetailsPage> {
-  @override
-  void initState() {
-    super.initState();
+  Future<void> _deleteMovie({
+    required BuildContext context,
+    required MovieResource movie,
+    required bool deleteFiles,
+    required bool addImportListExclusion,
+  }) async {
+    try {
+      await ref
+          .read(movieDetailsController.notifier)
+          .deleteMovie(
+            deleteFiles: deleteFiles,
+            addImportListExclusion: addImportListExclusion,
+          );
+      await Future.delayed(const Duration(milliseconds: 500));
+      if (context.mounted) {
+        Navigator.of(context).pop();
+        CustomSnackbar.show(
+          context,
+          message: 'Successfully deleted "${movie.title}"',
+          type: CustomSnackbarType.success,
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        CustomSnackbar.show(
+          context,
+          message: 'Failed to delete movie: ${e.toString()}',
+          type: CustomSnackbarType.error,
+        );
+      }
+    }
+  }
+
+  void _confirmDelete(BuildContext context, MovieResource movie) {
+    showDialog(
+      context: context,
+      builder: (_) => MediaDeleteDialog(
+        title: 'MOVIE',
+        heading: 'Confirm deletion of "${movie.title}"',
+        onConfirm: ({required deleteFiles, required addImportListExclusion}) =>
+            _deleteMovie(
+              context: context,
+              movie: movie,
+              deleteFiles: deleteFiles,
+              addImportListExclusion: addImportListExclusion,
+            ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final movie = ref.watch(movieDetailsController);
-    final posterUrl =
-        movie.images
-            ?.firstWhere(
-              (image) => image.coverType == MediaCoverTypes.poster,
-              orElse: () => MediaCover(),
-            )
-            .remoteUrl ??
-        '';
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            titleSpacing: 0,
-            title: Text("Movie Details"),
-            floating: true,
-            snap: true,
-            leading: IconButton(
-              icon: const Icon(TablerIcons.arrow_left),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ),
+    final cs = Theme.of(context).colorScheme;
 
-          SliverPadding(
-            padding: EdgeInsets.all(12),
-            sliver: SliverMasonryGrid.extent(
-              maxCrossAxisExtent: 650,
-              mainAxisSpacing: 12.0,
-              crossAxisSpacing: 12.0,
-              itemBuilder: (context, index) {
-                final widgets = [
-                  DetailPageHeader(
+    final syncProgress = movie.hasFile == true ? 1.0 : 0.0;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Movie Details'),
+        centerTitle: false,
+        leading: IconButton(
+          icon: const Icon(TablerIcons.arrow_left),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
+      body: Entry.opacity(
+        duration: const Duration(milliseconds: 300),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 120),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 800),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  MediaHeroHeader(
+                    title: movie.title ?? 'UNKNOWN',
+                    agency: movie.status?.name.toUpperCase() ?? 'UNKNOWN',
+                    agencyLabel: 'MOVIE STATUS',
+                    posterUrl: movie.remotePosterUrlLink ?? '',
+                    syncProgress: syncProgress,
+                    syncStatusLabel: 'DOWNLOAD STATUS',
                     isMonitored: movie.monitored ?? false,
-                    posterUrl: posterUrl,
-                    title: movie.title,
-                    originalLanguage: movie.originalLanguage?.name,
-                    status: movie.status?.name,
+                    actions: [
+                      if (movie.hasFile == true)
+                        ElevatedButton(
+                          onPressed: () {
+                            CustomSnackbar.show(
+                              context,
+                              message: 'Movie is already downloaded!',
+                              type: CustomSnackbarType.info,
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: cs.primaryContainer,
+                            foregroundColor: cs.onSecondaryContainer,
+                          ),
+                          child: const Text('DOWNLOADED'),
+                        )
+                      else
+                        ElevatedButton(
+                          onPressed: () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              useSafeArea: true,
+                              backgroundColor: Colors.transparent,
+                              builder: (context) => ReleaseSheet(
+                                target: MovieReleaseTarget(
+                                  movieId: movie.id!,
+                                  title: movie.title ?? 'Unknown',
+                                ),
+                              ),
+                            );
+                          },
+                          child: const Text('SEARCH RELEASES'),
+                        ),
+                      OutlinedButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) {
+                              return MovieEditSheet(movie: movie);
+                            },
+                          );
+                        },
+                        child: const Text('EDIT MOVIE'),
+                      ),
+                      OutlinedButton(
+                        onPressed: () => _confirmDelete(context, movie),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: cs.error,
+                          side: BorderSide(
+                            color: cs.error.withValues(alpha: 0.4),
+                          ),
+                        ),
+                        child: const Text('DELETE'),
+                      ),
+                    ],
                   ),
-                  MovieActionCard(movie: movie),
-                  MovieOverviewCard(overview: movie.overview),
-                  MovieInfoCard(movie: movie),
-                  MediaInfoCard(movie: movie),
-                  const SizedBox(height: 16),
-                ];
-                return widgets[index];
-              },
-              childCount: 6, // One less than series since we don't have seasons
+                  const SizedBox(height: 28),
+                  if (movie.overview != null && movie.overview!.isNotEmpty)
+                    MediaOverview(overview: movie.overview!),
+                  const SizedBox(height: 32),
+                  MediaSpecsGrid(
+                    title: 'MOVIE SPECS',
+                    specs: [
+                      MediaSpec(
+                        label: 'YEAR',
+                        value: movie.year?.toString() ?? 'UNKNOWN',
+                      ),
+                      MediaSpec(
+                        label: 'STATUS',
+                        value:
+                            movie.status?.name
+                                .toString()
+                                .split('.')
+                                .last
+                                .toUpperCase() ??
+                            'UNKNOWN',
+                      ),
+                      MediaSpec(
+                        label: 'RUNTIME',
+                        value: '${movie.runtime ?? 0} MIN',
+                      ),
+                      MediaSpec(
+                        label: 'RATING',
+                        value: movie.ratings?.tmdb?.value != null
+                            ? '${movie.ratings!.tmdb!.value}/10'
+                            : 'N/A',
+                      ),
+                      MediaSpec(
+                        label: 'QUALITY',
+                        value: 'PROFILE ${movie.qualityProfileId ?? 0}',
+                        isAccent: true,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 48),
+                  MediaTelemetry(
+                    categories: [
+                      TelemetryCategory(
+                        title: 'STORAGE TELEMETRY',
+                        accentLeft: true,
+                        rows: [
+                          StatRow(
+                            label: 'Total Weight',
+                            value:
+                                '${((movie.sizeOnDisk ?? 0) / 1073741824).toStringAsFixed(1)} GB',
+                            accent: true,
+                          ),
+                          StatRow(
+                            label: 'File Present',
+                            value: movie.hasFile == true ? 'YES' : 'NO',
+                          ),
+                        ],
+                      ),
+                      TelemetryCategory(
+                        title: 'METADATA HEALTH',
+                        rows: [
+                          StatRow(
+                            label: 'Studio',
+                            value: movie.studio ?? 'UNKNOWN',
+                          ),
+                          StatRow(
+                            label: 'Year',
+                            value: '${movie.year ?? 'UNKNOWN'}',
+                          ),
+                        ],
+                      ),
+                      TelemetryCategory(
+                        title: 'NETWORK NODE',
+                        rows: [
+                          StatRow(
+                            label: 'Language',
+                            value: movie.originalLanguage?.name ?? 'UNKNOWN',
+                          ),
+                          StatRow(
+                            label: 'Path',
+                            value: movie.path?.split('/').last ?? 'UNKNOWN',
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }

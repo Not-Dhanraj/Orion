@@ -2,7 +2,7 @@ import 'package:client/src/features/series/domain/series_add_state.dart';
 import 'package:client/src/features/series/presentation/series_add/series_add_controller.dart';
 import 'package:client/src/features/series/presentation/series_add/series_add_sheet.dart';
 import 'package:client/src/features/series/presentation/series_add/widgets/series_result_item.dart';
-import 'package:client/src/utils/series_utils.dart';
+import 'package:client/src/shared/utils/series_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';

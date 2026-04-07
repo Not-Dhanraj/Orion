@@ -7,7 +7,7 @@ import 'package:client/src/shared/widgets/sheets/sheet_footer.dart';
 import 'package:client/src/shared/widgets/sheets/sheet_form_widgets.dart';
 import 'package:client/src/shared/widgets/sheets/sheet_header.dart';
 import 'package:client/src/shared/widgets/inputs/custom_switch_tile.dart';
-import 'package:client/src/utils/string_extension.dart';
+import 'package:client/src/shared/utils/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';

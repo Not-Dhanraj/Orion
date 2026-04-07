@@ -3,7 +3,7 @@ import 'package:client/src/core/application/hive_service.dart';
 import 'package:client/src/core/domain/credentials.dart';
 import 'package:client/src/features/settings/application/settings_service.dart';
 import 'package:client/src/features/settings/domain/settings_data.dart';
-import 'package:client/src/utils/string_extension.dart';
+import 'package:client/src/shared/utils/string_extension.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 

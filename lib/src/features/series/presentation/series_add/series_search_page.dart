@@ -4,7 +4,7 @@ import 'package:client/src/features/series/presentation/series_add/widgets/serie
 import 'package:client/src/shared/widgets/sheets/sheet_header.dart';
 import 'package:client/src/shared/widgets/indicators/animated_progress_bar.dart';
 import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
-import 'package:client/src/utils/context_extensions.dart';
+import 'package:client/src/shared/utils/context_extensions.dart';
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

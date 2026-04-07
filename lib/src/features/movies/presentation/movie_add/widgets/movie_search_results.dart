@@ -2,7 +2,7 @@ import 'package:client/src/features/movies/domain/movie_add_state.dart';
 import 'package:client/src/features/movies/presentation/movie_add/movie_add_controller.dart';
 import 'package:client/src/features/movies/presentation/movie_add/movie_add_sheet.dart';
 import 'package:client/src/features/movies/presentation/movie_add/widgets/movie_result_item.dart';
-import 'package:client/src/utils/movie_utils.dart';
+import 'package:client/src/shared/utils/movie_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr/radarr.dart';

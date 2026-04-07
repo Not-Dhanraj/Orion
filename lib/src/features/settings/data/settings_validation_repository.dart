@@ -1,4 +1,4 @@
-import 'package:client/src/utils/string_extension.dart';
+import 'package:client/src/shared/utils/string_extension.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr/radarr.dart';
 import 'package:sonarr/sonarr.dart';

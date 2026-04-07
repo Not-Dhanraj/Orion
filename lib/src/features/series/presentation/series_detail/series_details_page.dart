@@ -6,7 +6,7 @@ import 'package:client/src/features/series/presentation/series_detail/widgets/me
 import 'package:client/src/features/series/presentation/season/widgets/season_accordion.dart';
 import 'package:client/src/shared/widgets/dialogs/custom_dialog.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
-import 'package:client/src/utils/series_utils.dart';
+import 'package:client/src/shared/utils/series_utils.dart';
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

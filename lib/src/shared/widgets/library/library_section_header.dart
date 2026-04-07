@@ -1,4 +1,4 @@
-import 'package:client/src/utils/context_extensions.dart';
+import 'package:client/src/shared/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 
 class LibrarySectionHeader extends StatelessWidget {

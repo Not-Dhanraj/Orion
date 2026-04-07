@@ -1,10 +1,8 @@
-import 'package:built_collection/built_collection.dart';
 import 'package:client/src/features/series/presentation/season/season_controller.dart';
-import 'package:client/src/shared/widgets/indicators/animated_loading_text.dart';
 import 'package:client/src/shared/widgets/indicators/animated_progress_bar.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
-import 'package:client/src/shared/widgets/misc/media_release_widget.dart';
-import 'package:client/src/shared/widgets/dialogs/custom_dialog.dart';
+import 'package:client/src/features/releases/domain/release_target.dart';
+import 'package:client/src/features/releases/presentation/release_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
@@ -193,79 +191,17 @@ class _SeasonAccordionState extends ConsumerState<SeasonAccordion>
       return;
     }
 
-    bool dialogDismissed = false;
-
-    showDialog(
+    if (!context.mounted) return;
+    showModalBottomSheet(
       context: context,
-      barrierDismissible: false,
-      builder: (_) => Dialog(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        child: CustomDialog(
-          title: 'SEARCHING',
-          heading: 'Searching for season releases',
-          bodyWidget: const Padding(
-            padding: EdgeInsets.symmetric(vertical: 4.0),
-            child: AnimatedLoadingText(),
-          ),
-          actions: const [],
-        ),
-      ),
-    ).then((_) => dialogDismissed = true);
-
-    final controller = ref.read(seasonPageController(widget.series).notifier);
-    var result = await controller.loadReleases(
-      seriesId: widget.series.id,
-      seasonNumber: widget.seasonNumber,
-    );
-
-    if (dialogDismissed) return;
-
-    result = result.where((release) => release.fullSeason == true).toList();
-
-    if (context.mounted) {
-      Navigator.of(context).pop();
-      if (result.isEmpty) {
-        CustomSnackbar.show(
-          context,
-          message: 'No season releases found.',
-          type: CustomSnackbarType.warning,
-        );
-      } else {
-        _showReleasesDialog(
-          context,
-          result,
-          widget.seasonNumber,
-          widget.series,
-        );
-      }
-    }
-  }
-
-  void _showReleasesDialog(
-    BuildContext context,
-    List<ReleaseResource> releases,
-    int seasonNumber,
-    SeriesResource series,
-  ) {
-    final controller = ref.read(seasonPageController(series).notifier);
-
-    showDialog(
-      context: context,
-      builder: (context) => Dialog.fullscreen(
-        child: MediaReleaseWidget(
-          releases: releases,
-          title: '${series.title} - Season $seasonNumber',
-          onDownloadRelease: (indexerId, guid) async {
-            return controller.downloadRelease(indexerId: indexerId, guid: guid);
-          },
-          formatLanguages: (languages) {
-            if (languages == null) return 'Unknown';
-            if (languages is BuiltList) {
-              return languages.map((lang) => lang.name).join(', ');
-            }
-            return languages.toString();
-          },
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => ReleaseSheet(
+        target: SeasonReleaseTarget(
+          seriesId: widget.series.id!,
+          seasonNumber: widget.seasonNumber,
+          title: '${widget.series.title} - Season ${widget.seasonNumber}',
         ),
       ),
     );

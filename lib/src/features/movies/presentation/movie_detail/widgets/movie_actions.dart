@@ -1,7 +1,7 @@
 import 'package:client/src/features/movies/presentation/movie_detail/movie_details_controller.dart';
 import 'package:client/src/features/movies/presentation/movie_edit/movie_edit_sheet.dart';
-import 'package:client/src/shared/widgets/indicators/animated_loading_text.dart';
-import 'package:client/src/shared/widgets/misc/media_release_widget.dart';
+import 'package:client/src/features/releases/domain/release_target.dart';
+import 'package:client/src/features/releases/presentation/release_sheet.dart';
 import 'package:client/src/shared/widgets/dialogs/custom_dialog.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:flutter/material.dart';
@@ -208,78 +208,16 @@ class MovieActionCard extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     MovieResource movie,
-  ) async {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) => Dialog(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        child: CustomDialog(
-          title: 'SEARCHING',
-          heading: 'Searching for releases',
-          bodyWidget: const Padding(
-            padding: EdgeInsets.symmetric(vertical: 16.0),
-            child: Center(child: AnimatedLoadingText()),
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel Search'),
-            ),
-          ],
-        ),
-      ),
-    );
-
-    try {
-      final releases = await ref
-          .read(movieDetailsController.notifier)
-          .getReleases();
-
-      if (context.mounted) {
-        Navigator.of(context).pop();
-
-        if (releases.isEmpty) {
-          CustomSnackbar.show(
-            context,
-            message: 'No releases found',
-            type: CustomSnackbarType.info,
-          );
-          return;
-        }
-
-        _showReleasesDialog(context, ref, releases, movie);
-      }
-    } catch (error) {
-      if (context.mounted) {
-        Navigator.of(context).pop();
-        CustomSnackbar.show(
-          context,
-          message: 'Error loading releases: ${error.toString()}',
-          type: CustomSnackbarType.error,
-        );
-      }
-    }
-  }
-
-  void _showReleasesDialog(
-    BuildContext context,
-    WidgetRef ref,
-    List<ReleaseResource> releases,
-    MovieResource movie,
   ) {
-    showDialog(
+    showModalBottomSheet(
       context: context,
-      builder: (context) => Dialog.fullscreen(
-        child: MediaReleaseWidget(
-          releases: releases,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => ReleaseSheet(
+        target: MovieReleaseTarget(
+          movieId: movie.id!,
           title: movie.title ?? 'Unknown',
-          onDownloadRelease: (indexerId, guid) async {
-            return ref
-                .read(movieDetailsController.notifier)
-                .downloadRelease(indexerId: indexerId, guid: guid);
-          },
         ),
       ),
     );

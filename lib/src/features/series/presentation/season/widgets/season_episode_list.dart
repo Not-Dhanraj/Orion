@@ -1,10 +1,9 @@
-import 'package:built_collection/built_collection.dart';
 import 'package:client/src/features/series/presentation/season/season_controller.dart';
-import 'package:client/src/shared/widgets/indicators/animated_loading_text.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
-import 'package:client/src/shared/widgets/misc/media_release_widget.dart';
 import 'package:client/src/shared/widgets/dialogs/custom_dialog.dart';
-import 'package:client/src/utils/format_utils.dart';
+import 'package:client/src/features/releases/domain/release_target.dart';
+import 'package:client/src/features/releases/presentation/release_sheet.dart';
+import 'package:client/src/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
@@ -100,70 +99,22 @@ class _EpisodeListItem extends StatelessWidget {
       return;
     }
 
-    bool dialogDismissed = false;
-
-    showDialog(
+    if (!context.mounted) return;
+    showModalBottomSheet(
       context: context,
-      barrierDismissible: false,
-      builder: (_) => Dialog(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 600),
-          child: CustomDialog(
-            title: 'SEARCHING',
-            heading: 'Searching for releases',
-            bodyWidget: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 4.0),
-              child: AnimatedLoadingText(),
-            ),
-            actions: [
-              ElevatedButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Cancel Search'),
-              ),
-            ],
-          ),
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => ReleaseSheet(
+        target: EpisodeReleaseTarget(
+          seriesId: series.id!,
+          seasonNumber: seasonNumber,
+          episodeId: episode.id!,
+          title:
+              '${series.title} - S${seasonNumber.toString().padLeft(2, '0')}E${episode.episodeNumber?.toString().padLeft(2, '0')}',
         ),
       ),
-    ).then((_) => dialogDismissed = true);
-
-    var result = await controller.loadReleases(episodeId: episode.id);
-
-    if (dialogDismissed) return;
-
-    result = result.where((r) => r.fullSeason == false).toList();
-
-    if (context.mounted) {
-      Navigator.of(context).pop();
-      if (result.isEmpty) {
-        CustomSnackbar.show(
-          context,
-          message:
-              'No releases found for E${FormatUtils.formatEpisodeNumber(episode.episodeNumber)}',
-          type: CustomSnackbarType.info,
-        );
-      } else {
-        showDialog(
-          context: context,
-          builder: (context) => Dialog.fullscreen(
-            child: MediaReleaseWidget(
-              releases: result,
-              title:
-                  '${series.title} - S$seasonNumber E${episode.episodeNumber}',
-              onDownloadRelease: (indexerId, guid) =>
-                  controller.downloadRelease(indexerId: indexerId, guid: guid),
-              formatLanguages: (languages) {
-                if (languages == null) return 'Unknown';
-                return (languages as BuiltList)
-                    .map((lang) => lang.name)
-                    .join(', ');
-              },
-            ),
-          ),
-        );
-      }
-    }
+    );
   }
 
   void _confirmDeleteFile(BuildContext context) {

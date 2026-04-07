@@ -1,11 +1,10 @@
 import 'package:client/src/features/movies/presentation/movie_add/movie_add_controller.dart';
 import 'package:client/src/features/movies/presentation/movie_add/widgets/movie_add_form.dart';
-import 'package:client/src/shared/widgets/indicators/animated_loading_text.dart';
 import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/shared/widgets/sheets/sheet_footer.dart';
 import 'package:client/src/shared/widgets/sheets/sheet_header.dart';
-import 'package:client/src/utils/context_extensions.dart';
+import 'package:client/src/shared/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr/radarr.dart';

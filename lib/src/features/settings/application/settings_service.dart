@@ -2,7 +2,7 @@ import 'package:client/src/core/application/hive_service.dart';
 import 'package:client/src/core/domain/credentials.dart';
 import 'package:client/src/exceptions/repository_exception.dart';
 import 'package:client/src/features/settings/data/settings_validation_repository.dart';
-import 'package:client/src/utils/string_extension.dart';
+import 'package:client/src/shared/utils/string_extension.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SettingsService {

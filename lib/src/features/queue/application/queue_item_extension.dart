@@ -1,5 +1,5 @@
 import 'package:client/src/features/queue/domain/queue_item.dart';
-import 'package:client/src/utils/format_utils.dart';
+import 'package:client/src/shared/utils/format_utils.dart';
 
 extension QueueUtils on QueueItem {
   bool get isActive => isDownloading && !isStalled;

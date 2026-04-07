@@ -5,12 +5,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
 
 class SeriesAddController extends AutoDisposeAsyncNotifier<SeriesAddState> {
+  late SeriesService _seriesService;
+
   @override
   Future<SeriesAddState> build() async {
-    final seriesService = ref.watch(seriesServiceProvider);
-    final qualityProfiles = await seriesService.fetchQualityProfiles();
-    final rootFolders = await seriesService.fetchRootFolders();
-    final allSeries = await seriesService.fetchAllSeries();
+    _seriesService = ref.watch(seriesServiceProvider);
+    final qualityProfiles = await _seriesService.fetchQualityProfiles();
+    final rootFolders = await _seriesService.fetchRootFolders();
+    final allSeries = await _seriesService.fetchAllSeries();
     await Future.delayed(const Duration(milliseconds: 500));
     return SeriesAddState(
       qualityProfiles: qualityProfiles,
@@ -28,7 +30,7 @@ class SeriesAddController extends AutoDisposeAsyncNotifier<SeriesAddState> {
     state = AsyncData(state.requireValue.copyWith(isSearching: true));
 
     try {
-      final results = await ref.read(seriesServiceProvider).searchSeries(query);
+      final results = await _seriesService.searchSeries(query);
       final addedIds = results
           .where((r) => state.requireValue.isAlreadyAdded(r))
           .map((r) => r.tvdbId)
@@ -81,8 +83,7 @@ class SeriesAddController extends AutoDisposeAsyncNotifier<SeriesAddState> {
     state = AsyncData(state.requireValue.copyWith(isCreating: true));
 
     try {
-      final seriesService = ref.read(seriesServiceProvider);
-      await seriesService.createSeries(series);
+      await _seriesService.createSeries(series);
       ref.invalidate(seriesLibraryController);
 
       await Future.wait([ref.read(seriesLibraryController.future)]);

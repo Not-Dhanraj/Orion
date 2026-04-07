@@ -7,16 +7,18 @@ import 'package:radarr/radarr.dart';
 
 class MovieEditControllerNotifier
     extends AutoDisposeFamilyAsyncNotifier<MovieEditState, MovieResource> {
+  late MovieService _movieService;
+
   @override
   Future<MovieEditState> build(MovieResource movie) async {
-    var movieService = ref.watch(movieServiceProvider);
+    _movieService = ref.watch(movieServiceProvider);
     await Future.delayed(const Duration(milliseconds: 500));
-    final qualityProfiles = await movieService.fetchQualityProfiles();
-    final rootFolders = await movieService.fetchRootFolders();
+    final qualityProfiles = await _movieService.fetchQualityProfiles();
+    final rootFolders = await _movieService.fetchRootFolders();
 
     MovieResource updatedMovie = movie;
     if (movie.id != null) {
-      updatedMovie = await movieService.fetchMovieById(movie.id!);
+      updatedMovie = await _movieService.fetchMovieById(movie.id!);
     }
 
     return MovieEditState(
@@ -44,9 +46,7 @@ class MovieEditControllerNotifier
     state = AsyncData(state.value!.copyWith(isLoading: true));
     try {
       await Future.delayed(const Duration(milliseconds: 500));
-      var updatedMovie = await ref
-          .read(movieServiceProvider)
-          .updateMovie(state.value!.movie!);
+      var updatedMovie = await _movieService.updateMovie(state.value!.movie!);
 
       ref.read(movieDetailsController.notifier).initialize(updatedMovie);
       state = AsyncData(
@@ -72,4 +72,4 @@ final movieEditController =
       MovieEditControllerNotifier,
       MovieEditState,
       MovieResource
-    >(() => MovieEditControllerNotifier());
+    >(MovieEditControllerNotifier.new);

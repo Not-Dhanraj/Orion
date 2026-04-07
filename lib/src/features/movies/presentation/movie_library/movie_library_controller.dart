@@ -3,11 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr/radarr.dart';
 
 class MovieLibraryController extends AsyncNotifier<List<dynamic>> {
+  late MovieService _movieService;
+
   @override
   Future<List<dynamic>> build() async {
-    final movieService = ref.watch(movieServiceProvider);
+    _movieService = ref.watch(movieServiceProvider);
     await Future.delayed(const Duration(milliseconds: 500));
-    final movieList = await movieService.fetchAllMovies();
+    final movieList = await _movieService.fetchAllMovies();
     return _buildDisplayList(movieList);
   }
 
@@ -36,21 +38,9 @@ class MovieLibraryController extends AsyncNotifier<List<dynamic>> {
 
     return displayList;
   }
-
-  // Future<void> refreshMovies() async {
-  //   state = const AsyncLoading();
-  //   try {
-  //     await Future.delayed(const Duration(milliseconds: 500));
-  //     final movieService = ref.watch(movieServiceProvider);
-  //     final movieList = await movieService.fetchAllMovies();
-  //     state = AsyncData(_buildDisplayList(movieList));
-  //   } catch (e) {
-  //     state = AsyncError(e, StackTrace.current);
-  //   }
-  // }
 }
 
 final movieLibraryController =
-    AsyncNotifierProvider<MovieLibraryController, List<dynamic>>(() {
-      return MovieLibraryController();
-    });
+    AsyncNotifierProvider<MovieLibraryController, List<dynamic>>(
+      MovieLibraryController.new,
+    );

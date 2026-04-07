@@ -35,19 +35,6 @@ class SeasonRepository {
     await _api.getEpisodeFileApi().apiV3EpisodefileIdDelete(id: episodeId);
   }
 
-  Future<BuiltList<ReleaseResource>> getReleases({
-    int? seriesId,
-    int? episodeId,
-    int? seasonNumber,
-  }) async {
-    final response = await _api.getReleaseApi().apiV3ReleaseGet(
-      seriesId: seriesId,
-      episodeId: episodeId,
-      seasonNumber: seasonNumber,
-    );
-    return response.data ?? BuiltList<ReleaseResource>([]);
-  }
-
   Future<SeriesResource> updateSeriesSeasons({
     required int seriesId,
     required int seasonNumber,
@@ -84,19 +71,6 @@ class SeasonRepository {
     }
 
     return response.data!;
-  }
-
-  Future<void> downloadRelease({
-    required int indexerId,
-    required String guid,
-  }) async {
-    await _api.getReleaseApi().apiV3ReleasePost(
-      releaseResource: ReleaseResource(
-        (b) => b
-          ..indexerId = indexerId
-          ..guid = guid,
-      ),
-    );
   }
 }
 

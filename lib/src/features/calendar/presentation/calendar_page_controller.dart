@@ -18,6 +18,7 @@ class CalendarPageController extends AsyncNotifier<CalendarPageState> {
     'SUN',
   ];
 
+  late CalendarService _calendarService;
   late DateTime _windowStart;
   late DateTime _fetchedMonth;
   late DateTime _startDate;
@@ -28,18 +29,17 @@ class CalendarPageController extends AsyncNotifier<CalendarPageState> {
 
   @override
   Future<CalendarPageState> build() async {
+    _calendarService = ref.watch(calendarServiceProvider);
     _windowStart = _mondayOf(_today);
     _fetchedMonth = DateTime(_windowStart.year, _windowStart.month);
     _updateDateRange(_fetchedMonth);
     _selectedDayIndex = _today.weekday - 1;
 
-    final items = await ref
-        .watch(calendarServiceProvider)
-        .getCalendarItems(
-          start: _startDate,
-          end: _endDate,
-          includeUnmonitored: includeUnmonitored,
-        );
+    final items = await _calendarService.getCalendarItems(
+      start: _startDate,
+      end: _endDate,
+      includeUnmonitored: includeUnmonitored,
+    );
 
     return _buildState(items);
   }
@@ -86,13 +86,11 @@ class CalendarPageController extends AsyncNotifier<CalendarPageState> {
       _updateDateRange(midMonth);
     }
     state = AsyncValue.data(_buildState(_cachedItems));
-    final items = await ref
-        .read(calendarServiceProvider)
-        .getCalendarItems(
-          start: _startDate,
-          end: _endDate,
-          includeUnmonitored: includeUnmonitored,
-        );
+    final items = await _calendarService.getCalendarItems(
+      start: _startDate,
+      end: _endDate,
+      includeUnmonitored: includeUnmonitored,
+    );
     state = AsyncValue.data(_buildState(items));
   }
 

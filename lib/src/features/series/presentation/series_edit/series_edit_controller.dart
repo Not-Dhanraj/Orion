@@ -7,12 +7,14 @@ import 'package:sonarr/sonarr.dart';
 
 class SeriesEditControllerNotifier
     extends AutoDisposeFamilyAsyncNotifier<SeriesEditState, int> {
+  late SeriesService _seriesService;
+
   @override
   Future<SeriesEditState> build(int seriesId) async {
-    var serService = ref.watch(seriesServiceProvider);
+    _seriesService = ref.watch(seriesServiceProvider);
     await Future.delayed(const Duration(milliseconds: 500));
-    final qualityProfiles = await serService.fetchQualityProfiles();
-    final series = await serService.fetchSeriesById(seriesId);
+    final qualityProfiles = await _seriesService.fetchQualityProfiles();
+    final series = await _seriesService.fetchSeriesById(seriesId);
     return SeriesEditState(
       series: series,
       hasChanges: false,
@@ -36,9 +38,7 @@ class SeriesEditControllerNotifier
     state = AsyncData(state.value!.copyWith(isLoading: true));
     try {
       await Future.delayed(const Duration(milliseconds: 500));
-      var updatedSeries = await ref
-          .read(seriesServiceProvider)
-          .updateSeries(state.value!.series!);
+      var updatedSeries = await _seriesService.updateSeries(state.value!.series!);
 
       ref.read(seriesDetailsController.notifier).initialize(updatedSeries);
       state = AsyncData(
@@ -63,4 +63,4 @@ final seriesEditController =
       SeriesEditControllerNotifier,
       SeriesEditState,
       int
-    >(() => SeriesEditControllerNotifier());
+    >(SeriesEditControllerNotifier.new);

@@ -4,11 +4,13 @@ import 'package:sonarr/sonarr.dart';
 
 // Contains String as well as SeriesResource as this directly provides the build list to UI without multipe builds
 class SeriesLibraryController extends AsyncNotifier<List<dynamic>> {
+  late SeriesService _seriesService;
+
   @override
   Future<List<dynamic>> build() async {
-    final seriesService = ref.watch(seriesServiceProvider);
+    _seriesService = ref.watch(seriesServiceProvider);
     await Future.delayed(const Duration(milliseconds: 500));
-    final seriesList = await seriesService.fetchAllSeries();
+    final seriesList = await _seriesService.fetchAllSeries();
     return _buildDisplayList(seriesList);
   }
 
@@ -37,21 +39,9 @@ class SeriesLibraryController extends AsyncNotifier<List<dynamic>> {
 
     return displayList;
   }
-
-  // Future<void> refreshSeries() async {
-  //   state = const AsyncLoading();
-  //   try {
-  //     await Future.delayed(const Duration(milliseconds: 500));
-  //     final seriesService = ref.watch(seriesServiceProvider);
-  //     final seriesList = await seriesService.fetchAllSeries();
-  //     state = AsyncData(_buildDisplayList(seriesList));
-  //   } catch (e) {
-  //     state = AsyncError(e, StackTrace.current);
-  //   }
-  // }
 }
 
 final seriesLibraryController =
-    AsyncNotifierProvider<SeriesLibraryController, List<dynamic>>(() {
-      return SeriesLibraryController();
-    });
+    AsyncNotifierProvider<SeriesLibraryController, List<dynamic>>(
+      SeriesLibraryController.new,
+    );

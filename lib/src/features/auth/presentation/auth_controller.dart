@@ -6,11 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AuthController extends Notifier<AuthState> {
+  late AuthService _authService;
+
   @override
   AuthState build() {
-    final state = AuthState(sonarrConfigured: false, radarrConfigured: false);
-
-    return state;
+    _authService = ref.watch(authServiceProvider);
+    return AuthState(sonarrConfigured: false, radarrConfigured: false);
   }
 
   Future<void> updateSonarr(
@@ -21,8 +22,7 @@ class AuthController extends Notifier<AuthState> {
     state = state.copyWith(isLoadingSonarr: true, clearSonarrError: true);
     if (context.mounted) {
       try {
-        final authService = ref.read(authServiceProvider);
-        await authService.validateAndConfigureService(
+        await _authService.validateAndConfigureService(
           url,
           apiKey,
           ServiceType.sonarr,
@@ -62,8 +62,7 @@ class AuthController extends Notifier<AuthState> {
     state = state.copyWith(isLoadingRadarr: true, clearRadarrError: true);
 
     try {
-      final authService = ref.read(authServiceProvider);
-      await authService.validateAndConfigureService(
+      await _authService.validateAndConfigureService(
         url,
         apiKey,
         ServiceType.radarr,
@@ -112,5 +111,5 @@ class AuthController extends Notifier<AuthState> {
 }
 
 final authController = NotifierProvider<AuthController, AuthState>(
-  () => AuthController(),
+  AuthController.new,
 );

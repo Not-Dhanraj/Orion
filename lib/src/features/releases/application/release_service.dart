@@ -14,7 +14,9 @@ class ReleaseService {
   Future<List<ReleaseItem>> getReleases(ReleaseTarget target) async {
     try {
       if (target is MovieReleaseTarget) {
-        final resources = await _radarrRepo.getReleases(movieId: target.movieId);
+        final resources = await _radarrRepo.getReleases(
+          movieId: target.movieId,
+        );
         return resources.map(ReleaseItem.fromRadarr).toList();
       } else if (target is SeasonReleaseTarget) {
         final resources = await _sonarrRepo.getReleases(

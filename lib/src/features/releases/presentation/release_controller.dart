@@ -6,9 +6,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ReleaseController
     extends AutoDisposeFamilyAsyncNotifier<ReleaseState, ReleaseTarget> {
+  late ReleaseService _releaseService;
+
   @override
   Future<ReleaseState> build(ReleaseTarget arg) async {
-    final releases = await ref.read(releaseServiceProvider).getReleases(arg);
+    _releaseService = ref.watch(releaseServiceProvider);
+    final releases = await _releaseService.getReleases(arg);
     return ReleaseState(releases: releases);
   }
 
@@ -30,9 +33,11 @@ class ReleaseController
 
     state = AsyncData(current.copyWith(downloadingGuid: () => guid));
     try {
-      await ref
-          .read(releaseServiceProvider)
-          .downloadRelease(target: arg, indexerId: indexerId, guid: guid);
+      await _releaseService.downloadRelease(
+        target: arg,
+        indexerId: indexerId,
+        guid: guid,
+      );
       onSuccess();
     } catch (e) {
       // DON'T REMOVE

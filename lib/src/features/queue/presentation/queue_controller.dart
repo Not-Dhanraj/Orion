@@ -4,9 +4,11 @@ import 'package:client/src/features/queue/domain/queue_item.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class QueueHomeController extends AutoDisposeAsyncNotifier<List<QueueItem>> {
+  late QueueService _queueService;
+
   @override
   Future<List<QueueItem>> build() async {
-    final queueService = ref.watch(queueServiceProvider);
+    _queueService = ref.watch(queueServiceProvider);
 
     final timer = Timer.periodic(const Duration(seconds: 8), (_) {
       ref.invalidateSelf();
@@ -14,7 +16,7 @@ class QueueHomeController extends AutoDisposeAsyncNotifier<List<QueueItem>> {
 
     ref.onDispose(timer.cancel);
 
-    return queueService.getQueueItems();
+    return _queueService.getQueueItems();
   }
 
   Future<void> refreshQueue() async {
@@ -27,9 +29,8 @@ class QueueHomeController extends AutoDisposeAsyncNotifier<List<QueueItem>> {
     bool removeFromClient = true,
     bool blacklist = false,
   }) async {
-    final queueService = ref.read(queueServiceProvider);
     try {
-      await queueService.deleteQueueItem(
+      await _queueService.deleteQueueItem(
         item,
         removeFromClient: removeFromClient,
         blacklist: blacklist,

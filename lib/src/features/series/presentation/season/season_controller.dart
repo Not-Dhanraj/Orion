@@ -1,13 +1,18 @@
 import 'package:client/src/features/series/application/season_service.dart';
 import 'package:client/src/features/series/domain/season_page_state.dart';
 import 'package:client/src/features/series/domain/season_with_episodes.dart';
+import 'package:client/src/features/series/presentation/series_detail/series_details_controller.dart';
+import 'package:client/src/features/series/presentation/series_library/series_library_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
 
 class SeasonPageController
     extends AutoDisposeFamilyAsyncNotifier<SeasonPageState, SeriesResource> {
+  late SeasonService _seasonService;
+
   @override
   Future<SeasonPageState> build(SeriesResource series) async {
+    _seasonService = ref.watch(seasonServiceProvider);
     final episodesBySeason = await _fetchEpisodesBySeason(series.id!);
     final seasons = _buildSeasonsList(series, episodesBySeason);
 
@@ -17,9 +22,7 @@ class SeasonPageController
   Future<Map<int, List<EpisodeResource>>> _fetchEpisodesBySeason(
     int seriesId,
   ) async {
-    final service = ref.read(seasonServiceProvider);
-
-    final allEpisodes = await service.getEpisodes(
+    final allEpisodes = await _seasonService.getEpisodes(
       seriesId: seriesId,
       includeEpisodeFile: true,
     );
@@ -60,42 +63,21 @@ class SeasonPageController
     return seasons;
   }
 
-  Future<List<ReleaseResource>> loadReleases({
-    int? seriesId,
-    int? seasonNumber,
-    int? episodeId,
-  }) async {
-    if (state.value == null || state.value!.selectedSeason == null) return [];
-
-    try {
-      final releases = await ref
-          .read(seasonServiceProvider)
-          .getReleases(
-            seriesId: seriesId,
-            seasonNumber: seasonNumber,
-            episodeId: episodeId,
-          );
-
-      return releases;
-    } catch (e, stackTrace) {
-      state = AsyncError(e, stackTrace);
-      return [];
-    }
-  }
-
   Future<void> toggleSeasonMonitoring(int seasonNumber, bool monitored) async {
     if (state.value == null) return;
 
     final currentState = state.requireValue;
 
     try {
-      final updatedSeries = await ref
-          .read(seasonServiceProvider)
-          .updateSeasonMonitoring(
-            seriesId: currentState.seriesResource.id!,
-            seasonNumber: seasonNumber,
-            monitored: monitored,
-          );
+      final updatedSeries = await _seasonService.updateSeasonMonitoring(
+        seriesId: currentState.seriesResource.id!,
+        seasonNumber: seasonNumber,
+        monitored: monitored,
+      );
+
+      // Moved Side-Effects from Service to Controller
+      ref.invalidate(seriesLibraryController);
+      ref.read(seriesDetailsController.notifier).initialize(updatedSeries);
 
       final episodesBySeason = await _fetchEpisodesBySeason(
         currentState.seriesResource.id!,
@@ -138,9 +120,10 @@ class SeasonPageController
     final currentState = state.requireValue;
 
     try {
-      await ref
-          .read(seasonServiceProvider)
-          .monitorEpisodes(episodeIds: episodeIds, monitored: monitored);
+      await _seasonService.monitorEpisodes(
+        episodeIds: episodeIds,
+        monitored: monitored,
+      );
 
       final episodesBySeason = await _fetchEpisodesBySeason(
         currentState.seriesResource.id!,
@@ -167,9 +150,7 @@ class SeasonPageController
     final currentState = state.requireValue;
 
     try {
-      await ref
-          .read(seasonServiceProvider)
-          .deleteEpisodeFile(episodeId: episodeId);
+      await _seasonService.deleteEpisodeFile(episodeId: episodeId);
 
       final episodesBySeason = await _fetchEpisodesBySeason(
         currentState.seriesResource.id!,
@@ -189,35 +170,6 @@ class SeasonPageController
       state = AsyncError(e, stackTrace);
     }
   }
-
-  Future<void> downloadRelease({
-    required int indexerId,
-    required String guid,
-  }) async {
-    if (state.value == null) return;
-
-    try {
-      await ref
-          .read(seasonServiceProvider)
-          .downloadRelease(indexerId: indexerId, guid: guid);
-    } catch (e, stackTrace) {
-      state = AsyncError(e, stackTrace);
-    }
-  }
-
-  // List<EpisodeResource> getSortedSeasonEpisodes(int seasonNumber) {
-  //   final seasonData = state.valueOrNull?.seasons
-  //       .where((s) => s.seasonNumber == seasonNumber)
-  //       .firstOrNull;
-
-  //   final episodes = seasonData?.episodes.toList() ?? [];
-
-  //   episodes.sort(
-  //     (a, b) => (a.episodeNumber ?? 0).compareTo(b.episodeNumber ?? 0),
-  //   );
-
-  //   return episodes;
-  // }
 }
 
 final seasonPageController =

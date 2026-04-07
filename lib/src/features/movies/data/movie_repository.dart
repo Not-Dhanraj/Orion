@@ -61,26 +61,6 @@ class MovieRepository {
     return response.data;
   }
 
-  Future<BuiltList<ReleaseResource>?> getReleases({
-    required int movieId,
-  }) async {
-    var response = await _api.getReleaseApi().apiV3ReleaseGet(movieId: movieId);
-    return response.data;
-  }
-
-  Future<void> downloadRelease({
-    required int indexerId,
-    required String guid,
-  }) async {
-    await _api.getReleaseApi().apiV3ReleasePost(
-      releaseResource: ReleaseResource(
-        (r) => r
-          ..indexerId = indexerId
-          ..guid = guid,
-      ),
-    );
-  }
-
   Future<void> deleteMovieFile(int movieId) async {
     final movieResponse = await _api.getMovieApi().apiV3MovieIdGet(id: movieId);
     final movie = movieResponse.data;

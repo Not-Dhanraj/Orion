@@ -5,7 +5,8 @@ import 'package:sonarr/sonarr.dart';
 
 class SeriesDetailsControllerNotifier extends StateNotifier<SeriesResource> {
   final Ref _ref;
-  SeriesDetailsControllerNotifier(this._ref) : super(SeriesResource());
+  final SeriesService _seriesService;
+  SeriesDetailsControllerNotifier(this._ref, this._seriesService) : super(SeriesResource());
 
   void initialize(SeriesResource series) {
     state = series;
@@ -15,13 +16,12 @@ class SeriesDetailsControllerNotifier extends StateNotifier<SeriesResource> {
     required bool deleteFiles,
     required bool addImportListExclusion,
   }) async {
-    final service = _ref.read(seriesServiceProvider);
-    await service.deleteSeries(state.id!, deleteFiles, addImportListExclusion);
+    await _seriesService.deleteSeries(state.id!, deleteFiles, addImportListExclusion);
     _ref.invalidate(seriesLibraryController);
   }
 }
 
 final seriesDetailsController =
     StateNotifierProvider<SeriesDetailsControllerNotifier, SeriesResource>(
-      (ref) => SeriesDetailsControllerNotifier(ref),
+      (ref) => SeriesDetailsControllerNotifier(ref, ref.watch(seriesServiceProvider)),
     );

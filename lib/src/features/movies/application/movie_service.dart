@@ -150,34 +150,6 @@ class MovieService {
     }
   }
 
-  Future<List<ReleaseResource>> getReleases({required int movieId}) async {
-    try {
-      final releases = await _movieRepository.getReleases(movieId: movieId);
-      return releases?.toList() ?? [];
-    } catch (e, stackTrace) {
-      throw RepositoryException(
-        'Failed to fetch releases for movie with ID $movieId',
-        error: e,
-        stackTrace: stackTrace,
-      );
-    }
-  }
-
-  Future<void> downloadRelease({
-    required int indexerId,
-    required String guid,
-  }) async {
-    try {
-      await _movieRepository.downloadRelease(indexerId: indexerId, guid: guid);
-    } catch (e, stackTrace) {
-      throw RepositoryException(
-        'Failed to download release',
-        error: e,
-        stackTrace: stackTrace,
-      );
-    }
-  }
-
   Future<void> deleteMovieFile(int movieId) async {
     try {
       await _movieRepository.deleteMovieFile(movieId);

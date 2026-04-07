@@ -5,12 +5,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr/radarr.dart';
 
 class MovieAddController extends AutoDisposeAsyncNotifier<MovieAddState> {
+  late MovieService _movieService;
+
   @override
   Future<MovieAddState> build() async {
-    final movieService = ref.watch(movieServiceProvider);
-    final qualityProfiles = await movieService.fetchQualityProfiles();
-    final rootFolders = await movieService.fetchRootFolders();
-    final allMovies = await movieService.fetchAllMovies();
+    _movieService = ref.watch(movieServiceProvider);
+    final qualityProfiles = await _movieService.fetchQualityProfiles();
+    final rootFolders = await _movieService.fetchRootFolders();
+    final allMovies = await _movieService.fetchAllMovies();
     await Future.delayed(const Duration(milliseconds: 500));
     return MovieAddState(
       qualityProfiles: qualityProfiles,
@@ -28,7 +30,7 @@ class MovieAddController extends AutoDisposeAsyncNotifier<MovieAddState> {
     state = AsyncData(state.requireValue.copyWith(isSearching: true));
 
     try {
-      final results = await ref.read(movieServiceProvider).searchMovies(query);
+      final results = await _movieService.searchMovies(query);
       final addedIds = results
           .where((r) => state.requireValue.isAlreadyAdded(r))
           .map((r) => r.tmdbId)
@@ -77,7 +79,7 @@ class MovieAddController extends AutoDisposeAsyncNotifier<MovieAddState> {
     state = AsyncData(state.requireValue.copyWith(isCreating: true));
 
     try {
-      await ref.read(movieServiceProvider).createMovie(movie);
+      await _movieService.createMovie(movie);
       ref.invalidate(movieLibraryController);
       await Future.wait([ref.read(movieLibraryController.future)]);
       state = AsyncData(state.requireValue.copyWith(isCreating: false));

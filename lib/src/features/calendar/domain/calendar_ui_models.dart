@@ -32,7 +32,7 @@ class CalendarEpisodeEntry {
   });
 }
 
-class CalendarHomeState {
+class CalendarPageState {
   final List<CalendarDay> days;
   final List<CalendarEpisodeEntry> entries;
   final String windowLabel;
@@ -40,7 +40,7 @@ class CalendarHomeState {
   final bool canGoNext;
   final int selectedDayIndex;
 
-  const CalendarHomeState({
+  const CalendarPageState({
     required this.days,
     required this.entries,
     required this.windowLabel,
@@ -49,14 +49,14 @@ class CalendarHomeState {
     required this.selectedDayIndex,
   });
 
-  CalendarHomeState copyWith({
+  CalendarPageState copyWith({
     List<CalendarDay>? days,
     List<CalendarEpisodeEntry>? entries,
     String? windowLabel,
     bool? canGoPrev,
     bool? canGoNext,
     int? selectedDayIndex,
-  }) => CalendarHomeState(
+  }) => CalendarPageState(
     days: days ?? this.days,
     entries: entries ?? this.entries,
     windowLabel: windowLabel ?? this.windowLabel,

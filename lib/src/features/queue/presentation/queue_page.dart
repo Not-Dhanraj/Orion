@@ -1,6 +1,7 @@
 import 'package:client/src/features/queue/domain/queue_item.dart';
 import 'package:client/src/features/queue/presentation/queue_controller.dart';
 import 'package:client/src/features/queue/presentation/widgets/queue_item_widget.dart';
+import 'package:client/src/shared/widgets/indicators/animated_loading_text.dart';
 import 'package:client/src/shared/widgets/indicators/animated_progress_bar.dart';
 import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
 import 'package:client/src/utils/context_extensions.dart';
@@ -35,7 +36,7 @@ class QueuePage extends ConsumerWidget {
                   _QueueHeader(itemCount: 0, reqPadding: true),
                 ],
               ),
-              const Center(child: Text('Loading')),
+              const Center(child: AnimatedLoadingText()),
             ],
           ),
           error: (err, stack) => Stack(

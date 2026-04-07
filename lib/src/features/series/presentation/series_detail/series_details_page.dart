@@ -1,5 +1,5 @@
 import 'package:client/src/features/series/presentation/series_detail/series_details_controller.dart';
-import 'package:client/src/features/series/presentation/series_edit/series_edit_page.dart';
+import 'package:client/src/features/series/presentation/series_edit/series_edit_sheet.dart';
 import 'package:client/src/features/series/presentation/series_detail/widgets/media_hero_header.dart';
 import 'package:client/src/features/series/presentation/series_detail/widgets/media_specs_grid.dart';
 import 'package:client/src/features/series/presentation/series_detail/widgets/media_telemetry.dart';
@@ -113,7 +113,7 @@ class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
                         isScrollControlled: true,
                         backgroundColor: Colors.transparent,
                         builder: (context) {
-                          return SeriesEditPage(series: series);
+                          return SeriesEditSheet(series: series);
                         },
                       );
                     },

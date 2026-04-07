@@ -2,6 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:client/src/features/series/presentation/season/season_controller.dart';
 import 'package:client/src/shared/widgets/indicators/animated_loading_text.dart';
 import 'package:client/src/shared/widgets/indicators/animated_progress_bar.dart';
+import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/shared/widgets/misc/media_release_widget.dart';
 import 'package:client/src/shared/widgets/dialogs/custom_dialog.dart';
 import 'package:flutter/material.dart';
@@ -183,12 +184,11 @@ class _SeasonAccordionState extends ConsumerState<SeasonAccordion>
 
   Future<void> _searchAll(BuildContext context, bool hasMissingFiles) async {
     if (!hasMissingFiles) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
+      CustomSnackbar.show(
+        context,
+        message:
             'All episodes in season ${widget.seasonNumber} already have files.',
-          ),
-        ),
+        type: CustomSnackbarType.info,
       );
       return;
     }
@@ -218,16 +218,18 @@ class _SeasonAccordionState extends ConsumerState<SeasonAccordion>
       seriesId: widget.series.id,
       seasonNumber: widget.seasonNumber,
     );
-    
+
     if (dialogDismissed) return;
-    
+
     result = result.where((release) => release.fullSeason == true).toList();
 
     if (context.mounted) {
       Navigator.of(context).pop();
       if (result.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('No season releases found.')),
+        CustomSnackbar.show(
+          context,
+          message: 'No season releases found.',
+          type: CustomSnackbarType.warning,
         );
       } else {
         _showReleasesDialog(

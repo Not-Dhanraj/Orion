@@ -1,5 +1,7 @@
 import 'package:client/src/features/movies/presentation/movie_add/movie_add_controller.dart';
 import 'package:client/src/features/movies/presentation/movie_add/widgets/movie_add_form.dart';
+import 'package:client/src/shared/widgets/indicators/animated_loading_text.dart';
+import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/shared/widgets/sheets/sheet_footer.dart';
 import 'package:client/src/shared/widgets/sheets/sheet_header.dart';
@@ -53,7 +55,11 @@ class MovieAddSheet extends ConsumerWidget {
                 child: selectedMovie == null
                     ? const Padding(
                         padding: EdgeInsets.all(32),
-                        child: Center(child: CircularProgressIndicator()),
+                        child: Center(
+                          child: CustomErrorState(
+                            error: 'Selected movie is null',
+                          ),
+                        ),
                       )
                     : ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 800),

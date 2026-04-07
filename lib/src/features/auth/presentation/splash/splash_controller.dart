@@ -1,6 +1,6 @@
 import 'package:client/src/core/application/enabled_provider.dart';
 import 'package:client/src/core/application/hive_service.dart';
-import 'package:client/src/features/calendar/presentation/calendar_home_controller.dart';
+import 'package:client/src/features/calendar/presentation/calendar_page_controller.dart';
 import 'package:client/src/features/movies/presentation/movie_library/movie_library_controller.dart';
 import 'package:client/src/features/series/presentation/series_library/series_library_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,7 +24,7 @@ final splashController = FutureProvider.autoDispose<SplashData>((ref) async {
   }
 
   await Future.wait([
-    ref.read(calendarHomeController.future),
+    ref.read(calendarPageController.future),
     if (enabled.sonarr) ref.read(seriesLibraryController.future),
     if (enabled.radarr) ref.read(movieLibraryController.future),
   ]);

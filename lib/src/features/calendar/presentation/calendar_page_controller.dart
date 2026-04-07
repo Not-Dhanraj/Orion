@@ -4,7 +4,7 @@ import 'package:client/src/features/calendar/domain/calendar_ui_models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class CalendarHomeController extends AsyncNotifier<CalendarHomeState> {
+class CalendarPageController extends AsyncNotifier<CalendarPageState> {
   static final _today = _dateOnly(DateTime.now());
   static final _minDay = DateTime(_today.year, _today.month - 12);
   static final _maxDay = DateTime(_today.year, _today.month + 12, 28);
@@ -27,7 +27,7 @@ class CalendarHomeController extends AsyncNotifier<CalendarHomeState> {
   List<CalendarItem> _cachedItems = [];
 
   @override
-  Future<CalendarHomeState> build() async {
+  Future<CalendarPageState> build() async {
     _windowStart = _mondayOf(_today);
     _fetchedMonth = DateTime(_windowStart.year, _windowStart.month);
     _updateDateRange(_fetchedMonth);
@@ -101,10 +101,10 @@ class CalendarHomeController extends AsyncNotifier<CalendarHomeState> {
     _endDate = DateTime(month.year, month.month + 2, 0, 23, 59, 59);
   }
 
-  CalendarHomeState _buildState(List<CalendarItem> items) {
+  CalendarPageState _buildState(List<CalendarItem> items) {
     _cachedItems = items;
     final days = _buildDays(items);
-    return CalendarHomeState(
+    return CalendarPageState(
       days: days,
       entries: _buildEntriesForDay(items, days[_selectedDayIndex.clamp(0, 6)]),
       windowLabel: _windowLabel(),
@@ -186,7 +186,7 @@ class CalendarHomeController extends AsyncNotifier<CalendarHomeState> {
       d.subtract(Duration(days: d.weekday - 1));
 }
 
-final calendarHomeController =
-    AsyncNotifierProvider<CalendarHomeController, CalendarHomeState>(
-      CalendarHomeController.new,
+final calendarPageController =
+    AsyncNotifierProvider<CalendarPageController, CalendarPageState>(
+      CalendarPageController.new,
     );

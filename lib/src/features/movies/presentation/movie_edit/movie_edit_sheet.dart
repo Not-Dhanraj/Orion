@@ -1,5 +1,6 @@
-import 'package:client/src/core/widgets/loading_indicator.dart';
-import 'package:client/src/features/series/presentation/series_edit/series_edit_controller.dart';
+import 'package:client/src/features/movies/presentation/movie_edit/movie_edit_controller.dart';
+import 'package:client/src/shared/widgets/indicators/animated_loading_text.dart';
+import 'package:client/src/shared/widgets/indicators/animated_progress_bar.dart';
 import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/shared/widgets/sheets/sheet_footer.dart';
@@ -9,16 +10,16 @@ import 'package:client/src/shared/widgets/inputs/custom_switch_tile.dart';
 import 'package:client/src/utils/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:radarr/radarr.dart';
 
-class SeriesEditPage extends ConsumerWidget {
-  final SeriesResource series;
-  const SeriesEditPage({super.key, required this.series});
+class MovieEditSheet extends ConsumerWidget {
+  final MovieResource movie;
+  const MovieEditSheet({super.key, required this.movie});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cs = Theme.of(context).colorScheme;
-    final editStateAsync = ref.watch(seriesEditController(series.id!));
+    final editStateAsync = ref.watch(movieEditController(movie));
 
     final isLoading = editStateAsync.value?.isLoading ?? false;
     final hasChanges = editStateAsync.value?.hasChanges ?? false;
@@ -44,8 +45,8 @@ class SeriesEditPage extends ConsumerWidget {
                   const SizedBox(height: 3),
                   SheetHeader(
                     onClose: () => Navigator.of(context).pop(),
-                    title: series.title ?? 'Unknown',
-                    label: 'EDIT SERIES',
+                    title: movie.title ?? 'Unknown',
+                    label: 'EDIT MOVIE',
                   ),
                   const SizedBox(height: 6),
                 ],
@@ -58,10 +59,11 @@ class SeriesEditPage extends ConsumerWidget {
                 alignment: Alignment.topCenter,
                 child: editStateAsync.when(
                   data: (state) {
-                    final seriesData = state.series ?? SeriesResource();
+                    final movieData = state.movie ?? MovieResource();
                     final qualityProfiles = state.qualityProfiles;
+                    final rootFolders = state.rootFolders ?? [];
                     final controller = ref.read(
-                      seriesEditController(series.id!).notifier,
+                      movieEditController(movie).notifier,
                     );
 
                     return ConstrainedBox(
@@ -76,47 +78,40 @@ class SeriesEditPage extends ConsumerWidget {
                               CustomSwitchTile(
                                 title: 'Monitored',
                                 subtitle:
-                                    'Download Monitored episodes in this series',
-                                value: seriesData.monitored ?? false,
-                                onChanged: (value) => controller.updateSeries(
-                                  seriesData.rebuild(
+                                    'Download Monitored release when available',
+                                value: movieData.monitored ?? false,
+                                onChanged: (value) => controller.updateMovie(
+                                  movieData.rebuild(
                                     (b) => b..monitored = value,
                                   ),
                                 ),
                               ),
                               FormRowDivider(),
-                              CustomSwitchTile(
-                                title: 'Season Folder',
-                                subtitle: 'Sort episodes into season folders',
-                                value: seriesData.seasonFolder ?? true,
-                                onChanged: (value) => controller.updateSeries(
-                                  seriesData.rebuild(
-                                    (b) => b..seasonFolder = value,
+                              GenericDropdownRow<MovieStatusType>(
+                                label: 'Minimum Availability',
+                                subtitle:
+                                    'When the movie is considered available',
+                                value:
+                                    movieData.minimumAvailability ??
+                                    MovieStatusType.released,
+                                items: [
+                                  MovieStatusType.announced,
+                                  MovieStatusType.inCinemas,
+                                  MovieStatusType.released,
+                                ],
+                                itemToString: (t) => t.name.capitalizeByWord(),
+                                onChanged: (newType) => controller.updateMovie(
+                                  movieData.rebuild(
+                                    (b) => b..minimumAvailability = newType,
                                   ),
                                 ),
-                              ),
-                              FormRowDivider(),
-                              GenericDropdownRow<SeriesTypes>(
-                                label: 'Type',
-                                subtitle: 'Affects how episodes are matched',
-                                value:
-                                    seriesData.seriesType ??
-                                    SeriesTypes.standard,
-                                items: SeriesTypes.values.toList(),
-                                itemToString: (t) => t.name.capitalizeByWord(),
-                                onChanged: (selected) =>
-                                    controller.updateSeries(
-                                      seriesData.rebuild(
-                                        (b) => b..seriesType = selected,
-                                      ),
-                                    ),
                               ),
                             ],
                           ),
 
                           const SizedBox(height: 20),
 
-                          FormSectionHeader(label: 'QUALITY'),
+                          FormSectionHeader(label: 'QUALITY AND PATH'),
                           OutlinedFormSection(
                             children: [
                               GenericDropdownRow<QualityProfileResource>(
@@ -125,30 +120,62 @@ class SeriesEditPage extends ConsumerWidget {
                                     'Quality profile to use for downloads',
                                 value: qualityProfiles
                                     .where(
-                                      (p) =>
-                                          p.id == seriesData.qualityProfileId,
+                                      (p) => p.id == movieData.qualityProfileId,
                                     )
                                     .firstOrNull,
                                 items: qualityProfiles,
                                 itemToString: (p) => p.name ?? 'Unknown',
-                                onChanged: (selected) =>
-                                    controller.updateSeries(
-                                      seriesData.rebuild(
-                                        (b) =>
-                                            b..qualityProfileId = selected.id,
-                                      ),
-                                    ),
+                                onChanged: (selected) => controller.updateMovie(
+                                  movieData.rebuild(
+                                    (b) => b..qualityProfileId = selected.id,
+                                  ),
+                                ),
                               ),
+                              if (rootFolders.isNotEmpty) ...[
+                                FormRowDivider(),
+                                GenericDropdownRow<RootFolderResource>(
+                                  label: 'Movie Path',
+                                  subtitle:
+                                      'Where the movie is saved (Cannot be easily changed)',
+                                  value: rootFolders
+                                      .where(
+                                        (f) =>
+                                            f.path == movieData.rootFolderPath,
+                                      )
+                                      .firstOrNull,
+                                  items: rootFolders,
+                                  itemToString: (f) => f.path ?? 'Unknown',
+                                  onChanged: (selected) =>
+                                      controller.updateMovie(
+                                        movieData.rebuild(
+                                          (b) =>
+                                              b..rootFolderPath = selected.path,
+                                        ),
+                                      ),
+                                ),
+                              ],
                             ],
                           ),
                         ],
                       ),
                     );
                   },
-                  loading: () => const SizedBox(
+                  loading: () => SizedBox(
                     height: 150,
-                    width: double.infinity,
-                    child: Center(child: LoadingIndicator()),
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          left: 0,
+                          right: 0,
+                          top: 0,
+                          child: SizedBox(
+                            height: 1.5,
+                            child: AnimatedProgressBar(),
+                          ),
+                        ),
+                        Center(child: AnimatedLoadingText()),
+                      ],
+                    ),
                   ),
                   error: (e, stk) => SizedBox(
                     height: 150,
@@ -166,7 +193,7 @@ class SeriesEditPage extends ConsumerWidget {
               confirmLabel: 'SAVE CHANGES',
               confirmIcon: Icons.save,
               onCancel: () => Navigator.of(context).pop(),
-              onConfirm: () => _doSave(context, ref, series.id!),
+              onConfirm: () => _doSave(context, ref, movie),
             ),
           ],
         ),
@@ -177,10 +204,10 @@ class SeriesEditPage extends ConsumerWidget {
   Future<void> _doSave(
     BuildContext context,
     WidgetRef ref,
-    int seriesId,
+    MovieResource movie,
   ) async {
     final success = await ref
-        .read(seriesEditController(seriesId).notifier)
+        .read(movieEditController(movie).notifier)
         .saveChanges();
 
     if (context.mounted) {
@@ -190,7 +217,7 @@ class SeriesEditPage extends ConsumerWidget {
           message: 'Changes saved successfully',
           type: CustomSnackbarType.success,
         );
-        Navigator.of(context).pop(true);
+        Navigator.of(context).pop(true); // close sheet
       } else {
         CustomSnackbar.show(
           context,

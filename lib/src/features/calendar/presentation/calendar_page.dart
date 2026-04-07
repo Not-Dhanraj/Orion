@@ -1,6 +1,8 @@
-import 'package:client/src/features/calendar/presentation/calendar_home_controller.dart';
+import 'package:client/src/features/calendar/presentation/calendar_page_controller.dart';
 import 'package:client/src/features/calendar/presentation/widgets/calendar_date_strip.dart';
 import 'package:client/src/features/calendar/presentation/widgets/calendar_episode_card.dart';
+import 'package:client/src/shared/widgets/indicators/animated_loading_text.dart';
+import 'package:client/src/shared/widgets/indicators/animated_progress_bar.dart';
 import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
@@ -12,14 +14,24 @@ class CalendarPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final calendarState = ref.watch(calendarHomeController);
+    final calendarState = ref.watch(calendarPageController);
     final tt = Theme.of(context).textTheme;
     final cs = Theme.of(context).colorScheme;
-    final notifier = ref.read(calendarHomeController.notifier);
+    final notifier = ref.read(calendarPageController.notifier);
 
     return Entry.opacity(
       child: calendarState.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => Stack(
+          children: [
+            Positioned(
+              left: 0,
+              right: 0,
+              top: 0,
+              child: SizedBox(height: 1.5, child: AnimatedProgressBar()),
+            ),
+            Center(child: AnimatedLoadingText()),
+          ],
+        ),
         error: (error, stack) => CustomErrorState(
           error: error,
           stackTrace: stack,

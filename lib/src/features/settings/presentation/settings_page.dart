@@ -337,11 +337,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                           await onConfirm();
                         } catch (e) {
                           if (mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Error deleting service: $e'),
-                                backgroundColor: cs.error,
-                              ),
+                            CustomSnackbar.show(
+                              context,
+                              message: 'Error deleting service: $e',
+                              type: CustomSnackbarType.error,
                             );
                           }
                         }

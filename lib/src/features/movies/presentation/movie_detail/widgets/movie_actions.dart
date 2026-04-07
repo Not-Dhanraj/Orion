@@ -1,5 +1,6 @@
 import 'package:client/src/features/movies/presentation/movie_detail/movie_details_controller.dart';
-import 'package:client/src/features/movies/presentation/movie_edit/movie_edit_page.dart';
+import 'package:client/src/features/movies/presentation/movie_edit/movie_edit_sheet.dart';
+import 'package:client/src/shared/widgets/indicators/animated_loading_text.dart';
 import 'package:client/src/shared/widgets/misc/media_release_widget.dart';
 import 'package:client/src/shared/widgets/dialogs/custom_dialog.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
@@ -66,7 +67,7 @@ class MovieActionCard extends ConsumerWidget {
                       isScrollControlled: true,
                       backgroundColor: Colors.transparent,
                       builder: (context) {
-                        return MovieEditPage(movie: movie);
+                        return MovieEditSheet(movie: movie);
                       },
                     );
                   },
@@ -219,7 +220,7 @@ class MovieActionCard extends ConsumerWidget {
           heading: 'Searching for releases',
           bodyWidget: const Padding(
             padding: EdgeInsets.symmetric(vertical: 16.0),
-            child: Center(child: CircularProgressIndicator()),
+            child: Center(child: AnimatedLoadingText()),
           ),
           actions: [
             ElevatedButton(

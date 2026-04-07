@@ -204,6 +204,20 @@ class SeasonPageController
       state = AsyncError(e, stackTrace);
     }
   }
+
+  // List<EpisodeResource> getSortedSeasonEpisodes(int seasonNumber) {
+  //   final seasonData = state.valueOrNull?.seasons
+  //       .where((s) => s.seasonNumber == seasonNumber)
+  //       .firstOrNull;
+
+  //   final episodes = seasonData?.episodes.toList() ?? [];
+
+  //   episodes.sort(
+  //     (a, b) => (a.episodeNumber ?? 0).compareTo(b.episodeNumber ?? 0),
+  //   );
+
+  //   return episodes;
+  // }
 }
 
 final seasonPageController =

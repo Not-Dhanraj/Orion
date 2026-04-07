@@ -1,10 +1,12 @@
+import 'package:client/src/features/auth/application/auth_service.dart';
+import 'package:client/src/features/auth/domain/auth_state.dart';
 import 'package:client/src/features/auth/presentation/auth_controller.dart';
 import 'package:client/src/features/auth/presentation/splash/splash_page.dart';
+import 'package:client/src/features/auth/presentation/welcome/welcome_brand_step.dart';
+import 'package:client/src/features/auth/presentation/welcome/welcome_form_step.dart';
+import 'package:client/src/features/auth/presentation/welcome/welcome_selector_step.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
-import 'package:with_opacity/with_opacity.dart';
 
 class AuthScreen extends ConsumerStatefulWidget {
   const AuthScreen({super.key});
@@ -14,394 +16,95 @@ class AuthScreen extends ConsumerStatefulWidget {
 }
 
 class _AuthScreenState extends ConsumerState<AuthScreen> {
-  final _sonarrUrlController = TextEditingController();
-  final _sonarrApiKeyController = TextEditingController();
-  final _radarrUrlController = TextEditingController();
-  final _radarrApiKeyController = TextEditingController();
-
-  final _sonarrFormKey = GlobalKey<FormState>();
-  final _radarrFormKey = GlobalKey<FormState>();
+  final _urlController = TextEditingController();
+  final _apiKeyController = TextEditingController();
 
   @override
   void dispose() {
-    _sonarrUrlController.dispose();
-    _sonarrApiKeyController.dispose();
-    _radarrUrlController.dispose();
-    _radarrApiKeyController.dispose();
+    _urlController.dispose();
+    _apiKeyController.dispose();
     super.dispose();
   }
 
+  void _navigateToHome() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => const SplashPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authController);
-    final theme = Theme.of(context);
+    final state = ref.watch(authController);
+    final notifier = ref.read(authController.notifier);
+
+    final Widget child = () {
+      switch (state.currentStep) {
+        case WelcomeStep.brand:
+          return WelcomeBrandStep(
+            key: const ValueKey('brand'),
+            onBegin: () => notifier.setStep(WelcomeStep.selector),
+          );
+        case WelcomeStep.selector:
+          return WelcomeSelectorStep(
+            key: const ValueKey('selector'),
+            state: state,
+            onServiceSelect: (type) {
+              _urlController.clear();
+              _apiKeyController.clear();
+              notifier.selectService(type);
+            },
+            onProceed: _navigateToHome,
+          );
+        case WelcomeStep.form:
+          final serviceType = state.selectedServiceType ?? ServiceType.sonarr;
+          final isLoading = serviceType == ServiceType.sonarr
+              ? state.isLoadingSonarr
+              : state.isLoadingRadarr;
+
+          return WelcomeFormStep(
+            key: const ValueKey('form'),
+            serviceType: serviceType,
+            urlController: _urlController,
+            apiKeyController: _apiKeyController,
+            isLoading: isLoading,
+            onBack: () => notifier.setStep(WelcomeStep.selector),
+            onConnect: () {
+              if (serviceType == ServiceType.sonarr) {
+                notifier.updateSonarr(
+                  _urlController.text,
+                  _apiKeyController.text,
+                  context,
+                );
+              } else {
+                notifier.updateRadarr(
+                  _urlController.text,
+                  _apiKeyController.text,
+                  context,
+                );
+              }
+            },
+          );
+      }
+    }();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Configure APIs'),
-        actions: [
-          if (authState.sonarrConfigured || authState.radarrConfigured)
-            TextButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Home screen will be implemented later'),
-                  ),
-                );
-              },
-              child: const Text('Go to Home'),
-            ),
-        ],
-      ),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Welcome to Orion',
-                    style: theme.textTheme.headlineMedium,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Configure your Sonarr and/or Radarr instances to get started',
-                    style: theme.textTheme.bodyLarge,
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          SliverPadding(
-            padding: const EdgeInsets.all(12),
-            sliver: SliverMasonryGrid.extent(
-              maxCrossAxisExtent: 650,
-              childCount: 2,
-              crossAxisSpacing: 8,
-              mainAxisSpacing: 8,
-              itemBuilder: (context, index) {
-                var items = [
-                  _AuthCard(
-                    cardIcon: TablerIcons.device_tv,
-                    isConfigured: authState.sonarrConfigured,
-                    urlController: _sonarrUrlController,
-                    apiKeyController: _sonarrApiKeyController,
-                    type: 'Sonarr',
-                    onPressed: authState.isLoadingSonarr
-                        ? null
-                        : () async {
-                            if (_sonarrFormKey.currentState!.validate()) {
-                              var authenticationController = ref.read(
-                                authController.notifier,
-                              );
-                              await authenticationController.updateSonarr(
-                                _sonarrUrlController.text,
-                                _sonarrApiKeyController.text,
-                                context,
-                              );
-                            }
-                          },
-                    isLoading: authState.isLoadingSonarr,
-                    isEditing: authState.sonarrConfigured,
-                    formState: _sonarrFormKey,
-                    primaryColor: Colors.blue,
-                  ),
-                  _AuthCard(
-                    cardIcon: TablerIcons.movie,
-                    isConfigured: authState.radarrConfigured,
-                    urlController: _radarrUrlController,
-                    apiKeyController: _radarrApiKeyController,
-                    type: 'Radarr',
-                    onPressed: authState.isLoadingRadarr
-                        ? null
-                        : () {
-                            if (_radarrFormKey.currentState!.validate()) {
-                              ref
-                                  .read(authController.notifier)
-                                  .updateRadarr(
-                                    _radarrUrlController.text,
-                                    _radarrApiKeyController.text,
-                                    context,
-                                  );
-                            }
-                          },
-                    isLoading: authState.isLoadingRadarr,
-                    isEditing: authState.radarrConfigured,
-                    formState: _radarrFormKey,
-                    primaryColor: Colors.orange,
-                  ),
-                ];
-                return items[index];
-              },
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: SafeArea(
-        child: SizedBox(
-          height: kBottomNavigationBarHeight,
-          child: BottomAppBar(
-            color: theme.colorScheme.surface,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Proceed to Home Page',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurface.withCustomOpacity(0.7),
-                  ),
-                ),
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.colorScheme.primary.withAlpha(40),
-                    foregroundColor: theme.colorScheme.onPrimary,
-                    shadowColor: Colors.transparent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  onPressed:
-                      !(authState.sonarrConfigured ||
-                          authState.radarrConfigured)
-                      ? null
-                      : () {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const SplashPage(),
-                            ),
-                          );
-                        },
-                  icon: Icon(TablerIcons.chevrons_right),
-                  label: Text(
-                    'Proceed',
-                    style: TextStyle(
-                      color: theme.colorScheme.onSurface.withCustomOpacity(0.9),
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 600),
+        switchInCurve: Curves.easeInOutCubic,
+        switchOutCurve: Curves.easeInOutCubic,
+        transitionBuilder: (child, anim) => FadeTransition(
+          opacity: anim,
+          child: SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0, 0.05),
+              end: Offset.zero,
+            ).animate(anim),
+            child: child,
           ),
         ),
+        child: child,
       ),
-    );
-  }
-}
-
-class _AuthCard extends ConsumerWidget {
-  final IconData cardIcon;
-  final GlobalKey<FormState> formState;
-  final bool isConfigured;
-  final TextEditingController urlController;
-  final TextEditingController apiKeyController;
-  final String type;
-  final bool isLoading;
-  final Color primaryColor;
-  final bool isEditing;
-  final void Function()? onPressed;
-
-  const _AuthCard({
-    required this.cardIcon,
-    required this.isConfigured,
-    required this.urlController,
-    required this.apiKeyController,
-    required this.type,
-    required this.onPressed,
-    required this.isLoading,
-    required this.isEditing,
-    required this.formState,
-    required this.primaryColor,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    var theme = Theme.of(context);
-    final authState = ref.watch(authController);
-    final errorMessage = type == 'Sonarr'
-        ? authState.sonarrError
-        : authState.radarrError;
-
-    return Card(
-      elevation: 2,
-      shadowColor: Colors.black.withAlpha(40),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-        side: BorderSide(
-          color: errorMessage.isNotEmpty
-              ? Colors.red.withAlpha(100)
-              : primaryColor.withAlpha(25),
-          width: 1.5,
-        ),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(24),
-        child: Form(
-          key: formState,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: primaryColor.withAlpha(50),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(cardIcon, size: 24, color: primaryColor),
-                  ),
-                  const SizedBox(width: 16),
-                  Flexible(
-                    child: Text(
-                      '$type Configuration',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: primaryColor,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Server URL',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 6),
-              _TextFormField(
-                controller: urlController,
-                labelText: '$type URL',
-                hintText: 'http://your-server:port',
-                validator: (value) =>
-                    ref.read(authController.notifier).urlValidatorCheck(value),
-                icon: TablerIcons.link,
-                helperText:
-                    'Example: http://localhost:port or https://yourdomain.xyz',
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'API Key',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 6),
-              _TextFormField(
-                controller: apiKeyController,
-                labelText: 'API Key',
-                hintText: 'Enter your API key',
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter API key';
-                  }
-                  return null;
-                },
-                icon: TablerIcons.lock,
-                helperText: 'Found in Settings > General > API Key',
-              ),
-              SizedBox(height: 16),
-              ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: theme.colorScheme.primary.withAlpha(40),
-                  foregroundColor: theme.colorScheme.onPrimary,
-                  shadowColor: Colors.transparent,
-                  minimumSize: const Size(double.infinity, 56),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                onPressed: isLoading ? null : onPressed,
-                icon: isLoading
-                    ? const SizedBox(
-                        width: 16,
-                        height: 16,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      )
-                    : Icon(
-                        isEditing
-                            ? TablerIcons.checks
-                            : TablerIcons.device_floppy,
-                      ),
-                label: Text(
-                  isLoading
-                      ? 'Saving...'
-                      : (isEditing
-                            ? 'Update Credentials'
-                            : 'Check and Continue'),
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: theme.colorScheme.onSurface.withCustomOpacity(0.9),
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _TextFormField extends StatelessWidget {
-  final TextEditingController controller;
-  final String labelText;
-  final String hintText;
-  final IconData icon;
-  final String helperText;
-  final String? Function(String?) validator;
-  const _TextFormField({
-    required this.controller,
-    required this.labelText,
-    required this.hintText,
-    required this.validator,
-    required this.icon,
-    required this.helperText,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        hintText: hintText,
-        prefixIcon: Icon(icon, color: theme.colorScheme.primary),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: theme.colorScheme.outline),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: theme.colorScheme.outline.withAlpha(100),
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: theme.colorScheme.primary, width: 2),
-        ),
-        filled: true,
-        fillColor: theme.colorScheme.surface,
-        helperText: helperText,
-        helperStyle: theme.textTheme.bodySmall?.copyWith(
-          color: theme.colorScheme.onSurfaceVariant,
-        ),
-      ),
-      validator: (value) {
-        return validator(value);
-      },
     );
   }
 }

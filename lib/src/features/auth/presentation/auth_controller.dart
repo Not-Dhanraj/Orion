@@ -2,6 +2,7 @@ import 'package:client/src/exceptions/auth_exception.dart';
 import 'package:client/src/features/auth/application/auth_service.dart';
 import 'package:client/src/features/auth/domain/auth_state.dart';
 import 'package:client/src/shared/utils/string_extension.dart';
+import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,42 +15,53 @@ class AuthController extends Notifier<AuthState> {
     return AuthState(sonarrConfigured: false, radarrConfigured: false);
   }
 
+  void setStep(WelcomeStep step) {
+    state = state.copyWith(currentStep: step);
+  }
+
+  void selectService(ServiceType type) {
+    state = state.copyWith(
+      selectedServiceType: type,
+      currentStep: WelcomeStep.form,
+    );
+  }
+
   Future<void> updateSonarr(
     String url,
     String apiKey,
     BuildContext context,
   ) async {
     state = state.copyWith(isLoadingSonarr: true, clearSonarrError: true);
-    if (context.mounted) {
-      try {
-        await _authService.validateAndConfigureService(
-          url,
-          apiKey,
-          ServiceType.sonarr,
+
+    try {
+      await _authService.validateAndConfigureService(
+        url,
+        apiKey,
+        ServiceType.sonarr,
+      );
+
+      state = state.copyWith(
+        isLoadingSonarr: false,
+        sonarrConfigured: true,
+        currentStep: WelcomeStep.selector,
+      );
+
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      if (context.mounted) {
+        showSuccessSnackbar(
+          context,
+          'Sonarr linked successfully. Initializing system...',
         );
+      }
+    } catch (e) {
+      final errorMessage = e is AuthException
+          ? e.message
+          : 'An unexpected error occurred: ${e.toString()}';
 
-        state = state.copyWith(isLoadingSonarr: false, sonarrConfigured: true);
-
-        await Future.delayed(const Duration(milliseconds: 200));
-
-        if (context.mounted) {
-          showSuccessSnackbar(
-            context,
-            'Sonarr configured successfully, please add other details or go to home',
-          );
-        }
-      } catch (e) {
-        final errorMessage = e is AuthException
-            ? e.message
-            : 'An unexpected error occurred: ${e.toString()}';
-
-        state = state.copyWith(
-          isLoadingSonarr: false,
-          sonarrError: errorMessage,
-        );
-        if (context.mounted) {
-          showErrorSnackbar(context, errorMessage);
-        }
+      state = state.copyWith(isLoadingSonarr: false, sonarrError: errorMessage);
+      if (context.mounted) {
+        showErrorSnackbar(context, errorMessage);
       }
     }
   }
@@ -68,13 +80,17 @@ class AuthController extends Notifier<AuthState> {
         ServiceType.radarr,
       );
 
-      state = state.copyWith(isLoadingRadarr: false, radarrConfigured: true);
+      state = state.copyWith(
+        isLoadingRadarr: false,
+        radarrConfigured: true,
+        currentStep: WelcomeStep.selector,
+      );
 
-      await Future.delayed(const Duration(milliseconds: 200));
+      await Future.delayed(const Duration(milliseconds: 500));
       if (context.mounted) {
         showSuccessSnackbar(
           context,
-          'Radarr configured successfully, please add other details or go to home',
+          'Radarr linked successfully. Initializing system...',
         );
       }
     } catch (e) {
@@ -87,24 +103,22 @@ class AuthController extends Notifier<AuthState> {
     }
   }
 
-  String? urlValidatorCheck(String? value) {
-    return value?.validate();
-  }
-
-  /// Helper method to display error messages in a snackbar
   void showErrorSnackbar(BuildContext context, String message) {
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $message'), backgroundColor: Colors.red),
+      CustomSnackbar.show(
+        context,
+        message: message,
+        type: CustomSnackbarType.error,
       );
     }
   }
 
-  /// Helper method to display success messages in a snackbar
   void showSuccessSnackbar(BuildContext context, String message) {
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message), backgroundColor: Colors.green),
+      CustomSnackbar.show(
+        context,
+        message: message,
+        type: CustomSnackbarType.success,
       );
     }
   }

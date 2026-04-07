@@ -1,4 +1,3 @@
-import 'package:client/src/core/application/api_provider.dart';
 import 'package:client/src/core/application/enabled_provider.dart';
 import 'package:client/src/exceptions/repository_exception.dart';
 import 'package:client/src/features/queue/data/radarr_queue_repository.dart';
@@ -98,18 +97,8 @@ class QueueService {
 final queueServiceProvider = Provider.autoDispose<QueueService>((ref) {
   final enabled = ref.watch(enabledNotifierProvider);
 
-  RadarrQueueRepository? radarrRepo;
-  SonarrQueueRepository? sonarrRepo;
-
-  if (enabled.radarr) {
-    final radarrApi = ref.watch(moviesApiProvider);
-    radarrRepo = RadarrQueueRepository(radarrApi);
-  }
-
-  if (enabled.sonarr) {
-    final sonarrApi = ref.watch(seriesApiProvider);
-    sonarrRepo = SonarrQueueRepository(sonarrApi);
-  }
-
-  return QueueService(radarrRepo: radarrRepo, sonarrRepo: sonarrRepo);
+  return QueueService(
+    radarrRepo: enabled.radarr ? ref.watch(radarrQueueRepositoryProvider) : null,
+    sonarrRepo: enabled.sonarr ? ref.watch(sonarrQueueRepositoryProvider) : null,
+  );
 });

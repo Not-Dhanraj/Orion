@@ -4,13 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
 
 class SeriesService {
-  final Ref _ref;
-  SeriesService(this._ref);
+  final SeriesRepository _seriesRepository;
+  SeriesService(this._seriesRepository);
 
   Future<List<SeriesResource>> fetchAllSeries() async {
     try {
-      final seriesRepository = _ref.read(seriesRepositoryProvider);
-      final series = await seriesRepository.fetchAll();
+      final series = await _seriesRepository.fetchAll();
       return series?.toList() ?? [];
     } catch (e, stackTrace) {
       throw RepositoryException(
@@ -23,8 +22,7 @@ class SeriesService {
 
   Future<SeriesResource> fetchSeriesById(int id) async {
     try {
-      final seriesRepository = _ref.read(seriesRepositoryProvider);
-      final series = await seriesRepository.fetchById(id);
+      final series = await _seriesRepository.fetchById(id);
 
       if (series == null) {
         throw RepositoryException('Series with ID $id not found');
@@ -45,8 +43,7 @@ class SeriesService {
 
   Future<SeriesResource> createSeries(SeriesResource series) async {
     try {
-      final seriesRepository = _ref.read(seriesRepositoryProvider);
-      final result = await seriesRepository.create(series);
+      final result = await _seriesRepository.create(series);
 
       if (result == null) {
         throw RepositoryException(
@@ -73,8 +70,7 @@ class SeriesService {
     }
 
     try {
-      final seriesRepository = _ref.read(seriesRepositoryProvider);
-      final result = await seriesRepository.update(series);
+      final result = await _seriesRepository.update(series);
 
       if (result == null) {
         throw RepositoryException(
@@ -101,8 +97,7 @@ class SeriesService {
     bool addImportListExclusion,
   ) async {
     try {
-      final seriesRepository = _ref.read(seriesRepositoryProvider);
-      await seriesRepository.delete(id, deleteFiles, addImportListExclusion);
+      await _seriesRepository.delete(id, deleteFiles, addImportListExclusion);
     } catch (e, stackTrace) {
       throw RepositoryException(
         'Failed to delete series with ID $id',
@@ -118,8 +113,7 @@ class SeriesService {
     }
 
     try {
-      final seriesRepository = _ref.read(seriesRepositoryProvider);
-      final results = await seriesRepository.search(term);
+      final results = await _seriesRepository.search(term);
       return results?.toList() ?? [];
     } catch (e, stackTrace) {
       throw RepositoryException(
@@ -132,8 +126,7 @@ class SeriesService {
 
   Future<List<QualityProfileResource>> fetchQualityProfiles() async {
     try {
-      final seriesRepository = _ref.read(seriesRepositoryProvider);
-      final profiles = await seriesRepository.fetchQualityProfiles();
+      final profiles = await _seriesRepository.fetchQualityProfiles();
       return profiles?.toList() ?? [];
     } catch (e, stackTrace) {
       throw RepositoryException(
@@ -146,8 +139,7 @@ class SeriesService {
 
   Future<List<RootFolderResource>> fetchRootFolders() async {
     try {
-      final seriesRepository = _ref.read(seriesRepositoryProvider);
-      final rootFolders = await seriesRepository.fetchRootFolders();
+      final rootFolders = await _seriesRepository.fetchRootFolders();
       return rootFolders?.toList() ?? [];
     } catch (e, stackTrace) {
       throw RepositoryException(
@@ -160,5 +152,5 @@ class SeriesService {
 }
 
 final seriesServiceProvider = Provider<SeriesService>((ref) {
-  return SeriesService(ref);
+  return SeriesService(ref.watch(seriesRepositoryProvider));
 });

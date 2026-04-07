@@ -6,8 +6,10 @@ import 'package:client/src/shared/utils/string_extension.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SettingsService {
-  final Ref _ref;
-  SettingsService(this._ref);
+  final SettingsValidationRepository _validator;
+  final HiveService _hive;
+
+  SettingsService(this._validator, this._hive);
 
   Future<void> validateAndSaveSonarrCredentials(
     String url,
@@ -16,8 +18,7 @@ class SettingsService {
     final normalizedUrl = url.toNormalizedUrl();
 
     try {
-      final validator = _ref.read(settingsValidationRepositoryProvider);
-      await validator.validateSonarr(normalizedUrl, apiKey);
+      await _validator.validateSonarr(normalizedUrl, apiKey);
     } catch (e, st) {
       throw RepositoryException(
         'Failed to validate Sonarr connection',
@@ -27,8 +28,7 @@ class SettingsService {
     }
 
     try {
-      final hive = _ref.read(hiveProvider);
-      await hive.saveSonarrCredentials(
+      await _hive.saveSonarrCredentials(
         SonarrCredentials(sonarrUrl: normalizedUrl, sonarrApi: apiKey),
       );
     } catch (e, st) {
@@ -47,8 +47,7 @@ class SettingsService {
     final normalizedUrl = url.toNormalizedUrl();
 
     try {
-      final validator = _ref.read(settingsValidationRepositoryProvider);
-      await validator.validateRadarr(normalizedUrl, apiKey);
+      await _validator.validateRadarr(normalizedUrl, apiKey);
     } catch (e, st) {
       throw RepositoryException(
         'Failed to validate Radarr connection',
@@ -58,8 +57,7 @@ class SettingsService {
     }
 
     try {
-      final hive = _ref.read(hiveProvider);
-      await hive.saveRadarrCredentials(
+      await _hive.saveRadarrCredentials(
         RadarrCredentials(radarrUrl: normalizedUrl, radarrApi: apiKey),
       );
     } catch (e, st) {
@@ -73,5 +71,8 @@ class SettingsService {
 }
 
 final settingsServiceProvider = Provider<SettingsService>(
-  (ref) => SettingsService(ref),
+  (ref) => SettingsService(
+    ref.watch(settingsValidationRepositoryProvider),
+    ref.watch(hiveProvider),
+  ),
 );

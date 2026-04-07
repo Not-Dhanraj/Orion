@@ -4,13 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr/radarr.dart';
 
 class MovieService {
-  final Ref _ref;
-  MovieService(this._ref);
+  final MovieRepository _movieRepository;
+  MovieService(this._movieRepository);
 
   Future<List<MovieResource>> fetchAllMovies() async {
     try {
-      final movieRepository = _ref.read(movieRepositoryProvider);
-      final movies = await movieRepository.fetchAll();
+      final movies = await _movieRepository.fetchAll();
       return movies?.toList() ?? [];
     } catch (e, stackTrace) {
       throw RepositoryException(
@@ -23,8 +22,7 @@ class MovieService {
 
   Future<MovieResource> fetchMovieById(int id) async {
     try {
-      final movieRepository = _ref.read(movieRepositoryProvider);
-      final movie = await movieRepository.fetchById(id);
+      final movie = await _movieRepository.fetchById(id);
 
       if (movie == null) {
         throw RepositoryException('Movie with ID $id not found');
@@ -45,8 +43,7 @@ class MovieService {
 
   Future<MovieResource> createMovie(MovieResource movie) async {
     try {
-      final movieRepository = _ref.read(movieRepositoryProvider);
-      final result = await movieRepository.create(movie);
+      final result = await _movieRepository.create(movie);
 
       if (result == null) {
         throw RepositoryException(
@@ -73,8 +70,7 @@ class MovieService {
     }
 
     try {
-      final movieRepository = _ref.read(movieRepositoryProvider);
-      final result = await movieRepository.update(movie);
+      final result = await _movieRepository.update(movie);
 
       if (result == null) {
         throw RepositoryException(
@@ -101,8 +97,7 @@ class MovieService {
     bool addImportListExclusion,
   ) async {
     try {
-      final movieRepository = _ref.read(movieRepositoryProvider);
-      await movieRepository.delete(id, deleteFiles, addImportListExclusion);
+      await _movieRepository.delete(id, deleteFiles, addImportListExclusion);
     } catch (e, stackTrace) {
       throw RepositoryException(
         'Failed to delete movie with ID $id',
@@ -118,8 +113,7 @@ class MovieService {
     }
 
     try {
-      final movieRepository = _ref.read(movieRepositoryProvider);
-      final results = await movieRepository.search(term);
+      final results = await _movieRepository.search(term);
       return results?.toList() ?? [];
     } catch (e, stackTrace) {
       throw RepositoryException(
@@ -132,8 +126,7 @@ class MovieService {
 
   Future<List<QualityProfileResource>> fetchQualityProfiles() async {
     try {
-      final movieRepository = _ref.read(movieRepositoryProvider);
-      final profiles = await movieRepository.fetchQualityProfiles();
+      final profiles = await _movieRepository.fetchQualityProfiles();
       return profiles?.toList() ?? [];
     } catch (e, stackTrace) {
       throw RepositoryException(
@@ -146,8 +139,7 @@ class MovieService {
 
   Future<List<RootFolderResource>> fetchRootFolders() async {
     try {
-      final movieRepository = _ref.read(movieRepositoryProvider);
-      final rootFolders = await movieRepository.fetchRootFolders();
+      final rootFolders = await _movieRepository.fetchRootFolders();
       return rootFolders?.toList() ?? [];
     } catch (e, stackTrace) {
       throw RepositoryException(
@@ -160,8 +152,7 @@ class MovieService {
 
   Future<List<ReleaseResource>> getReleases({required int movieId}) async {
     try {
-      final movieRepository = _ref.read(movieRepositoryProvider);
-      final releases = await movieRepository.getReleases(movieId: movieId);
+      final releases = await _movieRepository.getReleases(movieId: movieId);
       return releases?.toList() ?? [];
     } catch (e, stackTrace) {
       throw RepositoryException(
@@ -177,8 +168,7 @@ class MovieService {
     required String guid,
   }) async {
     try {
-      final movieRepository = _ref.read(movieRepositoryProvider);
-      await movieRepository.downloadRelease(indexerId: indexerId, guid: guid);
+      await _movieRepository.downloadRelease(indexerId: indexerId, guid: guid);
     } catch (e, stackTrace) {
       throw RepositoryException(
         'Failed to download release',
@@ -190,8 +180,7 @@ class MovieService {
 
   Future<void> deleteMovieFile(int movieId) async {
     try {
-      final movieRepository = _ref.read(movieRepositoryProvider);
-      await movieRepository.deleteMovieFile(movieId);
+      await _movieRepository.deleteMovieFile(movieId);
     } catch (e, stackTrace) {
       throw RepositoryException(
         'Failed to delete movie file for movie with ID $movieId',
@@ -203,5 +192,5 @@ class MovieService {
 }
 
 final movieServiceProvider = Provider<MovieService>((ref) {
-  return MovieService(ref);
+  return MovieService(ref.watch(movieRepositoryProvider));
 });

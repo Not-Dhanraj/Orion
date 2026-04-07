@@ -1,3 +1,5 @@
+import 'package:client/src/core/application/api_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr/radarr.dart';
 
 class RadarrQueueRepository {
@@ -39,3 +41,7 @@ class RadarrQueueRepository {
     );
   }
 }
+
+final radarrQueueRepositoryProvider = Provider<RadarrQueueRepository>((ref) {
+  return RadarrQueueRepository(ref.watch(moviesApiProvider));
+});

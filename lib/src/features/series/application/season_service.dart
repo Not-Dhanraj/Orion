@@ -7,15 +7,15 @@ import 'package:sonarr/sonarr.dart';
 
 class SeasonService {
   final Ref _ref;
-  SeasonService(this._ref);
+  final SeasonRepository _seasonRepository;
+  SeasonService(this._ref, this._seasonRepository);
 
   Future<List<EpisodeResource>> getEpisodes({
     required int seriesId,
     bool includeEpisodeFile = true,
   }) async {
     try {
-      final seasonRepository = _ref.read(seasonRepositoryProvider);
-      final episodes = await seasonRepository.getEpisodes(
+      final episodes = await _seasonRepository.getEpisodes(
         seriesId: seriesId,
         includeEpisodeFile: includeEpisodeFile,
       );
@@ -34,8 +34,7 @@ class SeasonService {
     required bool monitored,
   }) async {
     try {
-      final seasonRepository = _ref.read(seasonRepositoryProvider);
-      await seasonRepository.monitorEpisodes(
+      await _seasonRepository.monitorEpisodes(
         episodeIds: episodeIds,
         monitored: monitored,
       );
@@ -50,8 +49,7 @@ class SeasonService {
 
   Future<void> deleteEpisodeFile({required int episodeId}) async {
     try {
-      final seasonRepository = _ref.read(seasonRepositoryProvider);
-      await seasonRepository.deleteEpisodeFile(episodeId: episodeId);
+      await _seasonRepository.deleteEpisodeFile(episodeId: episodeId);
     } catch (e, stackTrace) {
       throw RepositoryException(
         'Failed to delete episode file with ID $episodeId',
@@ -67,8 +65,7 @@ class SeasonService {
     int? seasonNumber,
   }) async {
     try {
-      final seasonRepository = _ref.read(seasonRepositoryProvider);
-      final releases = await seasonRepository.getReleases(
+      final releases = await _seasonRepository.getReleases(
         seriesId: seriesId,
         episodeId: episodeId,
         seasonNumber: seasonNumber,
@@ -89,8 +86,7 @@ class SeasonService {
     required bool monitored,
   }) async {
     try {
-      final seasonRepository = _ref.read(seasonRepositoryProvider);
-      var result = await seasonRepository.updateSeriesSeasons(
+      var result = await _seasonRepository.updateSeriesSeasons(
         seriesId: seriesId,
         seasonNumber: seasonNumber,
         monitored: monitored,
@@ -112,8 +108,7 @@ class SeasonService {
     required String guid,
   }) async {
     try {
-      final seasonRepository = _ref.read(seasonRepositoryProvider);
-      await seasonRepository.downloadRelease(indexerId: indexerId, guid: guid);
+      await _seasonRepository.downloadRelease(indexerId: indexerId, guid: guid);
     } catch (e, stackTrace) {
       throw RepositoryException(
         'Failed to download release',
@@ -125,5 +120,5 @@ class SeasonService {
 }
 
 final seasonServiceProvider = Provider<SeasonService>((ref) {
-  return SeasonService(ref);
+  return SeasonService(ref, ref.watch(seasonRepositoryProvider));
 });

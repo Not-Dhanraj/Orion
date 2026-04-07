@@ -1,3 +1,5 @@
+import 'package:client/src/core/application/api_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr/sonarr.dart';
 
 class SonarrQueueRepository {
@@ -40,3 +42,7 @@ class SonarrQueueRepository {
     );
   }
 }
+
+final sonarrQueueRepositoryProvider = Provider<SonarrQueueRepository>((ref) {
+  return SonarrQueueRepository(ref.watch(seriesApiProvider));
+});

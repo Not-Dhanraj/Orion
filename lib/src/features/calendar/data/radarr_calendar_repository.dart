@@ -1,3 +1,5 @@
+import 'package:client/src/core/application/api_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr/radarr.dart';
 
 class RadarrCalendarRepository {
@@ -25,3 +27,7 @@ class RadarrCalendarRepository {
     return response.data!.toList();
   }
 }
+
+final radarrCalendarRepositoryProvider = Provider<RadarrCalendarRepository>((ref) {
+  return RadarrCalendarRepository(ref.watch(moviesApiProvider));
+});

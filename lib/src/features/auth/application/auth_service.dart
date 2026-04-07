@@ -7,8 +7,9 @@ import 'package:radarr/radarr.dart';
 import 'package:sonarr/sonarr.dart';
 
 class AuthService {
-  AuthService(this._ref);
   final Ref _ref;
+  final HiveService _hiveService;
+  AuthService(this._ref, this._hiveService);
 
   Future<void> makeSonarrRequest(String url, String apiKey) async {
     if (url.isEmpty || apiKey.isEmpty) {
@@ -92,8 +93,7 @@ class AuthService {
     final normalizedUrl = url.endsWith('/') ? url : '$url/';
 
     try {
-      var hiveService = _ref.read(hiveProvider);
-      await hiveService.saveSonarrCredentials(
+      await _hiveService.saveSonarrCredentials(
         SonarrCredentials(sonarrUrl: normalizedUrl, sonarrApi: apiKey),
       );
       _ref.invalidate(enabledNotifierProvider);
@@ -110,8 +110,7 @@ class AuthService {
     final normalizedUrl = url.endsWith('/') ? url : '$url/';
 
     try {
-      var hiveService = _ref.read(hiveProvider);
-      await hiveService.saveRadarrCredentials(
+      await _hiveService.saveRadarrCredentials(
         RadarrCredentials(radarrUrl: normalizedUrl, radarrApi: apiKey),
       );
       _ref.invalidate(enabledNotifierProvider);
@@ -145,5 +144,5 @@ class AuthService {
 enum ServiceType { sonarr, radarr }
 
 final authServiceProvider = Provider<AuthService>((ref) {
-  return AuthService(ref);
+  return AuthService(ref, ref.watch(hiveProvider));
 });

@@ -1,4 +1,3 @@
-import 'package:client/src/core/application/api_provider.dart';
 import 'package:client/src/core/application/enabled_provider.dart';
 import 'package:client/src/features/calendar/data/radarr_calendar_repository.dart';
 import 'package:client/src/features/calendar/data/sonarr_calendar_repository.dart';
@@ -10,7 +9,7 @@ class CalendarService {
   final RadarrCalendarRepository? radarrRepo;
   final SonarrCalendarRepository? sonarrRepo;
 
-  CalendarService(Ref ref, {this.radarrRepo, this.sonarrRepo});
+  CalendarService({this.radarrRepo, this.sonarrRepo});
 
   bool get isRadarrEnabled => radarrRepo != null;
 
@@ -84,18 +83,8 @@ class CalendarService {
 final calendarServiceProvider = Provider<CalendarService>((ref) {
   final enabled = ref.watch(enabledNotifierProvider);
 
-  RadarrCalendarRepository? radarrRepo;
-  SonarrCalendarRepository? sonarrRepo;
-
-  if (enabled.radarr) {
-    final radarrApi = ref.watch(moviesApiProvider);
-    radarrRepo = RadarrCalendarRepository(radarrApi);
-  }
-
-  if (enabled.sonarr) {
-    final sonarrApi = ref.watch(seriesApiProvider);
-    sonarrRepo = SonarrCalendarRepository(sonarrApi);
-  }
-
-  return CalendarService(ref, radarrRepo: radarrRepo, sonarrRepo: sonarrRepo);
+  return CalendarService(
+    radarrRepo: enabled.radarr ? ref.watch(radarrCalendarRepositoryProvider) : null,
+    sonarrRepo: enabled.sonarr ? ref.watch(sonarrCalendarRepositoryProvider) : null,
+  );
 });

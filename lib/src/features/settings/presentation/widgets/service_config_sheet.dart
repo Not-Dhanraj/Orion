@@ -1,5 +1,5 @@
 import 'package:client/src/exceptions/repository_exception.dart';
-import 'package:client/src/features/settings/presentation/widgets/settings_item_widgets.dart';
+import 'package:client/src/features/settings/presentation/widgets/sheet_button.dart';
 import 'package:client/src/shared/widgets/inputs/custom_text_field.dart';
 import 'package:client/src/shared/widgets/dialogs/custom_error_dialog.dart';
 import 'package:flutter/material.dart';

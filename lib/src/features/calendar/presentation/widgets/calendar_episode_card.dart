@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:client/src/features/calendar/domain/calendar_ui_models.dart';
+import 'package:client/src/features/calendar/domain/calendar_episode_entry.dart';
+import 'package:client/src/features/calendar/domain/episode_status.dart';
 import 'package:flutter/material.dart';
 
 class CalendarEpisodeCard extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:client/src/features/auth/application/auth_service.dart';
-import 'package:client/src/features/auth/domain/auth_state.dart';
+import 'package:client/src/features/auth/domain/welcome_step.dart';
 import 'package:client/src/features/auth/presentation/auth_controller.dart';
 import 'package:client/src/features/auth/presentation/welcome/welcome_brand_step.dart';
 import 'package:client/src/features/auth/presentation/welcome/welcome_form_step.dart';

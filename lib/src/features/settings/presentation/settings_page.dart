@@ -2,7 +2,12 @@ import 'package:client/src/features/settings/presentation/settings_controller.da
 import 'package:client/src/features/settings/application/theme_notifier.dart';
 import 'package:client/src/features/settings/presentation/widgets/service_config_sheet.dart';
 import 'package:client/src/features/settings/presentation/widgets/settings_about_card.dart';
-import 'package:client/src/features/settings/presentation/widgets/settings_item_widgets.dart';
+import 'package:client/src/features/settings/presentation/widgets/add_service_row.dart';
+import 'package:client/src/features/settings/presentation/widgets/service_action_row.dart';
+import 'package:client/src/features/settings/presentation/widgets/settings_readonly_value.dart';
+import 'package:client/src/features/settings/presentation/widgets/settings_tap_value.dart';
+import 'package:client/src/features/settings/presentation/widgets/sheet_button.dart';
+import 'package:client/src/features/settings/presentation/widgets/theme_option_row.dart';
 import 'package:client/src/features/settings/presentation/widgets/settings_row.dart';
 import 'package:client/src/features/settings/presentation/widgets/settings_section_header.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';

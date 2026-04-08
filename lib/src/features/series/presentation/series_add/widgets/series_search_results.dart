@@ -111,7 +111,6 @@ class _ResultsList extends ConsumerWidget {
     SeriesResource series,
   ) async {
     ref.read(seriesAddController.notifier).selectSeriesToState(series);
-    // await SeriesAddDialog.show(context, series);
 
     await showModalBottomSheet<void>(
       context: context,

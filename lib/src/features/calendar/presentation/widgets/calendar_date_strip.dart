@@ -1,4 +1,4 @@
-import 'package:client/src/features/calendar/domain/calendar_ui_models.dart';
+import 'package:client/src/features/calendar/domain/calendar_day.dart';
 import 'package:flutter/material.dart';
 
 class CalendarDateStrip extends StatelessWidget {

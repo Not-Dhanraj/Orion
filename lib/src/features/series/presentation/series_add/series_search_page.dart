@@ -24,7 +24,6 @@ class _SeriesSearchPageState extends ConsumerState<SeriesSearchPage> {
   @override
   void initState() {
     super.initState();
-    // _searchFocus.addListener(() => setState(() {}));
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => _searchFocus.requestFocus(),
     );

@@ -1,6 +1,6 @@
 import 'package:client/src/features/auth/application/auth_service.dart';
 
-enum WelcomeStep { brand, selector, form }
+import 'package:client/src/features/auth/domain/welcome_step.dart';
 
 class AuthState {
   final bool isLoadingSonarr;

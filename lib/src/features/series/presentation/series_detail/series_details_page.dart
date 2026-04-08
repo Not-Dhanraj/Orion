@@ -8,6 +8,7 @@ import 'package:client/src/shared/widgets/media/media_delete_dialog.dart';
 import 'package:client/src/shared/widgets/media/media_hero_header.dart';
 import 'package:client/src/shared/widgets/media/media_overview.dart';
 import 'package:client/src/shared/widgets/media/media_specs_grid.dart';
+import 'package:client/src/shared/domain/telemetry_models.dart';
 import 'package:client/src/shared/widgets/media/media_telemetry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

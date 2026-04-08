@@ -1,6 +1,9 @@
 import 'package:client/src/features/calendar/application/calendar_service.dart';
 import 'package:client/src/features/calendar/domain/calendar_item.dart';
-import 'package:client/src/features/calendar/domain/calendar_ui_models.dart';
+import 'package:client/src/features/calendar/domain/calendar_day.dart';
+import 'package:client/src/features/calendar/domain/calendar_episode_entry.dart';
+import 'package:client/src/features/calendar/domain/calendar_page_state.dart';
+import 'package:client/src/features/calendar/domain/episode_status.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 

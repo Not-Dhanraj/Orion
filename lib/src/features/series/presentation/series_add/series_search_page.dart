@@ -8,6 +8,7 @@ import 'package:client/src/shared/utils/context_extensions.dart';
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class SeriesSearchPage extends ConsumerStatefulWidget {
   const SeriesSearchPage({super.key});
@@ -74,7 +75,7 @@ class _SeriesSearchPageState extends ConsumerState<SeriesSearchPage> {
                 child: Column(
                   children: [
                     SheetHeader(
-                      onClose: () => Navigator.of(context).pop(),
+                      onClose: () => context.pop(),
                       title: 'Search Series',
                     ),
                     SizedBox(height: 4),

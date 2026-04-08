@@ -8,6 +8,7 @@ import 'package:client/src/features/releases/presentation/release_controller.dar
 import 'package:client/src/shared/widgets/sheets/sheet_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:with_opacity/with_opacity.dart';
 
 class ReleaseSheet extends ConsumerWidget {
@@ -45,7 +46,7 @@ class ReleaseSheet extends ConsumerWidget {
                   children: [
                     const SizedBox(height: 3),
                     SheetHeader(
-                      onClose: () => Navigator.of(context).pop(),
+                      onClose: () => context.pop(),
                       title: target.title,
                       label: 'RELEASES',
                     ),
@@ -117,7 +118,7 @@ class ReleaseSheet extends ConsumerWidget {
                                     guid: releases[index].guid,
                                     onSuccess: () {
                                       if (context.mounted) {
-                                        Navigator.of(context).pop();
+                                        context.pop();
                                         CustomSnackbar.show(
                                           context,
                                           message: 'Download started',

@@ -1,7 +1,6 @@
-import 'package:client/src/features/auth/presentation/auth_page.dart';
+import 'package:go_router/go_router.dart';
 import 'package:client/src/features/auth/presentation/splash/splash_controller.dart';
-import 'package:client/src/features/auth/domain/splash_data.dart';
-import 'package:client/src/features/home/presentation/home_pageview/home_page.dart';
+import 'package:client/src/features/auth/domain/splash_route.dart';
 import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -50,22 +49,13 @@ class SplashPage extends ConsumerWidget {
                     ref.invalidate(splashController);
                   },
                 ),
-                data: (splashData) {
+                data: (splashRoute) {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
-                    switch (splashData.route) {
+                    switch (splashRoute) {
                       case SplashRoute.homePage:
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                HomePage(navItems: splashData.navItems!),
-                          ),
-                        );
+                        context.go('/library');
                       case SplashRoute.authPage:
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => const AuthScreen(),
-                          ),
-                        );
+                        context.go('/auth');
                     }
                   });
 

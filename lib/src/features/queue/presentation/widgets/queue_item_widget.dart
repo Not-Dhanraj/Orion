@@ -4,6 +4,7 @@ import 'package:client/src/features/queue/presentation/queue_controller.dart';
 import 'package:client/src/shared/widgets/dialogs/custom_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class QueueItemWidget extends ConsumerWidget {
   final QueueItem item;
@@ -148,7 +149,7 @@ class QueueItemWidget extends ConsumerWidget {
 
   void _confirmRemove(BuildContext context, WidgetRef ref) {
     void remove({required bool fromClient, required bool blacklist}) {
-      Navigator.of(context).pop();
+      context.pop();
       ref
           .read(queueHomeController.notifier)
           .removeItem(item, removeFromClient: fromClient, blacklist: blacklist);
@@ -185,7 +186,7 @@ class QueueItemWidget extends ConsumerWidget {
               child: const Text('Blacklist'),
             ),
             OutlinedButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => context.pop(),
               child: const Text('Cancel'),
             ),
           ],

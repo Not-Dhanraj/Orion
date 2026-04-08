@@ -10,6 +10,7 @@ import 'package:client/src/shared/widgets/inputs/custom_switch_tile.dart';
 import 'package:client/src/shared/utils/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:radarr/radarr.dart';
 
 class MovieEditSheet extends ConsumerWidget {
@@ -44,7 +45,7 @@ class MovieEditSheet extends ConsumerWidget {
                 children: [
                   const SizedBox(height: 3),
                   SheetHeader(
-                    onClose: () => Navigator.of(context).pop(),
+                    onClose: () => context.pop(),
                     title: movie.title ?? 'Unknown',
                     label: 'EDIT MOVIE',
                   ),
@@ -192,7 +193,7 @@ class MovieEditSheet extends ConsumerWidget {
               isDisabled: !hasChanges || state == null,
               confirmLabel: 'SAVE CHANGES',
               confirmIcon: Icons.save,
-              onCancel: () => Navigator.of(context).pop(),
+              onCancel: () => context.pop(),
               onConfirm: () => _doSave(context, ref, movie),
             ),
           ],
@@ -217,7 +218,7 @@ class MovieEditSheet extends ConsumerWidget {
           message: 'Changes saved successfully',
           type: CustomSnackbarType.success,
         );
-        Navigator.of(context).pop(true); // close sheet
+        context.pop(true); // close sheet
       } else {
         CustomSnackbar.show(
           context,

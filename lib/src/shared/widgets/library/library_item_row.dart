@@ -31,7 +31,8 @@ class _LibraryItemRowState extends State<LibraryItemRow> {
     final tt = Theme.of(context).textTheme;
     final cs = Theme.of(context).colorScheme;
 
-    return Entry.opacity(
+    return Entry.scale(
+      scale: 0.96,
       child: Entry.offset(
         yOffset: 80,
         child: MouseRegion(

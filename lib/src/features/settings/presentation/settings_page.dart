@@ -12,6 +12,7 @@ import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
+import 'package:go_router/go_router.dart';
 
 class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
@@ -34,214 +35,208 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     final tt = Theme.of(context).textTheme;
     final cs = Theme.of(context).colorScheme;
 
-    return Entry.opacity(
-      child: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(
-          context.isDesktop ? 50 : 16,
-          context.isDesktop ? 32 : 12,
-          context.isDesktop ? 32 : 16,
-          32,
-        ),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 800),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  'Settings',
-                  style: tt.displayLarge!.copyWith(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: -0.5,
-                  ),
+    return SingleChildScrollView(
+      padding: EdgeInsets.fromLTRB(
+        context.isDesktop ? 50 : 16,
+        context.isDesktop ? 32 : 12,
+        context.isDesktop ? 32 : 16,
+        32,
+      ),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 800),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'Settings',
+                style: tt.displayLarge!.copyWith(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: -0.5,
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  'Change Your app/ According to you'.toUpperCase(),
-                  style: tt.labelSmall!.copyWith(
-                    fontSize: 9,
-                    color: cs.primary.withValues(alpha: 0.6),
-                    letterSpacing: 2.0,
-                  ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Change Your app/ According to you'.toUpperCase(),
+                style: tt.labelSmall!.copyWith(
+                  fontSize: 9,
+                  color: cs.primary.withValues(alpha: 0.6),
+                  letterSpacing: 2.0,
                 ),
-                const SizedBox(height: 24),
-                const SettingsSectionHeader(title: 'APPEARANCE'),
-                const SizedBox(height: 12),
+              ),
+              const SizedBox(height: 24),
+              const SettingsSectionHeader(title: 'APPEARANCE'),
+              const SizedBox(height: 12),
+              SettingsRowGroup(
+                rows: [
+                  SettingsRow(
+                    label: 'Theme Mode',
+                    trailing: SettingsTapValue(
+                      value: _themeModeLabel(themeMode),
+                      onTap: _showThemePicker,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 32),
+              SettingsSectionHeader(
+                title: 'SONARR CONFIGURATION',
+                isActive: settings.sonarrCredentials != null,
+              ),
+              const SizedBox(height: 12),
+              if (settings.sonarrCredentials != null) ...[
                 SettingsRowGroup(
                   rows: [
                     SettingsRow(
-                      label: 'Theme Mode',
-                      trailing: SettingsTapValue(
-                        value: _themeModeLabel(themeMode),
-                        onTap: _showThemePicker,
+                      label: 'Server URL',
+                      trailing: SettingsReadonlyValue(
+                        value:
+                            settings.sonarrCredentials!.sonarrUrl.maskServerUrl,
                       ),
+                    ),
+                    const SettingsRow(
+                      label: 'API Key',
+                      trailing: SettingsReadonlyValue(value: '••••••••'),
                     ),
                   ],
                 ),
-                const SizedBox(height: 32),
-                SettingsSectionHeader(
-                  title: 'SONARR CONFIGURATION',
-                  isActive: settings.sonarrCredentials != null,
-                ),
-                const SizedBox(height: 12),
-                if (settings.sonarrCredentials != null) ...[
-                  SettingsRowGroup(
-                    rows: [
-                      SettingsRow(
-                        label: 'Server URL',
-                        trailing: SettingsReadonlyValue(
-                          value: settings
-                              .sonarrCredentials!
-                              .sonarrUrl
-                              .maskServerUrl,
-                        ),
-                      ),
-                      const SettingsRow(
-                        label: 'API Key',
-                        trailing: SettingsReadonlyValue(value: '••••••••'),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: ServiceActionRow(
-                      onEdit: () => _showServerConfigSheet(
-                        serviceName: 'Sonarr',
-                        initialUrl: settings.sonarrCredentials!.sonarrUrl,
-                        initialApiKey: settings.sonarrCredentials!.sonarrApi,
-                        onSave: (url, api) => ref
-                            .read(settingsController.notifier)
-                            .validateAndUpdateSonarrCredentials(url, api),
-                      ),
-                      onDelete: () => _showDeleteConfirmationSheet(
-                        serviceName: 'Sonarr',
-                        onConfirm: () async {
-                          CustomSnackbar.show(
-                            context,
-                            message: "Please Restart app to see changes",
-                            type: CustomSnackbarType.warning,
-                          );
-                          await ref
-                              .read(settingsController.notifier)
-                              .deleteSonarrService();
-                        },
-                      ),
-                    ),
-                  ),
-                ] else
-                  AddServiceRow(
-                    label: 'Add Sonarr',
-                    onTap: () => _showServerConfigSheet(
+                const SizedBox(height: 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: ServiceActionRow(
+                    onEdit: () => _showServerConfigSheet(
                       serviceName: 'Sonarr',
-                      initialUrl: '',
-                      initialApiKey: '',
+                      initialUrl: settings.sonarrCredentials!.sonarrUrl,
+                      initialApiKey: settings.sonarrCredentials!.sonarrApi,
                       onSave: (url, api) => ref
                           .read(settingsController.notifier)
                           .validateAndUpdateSonarrCredentials(url, api),
                     ),
-                  ),
-                const SizedBox(height: 32),
-                SettingsSectionHeader(
-                  title: 'RADARR CONFIGURATION',
-                  isActive: settings.radarrCredentials != null,
-                ),
-                const SizedBox(height: 12),
-                if (settings.radarrCredentials != null) ...[
-                  SettingsRowGroup(
-                    rows: [
-                      SettingsRow(
-                        label: 'Server URL',
-                        trailing: SettingsReadonlyValue(
-                          value: settings
-                              .radarrCredentials!
-                              .radarrUrl
-                              .maskServerUrl,
-                        ),
-                      ),
-                      const SettingsRow(
-                        label: 'API Key',
-                        trailing: SettingsReadonlyValue(value: '••••••••'),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  ServiceActionRow(
-                    onEdit: () => _showServerConfigSheet(
-                      serviceName: 'Radarr',
-                      initialUrl: settings.radarrCredentials!.radarrUrl,
-                      initialApiKey: settings.radarrCredentials!.radarrApi,
-                      onSave: (url, api) => ref
-                          .read(settingsController.notifier)
-                          .validateAndUpdateRadarrCredentials(url, api),
-                    ),
                     onDelete: () => _showDeleteConfirmationSheet(
-                      serviceName: 'Radarr',
-                      onConfirm: () => ref
-                          .read(settingsController.notifier)
-                          .deleteRadarrService(),
+                      serviceName: 'Sonarr',
+                      onConfirm: () async {
+                        CustomSnackbar.show(
+                          context,
+                          message: "Please Restart app to see changes",
+                          type: CustomSnackbarType.warning,
+                        );
+                        await ref
+                            .read(settingsController.notifier)
+                            .deleteSonarrService();
+                      },
                     ),
                   ),
-                ] else
-                  AddServiceRow(
-                    label: 'Add Radarr',
-                    onTap: () => _showServerConfigSheet(
-                      serviceName: 'Radarr',
-                      initialUrl: '',
-                      initialApiKey: '',
-                      onSave: (url, api) => ref
-                          .read(settingsController.notifier)
-                          .validateAndUpdateRadarrCredentials(url, api),
-                    ),
+                ),
+              ] else
+                AddServiceRow(
+                  label: 'Add Sonarr',
+                  onTap: () => _showServerConfigSheet(
+                    serviceName: 'Sonarr',
+                    initialUrl: '',
+                    initialApiKey: '',
+                    onSave: (url, api) => ref
+                        .read(settingsController.notifier)
+                        .validateAndUpdateSonarrCredentials(url, api),
                   ),
-                const SizedBox(height: 32),
-                const SettingsSectionHeader(title: 'ABOUT'),
-                const SizedBox(height: 12),
-                const SettingsAboutCard(),
-                const SizedBox(height: 12),
+                ),
+              const SizedBox(height: 32),
+              SettingsSectionHeader(
+                title: 'RADARR CONFIGURATION',
+                isActive: settings.radarrCredentials != null,
+              ),
+              const SizedBox(height: 12),
+              if (settings.radarrCredentials != null) ...[
                 SettingsRowGroup(
                   rows: [
                     SettingsRow(
-                      label: 'Version',
-                      trailing: Text(
-                        '1.0.0',
-                        style: tt.labelMedium!.copyWith(color: cs.outline),
+                      label: 'Server URL',
+                      trailing: SettingsReadonlyValue(
+                        value:
+                            settings.radarrCredentials!.radarrUrl.maskServerUrl,
                       ),
                     ),
-                    SettingsRow(
-                      label: 'Licenses',
-                      trailing: InkWell(
-                        onTap: () => showLicensePage(
-                          context: context,
-                          applicationName: 'Orion',
-                          applicationVersion: '1.0.0',
-                          applicationLegalese: '© 2025 Orion',
-                          applicationIcon: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Image.asset(
-                              'assets/icon/icon.png',
-                              width: 100,
-                            ),
-                          ),
-                        ),
-                        child: Icon(
-                          TablerIcons.chevron_right,
-                          size: 16,
-                          color: cs.outline,
-                        ),
-                      ),
+                    const SettingsRow(
+                      label: 'API Key',
+                      trailing: SettingsReadonlyValue(value: '••••••••'),
                     ),
                   ],
                 ),
-                const SizedBox(height: 32),
-                Text(
-                  'Made with ❤️ in Flutter',
-                  textAlign: TextAlign.center,
-                  style: tt.bodySmall?.copyWith(color: cs.outline),
+                const SizedBox(height: 8),
+                ServiceActionRow(
+                  onEdit: () => _showServerConfigSheet(
+                    serviceName: 'Radarr',
+                    initialUrl: settings.radarrCredentials!.radarrUrl,
+                    initialApiKey: settings.radarrCredentials!.radarrApi,
+                    onSave: (url, api) => ref
+                        .read(settingsController.notifier)
+                        .validateAndUpdateRadarrCredentials(url, api),
+                  ),
+                  onDelete: () => _showDeleteConfirmationSheet(
+                    serviceName: 'Radarr',
+                    onConfirm: () => ref
+                        .read(settingsController.notifier)
+                        .deleteRadarrService(),
+                  ),
                 ),
-              ],
-            ),
+              ] else
+                AddServiceRow(
+                  label: 'Add Radarr',
+                  onTap: () => _showServerConfigSheet(
+                    serviceName: 'Radarr',
+                    initialUrl: '',
+                    initialApiKey: '',
+                    onSave: (url, api) => ref
+                        .read(settingsController.notifier)
+                        .validateAndUpdateRadarrCredentials(url, api),
+                  ),
+                ),
+              const SizedBox(height: 32),
+              const SettingsSectionHeader(title: 'ABOUT'),
+              const SizedBox(height: 12),
+              const SettingsAboutCard(),
+              const SizedBox(height: 12),
+              SettingsRowGroup(
+                rows: [
+                  SettingsRow(
+                    label: 'Version',
+                    trailing: Text(
+                      '1.0.0',
+                      style: tt.labelMedium!.copyWith(color: cs.outline),
+                    ),
+                  ),
+                  SettingsRow(
+                    label: 'Licenses',
+                    trailing: InkWell(
+                      onTap: () => showLicensePage(
+                        context: context,
+                        applicationName: 'Orion',
+                        applicationVersion: '1.0.0',
+                        applicationLegalese: '© 2025 Orion',
+                        applicationIcon: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            'assets/icon/icon.png',
+                            width: 100,
+                          ),
+                        ),
+                      ),
+                      child: Icon(
+                        TablerIcons.chevron_right,
+                        size: 16,
+                        color: cs.outline,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 32),
+              Text(
+                'Made with ❤️ in Flutter',
+                textAlign: TextAlign.center,
+                style: tt.bodySmall?.copyWith(color: cs.outline),
+              ),
+            ],
           ),
         ),
       ),
@@ -321,7 +316,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   Expanded(
                     child: SheetButton(
                       label: 'CANCEL',
-                      onTap: () => Navigator.pop(ctx),
+                      onTap: () => ctx.pop(),
                       filled: false,
                     ),
                   ),
@@ -332,7 +327,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       filled: true,
                       destructive: true,
                       onTap: () async {
-                        Navigator.pop(ctx);
+                        ctx.pop();
                         try {
                           await onConfirm();
                         } catch (e) {
@@ -403,7 +398,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     ref
                         .read(themeModeProvider.notifier)
                         .setThemeMode(selection);
-                    Navigator.pop(ctx);
+                    ctx.pop();
                   },
                   filled: true,
                 ),

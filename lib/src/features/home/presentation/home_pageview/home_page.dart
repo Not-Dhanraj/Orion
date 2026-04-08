@@ -1,67 +1,97 @@
+import 'package:client/src/features/home/application/nav_items_provider.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:client/src/features/home/domain/home_nav_item.dart';
-import 'package:client/src/features/home/presentation/library/library_page.dart';
 import 'package:client/src/shared/utils/context_extensions.dart';
 import 'widgets/home_appbar.dart';
 import 'widgets/home_bottom_nav.dart';
 
 class HomePage extends ConsumerStatefulWidget {
-  final List<HomeNavItem> navItems;
+  final StatefulNavigationShell navigationShell;
 
-  const HomePage({super.key, required this.navItems});
+  const HomePage({super.key, required this.navigationShell});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends ConsumerState<HomePage> {
-  late PageController pageController;
-  int _currentIndex = 0;
+class _HomePageState extends ConsumerState<HomePage>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _fadeController;
+  late final Animation<double> _fadeAnimation;
 
   @override
   void initState() {
-    pageController = PageController(initialPage: 0, keepPage: true);
     super.initState();
+    _fadeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    _fadeAnimation = CurvedAnimation(
+      parent: _fadeController,
+      curve: Curves.easeInOut,
+    );
+    _fadeController.forward();
+  }
+
+  @override
+  void didUpdateWidget(HomePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.navigationShell.currentIndex !=
+        widget.navigationShell.currentIndex) {
+      _fadeController.reset();
+      _fadeController.forward();
+    }
   }
 
   @override
   void dispose() {
-    pageController.dispose();
+    _fadeController.dispose();
     super.dispose();
   }
 
-  void _onNav(int index) {
-    setState(() => _currentIndex = index);
-    pageController.jumpToPage(index);
+  void _onNav(int index, List<HomeNavItem> navItems) {
+    widget.navigationShell.goBranch(
+      navItems[index].branchIndex,
+      initialLocation: index == widget.navigationShell.currentIndex,
+    );
+  }
+
+  int _currentNavIndex(List<HomeNavItem> navItems) {
+    final index = navItems.indexWhere(
+      (item) => item.branchIndex == widget.navigationShell.currentIndex,
+    );
+    return index == -1 ? 0 : index;
   }
 
   @override
   Widget build(BuildContext context) {
+    final navItems = ref.watch(homeNavItemsProvider);
+    final currentIndex = _currentNavIndex(navItems);
+
     return Scaffold(
       appBar: HomeAppBar(
-        navItems: widget.navItems,
-        currentIndex: _currentIndex,
-        onPressed: _onNav,
-        showBottomBorder: widget.navItems[_currentIndex].page is! LibraryPage,
+        navItems: navItems,
+        currentIndex: currentIndex,
+        onPressed: (index) => _onNav(index, navItems),
+        showBottomBorder: widget.navigationShell.currentIndex != 0,
       ),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 800),
-          child: PageView.builder(
-            itemBuilder: (context, index) => widget.navItems[index].page,
-            itemCount: widget.navItems.length,
-            controller: pageController,
-            onPageChanged: (index) => setState(() => _currentIndex = index),
+          child: FadeTransition(
+            opacity: _fadeAnimation,
+            child: widget.navigationShell,
           ),
         ),
       ),
       bottomNavigationBar: context.isDesktop
           ? null
           : HomeBotttomNav(
-              navItems: widget.navItems,
-              currentIndex: _currentIndex,
-              onPressed: _onNav,
+              navItems: navItems,
+              currentIndex: currentIndex,
+              onPressed: (index) => _onNav(index, navItems),
             ),
     );
   }

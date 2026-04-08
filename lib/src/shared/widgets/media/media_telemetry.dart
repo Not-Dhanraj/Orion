@@ -71,7 +71,6 @@ class _TelemetryCard extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.all(20),
-      constraints: const BoxConstraints(minHeight: 180),
       decoration: BoxDecoration(
         color: cs.surfaceContainer,
         border: category.accentLeft

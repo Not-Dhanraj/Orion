@@ -1,0 +1,1 @@
+enum SplashRoute { authPage, homePage }

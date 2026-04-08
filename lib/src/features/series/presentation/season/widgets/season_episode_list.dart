@@ -6,6 +6,7 @@ import 'package:client/src/features/releases/presentation/release_sheet.dart';
 import 'package:client/src/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sonarr/sonarr.dart';
 import 'episode_row.dart';
 
@@ -132,12 +133,12 @@ class _EpisodeListItem extends StatelessWidget {
                 'Are you sure you want to delete the file for "${episode.title}"? This cannot be undone.',
             actions: [
               ElevatedButton(
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => context.pop(),
                 child: const Text('Cancel'),
               ),
               OutlinedButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  context.pop();
                   if (episode.episodeFile?.id != null) {
                     runWithLoading(
                       () => controller.deleteEpisodeFile(
@@ -213,7 +214,7 @@ class _EpisodeListItem extends StatelessWidget {
             ),
             actions: [
               ElevatedButton(
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => context.pop(),
                 child: const Text('Close'),
               ),
             ],

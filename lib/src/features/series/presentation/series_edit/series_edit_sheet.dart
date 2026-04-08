@@ -10,6 +10,7 @@ import 'package:client/src/shared/widgets/inputs/custom_switch_tile.dart';
 import 'package:client/src/shared/utils/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sonarr/sonarr.dart';
 
 class SeriesEditSheet extends ConsumerWidget {
@@ -44,7 +45,7 @@ class SeriesEditSheet extends ConsumerWidget {
                 children: [
                   const SizedBox(height: 3),
                   SheetHeader(
-                    onClose: () => Navigator.of(context).pop(),
+                    onClose: () => context.pop(),
                     title: series.title ?? 'Unknown',
                     label: 'EDIT SERIES',
                   ),
@@ -178,7 +179,7 @@ class SeriesEditSheet extends ConsumerWidget {
               isDisabled: !hasChanges || state == null,
               confirmLabel: 'SAVE CHANGES',
               confirmIcon: Icons.save,
-              onCancel: () => Navigator.of(context).pop(),
+              onCancel: () => context.pop(),
               onConfirm: () => _doSave(context, ref, series.id!),
             ),
           ],
@@ -203,7 +204,7 @@ class SeriesEditSheet extends ConsumerWidget {
           message: 'Changes saved successfully',
           type: CustomSnackbarType.success,
         );
-        Navigator.of(context).pop(true);
+        context.pop(true);
       } else {
         CustomSnackbar.show(
           context,

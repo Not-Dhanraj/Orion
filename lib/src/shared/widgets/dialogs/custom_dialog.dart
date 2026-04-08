@@ -1,5 +1,6 @@
 import 'package:client/src/shared/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomDialog extends StatelessWidget {
   final String title;
@@ -129,7 +130,7 @@ class _DialogTitleBar extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.close, size: 16, color: cs.onSurfaceVariant),
               onPressed: () {
-                Navigator.of(context).pop();
+                context.pop();
               },
             ),
         ],

@@ -1,5 +1,6 @@
 import 'package:client/src/shared/widgets/dialogs/custom_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class MediaDeleteDialog extends StatefulWidget {
   final String title;
@@ -61,12 +62,12 @@ class _MediaDeleteDialogState extends State<MediaDeleteDialog> {
           ),
           actions: [
             ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => context.pop(),
               child: const Text('Cancel'),
             ),
             OutlinedButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                context.pop();
                 widget.onConfirm(
                   deleteFiles: _deleteFiles,
                   addImportListExclusion: _addImportListExclusion,

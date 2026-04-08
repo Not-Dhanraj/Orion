@@ -2,13 +2,13 @@ import 'package:client/src/features/series/presentation/series_add/series_search
 import 'package:client/src/shared/widgets/library/library_item_row.dart';
 import 'package:client/src/shared/widgets/library/library_section_header.dart';
 import 'package:client/src/features/series/presentation/series_detail/series_details_controller.dart';
-import 'package:client/src/features/series/presentation/series_detail/series_details_page.dart';
 import 'package:client/src/features/series/presentation/series_library/series_library_controller.dart';
 import 'package:client/src/shared/utils/context_extensions.dart';
 import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
 import 'package:client/src/shared/utils/series_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sonarr/sonarr.dart';
 
 class SeriesLibraryPage extends ConsumerWidget {
@@ -54,11 +54,7 @@ class SeriesLibraryPage extends ConsumerWidget {
                       ref
                           .read(seriesDetailsController.notifier)
                           .initialize(seriesItem);
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => SeriesDetailsPage(series: seriesItem),
-                        ),
-                      );
+                      context.push('/library/series', extra: seriesItem);
                     },
                   );
                 },

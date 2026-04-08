@@ -7,6 +7,7 @@ import 'package:client/src/shared/widgets/sheets/sheet_header.dart';
 import 'package:client/src/shared/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:radarr/radarr.dart';
 
 class MovieAddSheet extends ConsumerWidget {
@@ -42,7 +43,7 @@ class MovieAddSheet extends ConsumerWidget {
                   children: [
                     SizedBox(height: 3),
                     SheetHeader(
-                      onClose: () => Navigator.of(context).pop(),
+                      onClose: () => context.pop(),
                       title: movie.title ?? 'Unknown',
                       label: 'ADD MOVIE',
                     ),
@@ -77,7 +78,7 @@ class MovieAddSheet extends ConsumerWidget {
                 isDisabled: selectedMovie == null,
                 confirmLabel: 'ADD MOVIE',
                 confirmIcon: Icons.add,
-                onCancel: () => Navigator.of(context).pop(),
+                onCancel: () => context.pop(),
                 onConfirm: () => _doAdd(context, ref, selectedMovie!, cs),
               ),
             ],
@@ -100,10 +101,8 @@ class MovieAddSheet extends ConsumerWidget {
     if (!context.mounted) return;
 
     if (success) {
-      Navigator.of(context).pop();
-      Navigator.of(
-        context,
-      ).pop(); // Pops the search sheet too, returning to library
+      context.pop();
+      context.pop(); // Pops the search sheet too, returning to library
       CustomSnackbar.show(
         context,
         message: 'Successfully added "${movie.title}"',

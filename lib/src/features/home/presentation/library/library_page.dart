@@ -3,21 +3,17 @@ import 'package:client/src/features/movies/presentation/movie_library/movie_libr
 import 'package:client/src/features/series/presentation/series_library/series_library_page.dart';
 import 'package:flutter/material.dart';
 
-class LibraryPage extends StatefulWidget {
-  final bool hasSonarr;
-  final bool hasRadarr;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:client/src/core/application/enabled_provider.dart';
 
-  const LibraryPage({
-    super.key,
-    required this.hasSonarr,
-    required this.hasRadarr,
-  });
+class LibraryPage extends ConsumerStatefulWidget {
+  const LibraryPage({super.key});
 
   @override
-  State<LibraryPage> createState() => _LibraryPageState();
+  ConsumerState<LibraryPage> createState() => _LibraryPageState();
 }
 
-class _LibraryPageState extends State<LibraryPage>
+class _LibraryPageState extends ConsumerState<LibraryPage>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   late TabController _tabController;
   late List<String> _tabs;
@@ -25,7 +21,8 @@ class _LibraryPageState extends State<LibraryPage>
   @override
   void initState() {
     super.initState();
-    _tabs = [if (widget.hasSonarr) 'TV SHOWS', if (widget.hasRadarr) 'MOVIES'];
+    final enabled = ref.read(enabledNotifierProvider);
+    _tabs = [if (enabled.sonarr) 'TV SHOWS', if (enabled.radarr) 'MOVIES'];
     _tabController = TabController(length: _tabs.length, vsync: this);
   }
 
@@ -41,7 +38,8 @@ class _LibraryPageState extends State<LibraryPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
+      final enabled = ref.watch(enabledNotifierProvider);
+      return Scaffold(
       body: Column(
         children: [
           ListenableBuilder(
@@ -59,8 +57,8 @@ class _LibraryPageState extends State<LibraryPage>
               controller: _tabController,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                if (widget.hasSonarr) SeriesLibraryPage(),
-                if (widget.hasRadarr) MovieLibraryPage(),
+                if (enabled.sonarr) SeriesLibraryPage(),
+                if (enabled.radarr) MovieLibraryPage(),
               ],
             ),
           ),

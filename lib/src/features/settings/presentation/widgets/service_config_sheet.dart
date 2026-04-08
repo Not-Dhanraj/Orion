@@ -3,6 +3,7 @@ import 'package:client/src/features/settings/presentation/widgets/settings_item_
 import 'package:client/src/shared/widgets/inputs/custom_text_field.dart';
 import 'package:client/src/shared/widgets/dialogs/custom_error_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ServiceConfigSheet extends StatefulWidget {
   final String serviceName;
@@ -109,7 +110,7 @@ class _ServiceConfigSheetState extends State<ServiceConfigSheet> {
                   Expanded(
                     child: SheetButton(
                       label: 'CANCEL',
-                      onTap: _isLoading ? null : () => Navigator.pop(context),
+                      onTap: _isLoading ? null : () => context.pop(),
                       filled: false,
                     ),
                   ),
@@ -139,7 +140,7 @@ class _ServiceConfigSheetState extends State<ServiceConfigSheet> {
         _urlController.text.trim(),
         _apiController.text.trim(),
       );
-      if (mounted) Navigator.of(context).pop();
+      if (mounted) context.pop();
     } on RepositoryException catch (e) {
       if (!mounted) return;
       setState(() => _isLoading = false);

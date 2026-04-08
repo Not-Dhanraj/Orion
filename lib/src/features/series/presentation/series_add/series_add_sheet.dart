@@ -7,6 +7,7 @@ import 'package:client/src/shared/widgets/sheets/sheet_footer.dart';
 import 'package:client/src/shared/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sonarr/sonarr.dart';
 
 class SeriesAddSheet extends ConsumerWidget {
@@ -42,7 +43,7 @@ class SeriesAddSheet extends ConsumerWidget {
                   children: [
                     SizedBox(height: 3),
                     SheetHeader(
-                      onClose: () => Navigator.of(context).pop(),
+                      onClose: () => context.pop(),
                       title: series.title ?? 'Unknown',
                       label: 'ADD SERIES',
                     ),
@@ -77,7 +78,7 @@ class SeriesAddSheet extends ConsumerWidget {
                 isDisabled: selectedSeries == null,
                 confirmLabel: 'ADD SERIES',
                 confirmIcon: Icons.add,
-                onCancel: () => Navigator.of(context).pop(),
+                onCancel: () => context.pop(),
                 onConfirm: () => _doAdd(context, ref, selectedSeries!, cs),
               ),
             ],
@@ -100,8 +101,8 @@ class SeriesAddSheet extends ConsumerWidget {
     if (!context.mounted) return;
 
     if (success) {
-      Navigator.of(context).pop();
-      Navigator.of(context).pop();
+      context.pop();
+      context.pop();
       CustomSnackbar.show(
         context,
         message: 'Successfully added "${series.title}"',

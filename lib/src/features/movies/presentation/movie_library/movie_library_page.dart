@@ -2,13 +2,13 @@ import 'package:client/src/features/movies/presentation/movie_add/movie_search_p
 import 'package:client/src/shared/widgets/library/library_item_row.dart';
 import 'package:client/src/shared/widgets/library/library_section_header.dart';
 import 'package:client/src/features/movies/presentation/movie_detail/movie_details_controller.dart';
-import 'package:client/src/features/movies/presentation/movie_detail/movie_details_page.dart';
 import 'package:client/src/features/movies/presentation/movie_library/movie_library_controller.dart';
 import 'package:client/src/shared/utils/context_extensions.dart';
 import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
 import 'package:client/src/shared/utils/movie_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:radarr/radarr.dart';
 
 class MovieLibraryPage extends ConsumerWidget {
@@ -54,11 +54,7 @@ class MovieLibraryPage extends ConsumerWidget {
                       ref
                           .read(movieDetailsController.notifier)
                           .initialize(movieItem);
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => MovieDetailsPage(movie: movieItem),
-                        ),
-                      );
+                      context.push('/library/movie', extra: movieItem);
                     },
                   );
                 },

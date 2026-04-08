@@ -1,7 +1,6 @@
 import 'package:client/src/exceptions/auth_exception.dart';
 import 'package:client/src/features/auth/application/auth_service.dart';
 import 'package:client/src/features/auth/domain/auth_state.dart';
-import 'package:client/src/shared/utils/string_extension.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -8,6 +8,7 @@ import 'package:client/src/shared/utils/context_extensions.dart';
 import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class MovieSearchPage extends ConsumerStatefulWidget {
   const MovieSearchPage({super.key});
@@ -73,7 +74,7 @@ class _MovieSearchPageState extends ConsumerState<MovieSearchPage> {
                 child: Column(
                   children: [
                     SheetHeader(
-                      onClose: () => Navigator.of(context).pop(),
+                      onClose: () => context.pop(),
                       title: 'Search Movies',
                     ),
                     SizedBox(height: 4),

@@ -30,11 +30,7 @@ class SplashPage extends ConsumerWidget {
                 loading: () => Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Image.asset(
-                      'assets/icon/icon.png',
-                      width: 120,
-                      height: 120,
-                    ),
+                    Image.asset('assets/icon/icon.png', width: 120),
                     const SizedBox(height: 32),
                     const _BrandBranding(),
                   ],

@@ -46,6 +46,7 @@ class SeriesLibraryPage extends ConsumerWidget {
 
                   final seriesItem = item as SeriesResource;
                   return LibraryItemRow(
+                    id: 'series-item: ${seriesItem.id}',
                     title: seriesItem.title ?? '',
                     year: '${seriesItem.year ?? ''}',
                     posterUrl: seriesItem.remotePosterUrlLink,

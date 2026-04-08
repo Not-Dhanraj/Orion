@@ -8,7 +8,6 @@ import 'package:client/src/features/settings/presentation/widgets/settings_secti
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/shared/utils/context_extensions.dart';
 import 'package:client/src/shared/utils/string_extension.dart';
-import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';

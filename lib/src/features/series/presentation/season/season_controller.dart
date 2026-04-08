@@ -12,7 +12,7 @@ class SeasonPageController
 
   @override
   Future<SeasonPageState> build(SeriesResource series) async {
-    await Future.delayed(Duration(milliseconds: 600));
+    await Future.delayed(Duration(milliseconds: 800));
     _seasonService = ref.watch(seasonServiceProvider);
     final episodesBySeason = await _fetchEpisodesBySeason(series.id!);
     final seasons = _buildSeasonsList(series, episodesBySeason);

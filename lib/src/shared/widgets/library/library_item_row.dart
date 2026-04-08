@@ -6,6 +6,7 @@ import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 class LibraryItemRow extends StatefulWidget {
   final String title;
   final String year;
+  final String id;
   final String? posterUrl;
   final Color statusColor;
   final VoidCallback? onTap;
@@ -17,6 +18,7 @@ class LibraryItemRow extends StatefulWidget {
     required this.posterUrl,
     required this.statusColor,
     this.onTap,
+    required this.id,
   });
 
   @override
@@ -66,25 +68,32 @@ class _LibraryItemRowState extends State<LibraryItemRow> {
                         color: Colors.white.withValues(alpha: 0.05),
                       ),
                     ),
-                    child: widget.posterUrl != null
-                        ? CachedNetworkImage(
-                            imageUrl: widget.posterUrl!,
-                            memCacheWidth: 60,
-                            fit: BoxFit.fill,
-                            errorWidget: (context, _, _) => Container(
-                              decoration: const BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Color(0xFF1C1B1D),
-                                    Color(0xFF2A2A2C),
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
+                    child:
+                        (widget.posterUrl != null &&
+                            widget.posterUrl!.isNotEmpty)
+                        ? Hero(
+                            tag: 'media-hero-${widget.id}',
+                            child: CachedNetworkImage(
+                              imageUrl: widget.posterUrl!,
+                              memCacheWidth: 60,
+                              fit: BoxFit.fill,
+                              fadeInDuration: Duration.zero,
+                              placeholderFadeInDuration: Duration.zero,
+                              errorWidget: (context, _, _) => Container(
+                                decoration: const BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xFF1C1B1D),
+                                      Color(0xFF2A2A2C),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
                                 ),
-                              ),
-                              child: Icon(
-                                TablerIcons.photo_exclamation,
-                                size: 15,
+                                child: Icon(
+                                  TablerIcons.photo_exclamation,
+                                  size: 15,
+                                ),
                               ),
                             ),
                           )

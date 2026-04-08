@@ -12,6 +12,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sonarr/sonarr.dart';
 import 'package:radarr/radarr.dart';
+import 'package:client/src/routing/extra_codec.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -20,6 +21,7 @@ final routerProvider = Provider<GoRouter>((ref) {
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/',
     debugLogDiagnostics: true,
+    extraCodec: const ExtraCodec(),
     routes: [
       GoRoute(
         path: '/',

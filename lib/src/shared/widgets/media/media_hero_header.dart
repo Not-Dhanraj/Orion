@@ -1,11 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/src/shared/utils/context_extensions.dart';
+import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 
 class MediaHeroHeader extends StatelessWidget {
   final String title;
   final String? agency;
+  final String id;
   final String? posterUrl;
   final double syncProgress;
   final bool isMonitored;
@@ -17,6 +19,7 @@ class MediaHeroHeader extends StatelessWidget {
     super.key,
     required this.title,
     this.agency,
+    required this.id,
     this.posterUrl,
     required this.syncProgress,
     this.isMonitored = false,
@@ -41,19 +44,24 @@ class MediaHeroHeader extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               (posterUrl != null && posterUrl != '')
-                  ? CachedNetworkImage(
-                      imageUrl: posterUrl!,
-                      memCacheWidth: isMobile ? 180 : 234,
-                      fit: BoxFit.fill,
-                      errorWidget: (context, _, _) => Container(
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Color(0xFF1C1B1D), Color(0xFF2A2A2C)],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
+                  ? Hero(
+                      tag: 'media-hero-$id',
+                      child: CachedNetworkImage(
+                        imageUrl: posterUrl!,
+                        memCacheWidth: isMobile ? 180 : 234,
+                        fit: BoxFit.fill,
+                        fadeInDuration: Duration.zero,
+                        placeholderFadeInDuration: Duration.zero,
+                        errorWidget: (context, _, _) => Container(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Color(0xFF1C1B1D), Color(0xFF2A2A2C)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
                           ),
+                          child: Icon(TablerIcons.photo_exclamation, size: 15),
                         ),
-                        child: Icon(TablerIcons.photo_exclamation, size: 15),
                       ),
                     )
                   : Container(
@@ -67,15 +75,19 @@ class MediaHeroHeader extends StatelessWidget {
                       child: Icon(TablerIcons.photo_exclamation, size: 15),
                     ),
               Positioned.fill(
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.center,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.transparent,
-                        cs.surface.withValues(alpha: 0.7),
-                      ],
+                child: Entry.opacity(
+                  delay: Duration(milliseconds: 600),
+                  duration: Duration(milliseconds: 600),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.center,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          cs.surface.withValues(alpha: 0.7),
+                        ],
+                      ),
                     ),
                   ),
                 ),

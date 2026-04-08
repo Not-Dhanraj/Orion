@@ -103,6 +103,7 @@ class _MovieDetailsPageState extends ConsumerState<MovieDetailsPage> {
               children: [
                 MediaHeroHeader(
                   title: movie.title ?? 'UNKNOWN',
+                  id: 'movie-item: ${movie.id}',
                   agency: movie.status?.name.toUpperCase() ?? 'UNKNOWN',
                   agencyLabel: 'MOVIE STATUS',
                   posterUrl: movie.remotePosterUrlLink ?? '',

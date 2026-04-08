@@ -46,6 +46,7 @@ class MovieLibraryPage extends ConsumerWidget {
 
                   final movieItem = item as MovieResource;
                   return LibraryItemRow(
+                    id: 'movie-item: ${movieItem.id}',
                     title: movieItem.title ?? '',
                     year: '${movieItem.year ?? ''}',
                     posterUrl: movieItem.remotePosterUrlLink,

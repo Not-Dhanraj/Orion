@@ -9,7 +9,6 @@ import 'package:client/src/shared/widgets/media/media_hero_header.dart';
 import 'package:client/src/shared/widgets/media/media_overview.dart';
 import 'package:client/src/shared/widgets/media/media_specs_grid.dart';
 import 'package:client/src/shared/widgets/media/media_telemetry.dart';
-import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
@@ -107,6 +106,7 @@ class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
               children: [
                 MediaHeroHeader(
                   title: series.title ?? 'UNKNOWN',
+                  id: 'series-item: ${series.id}',
                   agency: series.network ?? 'UNKNOWN',
                   posterUrl: series.remotePosterUrlLink,
                   syncProgress: syncProgress,

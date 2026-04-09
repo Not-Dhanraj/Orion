@@ -1,14 +1,16 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for ApiInfoApi
 void main() {
-  final instance = Sonarr().getApiInfoApi();
+  final instance = SonarrApi().getApiInfoApi();
 
   group(ApiInfoApi, () {
-    //Future apiGet() async
+    //Future<ApiInfoResource> apiGet() async
     test('test apiGet', () async {
       // TODO
     });
+
   });
 }

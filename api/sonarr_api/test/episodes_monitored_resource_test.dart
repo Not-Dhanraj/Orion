@@ -1,13 +1,13 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for EpisodesMonitoredResource
 void main() {
-  final instance = EpisodesMonitoredResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final EpisodesMonitoredResource? instance = /* EpisodesMonitoredResource(...) */ null;
+  // TODO add properties to the entity
 
   group(EpisodesMonitoredResource, () {
-    // BuiltList<int> episodeIds
+    // List<int> episodeIds
     test('to test the property `episodeIds`', () async {
       // TODO
     });
@@ -16,5 +16,6 @@ void main() {
     test('to test the property `monitored`', () async {
       // TODO
     });
+
   });
 }

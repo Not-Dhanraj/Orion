@@ -1,18 +1,18 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for EpisodeFileListResource
 void main() {
-  final instance = EpisodeFileListResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final EpisodeFileListResource? instance = /* EpisodeFileListResource(...) */ null;
+  // TODO add properties to the entity
 
   group(EpisodeFileListResource, () {
-    // BuiltList<int> episodeFileIds
+    // List<int> episodeFileIds
     test('to test the property `episodeFileIds`', () async {
       // TODO
     });
 
-    // BuiltList<Language> languages
+    // List<Language> languages
     test('to test the property `languages`', () async {
       // TODO
     });
@@ -31,5 +31,6 @@ void main() {
     test('to test the property `releaseGroup`', () async {
       // TODO
     });
+
   });
 }

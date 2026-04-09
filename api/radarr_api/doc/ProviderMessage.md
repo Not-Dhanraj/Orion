@@ -1,8 +1,8 @@
-# radarr.model.ProviderMessage
+# radarr_api.model.ProviderMessage
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties

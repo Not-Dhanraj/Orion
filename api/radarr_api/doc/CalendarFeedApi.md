@@ -1,8 +1,8 @@
-# radarr.api.CalendarFeedApi
+# radarr_api.api.CalendarFeedApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -19,7 +19,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -29,16 +29,16 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getCalendarFeedApi();
+final api = RadarrApi().getCalendarFeedApi();
 final int pastDays = 56; // int | 
 final int futureDays = 56; // int | 
 final String tags = tags_example; // String | 
 final bool unmonitored = true; // bool | 
-final BuiltList<CalendarReleaseType> releaseTypes = ; // BuiltList<CalendarReleaseType> | 
+final List<CalendarReleaseType> releaseTypes = ; // List<CalendarReleaseType> | 
 
 try {
     api.feedV3CalendarRadarrIcsGet(pastDays, futureDays, tags, unmonitored, releaseTypes);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling CalendarFeedApi->feedV3CalendarRadarrIcsGet: $e\n');
 }
 ```
@@ -51,7 +51,7 @@ Name | Type | Description  | Notes
  **futureDays** | **int**|  | [optional] [default to 28]
  **tags** | **String**|  | [optional] [default to '']
  **unmonitored** | **bool**|  | [optional] [default to false]
- **releaseTypes** | [**BuiltList&lt;CalendarReleaseType&gt;**](CalendarReleaseType.md)|  | [optional] 
+ **releaseTypes** | [**List&lt;CalendarReleaseType&gt;**](CalendarReleaseType.md)|  | [optional] 
 
 ### Return type
 

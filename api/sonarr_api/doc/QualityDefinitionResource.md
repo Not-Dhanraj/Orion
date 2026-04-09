@@ -1,8 +1,8 @@
-# sonarr.model.QualityDefinitionResource
+# sonarr_api.model.QualityDefinitionResource
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties

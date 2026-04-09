@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for MediaManagementConfigApi
 void main() {
-  final instance = Radarr().getMediaManagementConfigApi();
+  final instance = RadarrApi().getMediaManagementConfigApi();
 
   group(MediaManagementConfigApi, () {
     //Future<MediaManagementConfigResource> apiV3ConfigMediamanagementGet() async
@@ -20,5 +21,6 @@ void main() {
     test('test apiV3ConfigMediamanagementIdPut', () async {
       // TODO
     });
+
   });
 }

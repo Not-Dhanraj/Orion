@@ -1,7 +1,9 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for CommandStatus
 void main() {
-  group(CommandStatus, () {});
+
+  group(CommandStatus, () {
+  });
 }

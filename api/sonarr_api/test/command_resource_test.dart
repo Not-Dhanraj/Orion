@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for CommandResource
 void main() {
-  final instance = CommandResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final CommandResource? instance = /* CommandResource(...) */ null;
+  // TODO add properties to the entity
 
   group(CommandResource, () {
     // int id
@@ -101,5 +101,6 @@ void main() {
     test('to test the property `lastExecutionTime`', () async {
       // TODO
     });
+
   });
 }

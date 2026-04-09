@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for ImportRejectionResource
 void main() {
-  final instance = ImportRejectionResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final ImportRejectionResource? instance = /* ImportRejectionResource(...) */ null;
+  // TODO add properties to the entity
 
   group(ImportRejectionResource, () {
     // String reason
@@ -16,5 +16,6 @@ void main() {
     test('to test the property `type`', () async {
       // TODO
     });
+
   });
 }

@@ -1,8 +1,8 @@
-# sonarr.api.BlocklistApi
+# sonarr_api.api.BlocklistApi
 
 ## Load the API package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:8989*
@@ -21,7 +21,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -31,12 +31,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getBlocklistApi();
+final api = SonarrApi().getBlocklistApi();
 final BlocklistBulkResource blocklistBulkResource = ; // BlocklistBulkResource | 
 
 try {
     api.apiV3BlocklistBulkDelete(blocklistBulkResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling BlocklistApi->apiV3BlocklistBulkDelete: $e\n');
 }
 ```
@@ -69,7 +69,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -79,18 +79,18 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getBlocklistApi();
+final api = SonarrApi().getBlocklistApi();
 final int page = 56; // int | 
 final int pageSize = 56; // int | 
 final String sortKey = sortKey_example; // String | 
 final SortDirection sortDirection = ; // SortDirection | 
-final BuiltList<int> seriesIds = ; // BuiltList<int> | 
-final BuiltList<DownloadProtocol> protocols = ; // BuiltList<DownloadProtocol> | 
+final List<int> seriesIds = ; // List<int> | 
+final List<DownloadProtocol> protocols = ; // List<DownloadProtocol> | 
 
 try {
     final response = api.apiV3BlocklistGet(page, pageSize, sortKey, sortDirection, seriesIds, protocols);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling BlocklistApi->apiV3BlocklistGet: $e\n');
 }
 ```
@@ -103,8 +103,8 @@ Name | Type | Description  | Notes
  **pageSize** | **int**|  | [optional] [default to 10]
  **sortKey** | **String**|  | [optional] 
  **sortDirection** | [**SortDirection**](.md)|  | [optional] 
- **seriesIds** | [**BuiltList&lt;int&gt;**](int.md)|  | [optional] 
- **protocols** | [**BuiltList&lt;DownloadProtocol&gt;**](DownloadProtocol.md)|  | [optional] 
+ **seriesIds** | [**List&lt;int&gt;**](int.md)|  | [optional] 
+ **protocols** | [**List&lt;DownloadProtocol&gt;**](DownloadProtocol.md)|  | [optional] 
 
 ### Return type
 
@@ -128,7 +128,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -138,12 +138,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getBlocklistApi();
+final api = SonarrApi().getBlocklistApi();
 final int id = 56; // int | 
 
 try {
     api.apiV3BlocklistIdDelete(id);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling BlocklistApi->apiV3BlocklistIdDelete: $e\n');
 }
 ```

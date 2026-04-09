@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for AddSeriesOptions
 void main() {
-  final instance = AddSeriesOptionsBuilder();
-  // TODO add properties to the builder and call build()
+  final AddSeriesOptions? instance = /* AddSeriesOptions(...) */ null;
+  // TODO add properties to the entity
 
   group(AddSeriesOptions, () {
     // bool ignoreEpisodesWithFiles
@@ -31,5 +31,6 @@ void main() {
     test('to test the property `searchForCutoffUnmetEpisodes`', () async {
       // TODO
     });
+
   });
 }

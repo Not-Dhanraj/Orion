@@ -1,8 +1,8 @@
-# sonarr.api.DownloadClientApi
+# sonarr_api.api.DownloadClientApi
 
 ## Load the API package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:8989*
@@ -29,7 +29,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -39,13 +39,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getDownloadClientApi();
+final api = SonarrApi().getDownloadClientApi();
 final String name = name_example; // String | 
 final DownloadClientResource downloadClientResource = ; // DownloadClientResource | 
 
 try {
     api.apiV3DownloadclientActionNamePost(name, downloadClientResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DownloadClientApi->apiV3DownloadclientActionNamePost: $e\n');
 }
 ```
@@ -79,7 +79,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -89,12 +89,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getDownloadClientApi();
+final api = SonarrApi().getDownloadClientApi();
 final DownloadClientBulkResource downloadClientBulkResource = ; // DownloadClientBulkResource | 
 
 try {
     api.apiV3DownloadclientBulkDelete(downloadClientBulkResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DownloadClientApi->apiV3DownloadclientBulkDelete: $e\n');
 }
 ```
@@ -127,7 +127,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -137,13 +137,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getDownloadClientApi();
+final api = SonarrApi().getDownloadClientApi();
 final DownloadClientBulkResource downloadClientBulkResource = ; // DownloadClientBulkResource | 
 
 try {
     final response = api.apiV3DownloadclientBulkPut(downloadClientBulkResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DownloadClientApi->apiV3DownloadclientBulkPut: $e\n');
 }
 ```
@@ -170,13 +170,13 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiV3DownloadclientGet**
-> BuiltList<DownloadClientResource> apiV3DownloadclientGet()
+> List<DownloadClientResource> apiV3DownloadclientGet()
 
 
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -186,12 +186,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getDownloadClientApi();
+final api = SonarrApi().getDownloadClientApi();
 
 try {
     final response = api.apiV3DownloadclientGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DownloadClientApi->apiV3DownloadclientGet: $e\n');
 }
 ```
@@ -201,7 +201,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;DownloadClientResource&gt;**](DownloadClientResource.md)
+[**List&lt;DownloadClientResource&gt;**](DownloadClientResource.md)
 
 ### Authorization
 
@@ -221,7 +221,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -231,12 +231,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getDownloadClientApi();
+final api = SonarrApi().getDownloadClientApi();
 final int id = 56; // int | 
 
 try {
     api.apiV3DownloadclientIdDelete(id);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DownloadClientApi->apiV3DownloadclientIdDelete: $e\n');
 }
 ```
@@ -269,7 +269,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -279,13 +279,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getDownloadClientApi();
+final api = SonarrApi().getDownloadClientApi();
 final int id = 56; // int | 
 
 try {
     final response = api.apiV3DownloadclientIdGet(id);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DownloadClientApi->apiV3DownloadclientIdGet: $e\n');
 }
 ```
@@ -318,7 +318,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -328,7 +328,7 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getDownloadClientApi();
+final api = SonarrApi().getDownloadClientApi();
 final int id = 56; // int | 
 final bool forceSave = true; // bool | 
 final DownloadClientResource downloadClientResource = ; // DownloadClientResource | 
@@ -336,7 +336,7 @@ final DownloadClientResource downloadClientResource = ; // DownloadClientResourc
 try {
     final response = api.apiV3DownloadclientIdPut(id, forceSave, downloadClientResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DownloadClientApi->apiV3DownloadclientIdPut: $e\n');
 }
 ```
@@ -371,7 +371,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -381,14 +381,14 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getDownloadClientApi();
+final api = SonarrApi().getDownloadClientApi();
 final bool forceSave = true; // bool | 
 final DownloadClientResource downloadClientResource = ; // DownloadClientResource | 
 
 try {
     final response = api.apiV3DownloadclientPost(forceSave, downloadClientResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DownloadClientApi->apiV3DownloadclientPost: $e\n');
 }
 ```
@@ -416,13 +416,13 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiV3DownloadclientSchemaGet**
-> BuiltList<DownloadClientResource> apiV3DownloadclientSchemaGet()
+> List<DownloadClientResource> apiV3DownloadclientSchemaGet()
 
 
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -432,12 +432,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getDownloadClientApi();
+final api = SonarrApi().getDownloadClientApi();
 
 try {
     final response = api.apiV3DownloadclientSchemaGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DownloadClientApi->apiV3DownloadclientSchemaGet: $e\n');
 }
 ```
@@ -447,7 +447,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;DownloadClientResource&gt;**](DownloadClientResource.md)
+[**List&lt;DownloadClientResource&gt;**](DownloadClientResource.md)
 
 ### Authorization
 
@@ -467,7 +467,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -477,13 +477,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getDownloadClientApi();
+final api = SonarrApi().getDownloadClientApi();
 final bool forceTest = true; // bool | 
 final DownloadClientResource downloadClientResource = ; // DownloadClientResource | 
 
 try {
     api.apiV3DownloadclientTestPost(forceTest, downloadClientResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DownloadClientApi->apiV3DownloadclientTestPost: $e\n');
 }
 ```
@@ -517,7 +517,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -527,11 +527,11 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getDownloadClientApi();
+final api = SonarrApi().getDownloadClientApi();
 
 try {
     api.apiV3DownloadclientTestallPost();
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DownloadClientApi->apiV3DownloadclientTestallPost: $e\n');
 }
 ```

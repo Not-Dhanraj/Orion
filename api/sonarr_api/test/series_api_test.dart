@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for SeriesApi
 void main() {
-  final instance = Sonarr().getSeriesApi();
+  final instance = SonarrApi().getSeriesApi();
 
   group(SeriesApi, () {
-    //Future<BuiltList<SeriesResource>> apiV3SeriesGet({ int tvdbId, bool includeSeasonImages }) async
+    //Future<List<SeriesResource>> apiV3SeriesGet({ int tvdbId, bool includeSeasonImages }) async
     test('test apiV3SeriesGet', () async {
       // TODO
     });
@@ -30,5 +31,6 @@ void main() {
     test('test apiV3SeriesPost', () async {
       // TODO
     });
+
   });
 }

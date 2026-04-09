@@ -1,8 +1,8 @@
-# sonarr.model.EpisodeFileResource
+# sonarr_api.model.EpisodeFileResource
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties
@@ -17,9 +17,9 @@ Name | Type | Description | Notes
 **dateAdded** | [**DateTime**](DateTime.md) |  | [optional] 
 **sceneName** | **String** |  | [optional] 
 **releaseGroup** | **String** |  | [optional] 
-**languages** | [**BuiltList&lt;Language&gt;**](Language.md) |  | [optional] 
+**languages** | [**List&lt;Language&gt;**](Language.md) |  | [optional] 
 **quality** | [**QualityModel**](QualityModel.md) |  | [optional] 
-**customFormats** | [**BuiltList&lt;CustomFormatResource&gt;**](CustomFormatResource.md) |  | [optional] 
+**customFormats** | [**List&lt;CustomFormatResource&gt;**](CustomFormatResource.md) |  | [optional] 
 **customFormatScore** | **int** |  | [optional] 
 **indexerFlags** | **int** |  | [optional] 
 **releaseType** | [**ReleaseType**](ReleaseType.md) |  | [optional] 

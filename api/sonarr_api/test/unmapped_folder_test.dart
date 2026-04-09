@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for UnmappedFolder
 void main() {
-  final instance = UnmappedFolderBuilder();
-  // TODO add properties to the builder and call build()
+  final UnmappedFolder? instance = /* UnmappedFolder(...) */ null;
+  // TODO add properties to the entity
 
   group(UnmappedFolder, () {
     // String name
@@ -21,5 +21,6 @@ void main() {
     test('to test the property `relativePath`', () async {
       // TODO
     });
+
   });
 }

@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for RootFolderApi
 void main() {
-  final instance = Sonarr().getRootFolderApi();
+  final instance = SonarrApi().getRootFolderApi();
 
   group(RootFolderApi, () {
-    //Future<BuiltList<RootFolderResource>> apiV3RootfolderGet() async
+    //Future<List<RootFolderResource>> apiV3RootfolderGet() async
     test('test apiV3RootfolderGet', () async {
       // TODO
     });
@@ -25,5 +26,6 @@ void main() {
     test('test apiV3RootfolderPost', () async {
       // TODO
     });
+
   });
 }

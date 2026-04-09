@@ -1,8 +1,8 @@
-# sonarr.api.SeriesLookupApi
+# sonarr_api.api.SeriesLookupApi
 
 ## Load the API package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:8989*
@@ -13,13 +13,13 @@ Method | HTTP request | Description
 
 
 # **apiV3SeriesLookupGet**
-> BuiltList<SeriesResource> apiV3SeriesLookupGet(term)
+> List<SeriesResource> apiV3SeriesLookupGet(term)
 
 
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -29,13 +29,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getSeriesLookupApi();
+final api = SonarrApi().getSeriesLookupApi();
 final String term = term_example; // String | 
 
 try {
     final response = api.apiV3SeriesLookupGet(term);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling SeriesLookupApi->apiV3SeriesLookupGet: $e\n');
 }
 ```
@@ -48,7 +48,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**BuiltList&lt;SeriesResource&gt;**](SeriesResource.md)
+[**List&lt;SeriesResource&gt;**](SeriesResource.md)
 
 ### Authorization
 

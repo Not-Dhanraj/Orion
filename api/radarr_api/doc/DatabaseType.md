@@ -1,8 +1,8 @@
-# radarr.model.DatabaseType
+# radarr_api.model.DatabaseType
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties

@@ -1,14 +1,14 @@
-# radarr.model.CollectionUpdateResource
+# radarr_api.model.CollectionUpdateResource
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**collectionIds** | **BuiltList&lt;int&gt;** |  | [optional] 
+**collectionIds** | **List&lt;int&gt;** |  | [optional] 
 **monitored** | **bool** |  | [optional] 
 **monitorMovies** | **bool** |  | [optional] 
 **searchOnAdd** | **bool** |  | [optional] 

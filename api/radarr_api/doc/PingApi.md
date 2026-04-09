@@ -1,8 +1,8 @@
-# radarr.api.PingApi
+# radarr_api.api.PingApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -20,7 +20,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -30,12 +30,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getPingApi();
+final api = RadarrApi().getPingApi();
 
 try {
     final response = api.pingGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling PingApi->pingGet: $e\n');
 }
 ```
@@ -65,7 +65,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -75,12 +75,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getPingApi();
+final api = RadarrApi().getPingApi();
 
 try {
     final response = api.pingHead();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling PingApi->pingHead: $e\n');
 }
 ```

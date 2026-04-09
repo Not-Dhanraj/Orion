@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for SelectOption
 void main() {
-  final instance = SelectOptionBuilder();
-  // TODO add properties to the builder and call build()
+  final SelectOption? instance = /* SelectOption(...) */ null;
+  // TODO add properties to the entity
 
   group(SelectOption, () {
     // int value
@@ -31,5 +31,6 @@ void main() {
     test('to test the property `dividerAfter`', () async {
       // TODO
     });
+
   });
 }

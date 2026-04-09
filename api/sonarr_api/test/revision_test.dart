@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for Revision
 void main() {
-  final instance = RevisionBuilder();
-  // TODO add properties to the builder and call build()
+  final Revision? instance = /* Revision(...) */ null;
+  // TODO add properties to the entity
 
   group(Revision, () {
     // int version
@@ -21,5 +21,6 @@ void main() {
     test('to test the property `isRepack`', () async {
       // TODO
     });
+
   });
 }

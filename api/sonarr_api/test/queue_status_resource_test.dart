@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for QueueStatusResource
 void main() {
-  final instance = QueueStatusResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final QueueStatusResource? instance = /* QueueStatusResource(...) */ null;
+  // TODO add properties to the entity
 
   group(QueueStatusResource, () {
     // int id
@@ -46,5 +46,6 @@ void main() {
     test('to test the property `unknownWarnings`', () async {
       // TODO
     });
+
   });
 }

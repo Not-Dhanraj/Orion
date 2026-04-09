@@ -1,8 +1,8 @@
-# sonarr.api.CalendarFeedApi
+# sonarr_api.api.CalendarFeedApi
 
 ## Load the API package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:8989*
@@ -19,7 +19,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -29,7 +29,7 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getCalendarFeedApi();
+final api = SonarrApi().getCalendarFeedApi();
 final int pastDays = 56; // int | 
 final int futureDays = 56; // int | 
 final String tags = tags_example; // String | 
@@ -39,7 +39,7 @@ final bool asAllDay = true; // bool |
 
 try {
     api.feedV3CalendarSonarrIcsGet(pastDays, futureDays, tags, unmonitored, premieresOnly, asAllDay);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling CalendarFeedApi->feedV3CalendarSonarrIcsGet: $e\n');
 }
 ```

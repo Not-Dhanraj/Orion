@@ -1,8 +1,8 @@
-# radarr.model.RatingType
+# radarr_api.model.RatingType
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties

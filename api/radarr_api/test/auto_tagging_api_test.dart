@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for AutoTaggingApi
 void main() {
-  final instance = Radarr().getAutoTaggingApi();
+  final instance = RadarrApi().getAutoTaggingApi();
 
   group(AutoTaggingApi, () {
-    //Future<BuiltList<AutoTaggingResource>> apiV3AutotaggingGet() async
+    //Future<List<AutoTaggingResource>> apiV3AutotaggingGet() async
     test('test apiV3AutotaggingGet', () async {
       // TODO
     });
@@ -35,5 +36,6 @@ void main() {
     test('test apiV3AutotaggingSchemaGet', () async {
       // TODO
     });
+
   });
 }

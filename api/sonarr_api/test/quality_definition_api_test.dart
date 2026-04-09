@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for QualityDefinitionApi
 void main() {
-  final instance = Sonarr().getQualityDefinitionApi();
+  final instance = SonarrApi().getQualityDefinitionApi();
 
   group(QualityDefinitionApi, () {
-    //Future<BuiltList<QualityDefinitionResource>> apiV3QualitydefinitionGet() async
+    //Future<List<QualityDefinitionResource>> apiV3QualitydefinitionGet() async
     test('test apiV3QualitydefinitionGet', () async {
       // TODO
     });
@@ -26,9 +27,10 @@ void main() {
       // TODO
     });
 
-    //Future apiV3QualitydefinitionUpdatePut({ BuiltList<QualityDefinitionResource> qualityDefinitionResource }) async
+    //Future apiV3QualitydefinitionUpdatePut({ List<QualityDefinitionResource> qualityDefinitionResource }) async
     test('test apiV3QualitydefinitionUpdatePut', () async {
       // TODO
     });
+
   });
 }

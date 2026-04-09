@@ -1,8 +1,8 @@
-# sonarr.api.TagApi
+# sonarr_api.api.TagApi
 
 ## Load the API package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:8989*
@@ -17,13 +17,13 @@ Method | HTTP request | Description
 
 
 # **apiV3TagGet**
-> BuiltList<TagResource> apiV3TagGet()
+> List<TagResource> apiV3TagGet()
 
 
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -33,12 +33,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getTagApi();
+final api = SonarrApi().getTagApi();
 
 try {
     final response = api.apiV3TagGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling TagApi->apiV3TagGet: $e\n');
 }
 ```
@@ -48,7 +48,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;TagResource&gt;**](TagResource.md)
+[**List&lt;TagResource&gt;**](TagResource.md)
 
 ### Authorization
 
@@ -68,7 +68,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -78,12 +78,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getTagApi();
+final api = SonarrApi().getTagApi();
 final int id = 56; // int | 
 
 try {
     api.apiV3TagIdDelete(id);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling TagApi->apiV3TagIdDelete: $e\n');
 }
 ```
@@ -116,7 +116,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -126,13 +126,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getTagApi();
+final api = SonarrApi().getTagApi();
 final int id = 56; // int | 
 
 try {
     final response = api.apiV3TagIdGet(id);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling TagApi->apiV3TagIdGet: $e\n');
 }
 ```
@@ -165,7 +165,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -175,14 +175,14 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getTagApi();
+final api = SonarrApi().getTagApi();
 final String id = id_example; // String | 
 final TagResource tagResource = ; // TagResource | 
 
 try {
     final response = api.apiV3TagIdPut(id, tagResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling TagApi->apiV3TagIdPut: $e\n');
 }
 ```
@@ -216,7 +216,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -226,13 +226,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getTagApi();
+final api = SonarrApi().getTagApi();
 final TagResource tagResource = ; // TagResource | 
 
 try {
     final response = api.apiV3TagPost(tagResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling TagApi->apiV3TagPost: $e\n');
 }
 ```

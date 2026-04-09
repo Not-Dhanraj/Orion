@@ -1,18 +1,18 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for ImportListBulkResource
 void main() {
-  final instance = ImportListBulkResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final ImportListBulkResource? instance = /* ImportListBulkResource(...) */ null;
+  // TODO add properties to the entity
 
   group(ImportListBulkResource, () {
-    // BuiltList<int> ids
+    // List<int> ids
     test('to test the property `ids`', () async {
       // TODO
     });
 
-    // BuiltList<int> tags
+    // List<int> tags
     test('to test the property `tags`', () async {
       // TODO
     });
@@ -46,5 +46,6 @@ void main() {
     test('to test the property `minimumAvailability`', () async {
       // TODO
     });
+
   });
 }

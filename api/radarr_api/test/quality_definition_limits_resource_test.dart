@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for QualityDefinitionLimitsResource
 void main() {
-  final instance = QualityDefinitionLimitsResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final QualityDefinitionLimitsResource? instance = /* QualityDefinitionLimitsResource(...) */ null;
+  // TODO add properties to the entity
 
   group(QualityDefinitionLimitsResource, () {
     // int min
@@ -16,5 +16,6 @@ void main() {
     test('to test the property `max`', () async {
       // TODO
     });
+
   });
 }

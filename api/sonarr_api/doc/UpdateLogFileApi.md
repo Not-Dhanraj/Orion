@@ -1,8 +1,8 @@
-# sonarr.api.UpdateLogFileApi
+# sonarr_api.api.UpdateLogFileApi
 
 ## Load the API package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:8989*
@@ -20,7 +20,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -30,12 +30,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getUpdateLogFileApi();
+final api = SonarrApi().getUpdateLogFileApi();
 final String filename = filename_example; // String | 
 
 try {
     api.apiV3LogFileUpdateFilenameGet(filename);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling UpdateLogFileApi->apiV3LogFileUpdateFilenameGet: $e\n');
 }
 ```
@@ -62,13 +62,13 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiV3LogFileUpdateGet**
-> BuiltList<LogFileResource> apiV3LogFileUpdateGet()
+> List<LogFileResource> apiV3LogFileUpdateGet()
 
 
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -78,12 +78,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getUpdateLogFileApi();
+final api = SonarrApi().getUpdateLogFileApi();
 
 try {
     final response = api.apiV3LogFileUpdateGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling UpdateLogFileApi->apiV3LogFileUpdateGet: $e\n');
 }
 ```
@@ -93,7 +93,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;LogFileResource&gt;**](LogFileResource.md)
+[**List&lt;LogFileResource&gt;**](LogFileResource.md)
 
 ### Authorization
 

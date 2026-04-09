@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for AlternativeTitleResource
 void main() {
-  final instance = AlternativeTitleResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final AlternativeTitleResource? instance = /* AlternativeTitleResource(...) */ null;
+  // TODO add properties to the entity
 
   group(AlternativeTitleResource, () {
     // int id
@@ -31,5 +31,6 @@ void main() {
     test('to test the property `cleanTitle`', () async {
       // TODO
     });
+
   });
 }

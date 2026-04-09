@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for ParsedEpisodeInfo
 void main() {
-  final instance = ParsedEpisodeInfoBuilder();
-  // TODO add properties to the builder and call build()
+  final ParsedEpisodeInfo? instance = /* ParsedEpisodeInfo(...) */ null;
+  // TODO add properties to the entity
 
   group(ParsedEpisodeInfo, () {
     // String releaseTitle
@@ -32,17 +32,17 @@ void main() {
       // TODO
     });
 
-    // BuiltList<int> episodeNumbers
+    // List<int> episodeNumbers
     test('to test the property `episodeNumbers`', () async {
       // TODO
     });
 
-    // BuiltList<int> absoluteEpisodeNumbers
+    // List<int> absoluteEpisodeNumbers
     test('to test the property `absoluteEpisodeNumbers`', () async {
       // TODO
     });
 
-    // BuiltList<double> specialAbsoluteEpisodeNumbers
+    // List<double> specialAbsoluteEpisodeNumbers
     test('to test the property `specialAbsoluteEpisodeNumbers`', () async {
       // TODO
     });
@@ -52,7 +52,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<Language> languages
+    // List<Language> languages
     test('to test the property `languages`', () async {
       // TODO
     });
@@ -141,5 +141,6 @@ void main() {
     test('to test the property `releaseType`', () async {
       // TODO
     });
+
   });
 }

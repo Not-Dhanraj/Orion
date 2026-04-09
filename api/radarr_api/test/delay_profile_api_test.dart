@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for DelayProfileApi
 void main() {
-  final instance = Radarr().getDelayProfileApi();
+  final instance = RadarrApi().getDelayProfileApi();
 
   group(DelayProfileApi, () {
-    //Future<BuiltList<DelayProfileResource>> apiV3DelayprofileGet() async
+    //Future<List<DelayProfileResource>> apiV3DelayprofileGet() async
     test('test apiV3DelayprofileGet', () async {
       // TODO
     });
@@ -31,9 +32,10 @@ void main() {
       // TODO
     });
 
-    //Future<BuiltList<DelayProfileResource>> apiV3DelayprofileReorderIdPut(int id, { int after }) async
+    //Future<List<DelayProfileResource>> apiV3DelayprofileReorderIdPut(int id, { int after }) async
     test('test apiV3DelayprofileReorderIdPut', () async {
       // TODO
     });
+
   });
 }

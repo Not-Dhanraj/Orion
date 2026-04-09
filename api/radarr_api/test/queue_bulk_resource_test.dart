@@ -1,15 +1,16 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for QueueBulkResource
 void main() {
-  final instance = QueueBulkResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final QueueBulkResource? instance = /* QueueBulkResource(...) */ null;
+  // TODO add properties to the entity
 
   group(QueueBulkResource, () {
-    // BuiltList<int> ids
+    // List<int> ids
     test('to test the property `ids`', () async {
       // TODO
     });
+
   });
 }

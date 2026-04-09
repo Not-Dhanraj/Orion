@@ -1,8 +1,8 @@
-# radarr.api.DiskSpaceApi
+# radarr_api.api.DiskSpaceApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -13,13 +13,13 @@ Method | HTTP request | Description
 
 
 # **apiV3DiskspaceGet**
-> BuiltList<DiskSpaceResource> apiV3DiskspaceGet()
+> List<DiskSpaceResource> apiV3DiskspaceGet()
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -29,12 +29,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getDiskSpaceApi();
+final api = RadarrApi().getDiskSpaceApi();
 
 try {
     final response = api.apiV3DiskspaceGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DiskSpaceApi->apiV3DiskspaceGet: $e\n');
 }
 ```
@@ -44,7 +44,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;DiskSpaceResource&gt;**](DiskSpaceResource.md)
+[**List&lt;DiskSpaceResource&gt;**](DiskSpaceResource.md)
 
 ### Authorization
 

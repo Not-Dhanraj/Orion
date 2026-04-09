@@ -1,8 +1,8 @@
-# sonarr.model.RejectionType
+# sonarr_api.model.RejectionType
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties

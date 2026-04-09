@@ -1,8 +1,8 @@
-# sonarr.api.MediaManagementConfigApi
+# sonarr_api.api.MediaManagementConfigApi
 
 ## Load the API package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:8989*
@@ -21,7 +21,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -31,12 +31,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getMediaManagementConfigApi();
+final api = SonarrApi().getMediaManagementConfigApi();
 
 try {
     final response = api.apiV3ConfigMediamanagementGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling MediaManagementConfigApi->apiV3ConfigMediamanagementGet: $e\n');
 }
 ```
@@ -66,7 +66,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -76,13 +76,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getMediaManagementConfigApi();
+final api = SonarrApi().getMediaManagementConfigApi();
 final int id = 56; // int | 
 
 try {
     final response = api.apiV3ConfigMediamanagementIdGet(id);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling MediaManagementConfigApi->apiV3ConfigMediamanagementIdGet: $e\n');
 }
 ```
@@ -115,7 +115,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -125,14 +125,14 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getMediaManagementConfigApi();
+final api = SonarrApi().getMediaManagementConfigApi();
 final String id = id_example; // String | 
 final MediaManagementConfigResource mediaManagementConfigResource = ; // MediaManagementConfigResource | 
 
 try {
     final response = api.apiV3ConfigMediamanagementIdPut(id, mediaManagementConfigResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling MediaManagementConfigApi->apiV3ConfigMediamanagementIdPut: $e\n');
 }
 ```

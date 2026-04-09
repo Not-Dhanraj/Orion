@@ -1,14 +1,16 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for DiskSpaceApi
 void main() {
-  final instance = Radarr().getDiskSpaceApi();
+  final instance = RadarrApi().getDiskSpaceApi();
 
   group(DiskSpaceApi, () {
-    //Future<BuiltList<DiskSpaceResource>> apiV3DiskspaceGet() async
+    //Future<List<DiskSpaceResource>> apiV3DiskspaceGet() async
     test('test apiV3DiskspaceGet', () async {
       // TODO
     });
+
   });
 }

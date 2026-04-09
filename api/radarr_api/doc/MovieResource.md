@@ -1,8 +1,8 @@
-# radarr.model.MovieResource
+# radarr_api.model.MovieResource
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties
@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **title** | **String** |  | [optional] 
 **originalTitle** | **String** |  | [optional] 
 **originalLanguage** | [**Language**](Language.md) |  | [optional] 
-**alternateTitles** | [**BuiltList&lt;AlternativeTitleResource&gt;**](AlternativeTitleResource.md) |  | [optional] 
+**alternateTitles** | [**List&lt;AlternativeTitleResource&gt;**](AlternativeTitleResource.md) |  | [optional] 
 **secondaryYear** | **int** |  | [optional] 
 **secondaryYearSourceId** | **int** |  | [optional] 
 **sortTitle** | **String** |  | [optional] 
@@ -24,7 +24,7 @@ Name | Type | Description | Notes
 **digitalRelease** | [**DateTime**](DateTime.md) |  | [optional] 
 **releaseDate** | [**DateTime**](DateTime.md) |  | [optional] 
 **physicalReleaseNote** | **String** |  | [optional] 
-**images** | [**BuiltList&lt;MediaCover&gt;**](MediaCover.md) |  | [optional] 
+**images** | [**List&lt;MediaCover&gt;**](MediaCover.md) |  | [optional] 
 **website** | **String** |  | [optional] 
 **remotePoster** | **String** |  | [optional] 
 **year** | **int** |  | [optional] 
@@ -46,9 +46,9 @@ Name | Type | Description | Notes
 **rootFolderPath** | **String** |  | [optional] 
 **folder** | **String** |  | [optional] 
 **certification** | **String** |  | [optional] 
-**genres** | **BuiltList&lt;String&gt;** |  | [optional] 
-**keywords** | **BuiltList&lt;String&gt;** |  | [optional] 
-**tags** | **BuiltSet&lt;int&gt;** |  | [optional] 
+**genres** | **List&lt;String&gt;** |  | [optional] 
+**keywords** | **List&lt;String&gt;** |  | [optional] 
+**tags** | **Set&lt;int&gt;** |  | [optional] 
 **added** | [**DateTime**](DateTime.md) |  | [optional] 
 **addOptions** | [**AddMovieOptions**](AddMovieOptions.md) |  | [optional] 
 **ratings** | [**Ratings**](Ratings.md) |  | [optional] 

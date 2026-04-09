@@ -1,8 +1,8 @@
-# sonarr.model.EpisodeResource
+# sonarr_api.model.EpisodeResource
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties
@@ -32,7 +32,7 @@ Name | Type | Description | Notes
 **endTime** | [**DateTime**](DateTime.md) |  | [optional] 
 **grabDate** | [**DateTime**](DateTime.md) |  | [optional] 
 **series** | [**SeriesResource**](SeriesResource.md) |  | [optional] 
-**images** | [**BuiltList&lt;MediaCover&gt;**](MediaCover.md) |  | [optional] 
+**images** | [**List&lt;MediaCover&gt;**](MediaCover.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

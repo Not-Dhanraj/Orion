@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for IndexerResource
 void main() {
-  final instance = IndexerResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final IndexerResource? instance = /* IndexerResource(...) */ null;
+  // TODO add properties to the entity
 
   group(IndexerResource, () {
     // int id
@@ -17,7 +17,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<Field> fields
+    // List<Field> fields
     test('to test the property `fields`', () async {
       // TODO
     });
@@ -47,12 +47,12 @@ void main() {
       // TODO
     });
 
-    // BuiltSet<int> tags
+    // Set<int> tags
     test('to test the property `tags`', () async {
       // TODO
     });
 
-    // BuiltList<IndexerResource> presets
+    // List<IndexerResource> presets
     test('to test the property `presets`', () async {
       // TODO
     });
@@ -92,15 +92,10 @@ void main() {
       // TODO
     });
 
-    // int seasonSearchMaximumSingleEpisodeAge
-    test('to test the property `seasonSearchMaximumSingleEpisodeAge`',
-        () async {
-      // TODO
-    });
-
     // int downloadClientId
     test('to test the property `downloadClientId`', () async {
       // TODO
     });
+
   });
 }

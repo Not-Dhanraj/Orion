@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for MovieLookupApi
 void main() {
-  final instance = Radarr().getMovieLookupApi();
+  final instance = RadarrApi().getMovieLookupApi();
 
   group(MovieLookupApi, () {
-    //Future<BuiltList<MovieResource>> apiV3MovieLookupGet({ String term }) async
+    //Future<List<MovieResource>> apiV3MovieLookupGet({ String term }) async
     test('test apiV3MovieLookupGet', () async {
       // TODO
     });
@@ -20,5 +21,6 @@ void main() {
     test('test apiV3MovieLookupTmdbGet', () async {
       // TODO
     });
+
   });
 }

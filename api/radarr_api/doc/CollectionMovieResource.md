@@ -1,8 +1,8 @@
-# radarr.model.CollectionMovieResource
+# radarr_api.model.CollectionMovieResource
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties
@@ -16,10 +16,10 @@ Name | Type | Description | Notes
 **status** | [**MovieStatusType**](MovieStatusType.md) |  | [optional] 
 **overview** | **String** |  | [optional] 
 **runtime** | **int** |  | [optional] 
-**images** | [**BuiltList&lt;MediaCover&gt;**](MediaCover.md) |  | [optional] 
+**images** | [**List&lt;MediaCover&gt;**](MediaCover.md) |  | [optional] 
 **year** | **int** |  | [optional] 
 **ratings** | [**Ratings**](Ratings.md) |  | [optional] 
-**genres** | **BuiltList&lt;String&gt;** |  | [optional] 
+**genres** | **List&lt;String&gt;** |  | [optional] 
 **folder** | **String** |  | [optional] 
 **isExisting** | **bool** |  | [optional] 
 **isExcluded** | **bool** |  | [optional] 

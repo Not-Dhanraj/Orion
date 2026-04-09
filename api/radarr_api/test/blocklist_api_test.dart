@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for BlocklistApi
 void main() {
-  final instance = Radarr().getBlocklistApi();
+  final instance = RadarrApi().getBlocklistApi();
 
   group(BlocklistApi, () {
     //Future apiV3BlocklistBulkDelete({ BlocklistBulkResource blocklistBulkResource }) async
@@ -11,7 +12,7 @@ void main() {
       // TODO
     });
 
-    //Future<BlocklistResourcePagingResource> apiV3BlocklistGet({ int page, int pageSize, String sortKey, SortDirection sortDirection, BuiltList<int> movieIds, BuiltList<DownloadProtocol> protocols }) async
+    //Future<BlocklistResourcePagingResource> apiV3BlocklistGet({ int page, int pageSize, String sortKey, SortDirection sortDirection, List<int> movieIds, List<DownloadProtocol> protocols }) async
     test('test apiV3BlocklistGet', () async {
       // TODO
     });
@@ -21,9 +22,10 @@ void main() {
       // TODO
     });
 
-    //Future<BuiltList<BlocklistResource>> apiV3BlocklistMovieGet({ int movieId }) async
+    //Future<List<BlocklistResource>> apiV3BlocklistMovieGet({ int movieId }) async
     test('test apiV3BlocklistMovieGet', () async {
       // TODO
     });
+
   });
 }

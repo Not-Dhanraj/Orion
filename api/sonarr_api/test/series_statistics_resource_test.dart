@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for SeriesStatisticsResource
 void main() {
-  final instance = SeriesStatisticsResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final SeriesStatisticsResource? instance = /* SeriesStatisticsResource(...) */ null;
+  // TODO add properties to the entity
 
   group(SeriesStatisticsResource, () {
     // int seasonCount
@@ -32,7 +32,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<String> releaseGroups
+    // List<String> releaseGroups
     test('to test the property `releaseGroups`', () async {
       // TODO
     });
@@ -41,5 +41,6 @@ void main() {
     test('to test the property `percentOfEpisodes`', () async {
       // TODO
     });
+
   });
 }

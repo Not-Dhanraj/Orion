@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for QualityProfileApi
 void main() {
-  final instance = Radarr().getQualityProfileApi();
+  final instance = RadarrApi().getQualityProfileApi();
 
   group(QualityProfileApi, () {
-    //Future<BuiltList<QualityProfileResource>> apiV3QualityprofileGet() async
+    //Future<List<QualityProfileResource>> apiV3QualityprofileGet() async
     test('test apiV3QualityprofileGet', () async {
       // TODO
     });
@@ -30,5 +31,6 @@ void main() {
     test('test apiV3QualityprofilePost', () async {
       // TODO
     });
+
   });
 }

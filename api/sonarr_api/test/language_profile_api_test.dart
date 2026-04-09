@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for LanguageProfileApi
 void main() {
-  final instance = Sonarr().getLanguageProfileApi();
+  final instance = SonarrApi().getLanguageProfileApi();
 
   group(LanguageProfileApi, () {
-    //Future<BuiltList<LanguageProfileResource>> apiV3LanguageprofileGet() async
+    //Future<List<LanguageProfileResource>> apiV3LanguageprofileGet() async
     test('test apiV3LanguageprofileGet', () async {
       // TODO
     });
@@ -30,5 +31,6 @@ void main() {
     test('test apiV3LanguageprofilePost', () async {
       // TODO
     });
+
   });
 }

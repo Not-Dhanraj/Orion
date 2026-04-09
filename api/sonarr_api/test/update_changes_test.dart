@@ -1,20 +1,21 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for UpdateChanges
 void main() {
-  final instance = UpdateChangesBuilder();
-  // TODO add properties to the builder and call build()
+  final UpdateChanges? instance = /* UpdateChanges(...) */ null;
+  // TODO add properties to the entity
 
   group(UpdateChanges, () {
-    // BuiltList<String> new_
+    // List<String> new_
     test('to test the property `new_`', () async {
       // TODO
     });
 
-    // BuiltList<String> fixed
+    // List<String> fixed
     test('to test the property `fixed`', () async {
       // TODO
     });
+
   });
 }

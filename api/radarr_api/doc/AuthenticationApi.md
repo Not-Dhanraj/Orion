@@ -1,8 +1,8 @@
-# radarr.api.AuthenticationApi
+# radarr_api.api.AuthenticationApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -20,7 +20,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -30,7 +30,7 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getAuthenticationApi();
+final api = RadarrApi().getAuthenticationApi();
 final String returnUrl = returnUrl_example; // String | 
 final String username = username_example; // String | 
 final String password = password_example; // String | 
@@ -38,7 +38,7 @@ final String rememberMe = rememberMe_example; // String |
 
 try {
     api.loginPost(returnUrl, username, password, rememberMe);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling AuthenticationApi->loginPost: $e\n');
 }
 ```
@@ -74,7 +74,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -84,11 +84,11 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getAuthenticationApi();
+final api = RadarrApi().getAuthenticationApi();
 
 try {
     api.logoutGet();
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling AuthenticationApi->logoutGet: $e\n');
 }
 ```

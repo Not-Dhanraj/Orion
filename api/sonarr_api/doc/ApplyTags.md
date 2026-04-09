@@ -1,8 +1,8 @@
-# sonarr.model.ApplyTags
+# sonarr_api.model.ApplyTags
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties

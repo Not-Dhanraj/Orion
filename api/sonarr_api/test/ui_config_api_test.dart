@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for UiConfigApi
 void main() {
-  final instance = Sonarr().getUiConfigApi();
+  final instance = SonarrApi().getUiConfigApi();
 
   group(UiConfigApi, () {
     //Future<UiConfigResource> apiV3ConfigUiGet() async
@@ -20,5 +21,6 @@ void main() {
     test('test apiV3ConfigUiIdPut', () async {
       // TODO
     });
+
   });
 }

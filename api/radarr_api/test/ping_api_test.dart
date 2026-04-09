@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for PingApi
 void main() {
-  final instance = Radarr().getPingApi();
+  final instance = RadarrApi().getPingApi();
 
   group(PingApi, () {
     //Future<PingResource> pingGet() async
@@ -15,5 +16,6 @@ void main() {
     test('test pingHead', () async {
       // TODO
     });
+
   });
 }

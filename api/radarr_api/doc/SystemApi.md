@@ -1,8 +1,8 @@
-# radarr.api.SystemApi
+# radarr_api.api.SystemApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -23,7 +23,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -33,11 +33,11 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getSystemApi();
+final api = RadarrApi().getSystemApi();
 
 try {
     api.apiV3SystemRestartPost();
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling SystemApi->apiV3SystemRestartPost: $e\n');
 }
 ```
@@ -67,7 +67,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -77,11 +77,11 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getSystemApi();
+final api = RadarrApi().getSystemApi();
 
 try {
     api.apiV3SystemRoutesDuplicateGet();
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling SystemApi->apiV3SystemRoutesDuplicateGet: $e\n');
 }
 ```
@@ -111,7 +111,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -121,11 +121,11 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getSystemApi();
+final api = RadarrApi().getSystemApi();
 
 try {
     api.apiV3SystemRoutesGet();
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling SystemApi->apiV3SystemRoutesGet: $e\n');
 }
 ```
@@ -155,7 +155,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -165,11 +165,11 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getSystemApi();
+final api = RadarrApi().getSystemApi();
 
 try {
     api.apiV3SystemShutdownPost();
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling SystemApi->apiV3SystemShutdownPost: $e\n');
 }
 ```
@@ -199,7 +199,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -209,12 +209,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getSystemApi();
+final api = RadarrApi().getSystemApi();
 
 try {
     final response = api.apiV3SystemStatusGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling SystemApi->apiV3SystemStatusGet: $e\n');
 }
 ```

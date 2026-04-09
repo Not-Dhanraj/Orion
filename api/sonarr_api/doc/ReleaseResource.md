@@ -1,8 +1,8 @@
-# sonarr.model.ReleaseResource
+# sonarr_api.model.ReleaseResource
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties
@@ -25,24 +25,24 @@ Name | Type | Description | Notes
 **fullSeason** | **bool** |  | [optional] 
 **sceneSource** | **bool** |  | [optional] 
 **seasonNumber** | **int** |  | [optional] 
-**languages** | [**BuiltList&lt;Language&gt;**](Language.md) |  | [optional] 
+**languages** | [**List&lt;Language&gt;**](Language.md) |  | [optional] 
 **languageWeight** | **int** |  | [optional] 
 **airDate** | **String** |  | [optional] 
 **seriesTitle** | **String** |  | [optional] 
-**episodeNumbers** | **BuiltList&lt;int&gt;** |  | [optional] 
-**absoluteEpisodeNumbers** | **BuiltList&lt;int&gt;** |  | [optional] 
+**episodeNumbers** | **List&lt;int&gt;** |  | [optional] 
+**absoluteEpisodeNumbers** | **List&lt;int&gt;** |  | [optional] 
 **mappedSeasonNumber** | **int** |  | [optional] 
-**mappedEpisodeNumbers** | **BuiltList&lt;int&gt;** |  | [optional] 
-**mappedAbsoluteEpisodeNumbers** | **BuiltList&lt;int&gt;** |  | [optional] 
+**mappedEpisodeNumbers** | **List&lt;int&gt;** |  | [optional] 
+**mappedAbsoluteEpisodeNumbers** | **List&lt;int&gt;** |  | [optional] 
 **mappedSeriesId** | **int** |  | [optional] 
-**mappedEpisodeInfo** | [**BuiltList&lt;ReleaseEpisodeResource&gt;**](ReleaseEpisodeResource.md) |  | [optional] 
+**mappedEpisodeInfo** | [**List&lt;ReleaseEpisodeResource&gt;**](ReleaseEpisodeResource.md) |  | [optional] 
 **approved** | **bool** |  | [optional] 
 **temporarilyRejected** | **bool** |  | [optional] 
 **rejected** | **bool** |  | [optional] 
 **tvdbId** | **int** |  | [optional] 
 **tvRageId** | **int** |  | [optional] 
 **imdbId** | **String** |  | [optional] 
-**rejections** | **BuiltList&lt;String&gt;** |  | [optional] 
+**rejections** | **List&lt;String&gt;** |  | [optional] 
 **publishDate** | [**DateTime**](DateTime.md) |  | [optional] 
 **commentUrl** | **String** |  | [optional] 
 **downloadUrl** | **String** |  | [optional] 
@@ -50,7 +50,7 @@ Name | Type | Description | Notes
 **episodeRequested** | **bool** |  | [optional] 
 **downloadAllowed** | **bool** |  | [optional] 
 **releaseWeight** | **int** |  | [optional] 
-**customFormats** | [**BuiltList&lt;CustomFormatResource&gt;**](CustomFormatResource.md) |  | [optional] 
+**customFormats** | [**List&lt;CustomFormatResource&gt;**](CustomFormatResource.md) |  | [optional] 
 **customFormatScore** | **int** |  | [optional] 
 **sceneMapping** | [**AlternateTitleResource**](AlternateTitleResource.md) |  | [optional] 
 **magnetUrl** | **String** |  | [optional] 
@@ -65,7 +65,7 @@ Name | Type | Description | Notes
 **special** | **bool** |  | [optional] 
 **seriesId** | **int** |  | [optional] 
 **episodeId** | **int** |  | [optional] 
-**episodeIds** | **BuiltList&lt;int&gt;** |  | [optional] 
+**episodeIds** | **List&lt;int&gt;** |  | [optional] 
 **downloadClientId** | **int** |  | [optional] 
 **downloadClient** | **String** |  | [optional] 
 **shouldOverride** | **bool** |  | [optional] 

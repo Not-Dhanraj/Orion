@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for LocalizationResource
 void main() {
-  final instance = LocalizationResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final LocalizationResource? instance = /* LocalizationResource(...) */ null;
+  // TODO add properties to the entity
 
   group(LocalizationResource, () {
     // int id
@@ -12,9 +12,10 @@ void main() {
       // TODO
     });
 
-    // BuiltMap<String, String> strings
+    // Map<String, String> strings
     test('to test the property `strings`', () async {
       // TODO
     });
+
   });
 }

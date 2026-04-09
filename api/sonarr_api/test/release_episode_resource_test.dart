@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for ReleaseEpisodeResource
 void main() {
-  final instance = ReleaseEpisodeResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final ReleaseEpisodeResource? instance = /* ReleaseEpisodeResource(...) */ null;
+  // TODO add properties to the entity
 
   group(ReleaseEpisodeResource, () {
     // int id
@@ -31,5 +31,6 @@ void main() {
     test('to test the property `title`', () async {
       // TODO
     });
+
   });
 }

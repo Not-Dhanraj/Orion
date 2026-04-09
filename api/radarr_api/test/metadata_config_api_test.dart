@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for MetadataConfigApi
 void main() {
-  final instance = Radarr().getMetadataConfigApi();
+  final instance = RadarrApi().getMetadataConfigApi();
 
   group(MetadataConfigApi, () {
     //Future<MetadataConfigResource> apiV3ConfigMetadataGet() async
@@ -20,5 +21,6 @@ void main() {
     test('test apiV3ConfigMetadataIdPut', () async {
       // TODO
     });
+
   });
 }

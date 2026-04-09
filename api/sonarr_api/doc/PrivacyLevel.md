@@ -1,8 +1,8 @@
-# sonarr.model.PrivacyLevel
+# sonarr_api.model.PrivacyLevel
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties

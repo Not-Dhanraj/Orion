@@ -1,8 +1,8 @@
-# radarr.api.QualityProfileApi
+# radarr_api.api.QualityProfileApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -17,13 +17,13 @@ Method | HTTP request | Description
 
 
 # **apiV3QualityprofileGet**
-> BuiltList<QualityProfileResource> apiV3QualityprofileGet()
+> List<QualityProfileResource> apiV3QualityprofileGet()
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -33,12 +33,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getQualityProfileApi();
+final api = RadarrApi().getQualityProfileApi();
 
 try {
     final response = api.apiV3QualityprofileGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling QualityProfileApi->apiV3QualityprofileGet: $e\n');
 }
 ```
@@ -48,7 +48,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;QualityProfileResource&gt;**](QualityProfileResource.md)
+[**List&lt;QualityProfileResource&gt;**](QualityProfileResource.md)
 
 ### Authorization
 
@@ -68,7 +68,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -78,12 +78,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getQualityProfileApi();
+final api = RadarrApi().getQualityProfileApi();
 final int id = 56; // int | 
 
 try {
     api.apiV3QualityprofileIdDelete(id);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling QualityProfileApi->apiV3QualityprofileIdDelete: $e\n');
 }
 ```
@@ -116,7 +116,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -126,13 +126,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getQualityProfileApi();
+final api = RadarrApi().getQualityProfileApi();
 final int id = 56; // int | 
 
 try {
     final response = api.apiV3QualityprofileIdGet(id);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling QualityProfileApi->apiV3QualityprofileIdGet: $e\n');
 }
 ```
@@ -165,7 +165,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -175,14 +175,14 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getQualityProfileApi();
+final api = RadarrApi().getQualityProfileApi();
 final String id = id_example; // String | 
 final QualityProfileResource qualityProfileResource = ; // QualityProfileResource | 
 
 try {
     final response = api.apiV3QualityprofileIdPut(id, qualityProfileResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling QualityProfileApi->apiV3QualityprofileIdPut: $e\n');
 }
 ```
@@ -216,7 +216,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -226,13 +226,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getQualityProfileApi();
+final api = RadarrApi().getQualityProfileApi();
 final QualityProfileResource qualityProfileResource = ; // QualityProfileResource | 
 
 try {
     final response = api.apiV3QualityprofilePost(qualityProfileResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling QualityProfileApi->apiV3QualityprofilePost: $e\n');
 }
 ```

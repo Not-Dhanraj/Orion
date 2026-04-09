@@ -1,8 +1,8 @@
-# sonarr.api.CalendarApi
+# sonarr_api.api.CalendarApi
 
 ## Load the API package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:8989*
@@ -14,13 +14,13 @@ Method | HTTP request | Description
 
 
 # **apiV3CalendarGet**
-> BuiltList<EpisodeResource> apiV3CalendarGet(start, end, unmonitored, includeSeries, includeEpisodeFile, includeEpisodeImages, tags)
+> List<EpisodeResource> apiV3CalendarGet(start, end, unmonitored, includeSeries, includeEpisodeFile, includeEpisodeImages, tags)
 
 
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -30,7 +30,7 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getCalendarApi();
+final api = SonarrApi().getCalendarApi();
 final DateTime start = 2013-10-20T19:20:30+01:00; // DateTime | 
 final DateTime end = 2013-10-20T19:20:30+01:00; // DateTime | 
 final bool unmonitored = true; // bool | 
@@ -42,7 +42,7 @@ final String tags = tags_example; // String |
 try {
     final response = api.apiV3CalendarGet(start, end, unmonitored, includeSeries, includeEpisodeFile, includeEpisodeImages, tags);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling CalendarApi->apiV3CalendarGet: $e\n');
 }
 ```
@@ -61,7 +61,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**BuiltList&lt;EpisodeResource&gt;**](EpisodeResource.md)
+[**List&lt;EpisodeResource&gt;**](EpisodeResource.md)
 
 ### Authorization
 
@@ -81,7 +81,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -91,13 +91,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getCalendarApi();
+final api = SonarrApi().getCalendarApi();
 final int id = 56; // int | 
 
 try {
     final response = api.apiV3CalendarIdGet(id);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling CalendarApi->apiV3CalendarIdGet: $e\n');
 }
 ```

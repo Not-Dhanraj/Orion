@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for IndexerApi
 void main() {
-  final instance = Radarr().getIndexerApi();
+  final instance = RadarrApi().getIndexerApi();
 
   group(IndexerApi, () {
     //Future apiV3IndexerActionNamePost(String name, { IndexerResource indexerResource }) async
@@ -21,7 +22,7 @@ void main() {
       // TODO
     });
 
-    //Future<BuiltList<IndexerResource>> apiV3IndexerGet() async
+    //Future<List<IndexerResource>> apiV3IndexerGet() async
     test('test apiV3IndexerGet', () async {
       // TODO
     });
@@ -46,7 +47,7 @@ void main() {
       // TODO
     });
 
-    //Future<BuiltList<IndexerResource>> apiV3IndexerSchemaGet() async
+    //Future<List<IndexerResource>> apiV3IndexerSchemaGet() async
     test('test apiV3IndexerSchemaGet', () async {
       // TODO
     });
@@ -60,5 +61,6 @@ void main() {
     test('test apiV3IndexerTestallPost', () async {
       // TODO
     });
+
   });
 }

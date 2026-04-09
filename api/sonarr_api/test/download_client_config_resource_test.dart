@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for DownloadClientConfigResource
 void main() {
-  final instance = DownloadClientConfigResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final DownloadClientConfigResource? instance = /* DownloadClientConfigResource(...) */ null;
+  // TODO add properties to the entity
 
   group(DownloadClientConfigResource, () {
     // int id
@@ -22,15 +22,20 @@ void main() {
       // TODO
     });
 
+    // int checkForFinishedDownloadInterval
+    test('to test the property `checkForFinishedDownloadInterval`', () async {
+      // TODO
+    });
+
     // bool autoRedownloadFailed
     test('to test the property `autoRedownloadFailed`', () async {
       // TODO
     });
 
     // bool autoRedownloadFailedFromInteractiveSearch
-    test('to test the property `autoRedownloadFailedFromInteractiveSearch`',
-        () async {
+    test('to test the property `autoRedownloadFailedFromInteractiveSearch`', () async {
       // TODO
     });
+
   });
 }

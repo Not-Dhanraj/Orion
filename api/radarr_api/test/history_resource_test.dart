@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for HistoryResource
 void main() {
-  final instance = HistoryResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final HistoryResource? instance = /* HistoryResource(...) */ null;
+  // TODO add properties to the entity
 
   group(HistoryResource, () {
     // int id
@@ -22,7 +22,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<Language> languages
+    // List<Language> languages
     test('to test the property `languages`', () async {
       // TODO
     });
@@ -32,7 +32,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<CustomFormatResource> customFormats
+    // List<CustomFormatResource> customFormats
     test('to test the property `customFormats`', () async {
       // TODO
     });
@@ -62,7 +62,7 @@ void main() {
       // TODO
     });
 
-    // BuiltMap<String, String> data
+    // Map<String, String> data
     test('to test the property `data`', () async {
       // TODO
     });
@@ -71,5 +71,6 @@ void main() {
     test('to test the property `movie`', () async {
       // TODO
     });
+
   });
 }

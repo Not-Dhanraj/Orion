@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for ManualImportResource
 void main() {
-  final instance = ManualImportResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final ManualImportResource? instance = /* ManualImportResource(...) */ null;
+  // TODO add properties to the entity
 
   group(ManualImportResource, () {
     // int id
@@ -57,7 +57,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<Language> languages
+    // List<Language> languages
     test('to test the property `languages`', () async {
       // TODO
     });
@@ -72,7 +72,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<CustomFormatResource> customFormats
+    // List<CustomFormatResource> customFormats
     test('to test the property `customFormats`', () async {
       // TODO
     });
@@ -87,9 +87,10 @@ void main() {
       // TODO
     });
 
-    // BuiltList<ImportRejectionResource> rejections
+    // List<ImportRejectionResource> rejections
     test('to test the property `rejections`', () async {
       // TODO
     });
+
   });
 }

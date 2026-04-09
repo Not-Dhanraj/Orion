@@ -1,8 +1,8 @@
-# sonarr.api.AutoTaggingApi
+# sonarr_api.api.AutoTaggingApi
 
 ## Load the API package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:8989*
@@ -18,13 +18,13 @@ Method | HTTP request | Description
 
 
 # **apiV3AutotaggingGet**
-> BuiltList<AutoTaggingResource> apiV3AutotaggingGet()
+> List<AutoTaggingResource> apiV3AutotaggingGet()
 
 
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -34,12 +34,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getAutoTaggingApi();
+final api = SonarrApi().getAutoTaggingApi();
 
 try {
     final response = api.apiV3AutotaggingGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling AutoTaggingApi->apiV3AutotaggingGet: $e\n');
 }
 ```
@@ -49,7 +49,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;AutoTaggingResource&gt;**](AutoTaggingResource.md)
+[**List&lt;AutoTaggingResource&gt;**](AutoTaggingResource.md)
 
 ### Authorization
 
@@ -69,7 +69,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -79,12 +79,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getAutoTaggingApi();
+final api = SonarrApi().getAutoTaggingApi();
 final int id = 56; // int | 
 
 try {
     api.apiV3AutotaggingIdDelete(id);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling AutoTaggingApi->apiV3AutotaggingIdDelete: $e\n');
 }
 ```
@@ -117,7 +117,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -127,13 +127,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getAutoTaggingApi();
+final api = SonarrApi().getAutoTaggingApi();
 final int id = 56; // int | 
 
 try {
     final response = api.apiV3AutotaggingIdGet(id);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling AutoTaggingApi->apiV3AutotaggingIdGet: $e\n');
 }
 ```
@@ -166,7 +166,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -176,14 +176,14 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getAutoTaggingApi();
+final api = SonarrApi().getAutoTaggingApi();
 final String id = id_example; // String | 
 final AutoTaggingResource autoTaggingResource = ; // AutoTaggingResource | 
 
 try {
     final response = api.apiV3AutotaggingIdPut(id, autoTaggingResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling AutoTaggingApi->apiV3AutotaggingIdPut: $e\n');
 }
 ```
@@ -217,7 +217,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -227,13 +227,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getAutoTaggingApi();
+final api = SonarrApi().getAutoTaggingApi();
 final AutoTaggingResource autoTaggingResource = ; // AutoTaggingResource | 
 
 try {
     final response = api.apiV3AutotaggingPost(autoTaggingResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling AutoTaggingApi->apiV3AutotaggingPost: $e\n');
 }
 ```
@@ -266,7 +266,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -276,11 +276,11 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getAutoTaggingApi();
+final api = SonarrApi().getAutoTaggingApi();
 
 try {
     api.apiV3AutotaggingSchemaGet();
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling AutoTaggingApi->apiV3AutotaggingSchemaGet: $e\n');
 }
 ```

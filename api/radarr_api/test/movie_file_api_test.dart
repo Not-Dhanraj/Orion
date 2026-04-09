@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for MovieFileApi
 void main() {
-  final instance = Radarr().getMovieFileApi();
+  final instance = RadarrApi().getMovieFileApi();
 
   group(MovieFileApi, () {
     //Future apiV3MoviefileBulkDelete({ MovieFileListResource movieFileListResource }) async
@@ -11,7 +12,7 @@ void main() {
       // TODO
     });
 
-    //Future apiV3MoviefileBulkPut({ BuiltList<MovieFileResource> movieFileResource }) async
+    //Future apiV3MoviefileBulkPut({ List<MovieFileResource> movieFileResource }) async
     test('test apiV3MoviefileBulkPut', () async {
       // TODO
     });
@@ -21,7 +22,7 @@ void main() {
       // TODO
     });
 
-    //Future<BuiltList<MovieFileResource>> apiV3MoviefileGet({ BuiltList<int> movieId, BuiltList<int> movieFileIds }) async
+    //Future<List<MovieFileResource>> apiV3MoviefileGet({ List<int> movieId, List<int> movieFileIds }) async
     test('test apiV3MoviefileGet', () async {
       // TODO
     });
@@ -40,5 +41,6 @@ void main() {
     test('test apiV3MoviefileIdPut', () async {
       // TODO
     });
+
   });
 }

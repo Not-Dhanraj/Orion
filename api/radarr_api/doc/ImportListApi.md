@@ -1,8 +1,8 @@
-# radarr.api.ImportListApi
+# radarr_api.api.ImportListApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -29,7 +29,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -39,13 +39,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getImportListApi();
+final api = RadarrApi().getImportListApi();
 final String name = name_example; // String | 
 final ImportListResource importListResource = ; // ImportListResource | 
 
 try {
     api.apiV3ImportlistActionNamePost(name, importListResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListApi->apiV3ImportlistActionNamePost: $e\n');
 }
 ```
@@ -79,7 +79,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -89,12 +89,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getImportListApi();
+final api = RadarrApi().getImportListApi();
 final ImportListBulkResource importListBulkResource = ; // ImportListBulkResource | 
 
 try {
     api.apiV3ImportlistBulkDelete(importListBulkResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListApi->apiV3ImportlistBulkDelete: $e\n');
 }
 ```
@@ -127,7 +127,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -137,13 +137,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getImportListApi();
+final api = RadarrApi().getImportListApi();
 final ImportListBulkResource importListBulkResource = ; // ImportListBulkResource | 
 
 try {
     final response = api.apiV3ImportlistBulkPut(importListBulkResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListApi->apiV3ImportlistBulkPut: $e\n');
 }
 ```
@@ -170,13 +170,13 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiV3ImportlistGet**
-> BuiltList<ImportListResource> apiV3ImportlistGet()
+> List<ImportListResource> apiV3ImportlistGet()
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -186,12 +186,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getImportListApi();
+final api = RadarrApi().getImportListApi();
 
 try {
     final response = api.apiV3ImportlistGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListApi->apiV3ImportlistGet: $e\n');
 }
 ```
@@ -201,7 +201,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;ImportListResource&gt;**](ImportListResource.md)
+[**List&lt;ImportListResource&gt;**](ImportListResource.md)
 
 ### Authorization
 
@@ -221,7 +221,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -231,12 +231,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getImportListApi();
+final api = RadarrApi().getImportListApi();
 final int id = 56; // int | 
 
 try {
     api.apiV3ImportlistIdDelete(id);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListApi->apiV3ImportlistIdDelete: $e\n');
 }
 ```
@@ -269,7 +269,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -279,13 +279,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getImportListApi();
+final api = RadarrApi().getImportListApi();
 final int id = 56; // int | 
 
 try {
     final response = api.apiV3ImportlistIdGet(id);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListApi->apiV3ImportlistIdGet: $e\n');
 }
 ```
@@ -318,7 +318,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -328,7 +328,7 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getImportListApi();
+final api = RadarrApi().getImportListApi();
 final int id = 56; // int | 
 final bool forceSave = true; // bool | 
 final ImportListResource importListResource = ; // ImportListResource | 
@@ -336,7 +336,7 @@ final ImportListResource importListResource = ; // ImportListResource |
 try {
     final response = api.apiV3ImportlistIdPut(id, forceSave, importListResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListApi->apiV3ImportlistIdPut: $e\n');
 }
 ```
@@ -371,7 +371,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -381,14 +381,14 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getImportListApi();
+final api = RadarrApi().getImportListApi();
 final bool forceSave = true; // bool | 
 final ImportListResource importListResource = ; // ImportListResource | 
 
 try {
     final response = api.apiV3ImportlistPost(forceSave, importListResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListApi->apiV3ImportlistPost: $e\n');
 }
 ```
@@ -416,13 +416,13 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiV3ImportlistSchemaGet**
-> BuiltList<ImportListResource> apiV3ImportlistSchemaGet()
+> List<ImportListResource> apiV3ImportlistSchemaGet()
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -432,12 +432,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getImportListApi();
+final api = RadarrApi().getImportListApi();
 
 try {
     final response = api.apiV3ImportlistSchemaGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListApi->apiV3ImportlistSchemaGet: $e\n');
 }
 ```
@@ -447,7 +447,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;ImportListResource&gt;**](ImportListResource.md)
+[**List&lt;ImportListResource&gt;**](ImportListResource.md)
 
 ### Authorization
 
@@ -467,7 +467,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -477,13 +477,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getImportListApi();
+final api = RadarrApi().getImportListApi();
 final bool forceTest = true; // bool | 
 final ImportListResource importListResource = ; // ImportListResource | 
 
 try {
     api.apiV3ImportlistTestPost(forceTest, importListResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListApi->apiV3ImportlistTestPost: $e\n');
 }
 ```
@@ -517,7 +517,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -527,11 +527,11 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getImportListApi();
+final api = RadarrApi().getImportListApi();
 
 try {
     api.apiV3ImportlistTestallPost();
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListApi->apiV3ImportlistTestallPost: $e\n');
 }
 ```

@@ -1,8 +1,8 @@
-# radarr.model.MediaManagementConfigResource
+# radarr_api.model.MediaManagementConfigResource
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties

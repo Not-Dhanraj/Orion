@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for ImportListMoviesApi
 void main() {
-  final instance = Radarr().getImportListMoviesApi();
+  final instance = RadarrApi().getImportListMoviesApi();
 
   group(ImportListMoviesApi, () {
     //Future apiV3ImportlistMovieGet({ bool includeRecommendations, bool includeTrending, bool includePopular }) async
@@ -11,9 +12,10 @@ void main() {
       // TODO
     });
 
-    //Future apiV3ImportlistMoviePost({ BuiltList<MovieResource> movieResource }) async
+    //Future apiV3ImportlistMoviePost({ List<MovieResource> movieResource }) async
     test('test apiV3ImportlistMoviePost', () async {
       // TODO
     });
+
   });
 }

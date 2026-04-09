@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for HealthResource
 void main() {
-  final instance = HealthResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final HealthResource? instance = /* HealthResource(...) */ null;
+  // TODO add properties to the entity
 
   group(HealthResource, () {
     // int id
@@ -31,5 +31,6 @@ void main() {
     test('to test the property `wikiUrl`', () async {
       // TODO
     });
+
   });
 }

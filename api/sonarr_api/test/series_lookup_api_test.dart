@@ -1,14 +1,16 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for SeriesLookupApi
 void main() {
-  final instance = Sonarr().getSeriesLookupApi();
+  final instance = SonarrApi().getSeriesLookupApi();
 
   group(SeriesLookupApi, () {
-    //Future<BuiltList<SeriesResource>> apiV3SeriesLookupGet({ String term }) async
+    //Future<List<SeriesResource>> apiV3SeriesLookupGet({ String term }) async
     test('test apiV3SeriesLookupGet', () async {
       // TODO
     });
+
   });
 }

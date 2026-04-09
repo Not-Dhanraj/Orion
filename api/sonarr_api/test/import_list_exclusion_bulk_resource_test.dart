@@ -1,15 +1,16 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for ImportListExclusionBulkResource
 void main() {
-  final instance = ImportListExclusionBulkResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final ImportListExclusionBulkResource? instance = /* ImportListExclusionBulkResource(...) */ null;
+  // TODO add properties to the entity
 
   group(ImportListExclusionBulkResource, () {
-    // BuiltSet<int> ids
+    // Set<int> ids
     test('to test the property `ids`', () async {
       // TODO
     });
+
   });
 }

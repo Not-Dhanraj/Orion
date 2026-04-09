@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for IndexerConfigResource
 void main() {
-  final instance = IndexerConfigResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final IndexerConfigResource? instance = /* IndexerConfigResource(...) */ null;
+  // TODO add properties to the entity
 
   group(IndexerConfigResource, () {
     // int id
@@ -51,5 +51,6 @@ void main() {
     test('to test the property `whitelistedHardcodedSubs`', () async {
       // TODO
     });
+
   });
 }

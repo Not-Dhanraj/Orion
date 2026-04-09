@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for EpisodeFileApi
 void main() {
-  final instance = Sonarr().getEpisodeFileApi();
+  final instance = SonarrApi().getEpisodeFileApi();
 
   group(EpisodeFileApi, () {
     //Future apiV3EpisodefileBulkDelete({ EpisodeFileListResource episodeFileListResource }) async
@@ -11,7 +12,7 @@ void main() {
       // TODO
     });
 
-    //Future apiV3EpisodefileBulkPut({ BuiltList<EpisodeFileResource> episodeFileResource }) async
+    //Future apiV3EpisodefileBulkPut({ List<EpisodeFileResource> episodeFileResource }) async
     test('test apiV3EpisodefileBulkPut', () async {
       // TODO
     });
@@ -21,7 +22,7 @@ void main() {
       // TODO
     });
 
-    //Future<BuiltList<EpisodeFileResource>> apiV3EpisodefileGet({ int seriesId, BuiltList<int> episodeFileIds }) async
+    //Future<List<EpisodeFileResource>> apiV3EpisodefileGet({ int seriesId, List<int> episodeFileIds }) async
     test('test apiV3EpisodefileGet', () async {
       // TODO
     });
@@ -40,5 +41,6 @@ void main() {
     test('test apiV3EpisodefileIdPut', () async {
       // TODO
     });
+
   });
 }

@@ -1,8 +1,8 @@
-# radarr.api.HealthApi
+# radarr_api.api.HealthApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -13,13 +13,13 @@ Method | HTTP request | Description
 
 
 # **apiV3HealthGet**
-> BuiltList<HealthResource> apiV3HealthGet()
+> List<HealthResource> apiV3HealthGet()
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -29,12 +29,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getHealthApi();
+final api = RadarrApi().getHealthApi();
 
 try {
     final response = api.apiV3HealthGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling HealthApi->apiV3HealthGet: $e\n');
 }
 ```
@@ -44,7 +44,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;HealthResource&gt;**](HealthResource.md)
+[**List&lt;HealthResource&gt;**](HealthResource.md)
 
 ### Authorization
 

@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for ManualImportResource
 void main() {
-  final instance = ManualImportResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final ManualImportResource? instance = /* ManualImportResource(...) */ null;
+  // TODO add properties to the entity
 
   group(ManualImportResource, () {
     // int id
@@ -37,23 +37,13 @@ void main() {
       // TODO
     });
 
-    // SeriesResource series
-    test('to test the property `series`', () async {
+    // MovieResource movie
+    test('to test the property `movie`', () async {
       // TODO
     });
 
-    // int seasonNumber
-    test('to test the property `seasonNumber`', () async {
-      // TODO
-    });
-
-    // BuiltList<EpisodeResource> episodes
-    test('to test the property `episodes`', () async {
-      // TODO
-    });
-
-    // int episodeFileId
-    test('to test the property `episodeFileId`', () async {
+    // int movieFileId
+    test('to test the property `movieFileId`', () async {
       // TODO
     });
 
@@ -67,7 +57,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<Language> languages
+    // List<Language> languages
     test('to test the property `languages`', () async {
       // TODO
     });
@@ -82,7 +72,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<CustomFormatResource> customFormats
+    // List<CustomFormatResource> customFormats
     test('to test the property `customFormats`', () async {
       // TODO
     });
@@ -97,14 +87,10 @@ void main() {
       // TODO
     });
 
-    // ReleaseType releaseType
-    test('to test the property `releaseType`', () async {
-      // TODO
-    });
-
-    // BuiltList<ImportRejectionResource> rejections
+    // List<ImportRejectionResource> rejections
     test('to test the property `rejections`', () async {
       // TODO
     });
+
   });
 }

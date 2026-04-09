@@ -1,8 +1,8 @@
-# radarr.api.CollectionApi
+# radarr_api.api.CollectionApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -16,13 +16,13 @@ Method | HTTP request | Description
 
 
 # **apiV3CollectionGet**
-> BuiltList<CollectionResource> apiV3CollectionGet(tmdbId)
+> List<CollectionResource> apiV3CollectionGet(tmdbId)
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -32,13 +32,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getCollectionApi();
+final api = RadarrApi().getCollectionApi();
 final int tmdbId = 56; // int | 
 
 try {
     final response = api.apiV3CollectionGet(tmdbId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling CollectionApi->apiV3CollectionGet: $e\n');
 }
 ```
@@ -51,7 +51,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**BuiltList&lt;CollectionResource&gt;**](CollectionResource.md)
+[**List&lt;CollectionResource&gt;**](CollectionResource.md)
 
 ### Authorization
 
@@ -71,7 +71,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -81,13 +81,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getCollectionApi();
+final api = RadarrApi().getCollectionApi();
 final int id = 56; // int | 
 
 try {
     final response = api.apiV3CollectionIdGet(id);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling CollectionApi->apiV3CollectionIdGet: $e\n');
 }
 ```
@@ -120,7 +120,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -130,14 +130,14 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getCollectionApi();
+final api = RadarrApi().getCollectionApi();
 final String id = id_example; // String | 
 final CollectionResource collectionResource = ; // CollectionResource | 
 
 try {
     final response = api.apiV3CollectionIdPut(id, collectionResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling CollectionApi->apiV3CollectionIdPut: $e\n');
 }
 ```
@@ -171,7 +171,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -181,12 +181,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getCollectionApi();
+final api = RadarrApi().getCollectionApi();
 final CollectionUpdateResource collectionUpdateResource = ; // CollectionUpdateResource | 
 
 try {
     api.apiV3CollectionPut(collectionUpdateResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling CollectionApi->apiV3CollectionPut: $e\n');
 }
 ```

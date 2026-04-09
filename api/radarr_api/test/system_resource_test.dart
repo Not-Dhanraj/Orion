@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for SystemResource
 void main() {
-  final instance = SystemResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final SystemResource? instance = /* SystemResource(...) */ null;
+  // TODO add properties to the entity
 
   group(SystemResource, () {
     // String appName
@@ -161,5 +161,6 @@ void main() {
     test('to test the property `packageUpdateMechanismMessage`', () async {
       // TODO
     });
+
   });
 }

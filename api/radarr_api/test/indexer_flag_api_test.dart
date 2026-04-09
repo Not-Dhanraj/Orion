@@ -1,14 +1,16 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for IndexerFlagApi
 void main() {
-  final instance = Radarr().getIndexerFlagApi();
+  final instance = RadarrApi().getIndexerFlagApi();
 
   group(IndexerFlagApi, () {
-    //Future<BuiltList<IndexerFlagResource>> apiV3IndexerflagGet() async
+    //Future<List<IndexerFlagResource>> apiV3IndexerflagGet() async
     test('test apiV3IndexerflagGet', () async {
       // TODO
     });
+
   });
 }

@@ -1,8 +1,8 @@
-# sonarr.model.HistoryResource
+# sonarr_api.model.HistoryResource
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties
@@ -12,15 +12,15 @@ Name | Type | Description | Notes
 **episodeId** | **int** |  | [optional] 
 **seriesId** | **int** |  | [optional] 
 **sourceTitle** | **String** |  | [optional] 
-**languages** | [**BuiltList&lt;Language&gt;**](Language.md) |  | [optional] 
+**languages** | [**List&lt;Language&gt;**](Language.md) |  | [optional] 
 **quality** | [**QualityModel**](QualityModel.md) |  | [optional] 
-**customFormats** | [**BuiltList&lt;CustomFormatResource&gt;**](CustomFormatResource.md) |  | [optional] 
+**customFormats** | [**List&lt;CustomFormatResource&gt;**](CustomFormatResource.md) |  | [optional] 
 **customFormatScore** | **int** |  | [optional] 
 **qualityCutoffNotMet** | **bool** |  | [optional] 
 **date** | [**DateTime**](DateTime.md) |  | [optional] 
 **downloadId** | **String** |  | [optional] 
 **eventType** | [**EpisodeHistoryEventType**](EpisodeHistoryEventType.md) |  | [optional] 
-**data** | **BuiltMap&lt;String, String&gt;** |  | [optional] 
+**data** | **Map&lt;String, String&gt;** |  | [optional] 
 **episode** | [**EpisodeResource**](EpisodeResource.md) |  | [optional] 
 **series** | [**SeriesResource**](SeriesResource.md) |  | [optional] 
 

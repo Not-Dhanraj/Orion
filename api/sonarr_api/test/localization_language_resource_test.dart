@@ -1,15 +1,16 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for LocalizationLanguageResource
 void main() {
-  final instance = LocalizationLanguageResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final LocalizationLanguageResource? instance = /* LocalizationLanguageResource(...) */ null;
+  // TODO add properties to the entity
 
   group(LocalizationLanguageResource, () {
     // String identifier
     test('to test the property `identifier`', () async {
       // TODO
     });
+
   });
 }

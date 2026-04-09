@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for BackupResource
 void main() {
-  final instance = BackupResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final BackupResource? instance = /* BackupResource(...) */ null;
+  // TODO add properties to the entity
 
   group(BackupResource, () {
     // int id
@@ -36,5 +36,6 @@ void main() {
     test('to test the property `time`', () async {
       // TODO
     });
+
   });
 }

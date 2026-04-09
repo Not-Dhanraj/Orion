@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for NamingConfigApi
 void main() {
-  final instance = Radarr().getNamingConfigApi();
+  final instance = RadarrApi().getNamingConfigApi();
 
   group(NamingConfigApi, () {
     //Future apiV3ConfigNamingExamplesGet({ bool renameMovies, bool replaceIllegalCharacters, ColonReplacementFormat colonReplacementFormat, String standardMovieFormat, String movieFolderFormat, int id, String resourceName }) async
@@ -25,5 +26,6 @@ void main() {
     test('test apiV3ConfigNamingIdPut', () async {
       // TODO
     });
+
   });
 }

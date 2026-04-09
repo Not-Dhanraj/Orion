@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for ImportListApi
 void main() {
-  final instance = Radarr().getImportListApi();
+  final instance = RadarrApi().getImportListApi();
 
   group(ImportListApi, () {
     //Future apiV3ImportlistActionNamePost(String name, { ImportListResource importListResource }) async
@@ -21,7 +22,7 @@ void main() {
       // TODO
     });
 
-    //Future<BuiltList<ImportListResource>> apiV3ImportlistGet() async
+    //Future<List<ImportListResource>> apiV3ImportlistGet() async
     test('test apiV3ImportlistGet', () async {
       // TODO
     });
@@ -46,7 +47,7 @@ void main() {
       // TODO
     });
 
-    //Future<BuiltList<ImportListResource>> apiV3ImportlistSchemaGet() async
+    //Future<List<ImportListResource>> apiV3ImportlistSchemaGet() async
     test('test apiV3ImportlistSchemaGet', () async {
       // TODO
     });
@@ -60,5 +61,6 @@ void main() {
     test('test apiV3ImportlistTestallPost', () async {
       // TODO
     });
+
   });
 }

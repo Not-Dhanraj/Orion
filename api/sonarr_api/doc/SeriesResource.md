@@ -1,8 +1,8 @@
-# sonarr.model.SeriesResource
+# sonarr_api.model.SeriesResource
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties
@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **int** |  | [optional] 
 **title** | **String** |  | [optional] 
-**alternateTitles** | [**BuiltList&lt;AlternateTitleResource&gt;**](AlternateTitleResource.md) |  | [optional] 
+**alternateTitles** | [**List&lt;AlternateTitleResource&gt;**](AlternateTitleResource.md) |  | [optional] 
 **sortTitle** | **String** |  | [optional] 
 **status** | [**SeriesStatusType**](SeriesStatusType.md) |  | [optional] 
 **ended** | **bool** |  | [optional] 
@@ -20,10 +20,10 @@ Name | Type | Description | Notes
 **previousAiring** | [**DateTime**](DateTime.md) |  | [optional] 
 **network** | **String** |  | [optional] 
 **airTime** | **String** |  | [optional] 
-**images** | [**BuiltList&lt;MediaCover&gt;**](MediaCover.md) |  | [optional] 
+**images** | [**List&lt;MediaCover&gt;**](MediaCover.md) |  | [optional] 
 **originalLanguage** | [**Language**](Language.md) |  | [optional] 
 **remotePoster** | **String** |  | [optional] 
-**seasons** | [**BuiltList&lt;SeasonResource&gt;**](SeasonResource.md) |  | [optional] 
+**seasons** | [**List&lt;SeasonResource&gt;**](SeasonResource.md) |  | [optional] 
 **year** | **int** |  | [optional] 
 **path** | **String** |  | [optional] 
 **qualityProfileId** | **int** |  | [optional] 
@@ -45,8 +45,8 @@ Name | Type | Description | Notes
 **rootFolderPath** | **String** |  | [optional] 
 **folder** | **String** |  | [optional] 
 **certification** | **String** |  | [optional] 
-**genres** | **BuiltList&lt;String&gt;** |  | [optional] 
-**tags** | **BuiltSet&lt;int&gt;** |  | [optional] 
+**genres** | **List&lt;String&gt;** |  | [optional] 
+**tags** | **Set&lt;int&gt;** |  | [optional] 
 **added** | [**DateTime**](DateTime.md) |  | [optional] 
 **addOptions** | [**AddSeriesOptions**](AddSeriesOptions.md) |  | [optional] 
 **ratings** | [**Ratings**](Ratings.md) |  | [optional] 

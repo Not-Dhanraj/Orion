@@ -1,14 +1,16 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for CalendarFeedApi
 void main() {
-  final instance = Sonarr().getCalendarFeedApi();
+  final instance = SonarrApi().getCalendarFeedApi();
 
   group(CalendarFeedApi, () {
-    //Future feedV3CalendarSonarrIcsGet({ int pastDays, int futureDays, String tags, bool unmonitored, bool premieresOnly, bool asAllDay }) async
-    test('test feedV3CalendarSonarrIcsGet', () async {
+    //Future feedV3CalendarRadarrIcsGet({ int pastDays, int futureDays, String tags, bool unmonitored, List<CalendarReleaseType> releaseTypes }) async
+    test('test feedV3CalendarRadarrIcsGet', () async {
       // TODO
     });
+
   });
 }

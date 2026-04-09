@@ -1,14 +1,16 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for QueueDetailsApi
 void main() {
-  final instance = Radarr().getQueueDetailsApi();
+  final instance = RadarrApi().getQueueDetailsApi();
 
   group(QueueDetailsApi, () {
-    //Future<BuiltList<QueueResource>> apiV3QueueDetailsGet({ int movieId, bool includeMovie }) async
+    //Future<List<QueueResource>> apiV3QueueDetailsGet({ int movieId, bool includeMovie }) async
     test('test apiV3QueueDetailsGet', () async {
       // TODO
     });
+
   });
 }

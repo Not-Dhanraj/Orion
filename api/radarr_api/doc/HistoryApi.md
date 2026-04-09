@@ -1,8 +1,8 @@
-# radarr.api.HistoryApi
+# radarr_api.api.HistoryApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -22,7 +22,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -32,12 +32,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getHistoryApi();
+final api = RadarrApi().getHistoryApi();
 final int id = 56; // int | 
 
 try {
     api.apiV3HistoryFailedIdPost(id);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling HistoryApi->apiV3HistoryFailedIdPost: $e\n');
 }
 ```
@@ -70,7 +70,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -80,22 +80,22 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getHistoryApi();
+final api = RadarrApi().getHistoryApi();
 final int page = 56; // int | 
 final int pageSize = 56; // int | 
 final String sortKey = sortKey_example; // String | 
 final SortDirection sortDirection = ; // SortDirection | 
 final bool includeMovie = true; // bool | 
-final BuiltList<int> eventType = ; // BuiltList<int> | 
+final List<int> eventType = ; // List<int> | 
 final String downloadId = downloadId_example; // String | 
-final BuiltList<int> movieIds = ; // BuiltList<int> | 
-final BuiltList<int> languages = ; // BuiltList<int> | 
-final BuiltList<int> quality = ; // BuiltList<int> | 
+final List<int> movieIds = ; // List<int> | 
+final List<int> languages = ; // List<int> | 
+final List<int> quality = ; // List<int> | 
 
 try {
     final response = api.apiV3HistoryGet(page, pageSize, sortKey, sortDirection, includeMovie, eventType, downloadId, movieIds, languages, quality);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling HistoryApi->apiV3HistoryGet: $e\n');
 }
 ```
@@ -109,11 +109,11 @@ Name | Type | Description  | Notes
  **sortKey** | **String**|  | [optional] 
  **sortDirection** | [**SortDirection**](.md)|  | [optional] 
  **includeMovie** | **bool**|  | [optional] 
- **eventType** | [**BuiltList&lt;int&gt;**](int.md)|  | [optional] 
+ **eventType** | [**List&lt;int&gt;**](int.md)|  | [optional] 
  **downloadId** | **String**|  | [optional] 
- **movieIds** | [**BuiltList&lt;int&gt;**](int.md)|  | [optional] 
- **languages** | [**BuiltList&lt;int&gt;**](int.md)|  | [optional] 
- **quality** | [**BuiltList&lt;int&gt;**](int.md)|  | [optional] 
+ **movieIds** | [**List&lt;int&gt;**](int.md)|  | [optional] 
+ **languages** | [**List&lt;int&gt;**](int.md)|  | [optional] 
+ **quality** | [**List&lt;int&gt;**](int.md)|  | [optional] 
 
 ### Return type
 
@@ -131,13 +131,13 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiV3HistoryMovieGet**
-> BuiltList<HistoryResource> apiV3HistoryMovieGet(movieId, eventType, includeMovie)
+> List<HistoryResource> apiV3HistoryMovieGet(movieId, eventType, includeMovie)
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -147,7 +147,7 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getHistoryApi();
+final api = RadarrApi().getHistoryApi();
 final int movieId = 56; // int | 
 final MovieHistoryEventType eventType = ; // MovieHistoryEventType | 
 final bool includeMovie = true; // bool | 
@@ -155,7 +155,7 @@ final bool includeMovie = true; // bool |
 try {
     final response = api.apiV3HistoryMovieGet(movieId, eventType, includeMovie);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling HistoryApi->apiV3HistoryMovieGet: $e\n');
 }
 ```
@@ -170,7 +170,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**BuiltList&lt;HistoryResource&gt;**](HistoryResource.md)
+[**List&lt;HistoryResource&gt;**](HistoryResource.md)
 
 ### Authorization
 
@@ -184,13 +184,13 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiV3HistorySinceGet**
-> BuiltList<HistoryResource> apiV3HistorySinceGet(date, eventType, includeMovie)
+> List<HistoryResource> apiV3HistorySinceGet(date, eventType, includeMovie)
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -200,7 +200,7 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getHistoryApi();
+final api = RadarrApi().getHistoryApi();
 final DateTime date = 2013-10-20T19:20:30+01:00; // DateTime | 
 final MovieHistoryEventType eventType = ; // MovieHistoryEventType | 
 final bool includeMovie = true; // bool | 
@@ -208,7 +208,7 @@ final bool includeMovie = true; // bool |
 try {
     final response = api.apiV3HistorySinceGet(date, eventType, includeMovie);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling HistoryApi->apiV3HistorySinceGet: $e\n');
 }
 ```
@@ -223,7 +223,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**BuiltList&lt;HistoryResource&gt;**](HistoryResource.md)
+[**List&lt;HistoryResource&gt;**](HistoryResource.md)
 
 ### Authorization
 

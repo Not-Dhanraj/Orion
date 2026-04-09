@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for QualityProfileApi
 void main() {
-  final instance = Sonarr().getQualityProfileApi();
+  final instance = SonarrApi().getQualityProfileApi();
 
   group(QualityProfileApi, () {
-    //Future<BuiltList<QualityProfileResource>> apiV3QualityprofileGet() async
+    //Future<List<QualityProfileResource>> apiV3QualityprofileGet() async
     test('test apiV3QualityprofileGet', () async {
       // TODO
     });
@@ -30,5 +31,6 @@ void main() {
     test('test apiV3QualityprofilePost', () async {
       // TODO
     });
+
   });
 }

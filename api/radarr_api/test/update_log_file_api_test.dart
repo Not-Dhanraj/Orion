@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for UpdateLogFileApi
 void main() {
-  final instance = Radarr().getUpdateLogFileApi();
+  final instance = RadarrApi().getUpdateLogFileApi();
 
   group(UpdateLogFileApi, () {
     //Future apiV3LogFileUpdateFilenameGet(String filename) async
@@ -11,9 +12,10 @@ void main() {
       // TODO
     });
 
-    //Future<BuiltList<LogFileResource>> apiV3LogFileUpdateGet() async
+    //Future<List<LogFileResource>> apiV3LogFileUpdateGet() async
     test('test apiV3LogFileUpdateGet', () async {
       // TODO
     });
+
   });
 }

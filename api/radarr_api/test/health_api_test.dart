@@ -1,14 +1,16 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for HealthApi
 void main() {
-  final instance = Radarr().getHealthApi();
+  final instance = RadarrApi().getHealthApi();
 
   group(HealthApi, () {
-    //Future<BuiltList<HealthResource>> apiV3HealthGet() async
+    //Future<List<HealthResource>> apiV3HealthGet() async
     test('test apiV3HealthGet', () async {
       // TODO
     });
+
   });
 }

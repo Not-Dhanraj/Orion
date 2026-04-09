@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for ParseResource
 void main() {
-  final instance = ParseResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final ParseResource? instance = /* ParseResource(...) */ null;
+  // TODO add properties to the entity
 
   group(ParseResource, () {
     // int id
@@ -17,27 +17,22 @@ void main() {
       // TODO
     });
 
-    // ParsedEpisodeInfo parsedEpisodeInfo
-    test('to test the property `parsedEpisodeInfo`', () async {
+    // ParsedMovieInfo parsedMovieInfo
+    test('to test the property `parsedMovieInfo`', () async {
       // TODO
     });
 
-    // SeriesResource series
-    test('to test the property `series`', () async {
+    // MovieResource movie
+    test('to test the property `movie`', () async {
       // TODO
     });
 
-    // BuiltList<EpisodeResource> episodes
-    test('to test the property `episodes`', () async {
-      // TODO
-    });
-
-    // BuiltList<Language> languages
+    // List<Language> languages
     test('to test the property `languages`', () async {
       // TODO
     });
 
-    // BuiltList<CustomFormatResource> customFormats
+    // List<CustomFormatResource> customFormats
     test('to test the property `customFormats`', () async {
       // TODO
     });
@@ -46,5 +41,6 @@ void main() {
     test('to test the property `customFormatScore`', () async {
       // TODO
     });
+
   });
 }

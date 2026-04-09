@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for ReleaseResource
 void main() {
-  final instance = ReleaseResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final ReleaseResource? instance = /* ReleaseResource(...) */ null;
+  // TODO add properties to the entity
 
   group(ReleaseResource, () {
     // int id
@@ -22,7 +22,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<CustomFormatResource> customFormats
+    // List<CustomFormatResource> customFormats
     test('to test the property `customFormats`', () async {
       // TODO
     });
@@ -92,12 +92,12 @@ void main() {
       // TODO
     });
 
-    // BuiltList<String> movieTitles
+    // List<String> movieTitles
     test('to test the property `movieTitles`', () async {
       // TODO
     });
 
-    // BuiltList<Language> languages
+    // List<Language> languages
     test('to test the property `languages`', () async {
       // TODO
     });
@@ -132,7 +132,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<String> rejections
+    // List<String> rejections
     test('to test the property `rejections`', () async {
       // TODO
     });
@@ -202,7 +202,7 @@ void main() {
       // TODO
     });
 
-    // JsonObject indexerFlags
+    // Object indexerFlags
     test('to test the property `indexerFlags`', () async {
       // TODO
     });
@@ -226,5 +226,6 @@ void main() {
     test('to test the property `shouldOverride`', () async {
       // TODO
     });
+
   });
 }

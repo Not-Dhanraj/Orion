@@ -1,8 +1,8 @@
-# radarr.model.ImportListExclusionResourcePagingResource
+# radarr_api.model.ImportListExclusionResourcePagingResource
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties
@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **sortKey** | **String** |  | [optional] 
 **sortDirection** | [**SortDirection**](SortDirection.md) |  | [optional] 
 **totalRecords** | **int** |  | [optional] 
-**records** | [**BuiltList&lt;ImportListExclusionResource&gt;**](ImportListExclusionResource.md) |  | [optional] 
+**records** | [**List&lt;ImportListExclusionResource&gt;**](ImportListExclusionResource.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

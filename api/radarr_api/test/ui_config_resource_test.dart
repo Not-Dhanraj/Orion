@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for UiConfigResource
 void main() {
-  final instance = UiConfigResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final UiConfigResource? instance = /* UiConfigResource(...) */ null;
+  // TODO add properties to the entity
 
   group(UiConfigResource, () {
     // int id
@@ -66,5 +66,6 @@ void main() {
     test('to test the property `theme`', () async {
       // TODO
     });
+
   });
 }

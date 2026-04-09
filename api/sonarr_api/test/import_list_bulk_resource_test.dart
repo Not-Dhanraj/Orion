@@ -1,18 +1,18 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for ImportListBulkResource
 void main() {
-  final instance = ImportListBulkResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final ImportListBulkResource? instance = /* ImportListBulkResource(...) */ null;
+  // TODO add properties to the entity
 
   group(ImportListBulkResource, () {
-    // BuiltList<int> ids
+    // List<int> ids
     test('to test the property `ids`', () async {
       // TODO
     });
 
-    // BuiltList<int> tags
+    // List<int> tags
     test('to test the property `tags`', () async {
       // TODO
     });
@@ -22,8 +22,13 @@ void main() {
       // TODO
     });
 
-    // bool enableAutomaticAdd
-    test('to test the property `enableAutomaticAdd`', () async {
+    // bool enabled
+    test('to test the property `enabled`', () async {
+      // TODO
+    });
+
+    // bool enableAuto
+    test('to test the property `enableAuto`', () async {
       // TODO
     });
 
@@ -36,5 +41,11 @@ void main() {
     test('to test the property `qualityProfileId`', () async {
       // TODO
     });
+
+    // MovieStatusType minimumAvailability
+    test('to test the property `minimumAvailability`', () async {
+      // TODO
+    });
+
   });
 }

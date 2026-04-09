@@ -1,8 +1,8 @@
-# radarr.api.MetadataApi
+# radarr_api.api.MetadataApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -27,7 +27,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -37,13 +37,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getMetadataApi();
+final api = RadarrApi().getMetadataApi();
 final String name = name_example; // String | 
 final MetadataResource metadataResource = ; // MetadataResource | 
 
 try {
     api.apiV3MetadataActionNamePost(name, metadataResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling MetadataApi->apiV3MetadataActionNamePost: $e\n');
 }
 ```
@@ -71,13 +71,13 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiV3MetadataGet**
-> BuiltList<MetadataResource> apiV3MetadataGet()
+> List<MetadataResource> apiV3MetadataGet()
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -87,12 +87,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getMetadataApi();
+final api = RadarrApi().getMetadataApi();
 
 try {
     final response = api.apiV3MetadataGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling MetadataApi->apiV3MetadataGet: $e\n');
 }
 ```
@@ -102,7 +102,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;MetadataResource&gt;**](MetadataResource.md)
+[**List&lt;MetadataResource&gt;**](MetadataResource.md)
 
 ### Authorization
 
@@ -122,7 +122,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -132,12 +132,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getMetadataApi();
+final api = RadarrApi().getMetadataApi();
 final int id = 56; // int | 
 
 try {
     api.apiV3MetadataIdDelete(id);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling MetadataApi->apiV3MetadataIdDelete: $e\n');
 }
 ```
@@ -170,7 +170,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -180,13 +180,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getMetadataApi();
+final api = RadarrApi().getMetadataApi();
 final int id = 56; // int | 
 
 try {
     final response = api.apiV3MetadataIdGet(id);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling MetadataApi->apiV3MetadataIdGet: $e\n');
 }
 ```
@@ -219,7 +219,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -229,7 +229,7 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getMetadataApi();
+final api = RadarrApi().getMetadataApi();
 final int id = 56; // int | 
 final bool forceSave = true; // bool | 
 final MetadataResource metadataResource = ; // MetadataResource | 
@@ -237,7 +237,7 @@ final MetadataResource metadataResource = ; // MetadataResource |
 try {
     final response = api.apiV3MetadataIdPut(id, forceSave, metadataResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling MetadataApi->apiV3MetadataIdPut: $e\n');
 }
 ```
@@ -272,7 +272,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -282,14 +282,14 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getMetadataApi();
+final api = RadarrApi().getMetadataApi();
 final bool forceSave = true; // bool | 
 final MetadataResource metadataResource = ; // MetadataResource | 
 
 try {
     final response = api.apiV3MetadataPost(forceSave, metadataResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling MetadataApi->apiV3MetadataPost: $e\n');
 }
 ```
@@ -317,13 +317,13 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiV3MetadataSchemaGet**
-> BuiltList<MetadataResource> apiV3MetadataSchemaGet()
+> List<MetadataResource> apiV3MetadataSchemaGet()
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -333,12 +333,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getMetadataApi();
+final api = RadarrApi().getMetadataApi();
 
 try {
     final response = api.apiV3MetadataSchemaGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling MetadataApi->apiV3MetadataSchemaGet: $e\n');
 }
 ```
@@ -348,7 +348,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;MetadataResource&gt;**](MetadataResource.md)
+[**List&lt;MetadataResource&gt;**](MetadataResource.md)
 
 ### Authorization
 
@@ -368,7 +368,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -378,13 +378,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getMetadataApi();
+final api = RadarrApi().getMetadataApi();
 final bool forceTest = true; // bool | 
 final MetadataResource metadataResource = ; // MetadataResource | 
 
 try {
     api.apiV3MetadataTestPost(forceTest, metadataResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling MetadataApi->apiV3MetadataTestPost: $e\n');
 }
 ```
@@ -418,7 +418,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -428,11 +428,11 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getMetadataApi();
+final api = RadarrApi().getMetadataApi();
 
 try {
     api.apiV3MetadataTestallPost();
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling MetadataApi->apiV3MetadataTestallPost: $e\n');
 }
 ```

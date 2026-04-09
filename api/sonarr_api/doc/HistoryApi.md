@@ -1,8 +1,8 @@
-# sonarr.api.HistoryApi
+# sonarr_api.api.HistoryApi
 
 ## Load the API package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:8989*
@@ -22,7 +22,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -32,12 +32,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getHistoryApi();
+final api = SonarrApi().getHistoryApi();
 final int id = 56; // int | 
 
 try {
     api.apiV3HistoryFailedIdPost(id);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling HistoryApi->apiV3HistoryFailedIdPost: $e\n');
 }
 ```
@@ -70,7 +70,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -80,24 +80,24 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getHistoryApi();
+final api = SonarrApi().getHistoryApi();
 final int page = 56; // int | 
 final int pageSize = 56; // int | 
 final String sortKey = sortKey_example; // String | 
 final SortDirection sortDirection = ; // SortDirection | 
 final bool includeSeries = true; // bool | 
 final bool includeEpisode = true; // bool | 
-final BuiltList<int> eventType = ; // BuiltList<int> | 
+final List<int> eventType = ; // List<int> | 
 final int episodeId = 56; // int | 
 final String downloadId = downloadId_example; // String | 
-final BuiltList<int> seriesIds = ; // BuiltList<int> | 
-final BuiltList<int> languages = ; // BuiltList<int> | 
-final BuiltList<int> quality = ; // BuiltList<int> | 
+final List<int> seriesIds = ; // List<int> | 
+final List<int> languages = ; // List<int> | 
+final List<int> quality = ; // List<int> | 
 
 try {
     final response = api.apiV3HistoryGet(page, pageSize, sortKey, sortDirection, includeSeries, includeEpisode, eventType, episodeId, downloadId, seriesIds, languages, quality);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling HistoryApi->apiV3HistoryGet: $e\n');
 }
 ```
@@ -112,12 +112,12 @@ Name | Type | Description  | Notes
  **sortDirection** | [**SortDirection**](.md)|  | [optional] 
  **includeSeries** | **bool**|  | [optional] 
  **includeEpisode** | **bool**|  | [optional] 
- **eventType** | [**BuiltList&lt;int&gt;**](int.md)|  | [optional] 
+ **eventType** | [**List&lt;int&gt;**](int.md)|  | [optional] 
  **episodeId** | **int**|  | [optional] 
  **downloadId** | **String**|  | [optional] 
- **seriesIds** | [**BuiltList&lt;int&gt;**](int.md)|  | [optional] 
- **languages** | [**BuiltList&lt;int&gt;**](int.md)|  | [optional] 
- **quality** | [**BuiltList&lt;int&gt;**](int.md)|  | [optional] 
+ **seriesIds** | [**List&lt;int&gt;**](int.md)|  | [optional] 
+ **languages** | [**List&lt;int&gt;**](int.md)|  | [optional] 
+ **quality** | [**List&lt;int&gt;**](int.md)|  | [optional] 
 
 ### Return type
 
@@ -135,13 +135,13 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiV3HistorySeriesGet**
-> BuiltList<HistoryResource> apiV3HistorySeriesGet(seriesId, seasonNumber, eventType, includeSeries, includeEpisode)
+> List<HistoryResource> apiV3HistorySeriesGet(seriesId, seasonNumber, eventType, includeSeries, includeEpisode)
 
 
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -151,7 +151,7 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getHistoryApi();
+final api = SonarrApi().getHistoryApi();
 final int seriesId = 56; // int | 
 final int seasonNumber = 56; // int | 
 final EpisodeHistoryEventType eventType = ; // EpisodeHistoryEventType | 
@@ -161,7 +161,7 @@ final bool includeEpisode = true; // bool |
 try {
     final response = api.apiV3HistorySeriesGet(seriesId, seasonNumber, eventType, includeSeries, includeEpisode);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling HistoryApi->apiV3HistorySeriesGet: $e\n');
 }
 ```
@@ -178,7 +178,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**BuiltList&lt;HistoryResource&gt;**](HistoryResource.md)
+[**List&lt;HistoryResource&gt;**](HistoryResource.md)
 
 ### Authorization
 
@@ -192,13 +192,13 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiV3HistorySinceGet**
-> BuiltList<HistoryResource> apiV3HistorySinceGet(date, eventType, includeSeries, includeEpisode)
+> List<HistoryResource> apiV3HistorySinceGet(date, eventType, includeSeries, includeEpisode)
 
 
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -208,7 +208,7 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getHistoryApi();
+final api = SonarrApi().getHistoryApi();
 final DateTime date = 2013-10-20T19:20:30+01:00; // DateTime | 
 final EpisodeHistoryEventType eventType = ; // EpisodeHistoryEventType | 
 final bool includeSeries = true; // bool | 
@@ -217,7 +217,7 @@ final bool includeEpisode = true; // bool |
 try {
     final response = api.apiV3HistorySinceGet(date, eventType, includeSeries, includeEpisode);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling HistoryApi->apiV3HistorySinceGet: $e\n');
 }
 ```
@@ -233,7 +233,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**BuiltList&lt;HistoryResource&gt;**](HistoryResource.md)
+[**List&lt;HistoryResource&gt;**](HistoryResource.md)
 
 ### Authorization
 

@@ -1,8 +1,8 @@
-# radarr.model.ReleaseResource
+# radarr_api.model.ReleaseResource
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties
@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 **id** | **int** |  | [optional] 
 **guid** | **String** |  | [optional] 
 **quality** | [**QualityModel**](QualityModel.md) |  | [optional] 
-**customFormats** | [**BuiltList&lt;CustomFormatResource&gt;**](CustomFormatResource.md) |  | [optional] 
+**customFormats** | [**List&lt;CustomFormatResource&gt;**](CustomFormatResource.md) |  | [optional] 
 **customFormatScore** | **int** |  | [optional] 
 **qualityWeight** | **int** |  | [optional] 
 **age** | **int** |  | [optional] 
@@ -25,15 +25,15 @@ Name | Type | Description | Notes
 **releaseHash** | **String** |  | [optional] 
 **title** | **String** |  | [optional] 
 **sceneSource** | **bool** |  | [optional] 
-**movieTitles** | **BuiltList&lt;String&gt;** |  | [optional] 
-**languages** | [**BuiltList&lt;Language&gt;**](Language.md) |  | [optional] 
+**movieTitles** | **List&lt;String&gt;** |  | [optional] 
+**languages** | [**List&lt;Language&gt;**](Language.md) |  | [optional] 
 **mappedMovieId** | **int** |  | [optional] 
 **approved** | **bool** |  | [optional] 
 **temporarilyRejected** | **bool** |  | [optional] 
 **rejected** | **bool** |  | [optional] 
 **tmdbId** | **int** |  | [optional] 
 **imdbId** | **int** |  | [optional] 
-**rejections** | **BuiltList&lt;String&gt;** |  | [optional] 
+**rejections** | **List&lt;String&gt;** |  | [optional] 
 **publishDate** | [**DateTime**](DateTime.md) |  | [optional] 
 **commentUrl** | **String** |  | [optional] 
 **downloadUrl** | **String** |  | [optional] 
@@ -47,7 +47,7 @@ Name | Type | Description | Notes
 **seeders** | **int** |  | [optional] 
 **leechers** | **int** |  | [optional] 
 **protocol** | [**DownloadProtocol**](DownloadProtocol.md) |  | [optional] 
-**indexerFlags** | [**JsonObject**](.md) |  | [optional] 
+**indexerFlags** | **Object** |  | [optional] 
 **movieId** | **int** |  | [optional] 
 **downloadClientId** | **int** |  | [optional] 
 **downloadClient** | **String** |  | [optional] 

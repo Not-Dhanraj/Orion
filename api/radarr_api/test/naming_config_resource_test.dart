@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for NamingConfigResource
 void main() {
-  final instance = NamingConfigResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final NamingConfigResource? instance = /* NamingConfigResource(...) */ null;
+  // TODO add properties to the entity
 
   group(NamingConfigResource, () {
     // int id
@@ -36,5 +36,6 @@ void main() {
     test('to test the property `movieFolderFormat`', () async {
       // TODO
     });
+
   });
 }

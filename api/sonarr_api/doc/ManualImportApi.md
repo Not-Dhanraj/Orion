@@ -1,8 +1,8 @@
-# sonarr.api.ManualImportApi
+# sonarr_api.api.ManualImportApi
 
 ## Load the API package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:8989*
@@ -14,13 +14,13 @@ Method | HTTP request | Description
 
 
 # **apiV3ManualimportGet**
-> BuiltList<ManualImportResource> apiV3ManualimportGet(folder, downloadId, seriesId, seasonNumber, filterExistingFiles)
+> List<ManualImportResource> apiV3ManualimportGet(folder, downloadId, seriesId, seasonNumber, filterExistingFiles)
 
 
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -30,7 +30,7 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getManualImportApi();
+final api = SonarrApi().getManualImportApi();
 final String folder = folder_example; // String | 
 final String downloadId = downloadId_example; // String | 
 final int seriesId = 56; // int | 
@@ -40,7 +40,7 @@ final bool filterExistingFiles = true; // bool |
 try {
     final response = api.apiV3ManualimportGet(folder, downloadId, seriesId, seasonNumber, filterExistingFiles);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ManualImportApi->apiV3ManualimportGet: $e\n');
 }
 ```
@@ -57,7 +57,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**BuiltList&lt;ManualImportResource&gt;**](ManualImportResource.md)
+[**List&lt;ManualImportResource&gt;**](ManualImportResource.md)
 
 ### Authorization
 
@@ -77,7 +77,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -87,12 +87,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getManualImportApi();
-final BuiltList<ManualImportReprocessResource> manualImportReprocessResource = ; // BuiltList<ManualImportReprocessResource> | 
+final api = SonarrApi().getManualImportApi();
+final List<ManualImportReprocessResource> manualImportReprocessResource = ; // List<ManualImportReprocessResource> | 
 
 try {
     api.apiV3ManualimportPost(manualImportReprocessResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ManualImportApi->apiV3ManualimportPost: $e\n');
 }
 ```
@@ -101,7 +101,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **manualImportReprocessResource** | [**BuiltList&lt;ManualImportReprocessResource&gt;**](ManualImportReprocessResource.md)|  | [optional] 
+ **manualImportReprocessResource** | [**List&lt;ManualImportReprocessResource&gt;**](ManualImportReprocessResource.md)|  | [optional] 
 
 ### Return type
 

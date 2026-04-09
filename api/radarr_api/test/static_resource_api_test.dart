@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for StaticResourceApi
 void main() {
-  final instance = Radarr().getStaticResourceApi();
+  final instance = RadarrApi().getStaticResourceApi();
 
   group(StaticResourceApi, () {
     //Future contentPathGet(String path) async
@@ -25,5 +26,6 @@ void main() {
     test('test rootGet', () async {
       // TODO
     });
+
   });
 }

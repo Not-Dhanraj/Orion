@@ -1,8 +1,8 @@
-# radarr.api.RenameMovieApi
+# radarr_api.api.RenameMovieApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -13,13 +13,13 @@ Method | HTTP request | Description
 
 
 # **apiV3RenameGet**
-> BuiltList<RenameMovieResource> apiV3RenameGet(movieId)
+> List<RenameMovieResource> apiV3RenameGet(movieId)
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -29,13 +29,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getRenameMovieApi();
-final BuiltList<int> movieId = ; // BuiltList<int> | 
+final api = RadarrApi().getRenameMovieApi();
+final List<int> movieId = ; // List<int> | 
 
 try {
     final response = api.apiV3RenameGet(movieId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling RenameMovieApi->apiV3RenameGet: $e\n');
 }
 ```
@@ -44,11 +44,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **movieId** | [**BuiltList&lt;int&gt;**](int.md)|  | [optional] 
+ **movieId** | [**List&lt;int&gt;**](int.md)|  | [optional] 
 
 ### Return type
 
-[**BuiltList&lt;RenameMovieResource&gt;**](RenameMovieResource.md)
+[**List&lt;RenameMovieResource&gt;**](RenameMovieResource.md)
 
 ### Authorization
 

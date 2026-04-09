@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for UiConfigApi
 void main() {
-  final instance = Radarr().getUiConfigApi();
+  final instance = RadarrApi().getUiConfigApi();
 
   group(UiConfigApi, () {
     //Future<UiConfigResource> apiV3ConfigUiGet() async
@@ -20,5 +21,6 @@ void main() {
     test('test apiV3ConfigUiIdPut', () async {
       // TODO
     });
+
   });
 }

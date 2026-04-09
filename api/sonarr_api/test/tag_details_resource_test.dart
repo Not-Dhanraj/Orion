@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for TagDetailsResource
 void main() {
-  final instance = TagDetailsResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final TagDetailsResource? instance = /* TagDetailsResource(...) */ null;
+  // TODO add properties to the entity
 
   group(TagDetailsResource, () {
     // int id
@@ -17,44 +17,45 @@ void main() {
       // TODO
     });
 
-    // BuiltList<int> delayProfileIds
+    // List<int> delayProfileIds
     test('to test the property `delayProfileIds`', () async {
       // TODO
     });
 
-    // BuiltList<int> importListIds
+    // List<int> importListIds
     test('to test the property `importListIds`', () async {
       // TODO
     });
 
-    // BuiltList<int> notificationIds
+    // List<int> notificationIds
     test('to test the property `notificationIds`', () async {
       // TODO
     });
 
-    // BuiltList<int> restrictionIds
-    test('to test the property `restrictionIds`', () async {
+    // List<int> releaseProfileIds
+    test('to test the property `releaseProfileIds`', () async {
       // TODO
     });
 
-    // BuiltList<int> indexerIds
+    // List<int> indexerIds
     test('to test the property `indexerIds`', () async {
       // TODO
     });
 
-    // BuiltList<int> downloadClientIds
+    // List<int> downloadClientIds
     test('to test the property `downloadClientIds`', () async {
       // TODO
     });
 
-    // BuiltList<int> autoTagIds
+    // List<int> autoTagIds
     test('to test the property `autoTagIds`', () async {
       // TODO
     });
 
-    // BuiltList<int> seriesIds
-    test('to test the property `seriesIds`', () async {
+    // List<int> movieIds
+    test('to test the property `movieIds`', () async {
       // TODO
     });
+
   });
 }

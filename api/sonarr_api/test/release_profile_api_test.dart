@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for ReleaseProfileApi
 void main() {
-  final instance = Sonarr().getReleaseProfileApi();
+  final instance = SonarrApi().getReleaseProfileApi();
 
   group(ReleaseProfileApi, () {
-    //Future<BuiltList<ReleaseProfileResource>> apiV3ReleaseprofileGet() async
+    //Future<List<ReleaseProfileResource>> apiV3ReleaseprofileGet() async
     test('test apiV3ReleaseprofileGet', () async {
       // TODO
     });
@@ -30,5 +31,6 @@ void main() {
     test('test apiV3ReleaseprofilePost', () async {
       // TODO
     });
+
   });
 }

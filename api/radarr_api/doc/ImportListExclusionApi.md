@@ -1,8 +1,8 @@
-# radarr.api.ImportListExclusionApi
+# radarr_api.api.ImportListExclusionApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -26,7 +26,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -36,12 +36,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getImportListExclusionApi();
+final api = RadarrApi().getImportListExclusionApi();
 final ImportListExclusionBulkResource importListExclusionBulkResource = ; // ImportListExclusionBulkResource | 
 
 try {
     api.apiV3ExclusionsBulkDelete(importListExclusionBulkResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListExclusionApi->apiV3ExclusionsBulkDelete: $e\n');
 }
 ```
@@ -74,7 +74,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -84,12 +84,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getImportListExclusionApi();
-final BuiltList<ImportListExclusionResource> importListExclusionResource = ; // BuiltList<ImportListExclusionResource> | 
+final api = RadarrApi().getImportListExclusionApi();
+final List<ImportListExclusionResource> importListExclusionResource = ; // List<ImportListExclusionResource> | 
 
 try {
     api.apiV3ExclusionsBulkPost(importListExclusionResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListExclusionApi->apiV3ExclusionsBulkPost: $e\n');
 }
 ```
@@ -98,7 +98,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **importListExclusionResource** | [**BuiltList&lt;ImportListExclusionResource&gt;**](ImportListExclusionResource.md)|  | [optional] 
+ **importListExclusionResource** | [**List&lt;ImportListExclusionResource&gt;**](ImportListExclusionResource.md)|  | [optional] 
 
 ### Return type
 
@@ -116,13 +116,13 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiV3ExclusionsGet**
-> BuiltList<ImportListExclusionResource> apiV3ExclusionsGet()
+> List<ImportListExclusionResource> apiV3ExclusionsGet()
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -132,12 +132,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getImportListExclusionApi();
+final api = RadarrApi().getImportListExclusionApi();
 
 try {
     final response = api.apiV3ExclusionsGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListExclusionApi->apiV3ExclusionsGet: $e\n');
 }
 ```
@@ -147,7 +147,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;ImportListExclusionResource&gt;**](ImportListExclusionResource.md)
+[**List&lt;ImportListExclusionResource&gt;**](ImportListExclusionResource.md)
 
 ### Authorization
 
@@ -167,7 +167,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -177,12 +177,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getImportListExclusionApi();
+final api = RadarrApi().getImportListExclusionApi();
 final int id = 56; // int | 
 
 try {
     api.apiV3ExclusionsIdDelete(id);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListExclusionApi->apiV3ExclusionsIdDelete: $e\n');
 }
 ```
@@ -215,7 +215,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -225,13 +225,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getImportListExclusionApi();
+final api = RadarrApi().getImportListExclusionApi();
 final int id = 56; // int | 
 
 try {
     final response = api.apiV3ExclusionsIdGet(id);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListExclusionApi->apiV3ExclusionsIdGet: $e\n');
 }
 ```
@@ -264,7 +264,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -274,14 +274,14 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getImportListExclusionApi();
+final api = RadarrApi().getImportListExclusionApi();
 final String id = id_example; // String | 
 final ImportListExclusionResource importListExclusionResource = ; // ImportListExclusionResource | 
 
 try {
     final response = api.apiV3ExclusionsIdPut(id, importListExclusionResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListExclusionApi->apiV3ExclusionsIdPut: $e\n');
 }
 ```
@@ -315,7 +315,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -325,7 +325,7 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getImportListExclusionApi();
+final api = RadarrApi().getImportListExclusionApi();
 final int page = 56; // int | 
 final int pageSize = 56; // int | 
 final String sortKey = sortKey_example; // String | 
@@ -334,7 +334,7 @@ final SortDirection sortDirection = ; // SortDirection |
 try {
     final response = api.apiV3ExclusionsPagedGet(page, pageSize, sortKey, sortDirection);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListExclusionApi->apiV3ExclusionsPagedGet: $e\n');
 }
 ```
@@ -370,7 +370,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -380,13 +380,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getImportListExclusionApi();
+final api = RadarrApi().getImportListExclusionApi();
 final ImportListExclusionResource importListExclusionResource = ; // ImportListExclusionResource | 
 
 try {
     final response = api.apiV3ExclusionsPost(importListExclusionResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListExclusionApi->apiV3ExclusionsPost: $e\n');
 }
 ```

@@ -1,8 +1,8 @@
-# sonarr.api.EpisodeFileApi
+# sonarr_api.api.EpisodeFileApi
 
 ## Load the API package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:8989*
@@ -25,7 +25,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -35,12 +35,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getEpisodeFileApi();
+final api = SonarrApi().getEpisodeFileApi();
 final EpisodeFileListResource episodeFileListResource = ; // EpisodeFileListResource | 
 
 try {
     api.apiV3EpisodefileBulkDelete(episodeFileListResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling EpisodeFileApi->apiV3EpisodefileBulkDelete: $e\n');
 }
 ```
@@ -73,7 +73,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -83,12 +83,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getEpisodeFileApi();
-final BuiltList<EpisodeFileResource> episodeFileResource = ; // BuiltList<EpisodeFileResource> | 
+final api = SonarrApi().getEpisodeFileApi();
+final List<EpisodeFileResource> episodeFileResource = ; // List<EpisodeFileResource> | 
 
 try {
     api.apiV3EpisodefileBulkPut(episodeFileResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling EpisodeFileApi->apiV3EpisodefileBulkPut: $e\n');
 }
 ```
@@ -97,7 +97,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **episodeFileResource** | [**BuiltList&lt;EpisodeFileResource&gt;**](EpisodeFileResource.md)|  | [optional] 
+ **episodeFileResource** | [**List&lt;EpisodeFileResource&gt;**](EpisodeFileResource.md)|  | [optional] 
 
 ### Return type
 
@@ -121,7 +121,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -131,12 +131,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getEpisodeFileApi();
+final api = SonarrApi().getEpisodeFileApi();
 final EpisodeFileListResource episodeFileListResource = ; // EpisodeFileListResource | 
 
 try {
     api.apiV3EpisodefileEditorPut(episodeFileListResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling EpisodeFileApi->apiV3EpisodefileEditorPut: $e\n');
 }
 ```
@@ -163,13 +163,13 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiV3EpisodefileGet**
-> BuiltList<EpisodeFileResource> apiV3EpisodefileGet(seriesId, episodeFileIds)
+> List<EpisodeFileResource> apiV3EpisodefileGet(seriesId, episodeFileIds)
 
 
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -179,14 +179,14 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getEpisodeFileApi();
+final api = SonarrApi().getEpisodeFileApi();
 final int seriesId = 56; // int | 
-final BuiltList<int> episodeFileIds = ; // BuiltList<int> | 
+final List<int> episodeFileIds = ; // List<int> | 
 
 try {
     final response = api.apiV3EpisodefileGet(seriesId, episodeFileIds);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling EpisodeFileApi->apiV3EpisodefileGet: $e\n');
 }
 ```
@@ -196,11 +196,11 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **seriesId** | **int**|  | [optional] 
- **episodeFileIds** | [**BuiltList&lt;int&gt;**](int.md)|  | [optional] 
+ **episodeFileIds** | [**List&lt;int&gt;**](int.md)|  | [optional] 
 
 ### Return type
 
-[**BuiltList&lt;EpisodeFileResource&gt;**](EpisodeFileResource.md)
+[**List&lt;EpisodeFileResource&gt;**](EpisodeFileResource.md)
 
 ### Authorization
 
@@ -220,7 +220,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -230,12 +230,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getEpisodeFileApi();
+final api = SonarrApi().getEpisodeFileApi();
 final int id = 56; // int | 
 
 try {
     api.apiV3EpisodefileIdDelete(id);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling EpisodeFileApi->apiV3EpisodefileIdDelete: $e\n');
 }
 ```
@@ -268,7 +268,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -278,13 +278,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getEpisodeFileApi();
+final api = SonarrApi().getEpisodeFileApi();
 final int id = 56; // int | 
 
 try {
     final response = api.apiV3EpisodefileIdGet(id);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling EpisodeFileApi->apiV3EpisodefileIdGet: $e\n');
 }
 ```
@@ -317,7 +317,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -327,14 +327,14 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getEpisodeFileApi();
+final api = SonarrApi().getEpisodeFileApi();
 final String id = id_example; // String | 
 final EpisodeFileResource episodeFileResource = ; // EpisodeFileResource | 
 
 try {
     final response = api.apiV3EpisodefileIdPut(id, episodeFileResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling EpisodeFileApi->apiV3EpisodefileIdPut: $e\n');
 }
 ```

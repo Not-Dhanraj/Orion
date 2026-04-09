@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for HistoryResource
 void main() {
-  final instance = HistoryResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final HistoryResource? instance = /* HistoryResource(...) */ null;
+  // TODO add properties to the entity
 
   group(HistoryResource, () {
     // int id
@@ -12,13 +12,8 @@ void main() {
       // TODO
     });
 
-    // int episodeId
-    test('to test the property `episodeId`', () async {
-      // TODO
-    });
-
-    // int seriesId
-    test('to test the property `seriesId`', () async {
+    // int movieId
+    test('to test the property `movieId`', () async {
       // TODO
     });
 
@@ -27,7 +22,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<Language> languages
+    // List<Language> languages
     test('to test the property `languages`', () async {
       // TODO
     });
@@ -37,7 +32,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<CustomFormatResource> customFormats
+    // List<CustomFormatResource> customFormats
     test('to test the property `customFormats`', () async {
       // TODO
     });
@@ -62,24 +57,20 @@ void main() {
       // TODO
     });
 
-    // EpisodeHistoryEventType eventType
+    // MovieHistoryEventType eventType
     test('to test the property `eventType`', () async {
       // TODO
     });
 
-    // BuiltMap<String, String> data
+    // Map<String, String> data
     test('to test the property `data`', () async {
       // TODO
     });
 
-    // EpisodeResource episode
-    test('to test the property `episode`', () async {
+    // MovieResource movie
+    test('to test the property `movie`', () async {
       // TODO
     });
 
-    // SeriesResource series
-    test('to test the property `series`', () async {
-      // TODO
-    });
   });
 }

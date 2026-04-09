@@ -1,44 +1,51 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for ImportListExclusionApi
 void main() {
-  final instance = Sonarr().getImportListExclusionApi();
+  final instance = SonarrApi().getImportListExclusionApi();
 
   group(ImportListExclusionApi, () {
-    //Future apiV3ImportlistexclusionBulkDelete({ ImportListExclusionBulkResource importListExclusionBulkResource }) async
-    test('test apiV3ImportlistexclusionBulkDelete', () async {
+    //Future apiV3ExclusionsBulkDelete({ ImportListExclusionBulkResource importListExclusionBulkResource }) async
+    test('test apiV3ExclusionsBulkDelete', () async {
       // TODO
     });
 
-    //Future<BuiltList<ImportListExclusionResource>> apiV3ImportlistexclusionGet() async
-    test('test apiV3ImportlistexclusionGet', () async {
+    //Future apiV3ExclusionsBulkPost({ List<ImportListExclusionResource> importListExclusionResource }) async
+    test('test apiV3ExclusionsBulkPost', () async {
       // TODO
     });
 
-    //Future apiV3ImportlistexclusionIdDelete(int id) async
-    test('test apiV3ImportlistexclusionIdDelete', () async {
+    //Future<List<ImportListExclusionResource>> apiV3ExclusionsGet() async
+    test('test apiV3ExclusionsGet', () async {
       // TODO
     });
 
-    //Future<ImportListExclusionResource> apiV3ImportlistexclusionIdGet(int id) async
-    test('test apiV3ImportlistexclusionIdGet', () async {
+    //Future apiV3ExclusionsIdDelete(int id) async
+    test('test apiV3ExclusionsIdDelete', () async {
       // TODO
     });
 
-    //Future<ImportListExclusionResource> apiV3ImportlistexclusionIdPut(String id, { ImportListExclusionResource importListExclusionResource }) async
-    test('test apiV3ImportlistexclusionIdPut', () async {
+    //Future<ImportListExclusionResource> apiV3ExclusionsIdGet(int id) async
+    test('test apiV3ExclusionsIdGet', () async {
       // TODO
     });
 
-    //Future<ImportListExclusionResourcePagingResource> apiV3ImportlistexclusionPagedGet({ int page, int pageSize, String sortKey, SortDirection sortDirection }) async
-    test('test apiV3ImportlistexclusionPagedGet', () async {
+    //Future<ImportListExclusionResource> apiV3ExclusionsIdPut(String id, { ImportListExclusionResource importListExclusionResource }) async
+    test('test apiV3ExclusionsIdPut', () async {
       // TODO
     });
 
-    //Future<ImportListExclusionResource> apiV3ImportlistexclusionPost({ ImportListExclusionResource importListExclusionResource }) async
-    test('test apiV3ImportlistexclusionPost', () async {
+    //Future<ImportListExclusionResourcePagingResource> apiV3ExclusionsPagedGet({ int page, int pageSize, String sortKey, SortDirection sortDirection }) async
+    test('test apiV3ExclusionsPagedGet', () async {
       // TODO
     });
+
+    //Future<ImportListExclusionResource> apiV3ExclusionsPost({ ImportListExclusionResource importListExclusionResource }) async
+    test('test apiV3ExclusionsPost', () async {
+      // TODO
+    });
+
   });
 }

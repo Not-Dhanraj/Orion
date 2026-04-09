@@ -1,8 +1,8 @@
-# sonarr.api.MissingApi
+# sonarr_api.api.MissingApi
 
 ## Load the API package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:8989*
@@ -20,7 +20,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -30,7 +30,7 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getMissingApi();
+final api = SonarrApi().getMissingApi();
 final int page = 56; // int | 
 final int pageSize = 56; // int | 
 final String sortKey = sortKey_example; // String | 
@@ -42,7 +42,7 @@ final bool monitored = true; // bool |
 try {
     final response = api.apiV3WantedMissingGet(page, pageSize, sortKey, sortDirection, includeSeries, includeImages, monitored);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling MissingApi->apiV3WantedMissingGet: $e\n');
 }
 ```
@@ -81,7 +81,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -91,13 +91,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getMissingApi();
+final api = SonarrApi().getMissingApi();
 final int id = 56; // int | 
 
 try {
     final response = api.apiV3WantedMissingIdGet(id);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling MissingApi->apiV3WantedMissingIdGet: $e\n');
 }
 ```

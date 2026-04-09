@@ -1,8 +1,8 @@
-# radarr.model.MovieFileResource
+# radarr_api.model.MovieFileResource
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties
@@ -17,9 +17,9 @@ Name | Type | Description | Notes
 **sceneName** | **String** |  | [optional] 
 **releaseGroup** | **String** |  | [optional] 
 **edition** | **String** |  | [optional] 
-**languages** | [**BuiltList&lt;Language&gt;**](Language.md) |  | [optional] 
+**languages** | [**List&lt;Language&gt;**](Language.md) |  | [optional] 
 **quality** | [**QualityModel**](QualityModel.md) |  | [optional] 
-**customFormats** | [**BuiltList&lt;CustomFormatResource&gt;**](CustomFormatResource.md) |  | [optional] 
+**customFormats** | [**List&lt;CustomFormatResource&gt;**](CustomFormatResource.md) |  | [optional] 
 **customFormatScore** | **int** |  | [optional] 
 **indexerFlags** | **int** |  | [optional] 
 **mediaInfo** | [**MediaInfoResource**](MediaInfoResource.md) |  | [optional] 

@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for SystemApi
 void main() {
-  final instance = Radarr().getSystemApi();
+  final instance = RadarrApi().getSystemApi();
 
   group(SystemApi, () {
     //Future apiV3SystemRestartPost() async
@@ -30,5 +31,6 @@ void main() {
     test('test apiV3SystemStatusGet', () async {
       // TODO
     });
+
   });
 }

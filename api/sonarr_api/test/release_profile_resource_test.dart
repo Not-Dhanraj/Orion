@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for ReleaseProfileResource
 void main() {
-  final instance = ReleaseProfileResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final ReleaseProfileResource? instance = /* ReleaseProfileResource(...) */ null;
+  // TODO add properties to the entity
 
   group(ReleaseProfileResource, () {
     // int id
@@ -22,12 +22,12 @@ void main() {
       // TODO
     });
 
-    // JsonObject required_
+    // Object required_
     test('to test the property `required_`', () async {
       // TODO
     });
 
-    // JsonObject ignored
+    // Object ignored
     test('to test the property `ignored`', () async {
       // TODO
     });
@@ -37,9 +37,10 @@ void main() {
       // TODO
     });
 
-    // BuiltSet<int> tags
+    // Set<int> tags
     test('to test the property `tags`', () async {
       // TODO
     });
+
   });
 }

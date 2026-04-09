@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for ApiInfoResource
 void main() {
-  final instance = ApiInfoResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final ApiInfoResource? instance = /* ApiInfoResource(...) */ null;
+  // TODO add properties to the entity
 
   group(ApiInfoResource, () {
     // String current
@@ -12,9 +12,10 @@ void main() {
       // TODO
     });
 
-    // BuiltList<String> deprecated
+    // List<String> deprecated
     test('to test the property `deprecated`', () async {
       // TODO
     });
+
   });
 }

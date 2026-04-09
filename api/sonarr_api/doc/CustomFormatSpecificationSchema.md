@@ -1,8 +1,8 @@
-# sonarr.model.CustomFormatSpecificationSchema
+# sonarr_api.model.CustomFormatSpecificationSchema
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties
@@ -15,8 +15,8 @@ Name | Type | Description | Notes
 **infoLink** | **String** |  | [optional] 
 **negate** | **bool** |  | [optional] 
 **required_** | **bool** |  | [optional] 
-**fields** | [**BuiltList&lt;Field&gt;**](Field.md) |  | [optional] 
-**presets** | [**BuiltList&lt;CustomFormatSpecificationSchema&gt;**](CustomFormatSpecificationSchema.md) |  | [optional] 
+**fields** | [**List&lt;Field&gt;**](Field.md) |  | [optional] 
+**presets** | [**List&lt;CustomFormatSpecificationSchema&gt;**](CustomFormatSpecificationSchema.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -1,8 +1,8 @@
-# radarr.model.MediaCoverTypes
+# radarr_api.model.MediaCoverTypes
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties

@@ -1,8 +1,8 @@
-# radarr.model.Revision
+# radarr_api.model.Revision
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties

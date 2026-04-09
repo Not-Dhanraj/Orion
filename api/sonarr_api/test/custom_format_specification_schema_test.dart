@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for CustomFormatSpecificationSchema
 void main() {
-  final instance = CustomFormatSpecificationSchemaBuilder();
-  // TODO add properties to the builder and call build()
+  final CustomFormatSpecificationSchema? instance = /* CustomFormatSpecificationSchema(...) */ null;
+  // TODO add properties to the entity
 
   group(CustomFormatSpecificationSchema, () {
     // int id
@@ -42,14 +42,15 @@ void main() {
       // TODO
     });
 
-    // BuiltList<Field> fields
+    // List<Field> fields
     test('to test the property `fields`', () async {
       // TODO
     });
 
-    // BuiltList<CustomFormatSpecificationSchema> presets
+    // List<CustomFormatSpecificationSchema> presets
     test('to test the property `presets`', () async {
       // TODO
     });
+
   });
 }

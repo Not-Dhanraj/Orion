@@ -1,8 +1,8 @@
-# sonarr.api.MediaCoverApi
+# sonarr_api.api.MediaCoverApi
 
 ## Load the API package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:8989*
@@ -19,7 +19,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -29,13 +29,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getMediaCoverApi();
+final api = SonarrApi().getMediaCoverApi();
 final int seriesId = 56; // int | 
 final String filename = filename_example; // String | 
 
 try {
     api.apiV3MediacoverSeriesIdFilenameGet(seriesId, filename);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling MediaCoverApi->apiV3MediacoverSeriesIdFilenameGet: $e\n');
 }
 ```

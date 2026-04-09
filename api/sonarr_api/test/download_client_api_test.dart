@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for DownloadClientApi
 void main() {
-  final instance = Sonarr().getDownloadClientApi();
+  final instance = SonarrApi().getDownloadClientApi();
 
   group(DownloadClientApi, () {
     //Future apiV3DownloadclientActionNamePost(String name, { DownloadClientResource downloadClientResource }) async
@@ -21,7 +22,7 @@ void main() {
       // TODO
     });
 
-    //Future<BuiltList<DownloadClientResource>> apiV3DownloadclientGet() async
+    //Future<List<DownloadClientResource>> apiV3DownloadclientGet() async
     test('test apiV3DownloadclientGet', () async {
       // TODO
     });
@@ -46,7 +47,7 @@ void main() {
       // TODO
     });
 
-    //Future<BuiltList<DownloadClientResource>> apiV3DownloadclientSchemaGet() async
+    //Future<List<DownloadClientResource>> apiV3DownloadclientSchemaGet() async
     test('test apiV3DownloadclientSchemaGet', () async {
       // TODO
     });
@@ -60,5 +61,6 @@ void main() {
     test('test apiV3DownloadclientTestallPost', () async {
       // TODO
     });
+
   });
 }

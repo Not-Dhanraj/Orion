@@ -1,8 +1,8 @@
-# radarr.model.CreditResource
+# radarr_api.model.CreditResource
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties
@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **creditTmdbId** | **String** |  | [optional] 
 **personTmdbId** | **int** |  | [optional] 
 **movieMetadataId** | **int** |  | [optional] 
-**images** | [**BuiltList&lt;MediaCover&gt;**](MediaCover.md) |  | [optional] 
+**images** | [**List&lt;MediaCover&gt;**](MediaCover.md) |  | [optional] 
 **department** | **String** |  | [optional] 
 **job** | **String** |  | [optional] 
 **character** | **String** |  | [optional] 

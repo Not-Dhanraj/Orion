@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for DownloadClientConfigApi
 void main() {
-  final instance = Radarr().getDownloadClientConfigApi();
+  final instance = RadarrApi().getDownloadClientConfigApi();
 
   group(DownloadClientConfigApi, () {
     //Future<DownloadClientConfigResource> apiV3ConfigDownloadclientGet() async
@@ -20,5 +21,6 @@ void main() {
     test('test apiV3ConfigDownloadclientIdPut', () async {
       // TODO
     });
+
   });
 }

@@ -1,8 +1,8 @@
-# radarr.api.CommandApi
+# radarr_api.api.CommandApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -16,13 +16,13 @@ Method | HTTP request | Description
 
 
 # **apiV3CommandGet**
-> BuiltList<CommandResource> apiV3CommandGet()
+> List<CommandResource> apiV3CommandGet()
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -32,12 +32,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getCommandApi();
+final api = RadarrApi().getCommandApi();
 
 try {
     final response = api.apiV3CommandGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling CommandApi->apiV3CommandGet: $e\n');
 }
 ```
@@ -47,7 +47,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;CommandResource&gt;**](CommandResource.md)
+[**List&lt;CommandResource&gt;**](CommandResource.md)
 
 ### Authorization
 
@@ -67,7 +67,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -77,12 +77,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getCommandApi();
+final api = RadarrApi().getCommandApi();
 final int id = 56; // int | 
 
 try {
     api.apiV3CommandIdDelete(id);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling CommandApi->apiV3CommandIdDelete: $e\n');
 }
 ```
@@ -115,7 +115,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -125,13 +125,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getCommandApi();
+final api = RadarrApi().getCommandApi();
 final int id = 56; // int | 
 
 try {
     final response = api.apiV3CommandIdGet(id);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling CommandApi->apiV3CommandIdGet: $e\n');
 }
 ```
@@ -164,7 +164,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -174,13 +174,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getCommandApi();
+final api = RadarrApi().getCommandApi();
 final CommandResource commandResource = ; // CommandResource | 
 
 try {
     final response = api.apiV3CommandPost(commandResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling CommandApi->apiV3CommandPost: $e\n');
 }
 ```

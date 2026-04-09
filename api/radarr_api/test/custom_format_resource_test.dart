@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for CustomFormatResource
 void main() {
-  final instance = CustomFormatResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final CustomFormatResource? instance = /* CustomFormatResource(...) */ null;
+  // TODO add properties to the entity
 
   group(CustomFormatResource, () {
     // int id
@@ -22,9 +22,10 @@ void main() {
       // TODO
     });
 
-    // BuiltList<CustomFormatSpecificationSchema> specifications
+    // List<CustomFormatSpecificationSchema> specifications
     test('to test the property `specifications`', () async {
       // TODO
     });
+
   });
 }

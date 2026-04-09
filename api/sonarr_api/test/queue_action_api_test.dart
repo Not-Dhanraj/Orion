@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for QueueActionApi
 void main() {
-  final instance = Sonarr().getQueueActionApi();
+  final instance = SonarrApi().getQueueActionApi();
 
   group(QueueActionApi, () {
     //Future apiV3QueueGrabBulkPost({ QueueBulkResource queueBulkResource }) async
@@ -15,5 +16,6 @@ void main() {
     test('test apiV3QueueGrabIdPost', () async {
       // TODO
     });
+
   });
 }

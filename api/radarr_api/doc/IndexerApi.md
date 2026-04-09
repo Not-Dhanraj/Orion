@@ -1,8 +1,8 @@
-# radarr.api.IndexerApi
+# radarr_api.api.IndexerApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -29,7 +29,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -39,13 +39,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getIndexerApi();
+final api = RadarrApi().getIndexerApi();
 final String name = name_example; // String | 
 final IndexerResource indexerResource = ; // IndexerResource | 
 
 try {
     api.apiV3IndexerActionNamePost(name, indexerResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IndexerApi->apiV3IndexerActionNamePost: $e\n');
 }
 ```
@@ -79,7 +79,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -89,12 +89,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getIndexerApi();
+final api = RadarrApi().getIndexerApi();
 final IndexerBulkResource indexerBulkResource = ; // IndexerBulkResource | 
 
 try {
     api.apiV3IndexerBulkDelete(indexerBulkResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IndexerApi->apiV3IndexerBulkDelete: $e\n');
 }
 ```
@@ -127,7 +127,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -137,13 +137,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getIndexerApi();
+final api = RadarrApi().getIndexerApi();
 final IndexerBulkResource indexerBulkResource = ; // IndexerBulkResource | 
 
 try {
     final response = api.apiV3IndexerBulkPut(indexerBulkResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IndexerApi->apiV3IndexerBulkPut: $e\n');
 }
 ```
@@ -170,13 +170,13 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiV3IndexerGet**
-> BuiltList<IndexerResource> apiV3IndexerGet()
+> List<IndexerResource> apiV3IndexerGet()
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -186,12 +186,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getIndexerApi();
+final api = RadarrApi().getIndexerApi();
 
 try {
     final response = api.apiV3IndexerGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IndexerApi->apiV3IndexerGet: $e\n');
 }
 ```
@@ -201,7 +201,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;IndexerResource&gt;**](IndexerResource.md)
+[**List&lt;IndexerResource&gt;**](IndexerResource.md)
 
 ### Authorization
 
@@ -221,7 +221,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -231,12 +231,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getIndexerApi();
+final api = RadarrApi().getIndexerApi();
 final int id = 56; // int | 
 
 try {
     api.apiV3IndexerIdDelete(id);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IndexerApi->apiV3IndexerIdDelete: $e\n');
 }
 ```
@@ -269,7 +269,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -279,13 +279,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getIndexerApi();
+final api = RadarrApi().getIndexerApi();
 final int id = 56; // int | 
 
 try {
     final response = api.apiV3IndexerIdGet(id);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IndexerApi->apiV3IndexerIdGet: $e\n');
 }
 ```
@@ -318,7 +318,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -328,7 +328,7 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getIndexerApi();
+final api = RadarrApi().getIndexerApi();
 final int id = 56; // int | 
 final bool forceSave = true; // bool | 
 final IndexerResource indexerResource = ; // IndexerResource | 
@@ -336,7 +336,7 @@ final IndexerResource indexerResource = ; // IndexerResource |
 try {
     final response = api.apiV3IndexerIdPut(id, forceSave, indexerResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IndexerApi->apiV3IndexerIdPut: $e\n');
 }
 ```
@@ -371,7 +371,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -381,14 +381,14 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getIndexerApi();
+final api = RadarrApi().getIndexerApi();
 final bool forceSave = true; // bool | 
 final IndexerResource indexerResource = ; // IndexerResource | 
 
 try {
     final response = api.apiV3IndexerPost(forceSave, indexerResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IndexerApi->apiV3IndexerPost: $e\n');
 }
 ```
@@ -416,13 +416,13 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiV3IndexerSchemaGet**
-> BuiltList<IndexerResource> apiV3IndexerSchemaGet()
+> List<IndexerResource> apiV3IndexerSchemaGet()
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -432,12 +432,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getIndexerApi();
+final api = RadarrApi().getIndexerApi();
 
 try {
     final response = api.apiV3IndexerSchemaGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IndexerApi->apiV3IndexerSchemaGet: $e\n');
 }
 ```
@@ -447,7 +447,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;IndexerResource&gt;**](IndexerResource.md)
+[**List&lt;IndexerResource&gt;**](IndexerResource.md)
 
 ### Authorization
 
@@ -467,7 +467,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -477,13 +477,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getIndexerApi();
+final api = RadarrApi().getIndexerApi();
 final bool forceTest = true; // bool | 
 final IndexerResource indexerResource = ; // IndexerResource | 
 
 try {
     api.apiV3IndexerTestPost(forceTest, indexerResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IndexerApi->apiV3IndexerTestPost: $e\n');
 }
 ```
@@ -517,7 +517,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -527,11 +527,11 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getIndexerApi();
+final api = RadarrApi().getIndexerApi();
 
 try {
     api.apiV3IndexerTestallPost();
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IndexerApi->apiV3IndexerTestallPost: $e\n');
 }
 ```

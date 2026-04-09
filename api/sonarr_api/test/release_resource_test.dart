@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for ReleaseResource
 void main() {
-  final instance = ReleaseResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final ReleaseResource? instance = /* ReleaseResource(...) */ null;
+  // TODO add properties to the entity
 
   group(ReleaseResource, () {
     // int id
@@ -19,6 +19,16 @@ void main() {
 
     // QualityModel quality
     test('to test the property `quality`', () async {
+      // TODO
+    });
+
+    // List<CustomFormatResource> customFormats
+    test('to test the property `customFormats`', () async {
+      // TODO
+    });
+
+    // int customFormatScore
+    test('to test the property `customFormatScore`', () async {
       // TODO
     });
 
@@ -77,73 +87,23 @@ void main() {
       // TODO
     });
 
-    // bool fullSeason
-    test('to test the property `fullSeason`', () async {
-      // TODO
-    });
-
     // bool sceneSource
     test('to test the property `sceneSource`', () async {
       // TODO
     });
 
-    // int seasonNumber
-    test('to test the property `seasonNumber`', () async {
+    // List<String> movieTitles
+    test('to test the property `movieTitles`', () async {
       // TODO
     });
 
-    // BuiltList<Language> languages
+    // List<Language> languages
     test('to test the property `languages`', () async {
       // TODO
     });
 
-    // int languageWeight
-    test('to test the property `languageWeight`', () async {
-      // TODO
-    });
-
-    // String airDate
-    test('to test the property `airDate`', () async {
-      // TODO
-    });
-
-    // String seriesTitle
-    test('to test the property `seriesTitle`', () async {
-      // TODO
-    });
-
-    // BuiltList<int> episodeNumbers
-    test('to test the property `episodeNumbers`', () async {
-      // TODO
-    });
-
-    // BuiltList<int> absoluteEpisodeNumbers
-    test('to test the property `absoluteEpisodeNumbers`', () async {
-      // TODO
-    });
-
-    // int mappedSeasonNumber
-    test('to test the property `mappedSeasonNumber`', () async {
-      // TODO
-    });
-
-    // BuiltList<int> mappedEpisodeNumbers
-    test('to test the property `mappedEpisodeNumbers`', () async {
-      // TODO
-    });
-
-    // BuiltList<int> mappedAbsoluteEpisodeNumbers
-    test('to test the property `mappedAbsoluteEpisodeNumbers`', () async {
-      // TODO
-    });
-
-    // int mappedSeriesId
-    test('to test the property `mappedSeriesId`', () async {
-      // TODO
-    });
-
-    // BuiltList<ReleaseEpisodeResource> mappedEpisodeInfo
-    test('to test the property `mappedEpisodeInfo`', () async {
+    // int mappedMovieId
+    test('to test the property `mappedMovieId`', () async {
       // TODO
     });
 
@@ -162,22 +122,17 @@ void main() {
       // TODO
     });
 
-    // int tvdbId
-    test('to test the property `tvdbId`', () async {
+    // int tmdbId
+    test('to test the property `tmdbId`', () async {
       // TODO
     });
 
-    // int tvRageId
-    test('to test the property `tvRageId`', () async {
-      // TODO
-    });
-
-    // String imdbId
+    // int imdbId
     test('to test the property `imdbId`', () async {
       // TODO
     });
 
-    // BuiltList<String> rejections
+    // List<String> rejections
     test('to test the property `rejections`', () async {
       // TODO
     });
@@ -202,8 +157,8 @@ void main() {
       // TODO
     });
 
-    // bool episodeRequested
-    test('to test the property `episodeRequested`', () async {
+    // bool movieRequested
+    test('to test the property `movieRequested`', () async {
       // TODO
     });
 
@@ -217,18 +172,8 @@ void main() {
       // TODO
     });
 
-    // BuiltList<CustomFormatResource> customFormats
-    test('to test the property `customFormats`', () async {
-      // TODO
-    });
-
-    // int customFormatScore
-    test('to test the property `customFormatScore`', () async {
-      // TODO
-    });
-
-    // AlternateTitleResource sceneMapping
-    test('to test the property `sceneMapping`', () async {
+    // String edition
+    test('to test the property `edition`', () async {
       // TODO
     });
 
@@ -257,43 +202,13 @@ void main() {
       // TODO
     });
 
-    // int indexerFlags
+    // Object indexerFlags
     test('to test the property `indexerFlags`', () async {
       // TODO
     });
 
-    // bool isDaily
-    test('to test the property `isDaily`', () async {
-      // TODO
-    });
-
-    // bool isAbsoluteNumbering
-    test('to test the property `isAbsoluteNumbering`', () async {
-      // TODO
-    });
-
-    // bool isPossibleSpecialEpisode
-    test('to test the property `isPossibleSpecialEpisode`', () async {
-      // TODO
-    });
-
-    // bool special
-    test('to test the property `special`', () async {
-      // TODO
-    });
-
-    // int seriesId
-    test('to test the property `seriesId`', () async {
-      // TODO
-    });
-
-    // int episodeId
-    test('to test the property `episodeId`', () async {
-      // TODO
-    });
-
-    // BuiltList<int> episodeIds
-    test('to test the property `episodeIds`', () async {
+    // int movieId
+    test('to test the property `movieId`', () async {
       // TODO
     });
 
@@ -311,5 +226,6 @@ void main() {
     test('to test the property `shouldOverride`', () async {
       // TODO
     });
+
   });
 }

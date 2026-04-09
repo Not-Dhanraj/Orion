@@ -1,8 +1,8 @@
-# sonarr.model.ParsedEpisodeInfo
+# sonarr_api.model.ParsedEpisodeInfo
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties
@@ -13,11 +13,11 @@ Name | Type | Description | Notes
 **seriesTitleInfo** | [**SeriesTitleInfo**](SeriesTitleInfo.md) |  | [optional] 
 **quality** | [**QualityModel**](QualityModel.md) |  | [optional] 
 **seasonNumber** | **int** |  | [optional] 
-**episodeNumbers** | **BuiltList&lt;int&gt;** |  | [optional] 
-**absoluteEpisodeNumbers** | **BuiltList&lt;int&gt;** |  | [optional] 
-**specialAbsoluteEpisodeNumbers** | **BuiltList&lt;double&gt;** |  | [optional] 
+**episodeNumbers** | **List&lt;int&gt;** |  | [optional] 
+**absoluteEpisodeNumbers** | **List&lt;int&gt;** |  | [optional] 
+**specialAbsoluteEpisodeNumbers** | **List&lt;double&gt;** |  | [optional] 
 **airDate** | **String** |  | [optional] 
-**languages** | [**BuiltList&lt;Language&gt;**](Language.md) |  | [optional] 
+**languages** | [**List&lt;Language&gt;**](Language.md) |  | [optional] 
 **fullSeason** | **bool** |  | [optional] 
 **isPartialSeason** | **bool** |  | [optional] 
 **isMultiSeason** | **bool** |  | [optional] 

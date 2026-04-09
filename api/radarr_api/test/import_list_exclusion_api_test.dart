@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for ImportListExclusionApi
 void main() {
-  final instance = Radarr().getImportListExclusionApi();
+  final instance = RadarrApi().getImportListExclusionApi();
 
   group(ImportListExclusionApi, () {
     //Future apiV3ExclusionsBulkDelete({ ImportListExclusionBulkResource importListExclusionBulkResource }) async
@@ -11,12 +12,12 @@ void main() {
       // TODO
     });
 
-    //Future apiV3ExclusionsBulkPost({ BuiltList<ImportListExclusionResource> importListExclusionResource }) async
+    //Future apiV3ExclusionsBulkPost({ List<ImportListExclusionResource> importListExclusionResource }) async
     test('test apiV3ExclusionsBulkPost', () async {
       // TODO
     });
 
-    //Future<BuiltList<ImportListExclusionResource>> apiV3ExclusionsGet() async
+    //Future<List<ImportListExclusionResource>> apiV3ExclusionsGet() async
     test('test apiV3ExclusionsGet', () async {
       // TODO
     });
@@ -45,5 +46,6 @@ void main() {
     test('test apiV3ExclusionsPost', () async {
       // TODO
     });
+
   });
 }

@@ -1,13 +1,13 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for ParsedMovieInfo
 void main() {
-  final instance = ParsedMovieInfoBuilder();
-  // TODO add properties to the builder and call build()
+  final ParsedMovieInfo? instance = /* ParsedMovieInfo(...) */ null;
+  // TODO add properties to the entity
 
   group(ParsedMovieInfo, () {
-    // BuiltList<String> movieTitles
+    // List<String> movieTitles
     test('to test the property `movieTitles`', () async {
       // TODO
     });
@@ -32,7 +32,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<Language> languages
+    // List<Language> languages
     test('to test the property `languages`', () async {
       // TODO
     });
@@ -81,5 +81,6 @@ void main() {
     test('to test the property `primaryMovieTitle`', () async {
       // TODO
     });
+
   });
 }

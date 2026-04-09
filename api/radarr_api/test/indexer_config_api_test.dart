@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for IndexerConfigApi
 void main() {
-  final instance = Radarr().getIndexerConfigApi();
+  final instance = RadarrApi().getIndexerConfigApi();
 
   group(IndexerConfigApi, () {
     //Future<IndexerConfigResource> apiV3ConfigIndexerGet() async
@@ -20,5 +21,6 @@ void main() {
     test('test apiV3ConfigIndexerIdPut', () async {
       // TODO
     });
+
   });
 }

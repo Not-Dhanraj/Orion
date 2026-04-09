@@ -1,14 +1,16 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for UpdateApi
 void main() {
-  final instance = Radarr().getUpdateApi();
+  final instance = RadarrApi().getUpdateApi();
 
   group(UpdateApi, () {
-    //Future<BuiltList<UpdateResource>> apiV3UpdateGet() async
+    //Future<List<UpdateResource>> apiV3UpdateGet() async
     test('test apiV3UpdateGet', () async {
       // TODO
     });
+
   });
 }

@@ -1,7 +1,9 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for CommandPriority
 void main() {
-  group(CommandPriority, () {});
+
+  group(CommandPriority, () {
+  });
 }

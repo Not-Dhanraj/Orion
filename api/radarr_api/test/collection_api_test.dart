@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for CollectionApi
 void main() {
-  final instance = Radarr().getCollectionApi();
+  final instance = RadarrApi().getCollectionApi();
 
   group(CollectionApi, () {
-    //Future<BuiltList<CollectionResource>> apiV3CollectionGet({ int tmdbId }) async
+    //Future<List<CollectionResource>> apiV3CollectionGet({ int tmdbId }) async
     test('test apiV3CollectionGet', () async {
       // TODO
     });
@@ -25,5 +26,6 @@ void main() {
     test('test apiV3CollectionPut', () async {
       // TODO
     });
+
   });
 }

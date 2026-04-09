@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for ImportListResource
 void main() {
-  final instance = ImportListResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final ImportListResource? instance = /* ImportListResource(...) */ null;
+  // TODO add properties to the entity
 
   group(ImportListResource, () {
     // int id
@@ -17,7 +17,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<Field> fields
+    // List<Field> fields
     test('to test the property `fields`', () async {
       // TODO
     });
@@ -47,33 +47,28 @@ void main() {
       // TODO
     });
 
-    // BuiltSet<int> tags
+    // Set<int> tags
     test('to test the property `tags`', () async {
       // TODO
     });
 
-    // BuiltList<ImportListResource> presets
+    // List<ImportListResource> presets
     test('to test the property `presets`', () async {
       // TODO
     });
 
-    // bool enableAutomaticAdd
-    test('to test the property `enableAutomaticAdd`', () async {
+    // bool enabled
+    test('to test the property `enabled`', () async {
       // TODO
     });
 
-    // bool searchForMissingEpisodes
-    test('to test the property `searchForMissingEpisodes`', () async {
+    // bool enableAuto
+    test('to test the property `enableAuto`', () async {
       // TODO
     });
 
-    // MonitorTypes shouldMonitor
-    test('to test the property `shouldMonitor`', () async {
-      // TODO
-    });
-
-    // NewItemMonitorTypes monitorNewItems
-    test('to test the property `monitorNewItems`', () async {
+    // MonitorTypes monitor
+    test('to test the property `monitor`', () async {
       // TODO
     });
 
@@ -87,13 +82,13 @@ void main() {
       // TODO
     });
 
-    // SeriesTypes seriesType
-    test('to test the property `seriesType`', () async {
+    // bool searchOnAdd
+    test('to test the property `searchOnAdd`', () async {
       // TODO
     });
 
-    // bool seasonFolder
-    test('to test the property `seasonFolder`', () async {
+    // MovieStatusType minimumAvailability
+    test('to test the property `minimumAvailability`', () async {
       // TODO
     });
 
@@ -111,5 +106,6 @@ void main() {
     test('to test the property `minRefreshInterval`', () async {
       // TODO
     });
+
   });
 }

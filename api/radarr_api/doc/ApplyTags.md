@@ -1,8 +1,8 @@
-# radarr.model.ApplyTags
+# radarr_api.model.ApplyTags
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties

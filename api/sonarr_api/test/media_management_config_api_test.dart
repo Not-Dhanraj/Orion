@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for MediaManagementConfigApi
 void main() {
-  final instance = Sonarr().getMediaManagementConfigApi();
+  final instance = SonarrApi().getMediaManagementConfigApi();
 
   group(MediaManagementConfigApi, () {
     //Future<MediaManagementConfigResource> apiV3ConfigMediamanagementGet() async
@@ -20,5 +21,6 @@ void main() {
     test('test apiV3ConfigMediamanagementIdPut', () async {
       // TODO
     });
+
   });
 }

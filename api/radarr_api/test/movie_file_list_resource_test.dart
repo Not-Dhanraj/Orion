@@ -1,18 +1,18 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for MovieFileListResource
 void main() {
-  final instance = MovieFileListResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final MovieFileListResource? instance = /* MovieFileListResource(...) */ null;
+  // TODO add properties to the entity
 
   group(MovieFileListResource, () {
-    // BuiltList<int> movieFileIds
+    // List<int> movieFileIds
     test('to test the property `movieFileIds`', () async {
       // TODO
     });
 
-    // BuiltList<Language> languages
+    // List<Language> languages
     test('to test the property `languages`', () async {
       // TODO
     });
@@ -41,5 +41,6 @@ void main() {
     test('to test the property `indexerFlags`', () async {
       // TODO
     });
+
   });
 }

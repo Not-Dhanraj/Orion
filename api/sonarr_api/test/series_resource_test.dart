@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for SeriesResource
 void main() {
-  final instance = SeriesResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final SeriesResource? instance = /* SeriesResource(...) */ null;
+  // TODO add properties to the entity
 
   group(SeriesResource, () {
     // int id
@@ -17,7 +17,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<AlternateTitleResource> alternateTitles
+    // List<AlternateTitleResource> alternateTitles
     test('to test the property `alternateTitles`', () async {
       // TODO
     });
@@ -67,7 +67,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<MediaCover> images
+    // List<MediaCover> images
     test('to test the property `images`', () async {
       // TODO
     });
@@ -82,7 +82,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<SeasonResource> seasons
+    // List<SeasonResource> seasons
     test('to test the property `seasons`', () async {
       // TODO
     });
@@ -192,12 +192,12 @@ void main() {
       // TODO
     });
 
-    // BuiltList<String> genres
+    // List<String> genres
     test('to test the property `genres`', () async {
       // TODO
     });
 
-    // BuiltSet<int> tags
+    // Set<int> tags
     test('to test the property `tags`', () async {
       // TODO
     });
@@ -231,5 +231,6 @@ void main() {
     test('to test the property `languageProfileId`', () async {
       // TODO
     });
+
   });
 }

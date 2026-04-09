@@ -1,8 +1,8 @@
-# radarr.api.UpdateApi
+# radarr_api.api.UpdateApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -13,13 +13,13 @@ Method | HTTP request | Description
 
 
 # **apiV3UpdateGet**
-> BuiltList<UpdateResource> apiV3UpdateGet()
+> List<UpdateResource> apiV3UpdateGet()
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -29,12 +29,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getUpdateApi();
+final api = RadarrApi().getUpdateApi();
 
 try {
     final response = api.apiV3UpdateGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling UpdateApi->apiV3UpdateGet: $e\n');
 }
 ```
@@ -44,7 +44,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;UpdateResource&gt;**](UpdateResource.md)
+[**List&lt;UpdateResource&gt;**](UpdateResource.md)
 
 ### Authorization
 

@@ -1,14 +1,16 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for HealthApi
 void main() {
-  final instance = Sonarr().getHealthApi();
+  final instance = SonarrApi().getHealthApi();
 
   group(HealthApi, () {
-    //Future<BuiltList<HealthResource>> apiV3HealthGet() async
+    //Future<List<HealthResource>> apiV3HealthGet() async
     test('test apiV3HealthGet', () async {
       // TODO
     });
+
   });
 }

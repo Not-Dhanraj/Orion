@@ -1,8 +1,8 @@
-# sonarr.model.DownloadClientConfigResource
+# sonarr_api.model.DownloadClientConfigResource
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties

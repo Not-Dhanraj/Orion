@@ -1,8 +1,8 @@
-# sonarr.model.AuthenticationType
+# sonarr_api.model.AuthenticationType
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties

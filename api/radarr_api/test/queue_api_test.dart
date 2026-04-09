@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for QueueApi
 void main() {
-  final instance = Radarr().getQueueApi();
+  final instance = RadarrApi().getQueueApi();
 
   group(QueueApi, () {
     //Future apiV3QueueBulkDelete({ bool removeFromClient, bool blocklist, bool skipRedownload, bool changeCategory, QueueBulkResource queueBulkResource }) async
@@ -11,7 +12,7 @@ void main() {
       // TODO
     });
 
-    //Future<QueueResourcePagingResource> apiV3QueueGet({ int page, int pageSize, String sortKey, SortDirection sortDirection, bool includeUnknownMovieItems, bool includeMovie, BuiltList<int> movieIds, DownloadProtocol protocol, BuiltList<int> languages, BuiltList<int> quality, BuiltList<QueueStatus> status }) async
+    //Future<QueueResourcePagingResource> apiV3QueueGet({ int page, int pageSize, String sortKey, SortDirection sortDirection, bool includeUnknownMovieItems, bool includeMovie, List<int> movieIds, DownloadProtocol protocol, List<int> languages, List<int> quality, List<QueueStatus> status }) async
     test('test apiV3QueueGet', () async {
       // TODO
     });
@@ -20,5 +21,6 @@ void main() {
     test('test apiV3QueueIdDelete', () async {
       // TODO
     });
+
   });
 }

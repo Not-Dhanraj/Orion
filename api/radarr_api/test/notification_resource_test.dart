@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for NotificationResource
 void main() {
-  final instance = NotificationResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final NotificationResource? instance = /* NotificationResource(...) */ null;
+  // TODO add properties to the entity
 
   group(NotificationResource, () {
     // int id
@@ -17,7 +17,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<Field> fields
+    // List<Field> fields
     test('to test the property `fields`', () async {
       // TODO
     });
@@ -47,12 +47,12 @@ void main() {
       // TODO
     });
 
-    // BuiltSet<int> tags
+    // Set<int> tags
     test('to test the property `tags`', () async {
       // TODO
     });
 
-    // BuiltList<NotificationResource> presets
+    // List<NotificationResource> presets
     test('to test the property `presets`', () async {
       // TODO
     });
@@ -163,8 +163,7 @@ void main() {
     });
 
     // bool supportsOnMovieFileDeleteForUpgrade
-    test('to test the property `supportsOnMovieFileDeleteForUpgrade`',
-        () async {
+    test('to test the property `supportsOnMovieFileDeleteForUpgrade`', () async {
       // TODO
     });
 
@@ -184,8 +183,7 @@ void main() {
     });
 
     // bool supportsOnManualInteractionRequired
-    test('to test the property `supportsOnManualInteractionRequired`',
-        () async {
+    test('to test the property `supportsOnManualInteractionRequired`', () async {
       // TODO
     });
 
@@ -193,5 +191,6 @@ void main() {
     test('to test the property `testCommand`', () async {
       // TODO
     });
+
   });
 }

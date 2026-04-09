@@ -1,14 +1,16 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for ExtraFileApi
 void main() {
-  final instance = Radarr().getExtraFileApi();
+  final instance = RadarrApi().getExtraFileApi();
 
   group(ExtraFileApi, () {
-    //Future<BuiltList<ExtraFileResource>> apiV3ExtrafileGet({ int movieId }) async
+    //Future<List<ExtraFileResource>> apiV3ExtrafileGet({ int movieId }) async
     test('test apiV3ExtrafileGet', () async {
       // TODO
     });
+
   });
 }

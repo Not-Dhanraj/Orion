@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for QualityDefinitionResource
 void main() {
-  final instance = QualityDefinitionResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final QualityDefinitionResource? instance = /* QualityDefinitionResource(...) */ null;
+  // TODO add properties to the entity
 
   group(QualityDefinitionResource, () {
     // int id
@@ -41,5 +41,6 @@ void main() {
     test('to test the property `preferredSize`', () async {
       // TODO
     });
+
   });
 }

@@ -1,8 +1,8 @@
-# radarr.api.BackupApi
+# radarr_api.api.BackupApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -16,13 +16,13 @@ Method | HTTP request | Description
 
 
 # **apiV3SystemBackupGet**
-> BuiltList<BackupResource> apiV3SystemBackupGet()
+> List<BackupResource> apiV3SystemBackupGet()
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -32,12 +32,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getBackupApi();
+final api = RadarrApi().getBackupApi();
 
 try {
     final response = api.apiV3SystemBackupGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling BackupApi->apiV3SystemBackupGet: $e\n');
 }
 ```
@@ -47,7 +47,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;BackupResource&gt;**](BackupResource.md)
+[**List&lt;BackupResource&gt;**](BackupResource.md)
 
 ### Authorization
 
@@ -67,7 +67,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -77,12 +77,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getBackupApi();
+final api = RadarrApi().getBackupApi();
 final int id = 56; // int | 
 
 try {
     api.apiV3SystemBackupIdDelete(id);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling BackupApi->apiV3SystemBackupIdDelete: $e\n');
 }
 ```
@@ -115,7 +115,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -125,12 +125,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getBackupApi();
+final api = RadarrApi().getBackupApi();
 final int id = 56; // int | 
 
 try {
     api.apiV3SystemBackupRestoreIdPost(id);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling BackupApi->apiV3SystemBackupRestoreIdPost: $e\n');
 }
 ```
@@ -163,7 +163,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -173,11 +173,11 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getBackupApi();
+final api = RadarrApi().getBackupApi();
 
 try {
     api.apiV3SystemBackupRestoreUploadPost();
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling BackupApi->apiV3SystemBackupRestoreUploadPost: $e\n');
 }
 ```

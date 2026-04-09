@@ -1,8 +1,8 @@
-# sonarr.model.RuntimeMode
+# sonarr_api.model.RuntimeMode
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties

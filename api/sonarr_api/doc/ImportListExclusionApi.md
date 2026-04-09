@@ -1,8 +1,8 @@
-# sonarr.api.ImportListExclusionApi
+# sonarr_api.api.ImportListExclusionApi
 
 ## Load the API package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:8989*
@@ -25,7 +25,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -35,12 +35,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getImportListExclusionApi();
+final api = SonarrApi().getImportListExclusionApi();
 final ImportListExclusionBulkResource importListExclusionBulkResource = ; // ImportListExclusionBulkResource | 
 
 try {
     api.apiV3ImportlistexclusionBulkDelete(importListExclusionBulkResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListExclusionApi->apiV3ImportlistexclusionBulkDelete: $e\n');
 }
 ```
@@ -67,13 +67,13 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiV3ImportlistexclusionGet**
-> BuiltList<ImportListExclusionResource> apiV3ImportlistexclusionGet()
+> List<ImportListExclusionResource> apiV3ImportlistexclusionGet()
 
 
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -83,12 +83,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getImportListExclusionApi();
+final api = SonarrApi().getImportListExclusionApi();
 
 try {
     final response = api.apiV3ImportlistexclusionGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListExclusionApi->apiV3ImportlistexclusionGet: $e\n');
 }
 ```
@@ -98,7 +98,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;ImportListExclusionResource&gt;**](ImportListExclusionResource.md)
+[**List&lt;ImportListExclusionResource&gt;**](ImportListExclusionResource.md)
 
 ### Authorization
 
@@ -118,7 +118,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -128,12 +128,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getImportListExclusionApi();
+final api = SonarrApi().getImportListExclusionApi();
 final int id = 56; // int | 
 
 try {
     api.apiV3ImportlistexclusionIdDelete(id);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListExclusionApi->apiV3ImportlistexclusionIdDelete: $e\n');
 }
 ```
@@ -166,7 +166,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -176,13 +176,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getImportListExclusionApi();
+final api = SonarrApi().getImportListExclusionApi();
 final int id = 56; // int | 
 
 try {
     final response = api.apiV3ImportlistexclusionIdGet(id);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListExclusionApi->apiV3ImportlistexclusionIdGet: $e\n');
 }
 ```
@@ -215,7 +215,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -225,14 +225,14 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getImportListExclusionApi();
+final api = SonarrApi().getImportListExclusionApi();
 final String id = id_example; // String | 
 final ImportListExclusionResource importListExclusionResource = ; // ImportListExclusionResource | 
 
 try {
     final response = api.apiV3ImportlistexclusionIdPut(id, importListExclusionResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListExclusionApi->apiV3ImportlistexclusionIdPut: $e\n');
 }
 ```
@@ -266,7 +266,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -276,7 +276,7 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getImportListExclusionApi();
+final api = SonarrApi().getImportListExclusionApi();
 final int page = 56; // int | 
 final int pageSize = 56; // int | 
 final String sortKey = sortKey_example; // String | 
@@ -285,7 +285,7 @@ final SortDirection sortDirection = ; // SortDirection |
 try {
     final response = api.apiV3ImportlistexclusionPagedGet(page, pageSize, sortKey, sortDirection);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListExclusionApi->apiV3ImportlistexclusionPagedGet: $e\n');
 }
 ```
@@ -321,7 +321,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -331,13 +331,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getImportListExclusionApi();
+final api = SonarrApi().getImportListExclusionApi();
 final ImportListExclusionResource importListExclusionResource = ; // ImportListExclusionResource | 
 
 try {
     final response = api.apiV3ImportlistexclusionPost(importListExclusionResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListExclusionApi->apiV3ImportlistexclusionPost: $e\n');
 }
 ```

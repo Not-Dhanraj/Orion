@@ -1,8 +1,8 @@
-# radarr.model.ProperDownloadTypes
+# radarr_api.model.ProperDownloadTypes
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties

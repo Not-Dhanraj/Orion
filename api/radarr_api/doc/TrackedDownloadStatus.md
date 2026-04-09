@@ -1,8 +1,8 @@
-# radarr.model.TrackedDownloadStatus
+# radarr_api.model.TrackedDownloadStatus
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties

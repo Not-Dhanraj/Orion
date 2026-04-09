@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for CustomFormatApi
 void main() {
-  final instance = Radarr().getCustomFormatApi();
+  final instance = RadarrApi().getCustomFormatApi();
 
   group(CustomFormatApi, () {
     //Future apiV3CustomformatBulkDelete({ CustomFormatBulkResource customFormatBulkResource }) async
@@ -16,7 +17,7 @@ void main() {
       // TODO
     });
 
-    //Future<BuiltList<CustomFormatResource>> apiV3CustomformatGet() async
+    //Future<List<CustomFormatResource>> apiV3CustomformatGet() async
     test('test apiV3CustomformatGet', () async {
       // TODO
     });
@@ -45,5 +46,6 @@ void main() {
     test('test apiV3CustomformatSchemaGet', () async {
       // TODO
     });
+
   });
 }

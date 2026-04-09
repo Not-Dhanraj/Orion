@@ -1,15 +1,15 @@
-# radarr.model.MovieFileListResource
+# radarr_api.model.MovieFileListResource
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**movieFileIds** | **BuiltList&lt;int&gt;** |  | [optional] 
-**languages** | [**BuiltList&lt;Language&gt;**](Language.md) |  | [optional] 
+**movieFileIds** | **List&lt;int&gt;** |  | [optional] 
+**languages** | [**List&lt;Language&gt;**](Language.md) |  | [optional] 
 **quality** | [**QualityModel**](QualityModel.md) |  | [optional] 
 **edition** | **String** |  | [optional] 
 **releaseGroup** | **String** |  | [optional] 

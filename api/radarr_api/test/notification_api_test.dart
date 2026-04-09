@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for NotificationApi
 void main() {
-  final instance = Radarr().getNotificationApi();
+  final instance = RadarrApi().getNotificationApi();
 
   group(NotificationApi, () {
     //Future apiV3NotificationActionNamePost(String name, { NotificationResource notificationResource }) async
@@ -11,7 +12,7 @@ void main() {
       // TODO
     });
 
-    //Future<BuiltList<NotificationResource>> apiV3NotificationGet() async
+    //Future<List<NotificationResource>> apiV3NotificationGet() async
     test('test apiV3NotificationGet', () async {
       // TODO
     });
@@ -36,7 +37,7 @@ void main() {
       // TODO
     });
 
-    //Future<BuiltList<NotificationResource>> apiV3NotificationSchemaGet() async
+    //Future<List<NotificationResource>> apiV3NotificationSchemaGet() async
     test('test apiV3NotificationSchemaGet', () async {
       // TODO
     });
@@ -50,5 +51,6 @@ void main() {
     test('test apiV3NotificationTestallPost', () async {
       // TODO
     });
+
   });
 }

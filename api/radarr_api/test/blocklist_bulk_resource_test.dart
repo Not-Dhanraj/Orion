@@ -1,15 +1,16 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for BlocklistBulkResource
 void main() {
-  final instance = BlocklistBulkResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final BlocklistBulkResource? instance = /* BlocklistBulkResource(...) */ null;
+  // TODO add properties to the entity
 
   group(BlocklistBulkResource, () {
-    // BuiltList<int> ids
+    // List<int> ids
     test('to test the property `ids`', () async {
       // TODO
     });
+
   });
 }

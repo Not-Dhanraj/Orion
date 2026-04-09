@@ -1,8 +1,8 @@
-# radarr.model.AddMovieOptions
+# radarr_api.model.AddMovieOptions
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties

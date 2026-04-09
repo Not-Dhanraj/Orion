@@ -1,8 +1,8 @@
-# radarr.api.ImportListMoviesApi
+# radarr_api.api.ImportListMoviesApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -20,7 +20,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -30,14 +30,14 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getImportListMoviesApi();
+final api = RadarrApi().getImportListMoviesApi();
 final bool includeRecommendations = true; // bool | 
 final bool includeTrending = true; // bool | 
 final bool includePopular = true; // bool | 
 
 try {
     api.apiV3ImportlistMovieGet(includeRecommendations, includeTrending, includePopular);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListMoviesApi->apiV3ImportlistMovieGet: $e\n');
 }
 ```
@@ -72,7 +72,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -82,12 +82,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getImportListMoviesApi();
-final BuiltList<MovieResource> movieResource = ; // BuiltList<MovieResource> | 
+final api = RadarrApi().getImportListMoviesApi();
+final List<MovieResource> movieResource = ; // List<MovieResource> | 
 
 try {
     api.apiV3ImportlistMoviePost(movieResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ImportListMoviesApi->apiV3ImportlistMoviePost: $e\n');
 }
 ```
@@ -96,7 +96,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **movieResource** | [**BuiltList&lt;MovieResource&gt;**](MovieResource.md)|  | [optional] 
+ **movieResource** | [**List&lt;MovieResource&gt;**](MovieResource.md)|  | [optional] 
 
 ### Return type
 

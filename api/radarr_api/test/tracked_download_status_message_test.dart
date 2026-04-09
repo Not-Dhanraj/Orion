@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for TrackedDownloadStatusMessage
 void main() {
-  final instance = TrackedDownloadStatusMessageBuilder();
-  // TODO add properties to the builder and call build()
+  final TrackedDownloadStatusMessage? instance = /* TrackedDownloadStatusMessage(...) */ null;
+  // TODO add properties to the entity
 
   group(TrackedDownloadStatusMessage, () {
     // String title
@@ -12,9 +12,10 @@ void main() {
       // TODO
     });
 
-    // BuiltList<String> messages
+    // List<String> messages
     test('to test the property `messages`', () async {
       // TODO
     });
+
   });
 }

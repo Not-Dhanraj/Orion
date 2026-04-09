@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for DiskSpaceResource
 void main() {
-  final instance = DiskSpaceResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final DiskSpaceResource? instance = /* DiskSpaceResource(...) */ null;
+  // TODO add properties to the entity
 
   group(DiskSpaceResource, () {
     // int id
@@ -31,5 +31,6 @@ void main() {
     test('to test the property `totalSpace`', () async {
       // TODO
     });
+
   });
 }

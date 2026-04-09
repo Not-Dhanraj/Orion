@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for LocalizationApi
 void main() {
-  final instance = Radarr().getLocalizationApi();
+  final instance = RadarrApi().getLocalizationApi();
 
   group(LocalizationApi, () {
     //Future<String> apiV3LocalizationGet() async
@@ -15,5 +16,6 @@ void main() {
     test('test apiV3LocalizationLanguageGet', () async {
       // TODO
     });
+
   });
 }

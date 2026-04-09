@@ -1,8 +1,8 @@
-# radarr.api.IndexerFlagApi
+# radarr_api.api.IndexerFlagApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -13,13 +13,13 @@ Method | HTTP request | Description
 
 
 # **apiV3IndexerflagGet**
-> BuiltList<IndexerFlagResource> apiV3IndexerflagGet()
+> List<IndexerFlagResource> apiV3IndexerflagGet()
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -29,12 +29,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getIndexerFlagApi();
+final api = RadarrApi().getIndexerFlagApi();
 
 try {
     final response = api.apiV3IndexerflagGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IndexerFlagApi->apiV3IndexerflagGet: $e\n');
 }
 ```
@@ -44,7 +44,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;IndexerFlagResource&gt;**](IndexerFlagResource.md)
+[**List&lt;IndexerFlagResource&gt;**](IndexerFlagResource.md)
 
 ### Authorization
 

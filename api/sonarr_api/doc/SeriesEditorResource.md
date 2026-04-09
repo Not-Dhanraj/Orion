@@ -1,21 +1,21 @@
-# sonarr.model.SeriesEditorResource
+# sonarr_api.model.SeriesEditorResource
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**seriesIds** | **BuiltList&lt;int&gt;** |  | [optional] 
+**seriesIds** | **List&lt;int&gt;** |  | [optional] 
 **monitored** | **bool** |  | [optional] 
 **monitorNewItems** | [**NewItemMonitorTypes**](NewItemMonitorTypes.md) |  | [optional] 
 **qualityProfileId** | **int** |  | [optional] 
 **seriesType** | [**SeriesTypes**](SeriesTypes.md) |  | [optional] 
 **seasonFolder** | **bool** |  | [optional] 
 **rootFolderPath** | **String** |  | [optional] 
-**tags** | **BuiltList&lt;int&gt;** |  | [optional] 
+**tags** | **List&lt;int&gt;** |  | [optional] 
 **applyTags** | [**ApplyTags**](ApplyTags.md) |  | [optional] 
 **moveFiles** | **bool** |  | [optional] 
 **deleteFiles** | **bool** |  | [optional] 

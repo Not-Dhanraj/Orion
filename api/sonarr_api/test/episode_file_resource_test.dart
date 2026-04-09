@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for EpisodeFileResource
 void main() {
-  final instance = EpisodeFileResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final EpisodeFileResource? instance = /* EpisodeFileResource(...) */ null;
+  // TODO add properties to the entity
 
   group(EpisodeFileResource, () {
     // int id
@@ -52,7 +52,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<Language> languages
+    // List<Language> languages
     test('to test the property `languages`', () async {
       // TODO
     });
@@ -62,7 +62,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<CustomFormatResource> customFormats
+    // List<CustomFormatResource> customFormats
     test('to test the property `customFormats`', () async {
       // TODO
     });
@@ -91,5 +91,6 @@ void main() {
     test('to test the property `qualityCutoffNotMet`', () async {
       // TODO
     });
+
   });
 }

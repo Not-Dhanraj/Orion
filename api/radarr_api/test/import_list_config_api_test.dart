@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for ImportListConfigApi
 void main() {
-  final instance = Radarr().getImportListConfigApi();
+  final instance = RadarrApi().getImportListConfigApi();
 
   group(ImportListConfigApi, () {
     //Future<ImportListConfigResource> apiV3ConfigImportlistGet() async
@@ -20,5 +21,6 @@ void main() {
     test('test apiV3ConfigImportlistIdPut', () async {
       // TODO
     });
+
   });
 }

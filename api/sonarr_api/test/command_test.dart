@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for Command
 void main() {
-  final instance = CommandBuilder();
-  // TODO add properties to the builder and call build()
+  final Command? instance = /* Command(...) */ null;
+  // TODO add properties to the entity
 
   group(Command, () {
     // bool sendUpdatesToClient
@@ -29,6 +29,11 @@ void main() {
 
     // bool isExclusive
     test('to test the property `isExclusive`', () async {
+      // TODO
+    });
+
+    // bool isTypeExclusive
+    test('to test the property `isTypeExclusive`', () async {
       // TODO
     });
 
@@ -66,5 +71,6 @@ void main() {
     test('to test the property `clientUserAgent`', () async {
       // TODO
     });
+
   });
 }

@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for ProfileFormatItemResource
 void main() {
-  final instance = ProfileFormatItemResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final ProfileFormatItemResource? instance = /* ProfileFormatItemResource(...) */ null;
+  // TODO add properties to the entity
 
   group(ProfileFormatItemResource, () {
     // int id
@@ -26,5 +26,6 @@ void main() {
     test('to test the property `score`', () async {
       // TODO
     });
+
   });
 }

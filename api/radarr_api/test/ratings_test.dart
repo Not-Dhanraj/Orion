@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for Ratings
 void main() {
-  final instance = RatingsBuilder();
-  // TODO add properties to the builder and call build()
+  final Ratings? instance = /* Ratings(...) */ null;
+  // TODO add properties to the entity
 
   group(Ratings, () {
     // RatingChild imdb
@@ -31,5 +31,6 @@ void main() {
     test('to test the property `trakt`', () async {
       // TODO
     });
+
   });
 }

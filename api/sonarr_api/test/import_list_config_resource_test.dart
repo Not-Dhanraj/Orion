@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for ImportListConfigResource
 void main() {
-  final instance = ImportListConfigResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final ImportListConfigResource? instance = /* ImportListConfigResource(...) */ null;
+  // TODO add properties to the entity
 
   group(ImportListConfigResource, () {
     // int id
@@ -12,14 +12,10 @@ void main() {
       // TODO
     });
 
-    // ListSyncLevelType listSyncLevel
+    // String listSyncLevel
     test('to test the property `listSyncLevel`', () async {
       // TODO
     });
 
-    // int listSyncTag
-    test('to test the property `listSyncTag`', () async {
-      // TODO
-    });
   });
 }

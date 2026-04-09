@@ -1,8 +1,8 @@
-# sonarr.model.RenameEpisodeResource
+# sonarr_api.model.RenameEpisodeResource
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties
@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 **id** | **int** |  | [optional] 
 **seriesId** | **int** |  | [optional] 
 **seasonNumber** | **int** |  | [optional] 
-**episodeNumbers** | **BuiltList&lt;int&gt;** |  | [optional] 
+**episodeNumbers** | **List&lt;int&gt;** |  | [optional] 
 **episodeFileId** | **int** |  | [optional] 
 **existingPath** | **String** |  | [optional] 
 **newPath** | **String** |  | [optional] 

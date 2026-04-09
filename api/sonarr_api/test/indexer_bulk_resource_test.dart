@@ -1,18 +1,18 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for IndexerBulkResource
 void main() {
-  final instance = IndexerBulkResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final IndexerBulkResource? instance = /* IndexerBulkResource(...) */ null;
+  // TODO add properties to the entity
 
   group(IndexerBulkResource, () {
-    // BuiltList<int> ids
+    // List<int> ids
     test('to test the property `ids`', () async {
       // TODO
     });
 
-    // BuiltList<int> tags
+    // List<int> tags
     test('to test the property `tags`', () async {
       // TODO
     });
@@ -41,5 +41,6 @@ void main() {
     test('to test the property `priority`', () async {
       // TODO
     });
+
   });
 }

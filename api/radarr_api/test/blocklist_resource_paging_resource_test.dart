@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for BlocklistResourcePagingResource
 void main() {
-  final instance = BlocklistResourcePagingResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final BlocklistResourcePagingResource? instance = /* BlocklistResourcePagingResource(...) */ null;
+  // TODO add properties to the entity
 
   group(BlocklistResourcePagingResource, () {
     // int page
@@ -32,9 +32,10 @@ void main() {
       // TODO
     });
 
-    // BuiltList<BlocklistResource> records
+    // List<BlocklistResource> records
     test('to test the property `records`', () async {
       // TODO
     });
+
   });
 }

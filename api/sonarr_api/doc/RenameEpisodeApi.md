@@ -1,8 +1,8 @@
-# sonarr.api.RenameEpisodeApi
+# sonarr_api.api.RenameEpisodeApi
 
 ## Load the API package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:8989*
@@ -13,13 +13,13 @@ Method | HTTP request | Description
 
 
 # **apiV3RenameGet**
-> BuiltList<RenameEpisodeResource> apiV3RenameGet(seriesId, seasonNumber)
+> List<RenameEpisodeResource> apiV3RenameGet(seriesId, seasonNumber)
 
 
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -29,14 +29,14 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getRenameEpisodeApi();
+final api = SonarrApi().getRenameEpisodeApi();
 final int seriesId = 56; // int | 
 final int seasonNumber = 56; // int | 
 
 try {
     final response = api.apiV3RenameGet(seriesId, seasonNumber);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling RenameEpisodeApi->apiV3RenameGet: $e\n');
 }
 ```
@@ -50,7 +50,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**BuiltList&lt;RenameEpisodeResource&gt;**](RenameEpisodeResource.md)
+[**List&lt;RenameEpisodeResource&gt;**](RenameEpisodeResource.md)
 
 ### Authorization
 

@@ -1,18 +1,18 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for DownloadClientBulkResource
 void main() {
-  final instance = DownloadClientBulkResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final DownloadClientBulkResource? instance = /* DownloadClientBulkResource(...) */ null;
+  // TODO add properties to the entity
 
   group(DownloadClientBulkResource, () {
-    // BuiltList<int> ids
+    // List<int> ids
     test('to test the property `ids`', () async {
       // TODO
     });
 
-    // BuiltList<int> tags
+    // List<int> tags
     test('to test the property `tags`', () async {
       // TODO
     });
@@ -41,5 +41,6 @@ void main() {
     test('to test the property `removeFailedDownloads`', () async {
       // TODO
     });
+
   });
 }

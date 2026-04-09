@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for NamingConfigApi
 void main() {
-  final instance = Sonarr().getNamingConfigApi();
+  final instance = SonarrApi().getNamingConfigApi();
 
   group(NamingConfigApi, () {
-    //Future apiV3ConfigNamingExamplesGet({ bool renameEpisodes, bool replaceIllegalCharacters, int colonReplacementFormat, String customColonReplacementFormat, int multiEpisodeStyle, String standardEpisodeFormat, String dailyEpisodeFormat, String animeEpisodeFormat, String seriesFolderFormat, String seasonFolderFormat, String specialsFolderFormat, int id, String resourceName }) async
+    //Future apiV3ConfigNamingExamplesGet({ bool renameMovies, bool replaceIllegalCharacters, ColonReplacementFormat colonReplacementFormat, String standardMovieFormat, String movieFolderFormat, int id, String resourceName }) async
     test('test apiV3ConfigNamingExamplesGet', () async {
       // TODO
     });
@@ -25,5 +26,6 @@ void main() {
     test('test apiV3ConfigNamingIdPut', () async {
       // TODO
     });
+
   });
 }

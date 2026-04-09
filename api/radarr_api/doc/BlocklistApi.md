@@ -1,8 +1,8 @@
-# radarr.api.BlocklistApi
+# radarr_api.api.BlocklistApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -22,7 +22,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -32,12 +32,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getBlocklistApi();
+final api = RadarrApi().getBlocklistApi();
 final BlocklistBulkResource blocklistBulkResource = ; // BlocklistBulkResource | 
 
 try {
     api.apiV3BlocklistBulkDelete(blocklistBulkResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling BlocklistApi->apiV3BlocklistBulkDelete: $e\n');
 }
 ```
@@ -70,7 +70,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -80,18 +80,18 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getBlocklistApi();
+final api = RadarrApi().getBlocklistApi();
 final int page = 56; // int | 
 final int pageSize = 56; // int | 
 final String sortKey = sortKey_example; // String | 
 final SortDirection sortDirection = ; // SortDirection | 
-final BuiltList<int> movieIds = ; // BuiltList<int> | 
-final BuiltList<DownloadProtocol> protocols = ; // BuiltList<DownloadProtocol> | 
+final List<int> movieIds = ; // List<int> | 
+final List<DownloadProtocol> protocols = ; // List<DownloadProtocol> | 
 
 try {
     final response = api.apiV3BlocklistGet(page, pageSize, sortKey, sortDirection, movieIds, protocols);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling BlocklistApi->apiV3BlocklistGet: $e\n');
 }
 ```
@@ -104,8 +104,8 @@ Name | Type | Description  | Notes
  **pageSize** | **int**|  | [optional] [default to 10]
  **sortKey** | **String**|  | [optional] 
  **sortDirection** | [**SortDirection**](.md)|  | [optional] 
- **movieIds** | [**BuiltList&lt;int&gt;**](int.md)|  | [optional] 
- **protocols** | [**BuiltList&lt;DownloadProtocol&gt;**](DownloadProtocol.md)|  | [optional] 
+ **movieIds** | [**List&lt;int&gt;**](int.md)|  | [optional] 
+ **protocols** | [**List&lt;DownloadProtocol&gt;**](DownloadProtocol.md)|  | [optional] 
 
 ### Return type
 
@@ -129,7 +129,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -139,12 +139,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getBlocklistApi();
+final api = RadarrApi().getBlocklistApi();
 final int id = 56; // int | 
 
 try {
     api.apiV3BlocklistIdDelete(id);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling BlocklistApi->apiV3BlocklistIdDelete: $e\n');
 }
 ```
@@ -171,13 +171,13 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiV3BlocklistMovieGet**
-> BuiltList<BlocklistResource> apiV3BlocklistMovieGet(movieId)
+> List<BlocklistResource> apiV3BlocklistMovieGet(movieId)
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -187,13 +187,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getBlocklistApi();
+final api = RadarrApi().getBlocklistApi();
 final int movieId = 56; // int | 
 
 try {
     final response = api.apiV3BlocklistMovieGet(movieId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling BlocklistApi->apiV3BlocklistMovieGet: $e\n');
 }
 ```
@@ -206,7 +206,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**BuiltList&lt;BlocklistResource&gt;**](BlocklistResource.md)
+[**List&lt;BlocklistResource&gt;**](BlocklistResource.md)
 
 ### Authorization
 

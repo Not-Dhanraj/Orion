@@ -1,8 +1,8 @@
-# radarr.model.SourceType
+# radarr_api.model.SourceType
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties

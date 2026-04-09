@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for BackupApi
 void main() {
-  final instance = Radarr().getBackupApi();
+  final instance = RadarrApi().getBackupApi();
 
   group(BackupApi, () {
-    //Future<BuiltList<BackupResource>> apiV3SystemBackupGet() async
+    //Future<List<BackupResource>> apiV3SystemBackupGet() async
     test('test apiV3SystemBackupGet', () async {
       // TODO
     });
@@ -25,5 +26,6 @@ void main() {
     test('test apiV3SystemBackupRestoreUploadPost', () async {
       // TODO
     });
+
   });
 }

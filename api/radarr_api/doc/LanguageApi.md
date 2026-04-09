@@ -1,8 +1,8 @@
-# radarr.api.LanguageApi
+# radarr_api.api.LanguageApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -14,13 +14,13 @@ Method | HTTP request | Description
 
 
 # **apiV3LanguageGet**
-> BuiltList<LanguageResource> apiV3LanguageGet()
+> List<LanguageResource> apiV3LanguageGet()
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -30,12 +30,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getLanguageApi();
+final api = RadarrApi().getLanguageApi();
 
 try {
     final response = api.apiV3LanguageGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling LanguageApi->apiV3LanguageGet: $e\n');
 }
 ```
@@ -45,7 +45,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;LanguageResource&gt;**](LanguageResource.md)
+[**List&lt;LanguageResource&gt;**](LanguageResource.md)
 
 ### Authorization
 
@@ -65,7 +65,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -75,13 +75,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getLanguageApi();
+final api = RadarrApi().getLanguageApi();
 final int id = 56; // int | 
 
 try {
     final response = api.apiV3LanguageIdGet(id);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling LanguageApi->apiV3LanguageIdGet: $e\n');
 }
 ```

@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for DownloadClientConfigApi
 void main() {
-  final instance = Sonarr().getDownloadClientConfigApi();
+  final instance = SonarrApi().getDownloadClientConfigApi();
 
   group(DownloadClientConfigApi, () {
     //Future<DownloadClientConfigResource> apiV3ConfigDownloadclientGet() async
@@ -20,5 +21,6 @@ void main() {
     test('test apiV3ConfigDownloadclientIdPut', () async {
       // TODO
     });
+
   });
 }

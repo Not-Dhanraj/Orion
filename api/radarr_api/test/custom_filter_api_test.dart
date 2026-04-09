@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for CustomFilterApi
 void main() {
-  final instance = Radarr().getCustomFilterApi();
+  final instance = RadarrApi().getCustomFilterApi();
 
   group(CustomFilterApi, () {
-    //Future<BuiltList<CustomFilterResource>> apiV3CustomfilterGet() async
+    //Future<List<CustomFilterResource>> apiV3CustomfilterGet() async
     test('test apiV3CustomfilterGet', () async {
       // TODO
     });
@@ -30,5 +31,6 @@ void main() {
     test('test apiV3CustomfilterPost', () async {
       // TODO
     });
+
   });
 }

@@ -1,8 +1,8 @@
-# sonarr.model.LogFileResource
+# sonarr_api.model.LogFileResource
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties

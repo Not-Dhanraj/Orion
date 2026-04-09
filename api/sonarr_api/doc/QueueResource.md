@@ -1,8 +1,8 @@
-# sonarr.model.QueueResource
+# sonarr_api.model.QueueResource
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties
@@ -14,9 +14,9 @@ Name | Type | Description | Notes
 **seasonNumber** | **int** |  | [optional] 
 **series** | [**SeriesResource**](SeriesResource.md) |  | [optional] 
 **episode** | [**EpisodeResource**](EpisodeResource.md) |  | [optional] 
-**languages** | [**BuiltList&lt;Language&gt;**](Language.md) |  | [optional] 
+**languages** | [**List&lt;Language&gt;**](Language.md) |  | [optional] 
 **quality** | [**QualityModel**](QualityModel.md) |  | [optional] 
-**customFormats** | [**BuiltList&lt;CustomFormatResource&gt;**](CustomFormatResource.md) |  | [optional] 
+**customFormats** | [**List&lt;CustomFormatResource&gt;**](CustomFormatResource.md) |  | [optional] 
 **customFormatScore** | **int** |  | [optional] 
 **size** | **double** |  | [optional] 
 **title** | **String** |  | [optional] 
@@ -25,7 +25,7 @@ Name | Type | Description | Notes
 **status** | [**QueueStatus**](QueueStatus.md) |  | [optional] 
 **trackedDownloadStatus** | [**TrackedDownloadStatus**](TrackedDownloadStatus.md) |  | [optional] 
 **trackedDownloadState** | [**TrackedDownloadState**](TrackedDownloadState.md) |  | [optional] 
-**statusMessages** | [**BuiltList&lt;TrackedDownloadStatusMessage&gt;**](TrackedDownloadStatusMessage.md) |  | [optional] 
+**statusMessages** | [**List&lt;TrackedDownloadStatusMessage&gt;**](TrackedDownloadStatusMessage.md) |  | [optional] 
 **errorMessage** | **String** |  | [optional] 
 **downloadId** | **String** |  | [optional] 
 **protocol** | [**DownloadProtocol**](DownloadProtocol.md) |  | [optional] 

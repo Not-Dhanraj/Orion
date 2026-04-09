@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for MediaManagementConfigResource
 void main() {
-  final instance = MediaManagementConfigResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final MediaManagementConfigResource? instance = /* MediaManagementConfigResource(...) */ null;
+  // TODO add properties to the entity
 
   group(MediaManagementConfigResource, () {
     // int id
@@ -12,9 +12,8 @@ void main() {
       // TODO
     });
 
-    // bool autoUnmonitorPreviouslyDownloadedEpisodes
-    test('to test the property `autoUnmonitorPreviouslyDownloadedEpisodes`',
-        () async {
+    // bool autoUnmonitorPreviouslyDownloadedMovies
+    test('to test the property `autoUnmonitorPreviouslyDownloadedMovies`', () async {
       // TODO
     });
 
@@ -33,8 +32,8 @@ void main() {
       // TODO
     });
 
-    // bool createEmptySeriesFolders
-    test('to test the property `createEmptySeriesFolders`', () async {
+    // bool createEmptyMovieFolders
+    test('to test the property `createEmptyMovieFolders`', () async {
       // TODO
     });
 
@@ -53,6 +52,16 @@ void main() {
       // TODO
     });
 
+    // bool autoRenameFolders
+    test('to test the property `autoRenameFolders`', () async {
+      // TODO
+    });
+
+    // bool pathsDefaultStatic
+    test('to test the property `pathsDefaultStatic`', () async {
+      // TODO
+    });
+
     // bool setPermissionsLinux
     test('to test the property `setPermissionsLinux`', () async {
       // TODO
@@ -65,11 +74,6 @@ void main() {
 
     // String chownGroup
     test('to test the property `chownGroup`', () async {
-      // TODO
-    });
-
-    // EpisodeTitleRequiredType episodeTitleRequired
-    test('to test the property `episodeTitleRequired`', () async {
       // TODO
     });
 
@@ -112,5 +116,6 @@ void main() {
     test('to test the property `enableMediaInfo`', () async {
       // TODO
     });
+
   });
 }

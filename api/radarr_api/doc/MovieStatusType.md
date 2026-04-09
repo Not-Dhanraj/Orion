@@ -1,8 +1,8 @@
-# radarr.model.MovieStatusType
+# radarr_api.model.MovieStatusType
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties

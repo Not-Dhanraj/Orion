@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for MetadataApi
 void main() {
-  final instance = Radarr().getMetadataApi();
+  final instance = RadarrApi().getMetadataApi();
 
   group(MetadataApi, () {
     //Future apiV3MetadataActionNamePost(String name, { MetadataResource metadataResource }) async
@@ -11,7 +12,7 @@ void main() {
       // TODO
     });
 
-    //Future<BuiltList<MetadataResource>> apiV3MetadataGet() async
+    //Future<List<MetadataResource>> apiV3MetadataGet() async
     test('test apiV3MetadataGet', () async {
       // TODO
     });
@@ -36,7 +37,7 @@ void main() {
       // TODO
     });
 
-    //Future<BuiltList<MetadataResource>> apiV3MetadataSchemaGet() async
+    //Future<List<MetadataResource>> apiV3MetadataSchemaGet() async
     test('test apiV3MetadataSchemaGet', () async {
       // TODO
     });
@@ -50,5 +51,6 @@ void main() {
     test('test apiV3MetadataTestallPost', () async {
       // TODO
     });
+
   });
 }

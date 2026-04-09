@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for LanguageProfileResource
 void main() {
-  final instance = LanguageProfileResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final LanguageProfileResource? instance = /* LanguageProfileResource(...) */ null;
+  // TODO add properties to the entity
 
   group(LanguageProfileResource, () {
     // int id
@@ -27,9 +27,10 @@ void main() {
       // TODO
     });
 
-    // BuiltList<LanguageProfileItemResource> languages
+    // List<LanguageProfileItemResource> languages
     test('to test the property `languages`', () async {
       // TODO
     });
+
   });
 }

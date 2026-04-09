@@ -1,8 +1,8 @@
-# sonarr.model.BlocklistResourcePagingResource
+# sonarr_api.model.BlocklistResourcePagingResource
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties
@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **sortKey** | **String** |  | [optional] 
 **sortDirection** | [**SortDirection**](SortDirection.md) |  | [optional] 
 **totalRecords** | **int** |  | [optional] 
-**records** | [**BuiltList&lt;BlocklistResource&gt;**](BlocklistResource.md) |  | [optional] 
+**records** | [**List&lt;BlocklistResource&gt;**](BlocklistResource.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

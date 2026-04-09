@@ -1,8 +1,8 @@
-# sonarr.model.ImportListType
+# sonarr_api.model.ImportListType
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties

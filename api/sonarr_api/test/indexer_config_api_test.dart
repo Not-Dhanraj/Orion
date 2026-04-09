@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for IndexerConfigApi
 void main() {
-  final instance = Sonarr().getIndexerConfigApi();
+  final instance = SonarrApi().getIndexerConfigApi();
 
   group(IndexerConfigApi, () {
     //Future<IndexerConfigResource> apiV3ConfigIndexerGet() async
@@ -20,5 +21,6 @@ void main() {
     test('test apiV3ConfigIndexerIdPut', () async {
       // TODO
     });
+
   });
 }

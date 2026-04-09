@@ -1,19 +1,19 @@
-# radarr.model.ParsedMovieInfo
+# radarr_api.model.ParsedMovieInfo
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**movieTitles** | **BuiltList&lt;String&gt;** |  | [optional] 
+**movieTitles** | **List&lt;String&gt;** |  | [optional] 
 **originalTitle** | **String** |  | [optional] 
 **releaseTitle** | **String** |  | [optional] 
 **simpleReleaseTitle** | **String** |  | [optional] 
 **quality** | [**QualityModel**](QualityModel.md) |  | [optional] 
-**languages** | [**BuiltList&lt;Language&gt;**](Language.md) |  | [optional] 
+**languages** | [**List&lt;Language&gt;**](Language.md) |  | [optional] 
 **releaseGroup** | **String** |  | [optional] 
 **releaseHash** | **String** |  | [optional] 
 **edition** | **String** |  | [optional] 

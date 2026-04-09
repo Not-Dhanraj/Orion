@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for Quality
 void main() {
-  final instance = QualityBuilder();
-  // TODO add properties to the builder and call build()
+  final Quality? instance = /* Quality(...) */ null;
+  // TODO add properties to the entity
 
   group(Quality, () {
     // int id
@@ -26,5 +26,11 @@ void main() {
     test('to test the property `resolution`', () async {
       // TODO
     });
+
+    // Modifier modifier
+    test('to test the property `modifier`', () async {
+      // TODO
+    });
+
   });
 }

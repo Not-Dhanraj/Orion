@@ -1,15 +1,16 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for ImportListExclusionBulkResource
 void main() {
-  final instance = ImportListExclusionBulkResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final ImportListExclusionBulkResource? instance = /* ImportListExclusionBulkResource(...) */ null;
+  // TODO add properties to the entity
 
   group(ImportListExclusionBulkResource, () {
-    // BuiltSet<int> ids
+    // Set<int> ids
     test('to test the property `ids`', () async {
       // TODO
     });
+
   });
 }

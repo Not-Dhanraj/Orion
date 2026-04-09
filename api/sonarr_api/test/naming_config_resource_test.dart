@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for NamingConfigResource
 void main() {
-  final instance = NamingConfigResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final NamingConfigResource? instance = /* NamingConfigResource(...) */ null;
+  // TODO add properties to the entity
 
   group(NamingConfigResource, () {
     // int id
@@ -12,8 +12,8 @@ void main() {
       // TODO
     });
 
-    // bool renameEpisodes
-    test('to test the property `renameEpisodes`', () async {
+    // bool renameMovies
+    test('to test the property `renameMovies`', () async {
       // TODO
     });
 
@@ -22,49 +22,20 @@ void main() {
       // TODO
     });
 
-    // int colonReplacementFormat
+    // ColonReplacementFormat colonReplacementFormat
     test('to test the property `colonReplacementFormat`', () async {
       // TODO
     });
 
-    // String customColonReplacementFormat
-    test('to test the property `customColonReplacementFormat`', () async {
+    // String standardMovieFormat
+    test('to test the property `standardMovieFormat`', () async {
       // TODO
     });
 
-    // int multiEpisodeStyle
-    test('to test the property `multiEpisodeStyle`', () async {
+    // String movieFolderFormat
+    test('to test the property `movieFolderFormat`', () async {
       // TODO
     });
 
-    // String standardEpisodeFormat
-    test('to test the property `standardEpisodeFormat`', () async {
-      // TODO
-    });
-
-    // String dailyEpisodeFormat
-    test('to test the property `dailyEpisodeFormat`', () async {
-      // TODO
-    });
-
-    // String animeEpisodeFormat
-    test('to test the property `animeEpisodeFormat`', () async {
-      // TODO
-    });
-
-    // String seriesFolderFormat
-    test('to test the property `seriesFolderFormat`', () async {
-      // TODO
-    });
-
-    // String seasonFolderFormat
-    test('to test the property `seasonFolderFormat`', () async {
-      // TODO
-    });
-
-    // String specialsFolderFormat
-    test('to test the property `specialsFolderFormat`', () async {
-      // TODO
-    });
   });
 }

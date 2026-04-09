@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for IndexerFlagResource
 void main() {
-  final instance = IndexerFlagResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final IndexerFlagResource? instance = /* IndexerFlagResource(...) */ null;
+  // TODO add properties to the entity
 
   group(IndexerFlagResource, () {
     // int id
@@ -21,5 +21,6 @@ void main() {
     test('to test the property `nameLower`', () async {
       // TODO
     });
+
   });
 }

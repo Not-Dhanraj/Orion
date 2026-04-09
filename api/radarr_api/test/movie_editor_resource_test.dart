@@ -1,13 +1,13 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for MovieEditorResource
 void main() {
-  final instance = MovieEditorResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final MovieEditorResource? instance = /* MovieEditorResource(...) */ null;
+  // TODO add properties to the entity
 
   group(MovieEditorResource, () {
-    // BuiltList<int> movieIds
+    // List<int> movieIds
     test('to test the property `movieIds`', () async {
       // TODO
     });
@@ -32,7 +32,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<int> tags
+    // List<int> tags
     test('to test the property `tags`', () async {
       // TODO
     });
@@ -56,5 +56,6 @@ void main() {
     test('to test the property `addImportExclusion`', () async {
       // TODO
     });
+
   });
 }

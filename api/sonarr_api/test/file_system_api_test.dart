@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for FileSystemApi
 void main() {
-  final instance = Sonarr().getFileSystemApi();
+  final instance = SonarrApi().getFileSystemApi();
 
   group(FileSystemApi, () {
     //Future apiV3FilesystemGet({ String path, bool includeFiles, bool allowFoldersWithoutTrailingSlashes }) async
@@ -20,5 +21,6 @@ void main() {
     test('test apiV3FilesystemTypeGet', () async {
       // TODO
     });
+
   });
 }

@@ -1,8 +1,8 @@
-# radarr.model.RejectionType
+# radarr_api.model.RejectionType
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties

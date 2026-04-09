@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for LogFileResource
 void main() {
-  final instance = LogFileResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final LogFileResource? instance = /* LogFileResource(...) */ null;
+  // TODO add properties to the entity
 
   group(LogFileResource, () {
     // int id
@@ -31,5 +31,6 @@ void main() {
     test('to test the property `downloadUrl`', () async {
       // TODO
     });
+
   });
 }

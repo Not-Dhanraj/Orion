@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for HistoryResourcePagingResource
 void main() {
-  final instance = HistoryResourcePagingResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final HistoryResourcePagingResource? instance = /* HistoryResourcePagingResource(...) */ null;
+  // TODO add properties to the entity
 
   group(HistoryResourcePagingResource, () {
     // int page
@@ -32,9 +32,10 @@ void main() {
       // TODO
     });
 
-    // BuiltList<HistoryResource> records
+    // List<HistoryResource> records
     test('to test the property `records`', () async {
       // TODO
     });
+
   });
 }

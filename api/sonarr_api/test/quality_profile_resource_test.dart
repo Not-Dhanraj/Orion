@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for QualityProfileResource
 void main() {
-  final instance = QualityProfileResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final QualityProfileResource? instance = /* QualityProfileResource(...) */ null;
+  // TODO add properties to the entity
 
   group(QualityProfileResource, () {
     // int id
@@ -27,7 +27,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<QualityProfileQualityItemResource> items
+    // List<QualityProfileQualityItemResource> items
     test('to test the property `items`', () async {
       // TODO
     });
@@ -47,9 +47,15 @@ void main() {
       // TODO
     });
 
-    // BuiltList<ProfileFormatItemResource> formatItems
+    // List<ProfileFormatItemResource> formatItems
     test('to test the property `formatItems`', () async {
       // TODO
     });
+
+    // Language language
+    test('to test the property `language`', () async {
+      // TODO
+    });
+
   });
 }

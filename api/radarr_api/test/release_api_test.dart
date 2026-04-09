@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for ReleaseApi
 void main() {
-  final instance = Radarr().getReleaseApi();
+  final instance = RadarrApi().getReleaseApi();
 
   group(ReleaseApi, () {
-    //Future<BuiltList<ReleaseResource>> apiV3ReleaseGet({ int movieId }) async
+    //Future<List<ReleaseResource>> apiV3ReleaseGet({ int movieId }) async
     test('test apiV3ReleaseGet', () async {
       // TODO
     });
@@ -15,5 +16,6 @@ void main() {
     test('test apiV3ReleasePost', () async {
       // TODO
     });
+
   });
 }

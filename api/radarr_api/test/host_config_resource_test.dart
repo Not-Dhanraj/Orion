@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for HostConfigResource
 void main() {
-  final instance = HostConfigResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final HostConfigResource? instance = /* HostConfigResource(...) */ null;
+  // TODO add properties to the entity
 
   group(HostConfigResource, () {
     // int id
@@ -196,5 +196,6 @@ void main() {
     test('to test the property `trustCgnatIpAddresses`', () async {
       // TODO
     });
+
   });
 }

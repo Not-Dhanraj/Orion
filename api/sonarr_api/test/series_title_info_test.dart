@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for SeriesTitleInfo
 void main() {
-  final instance = SeriesTitleInfoBuilder();
-  // TODO add properties to the builder and call build()
+  final SeriesTitleInfo? instance = /* SeriesTitleInfo(...) */ null;
+  // TODO add properties to the entity
 
   group(SeriesTitleInfo, () {
     // String title
@@ -22,9 +22,10 @@ void main() {
       // TODO
     });
 
-    // BuiltList<String> allTitles
+    // List<String> allTitles
     test('to test the property `allTitles`', () async {
       // TODO
     });
+
   });
 }

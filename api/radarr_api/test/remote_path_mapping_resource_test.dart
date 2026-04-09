@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for RemotePathMappingResource
 void main() {
-  final instance = RemotePathMappingResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final RemotePathMappingResource? instance = /* RemotePathMappingResource(...) */ null;
+  // TODO add properties to the entity
 
   group(RemotePathMappingResource, () {
     // int id
@@ -26,5 +26,6 @@ void main() {
     test('to test the property `localPath`', () async {
       // TODO
     });
+
   });
 }

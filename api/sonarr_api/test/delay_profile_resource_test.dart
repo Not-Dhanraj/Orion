@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for DelayProfileResource
 void main() {
-  final instance = DelayProfileResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final DelayProfileResource? instance = /* DelayProfileResource(...) */ null;
+  // TODO add properties to the entity
 
   group(DelayProfileResource, () {
     // int id
@@ -57,9 +57,10 @@ void main() {
       // TODO
     });
 
-    // BuiltSet<int> tags
+    // Set<int> tags
     test('to test the property `tags`', () async {
       // TODO
     });
+
   });
 }

@@ -1,8 +1,8 @@
-# sonarr.api.NotificationApi
+# sonarr_api.api.NotificationApi
 
 ## Load the API package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:8989*
@@ -27,7 +27,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -37,13 +37,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getNotificationApi();
+final api = SonarrApi().getNotificationApi();
 final String name = name_example; // String | 
 final NotificationResource notificationResource = ; // NotificationResource | 
 
 try {
     api.apiV3NotificationActionNamePost(name, notificationResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling NotificationApi->apiV3NotificationActionNamePost: $e\n');
 }
 ```
@@ -71,13 +71,13 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiV3NotificationGet**
-> BuiltList<NotificationResource> apiV3NotificationGet()
+> List<NotificationResource> apiV3NotificationGet()
 
 
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -87,12 +87,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getNotificationApi();
+final api = SonarrApi().getNotificationApi();
 
 try {
     final response = api.apiV3NotificationGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling NotificationApi->apiV3NotificationGet: $e\n');
 }
 ```
@@ -102,7 +102,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;NotificationResource&gt;**](NotificationResource.md)
+[**List&lt;NotificationResource&gt;**](NotificationResource.md)
 
 ### Authorization
 
@@ -122,7 +122,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -132,12 +132,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getNotificationApi();
+final api = SonarrApi().getNotificationApi();
 final int id = 56; // int | 
 
 try {
     api.apiV3NotificationIdDelete(id);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling NotificationApi->apiV3NotificationIdDelete: $e\n');
 }
 ```
@@ -170,7 +170,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -180,13 +180,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getNotificationApi();
+final api = SonarrApi().getNotificationApi();
 final int id = 56; // int | 
 
 try {
     final response = api.apiV3NotificationIdGet(id);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling NotificationApi->apiV3NotificationIdGet: $e\n');
 }
 ```
@@ -219,7 +219,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -229,7 +229,7 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getNotificationApi();
+final api = SonarrApi().getNotificationApi();
 final int id = 56; // int | 
 final bool forceSave = true; // bool | 
 final NotificationResource notificationResource = ; // NotificationResource | 
@@ -237,7 +237,7 @@ final NotificationResource notificationResource = ; // NotificationResource |
 try {
     final response = api.apiV3NotificationIdPut(id, forceSave, notificationResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling NotificationApi->apiV3NotificationIdPut: $e\n');
 }
 ```
@@ -272,7 +272,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -282,14 +282,14 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getNotificationApi();
+final api = SonarrApi().getNotificationApi();
 final bool forceSave = true; // bool | 
 final NotificationResource notificationResource = ; // NotificationResource | 
 
 try {
     final response = api.apiV3NotificationPost(forceSave, notificationResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling NotificationApi->apiV3NotificationPost: $e\n');
 }
 ```
@@ -317,13 +317,13 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiV3NotificationSchemaGet**
-> BuiltList<NotificationResource> apiV3NotificationSchemaGet()
+> List<NotificationResource> apiV3NotificationSchemaGet()
 
 
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -333,12 +333,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getNotificationApi();
+final api = SonarrApi().getNotificationApi();
 
 try {
     final response = api.apiV3NotificationSchemaGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling NotificationApi->apiV3NotificationSchemaGet: $e\n');
 }
 ```
@@ -348,7 +348,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;NotificationResource&gt;**](NotificationResource.md)
+[**List&lt;NotificationResource&gt;**](NotificationResource.md)
 
 ### Authorization
 
@@ -368,7 +368,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -378,13 +378,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getNotificationApi();
+final api = SonarrApi().getNotificationApi();
 final bool forceTest = true; // bool | 
 final NotificationResource notificationResource = ; // NotificationResource | 
 
 try {
     api.apiV3NotificationTestPost(forceTest, notificationResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling NotificationApi->apiV3NotificationTestPost: $e\n');
 }
 ```
@@ -418,7 +418,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -428,11 +428,11 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getNotificationApi();
+final api = SonarrApi().getNotificationApi();
 
 try {
     api.apiV3NotificationTestallPost();
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling NotificationApi->apiV3NotificationTestallPost: $e\n');
 }
 ```

@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for AddMovieOptions
 void main() {
-  final instance = AddMovieOptionsBuilder();
-  // TODO add properties to the builder and call build()
+  final AddMovieOptions? instance = /* AddMovieOptions(...) */ null;
+  // TODO add properties to the entity
 
   group(AddMovieOptions, () {
     // bool ignoreEpisodesWithFiles
@@ -31,5 +31,6 @@ void main() {
     test('to test the property `addMethod`', () async {
       // TODO
     });
+
   });
 }

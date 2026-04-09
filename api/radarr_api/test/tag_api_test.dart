@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for TagApi
 void main() {
-  final instance = Radarr().getTagApi();
+  final instance = RadarrApi().getTagApi();
 
   group(TagApi, () {
-    //Future<BuiltList<TagResource>> apiV3TagGet() async
+    //Future<List<TagResource>> apiV3TagGet() async
     test('test apiV3TagGet', () async {
       // TODO
     });
@@ -30,5 +31,6 @@ void main() {
     test('test apiV3TagPost', () async {
       // TODO
     });
+
   });
 }

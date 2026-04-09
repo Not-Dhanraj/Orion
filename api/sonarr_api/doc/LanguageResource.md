@@ -1,8 +1,8 @@
-# sonarr.model.LanguageResource
+# sonarr_api.model.LanguageResource
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties

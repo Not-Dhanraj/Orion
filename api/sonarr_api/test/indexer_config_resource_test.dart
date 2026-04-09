@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for IndexerConfigResource
 void main() {
-  final instance = IndexerConfigResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final IndexerConfigResource? instance = /* IndexerConfigResource(...) */ null;
+  // TODO add properties to the entity
 
   group(IndexerConfigResource, () {
     // int id
@@ -17,13 +17,13 @@ void main() {
       // TODO
     });
 
-    // int retention
-    test('to test the property `retention`', () async {
+    // int maximumSize
+    test('to test the property `maximumSize`', () async {
       // TODO
     });
 
-    // int maximumSize
-    test('to test the property `maximumSize`', () async {
+    // int retention
+    test('to test the property `retention`', () async {
       // TODO
     });
 
@@ -31,5 +31,26 @@ void main() {
     test('to test the property `rssSyncInterval`', () async {
       // TODO
     });
+
+    // bool preferIndexerFlags
+    test('to test the property `preferIndexerFlags`', () async {
+      // TODO
+    });
+
+    // int availabilityDelay
+    test('to test the property `availabilityDelay`', () async {
+      // TODO
+    });
+
+    // bool allowHardcodedSubs
+    test('to test the property `allowHardcodedSubs`', () async {
+      // TODO
+    });
+
+    // String whitelistedHardcodedSubs
+    test('to test the property `whitelistedHardcodedSubs`', () async {
+      // TODO
+    });
+
   });
 }

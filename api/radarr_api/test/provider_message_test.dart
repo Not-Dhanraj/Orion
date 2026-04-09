@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for ProviderMessage
 void main() {
-  final instance = ProviderMessageBuilder();
-  // TODO add properties to the builder and call build()
+  final ProviderMessage? instance = /* ProviderMessage(...) */ null;
+  // TODO add properties to the entity
 
   group(ProviderMessage, () {
     // String message
@@ -16,5 +16,6 @@ void main() {
     test('to test the property `type`', () async {
       // TODO
     });
+
   });
 }

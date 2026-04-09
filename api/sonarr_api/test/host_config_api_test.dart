@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for HostConfigApi
 void main() {
-  final instance = Sonarr().getHostConfigApi();
+  final instance = SonarrApi().getHostConfigApi();
 
   group(HostConfigApi, () {
     //Future<HostConfigResource> apiV3ConfigHostGet() async
@@ -20,5 +21,6 @@ void main() {
     test('test apiV3ConfigHostIdPut', () async {
       // TODO
     });
+
   });
 }

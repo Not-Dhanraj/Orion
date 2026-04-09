@@ -1,5 +1,5 @@
 name: client
-description: "A multiplatform Client for Sonarr and Radarr"
+description: "A multiplatform Client for SonarrApiand Radarr"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -44,9 +44,9 @@ dependencies:
   hive_ce: ^2.11.3
   hive_ce_flutter: ^2.3.1
   intl: ^0.19.0
-  radarr:
+  radarr_api:
     path: ./api/radarr_api
-  sonarr:
+  sonarr_api:
     path: ./api/sonarr_api
   table_calendar: ^3.0.9
   url_launcher: ^6.3.2

@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for MovieStatisticsResource
 void main() {
-  final instance = MovieStatisticsResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final MovieStatisticsResource? instance = /* MovieStatisticsResource(...) */ null;
+  // TODO add properties to the entity
 
   group(MovieStatisticsResource, () {
     // int movieFileCount
@@ -17,9 +17,10 @@ void main() {
       // TODO
     });
 
-    // BuiltList<String> releaseGroups
+    // List<String> releaseGroups
     test('to test the property `releaseGroups`', () async {
       // TODO
     });
+
   });
 }

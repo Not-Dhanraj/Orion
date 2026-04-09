@@ -1,8 +1,8 @@
-# radarr.model.DownloadClientConfigResource
+# radarr_api.model.DownloadClientConfigResource
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties

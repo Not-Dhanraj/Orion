@@ -1,8 +1,8 @@
-# sonarr.model.HealthResource
+# sonarr_api.model.HealthResource
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties

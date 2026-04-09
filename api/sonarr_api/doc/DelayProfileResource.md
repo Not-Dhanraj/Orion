@@ -1,8 +1,8 @@
-# sonarr.model.DelayProfileResource
+# sonarr_api.model.DelayProfileResource
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties
@@ -18,7 +18,7 @@ Name | Type | Description | Notes
 **bypassIfAboveCustomFormatScore** | **bool** |  | [optional] 
 **minimumCustomFormatScore** | **int** |  | [optional] 
 **order** | **int** |  | [optional] 
-**tags** | **BuiltSet&lt;int&gt;** |  | [optional] 
+**tags** | **Set&lt;int&gt;** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

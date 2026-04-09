@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for QueueResource
 void main() {
-  final instance = QueueResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final QueueResource? instance = /* QueueResource(...) */ null;
+  // TODO add properties to the entity
 
   group(QueueResource, () {
     // int id
@@ -22,7 +22,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<Language> languages
+    // List<Language> languages
     test('to test the property `languages`', () async {
       // TODO
     });
@@ -32,7 +32,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<CustomFormatResource> customFormats
+    // List<CustomFormatResource> customFormats
     test('to test the property `customFormats`', () async {
       // TODO
     });
@@ -77,7 +77,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<TrackedDownloadStatusMessage> statusMessages
+    // List<TrackedDownloadStatusMessage> statusMessages
     test('to test the property `statusMessages`', () async {
       // TODO
     });
@@ -103,8 +103,7 @@ void main() {
     });
 
     // bool downloadClientHasPostImportCategory
-    test('to test the property `downloadClientHasPostImportCategory`',
-        () async {
+    test('to test the property `downloadClientHasPostImportCategory`', () async {
       // TODO
     });
 
@@ -127,5 +126,6 @@ void main() {
     test('to test the property `timeleft`', () async {
       // TODO
     });
+
   });
 }

@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for CollectionMovieResource
 void main() {
-  final instance = CollectionMovieResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final CollectionMovieResource? instance = /* CollectionMovieResource(...) */ null;
+  // TODO add properties to the entity
 
   group(CollectionMovieResource, () {
     // int tmdbId
@@ -47,7 +47,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<MediaCover> images
+    // List<MediaCover> images
     test('to test the property `images`', () async {
       // TODO
     });
@@ -62,7 +62,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<String> genres
+    // List<String> genres
     test('to test the property `genres`', () async {
       // TODO
     });
@@ -81,5 +81,6 @@ void main() {
     test('to test the property `isExcluded`', () async {
       // TODO
     });
+
   });
 }

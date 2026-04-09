@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for CreditResource
 void main() {
-  final instance = CreditResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final CreditResource? instance = /* CreditResource(...) */ null;
+  // TODO add properties to the entity
 
   group(CreditResource, () {
     // int id
@@ -32,7 +32,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<MediaCover> images
+    // List<MediaCover> images
     test('to test the property `images`', () async {
       // TODO
     });
@@ -61,5 +61,6 @@ void main() {
     test('to test the property `type`', () async {
       // TODO
     });
+
   });
 }

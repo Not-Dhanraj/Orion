@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for SelectOption
 void main() {
-  final instance = SelectOptionBuilder();
-  // TODO add properties to the builder and call build()
+  final SelectOption? instance = /* SelectOption(...) */ null;
+  // TODO add properties to the entity
 
   group(SelectOption, () {
     // int value
@@ -26,5 +26,11 @@ void main() {
     test('to test the property `hint`', () async {
       // TODO
     });
+
+    // bool dividerAfter
+    test('to test the property `dividerAfter`', () async {
+      // TODO
+    });
+
   });
 }

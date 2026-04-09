@@ -1,8 +1,8 @@
-# sonarr.model.Field
+# sonarr_api.model.Field
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties
@@ -15,10 +15,10 @@ Name | Type | Description | Notes
 **helpText** | **String** |  | [optional] 
 **helpTextWarning** | **String** |  | [optional] 
 **helpLink** | **String** |  | [optional] 
-**value** | [**JsonObject**](.md) |  | [optional] 
+**value** | **Object** |  | [optional] 
 **type** | **String** |  | [optional] 
 **advanced** | **bool** |  | [optional] 
-**selectOptions** | [**BuiltList&lt;SelectOption&gt;**](SelectOption.md) |  | [optional] 
+**selectOptions** | [**List&lt;SelectOption&gt;**](SelectOption.md) |  | [optional] 
 **selectOptionsProviderAction** | **String** |  | [optional] 
 **section** | **String** |  | [optional] 
 **hidden** | **String** |  | [optional] 

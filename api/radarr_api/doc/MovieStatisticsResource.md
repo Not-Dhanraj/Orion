@@ -1,8 +1,8 @@
-# radarr.model.MovieStatisticsResource
+# radarr_api.model.MovieStatisticsResource
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties
@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **movieFileCount** | **int** |  | [optional] 
 **sizeOnDisk** | **int** |  | [optional] 
-**releaseGroups** | **BuiltList&lt;String&gt;** |  | [optional] 
+**releaseGroups** | **List&lt;String&gt;** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

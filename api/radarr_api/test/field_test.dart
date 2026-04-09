@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for Field
 void main() {
-  final instance = FieldBuilder();
-  // TODO add properties to the builder and call build()
+  final Field? instance = /* Field(...) */ null;
+  // TODO add properties to the entity
 
   group(Field, () {
     // int order
@@ -42,7 +42,7 @@ void main() {
       // TODO
     });
 
-    // JsonObject value
+    // Object value
     test('to test the property `value`', () async {
       // TODO
     });
@@ -57,7 +57,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<SelectOption> selectOptions
+    // List<SelectOption> selectOptions
     test('to test the property `selectOptions`', () async {
       // TODO
     });
@@ -91,5 +91,6 @@ void main() {
     test('to test the property `isFloat`', () async {
       // TODO
     });
+
   });
 }

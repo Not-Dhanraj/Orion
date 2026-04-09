@@ -1,13 +1,13 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for CustomFormatBulkResource
 void main() {
-  final instance = CustomFormatBulkResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final CustomFormatBulkResource? instance = /* CustomFormatBulkResource(...) */ null;
+  // TODO add properties to the entity
 
   group(CustomFormatBulkResource, () {
-    // BuiltSet<int> ids
+    // Set<int> ids
     test('to test the property `ids`', () async {
       // TODO
     });
@@ -16,5 +16,6 @@ void main() {
     test('to test the property `includeCustomFormatWhenRenaming`', () async {
       // TODO
     });
+
   });
 }

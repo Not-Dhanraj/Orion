@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for RenameEpisodeResource
 void main() {
-  final instance = RenameEpisodeResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final RenameEpisodeResource? instance = /* RenameEpisodeResource(...) */ null;
+  // TODO add properties to the entity
 
   group(RenameEpisodeResource, () {
     // int id
@@ -22,7 +22,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<int> episodeNumbers
+    // List<int> episodeNumbers
     test('to test the property `episodeNumbers`', () async {
       // TODO
     });
@@ -41,5 +41,6 @@ void main() {
     test('to test the property `newPath`', () async {
       // TODO
     });
+
   });
 }

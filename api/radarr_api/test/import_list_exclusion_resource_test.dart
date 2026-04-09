@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for ImportListExclusionResource
 void main() {
-  final instance = ImportListExclusionResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final ImportListExclusionResource? instance = /* ImportListExclusionResource(...) */ null;
+  // TODO add properties to the entity
 
   group(ImportListExclusionResource, () {
     // int id
@@ -17,7 +17,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<Field> fields
+    // List<Field> fields
     test('to test the property `fields`', () async {
       // TODO
     });
@@ -47,12 +47,12 @@ void main() {
       // TODO
     });
 
-    // BuiltSet<int> tags
+    // Set<int> tags
     test('to test the property `tags`', () async {
       // TODO
     });
 
-    // BuiltList<ImportListExclusionResource> presets
+    // List<ImportListExclusionResource> presets
     test('to test the property `presets`', () async {
       // TODO
     });
@@ -71,5 +71,6 @@ void main() {
     test('to test the property `movieYear`', () async {
       // TODO
     });
+
   });
 }

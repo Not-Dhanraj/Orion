@@ -1,13 +1,13 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for SeriesEditorResource
 void main() {
-  final instance = SeriesEditorResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final SeriesEditorResource? instance = /* SeriesEditorResource(...) */ null;
+  // TODO add properties to the entity
 
   group(SeriesEditorResource, () {
-    // BuiltList<int> seriesIds
+    // List<int> seriesIds
     test('to test the property `seriesIds`', () async {
       // TODO
     });
@@ -42,7 +42,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<int> tags
+    // List<int> tags
     test('to test the property `tags`', () async {
       // TODO
     });
@@ -66,5 +66,6 @@ void main() {
     test('to test the property `addImportListExclusion`', () async {
       // TODO
     });
+
   });
 }

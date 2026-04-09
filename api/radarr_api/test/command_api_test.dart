@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for CommandApi
 void main() {
-  final instance = Radarr().getCommandApi();
+  final instance = RadarrApi().getCommandApi();
 
   group(CommandApi, () {
-    //Future<BuiltList<CommandResource>> apiV3CommandGet() async
+    //Future<List<CommandResource>> apiV3CommandGet() async
     test('test apiV3CommandGet', () async {
       // TODO
     });
@@ -25,5 +26,6 @@ void main() {
     test('test apiV3CommandPost', () async {
       // TODO
     });
+
   });
 }

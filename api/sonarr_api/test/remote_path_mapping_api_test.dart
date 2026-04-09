@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for RemotePathMappingApi
 void main() {
-  final instance = Sonarr().getRemotePathMappingApi();
+  final instance = SonarrApi().getRemotePathMappingApi();
 
   group(RemotePathMappingApi, () {
-    //Future<BuiltList<RemotePathMappingResource>> apiV3RemotepathmappingGet() async
+    //Future<List<RemotePathMappingResource>> apiV3RemotepathmappingGet() async
     test('test apiV3RemotepathmappingGet', () async {
       // TODO
     });
@@ -30,5 +31,6 @@ void main() {
     test('test apiV3RemotepathmappingPost', () async {
       // TODO
     });
+
   });
 }

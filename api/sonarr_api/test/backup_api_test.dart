@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for BackupApi
 void main() {
-  final instance = Sonarr().getBackupApi();
+  final instance = SonarrApi().getBackupApi();
 
   group(BackupApi, () {
-    //Future<BuiltList<BackupResource>> apiV3SystemBackupGet() async
+    //Future<List<BackupResource>> apiV3SystemBackupGet() async
     test('test apiV3SystemBackupGet', () async {
       // TODO
     });
@@ -25,5 +26,6 @@ void main() {
     test('test apiV3SystemBackupRestoreUploadPost', () async {
       // TODO
     });
+
   });
 }

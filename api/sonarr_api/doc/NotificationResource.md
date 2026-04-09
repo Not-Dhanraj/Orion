@@ -1,8 +1,8 @@
-# sonarr.model.NotificationResource
+# sonarr_api.model.NotificationResource
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties
@@ -10,14 +10,14 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **int** |  | [optional] 
 **name** | **String** |  | [optional] 
-**fields** | [**BuiltList&lt;Field&gt;**](Field.md) |  | [optional] 
+**fields** | [**List&lt;Field&gt;**](Field.md) |  | [optional] 
 **implementationName** | **String** |  | [optional] 
 **implementation** | **String** |  | [optional] 
 **configContract** | **String** |  | [optional] 
 **infoLink** | **String** |  | [optional] 
 **message** | [**ProviderMessage**](ProviderMessage.md) |  | [optional] 
-**tags** | **BuiltSet&lt;int&gt;** |  | [optional] 
-**presets** | [**BuiltList&lt;NotificationResource&gt;**](NotificationResource.md) |  | [optional] 
+**tags** | **Set&lt;int&gt;** |  | [optional] 
+**presets** | [**List&lt;NotificationResource&gt;**](NotificationResource.md) |  | [optional] 
 **link** | **String** |  | [optional] 
 **onGrab** | **bool** |  | [optional] 
 **onDownload** | **bool** |  | [optional] 

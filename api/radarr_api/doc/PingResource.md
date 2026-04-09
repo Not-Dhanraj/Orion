@@ -1,8 +1,8 @@
-# radarr.model.PingResource
+# radarr_api.model.PingResource
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties

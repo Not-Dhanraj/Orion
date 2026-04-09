@@ -1,8 +1,8 @@
-# sonarr.model.ProviderMessage
+# sonarr_api.model.ProviderMessage
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties

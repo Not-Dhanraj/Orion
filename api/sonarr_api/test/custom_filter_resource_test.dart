@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for CustomFilterResource
 void main() {
-  final instance = CustomFilterResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final CustomFilterResource? instance = /* CustomFilterResource(...) */ null;
+  // TODO add properties to the entity
 
   group(CustomFilterResource, () {
     // int id
@@ -22,9 +22,10 @@ void main() {
       // TODO
     });
 
-    // BuiltList<BuiltMap<String, JsonObject>> filters
+    // List<Map<String, Object>> filters
     test('to test the property `filters`', () async {
       // TODO
     });
+
   });
 }

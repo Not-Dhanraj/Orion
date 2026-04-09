@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for ReleaseApi
 void main() {
-  final instance = Sonarr().getReleaseApi();
+  final instance = SonarrApi().getReleaseApi();
 
   group(ReleaseApi, () {
-    //Future<BuiltList<ReleaseResource>> apiV3ReleaseGet({ int seriesId, int episodeId, int seasonNumber }) async
+    //Future<List<ReleaseResource>> apiV3ReleaseGet({ int movieId }) async
     test('test apiV3ReleaseGet', () async {
       // TODO
     });
@@ -15,5 +16,6 @@ void main() {
     test('test apiV3ReleasePost', () async {
       // TODO
     });
+
   });
 }

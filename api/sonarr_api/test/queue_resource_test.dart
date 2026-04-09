@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for QueueResource
 void main() {
-  final instance = QueueResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final QueueResource? instance = /* QueueResource(...) */ null;
+  // TODO add properties to the entity
 
   group(QueueResource, () {
     // int id
@@ -12,32 +12,17 @@ void main() {
       // TODO
     });
 
-    // int seriesId
-    test('to test the property `seriesId`', () async {
+    // int movieId
+    test('to test the property `movieId`', () async {
       // TODO
     });
 
-    // int episodeId
-    test('to test the property `episodeId`', () async {
+    // MovieResource movie
+    test('to test the property `movie`', () async {
       // TODO
     });
 
-    // int seasonNumber
-    test('to test the property `seasonNumber`', () async {
-      // TODO
-    });
-
-    // SeriesResource series
-    test('to test the property `series`', () async {
-      // TODO
-    });
-
-    // EpisodeResource episode
-    test('to test the property `episode`', () async {
-      // TODO
-    });
-
-    // BuiltList<Language> languages
+    // List<Language> languages
     test('to test the property `languages`', () async {
       // TODO
     });
@@ -47,7 +32,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<CustomFormatResource> customFormats
+    // List<CustomFormatResource> customFormats
     test('to test the property `customFormats`', () async {
       // TODO
     });
@@ -92,7 +77,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<TrackedDownloadStatusMessage> statusMessages
+    // List<TrackedDownloadStatusMessage> statusMessages
     test('to test the property `statusMessages`', () async {
       // TODO
     });
@@ -118,8 +103,7 @@ void main() {
     });
 
     // bool downloadClientHasPostImportCategory
-    test('to test the property `downloadClientHasPostImportCategory`',
-        () async {
+    test('to test the property `downloadClientHasPostImportCategory`', () async {
       // TODO
     });
 
@@ -133,11 +117,6 @@ void main() {
       // TODO
     });
 
-    // bool episodeHasFile
-    test('to test the property `episodeHasFile`', () async {
-      // TODO
-    });
-
     // double sizeleft
     test('to test the property `sizeleft`', () async {
       // TODO
@@ -147,5 +126,6 @@ void main() {
     test('to test the property `timeleft`', () async {
       // TODO
     });
+
   });
 }

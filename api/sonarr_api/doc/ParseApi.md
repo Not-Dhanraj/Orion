@@ -1,8 +1,8 @@
-# sonarr.api.ParseApi
+# sonarr_api.api.ParseApi
 
 ## Load the API package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:8989*
@@ -19,7 +19,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -29,14 +29,14 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getParseApi();
+final api = SonarrApi().getParseApi();
 final String title = title_example; // String | 
 final String path = path_example; // String | 
 
 try {
     final response = api.apiV3ParseGet(title, path);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ParseApi->apiV3ParseGet: $e\n');
 }
 ```

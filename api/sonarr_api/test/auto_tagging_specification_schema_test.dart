@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for AutoTaggingSpecificationSchema
 void main() {
-  final instance = AutoTaggingSpecificationSchemaBuilder();
-  // TODO add properties to the builder and call build()
+  final AutoTaggingSpecificationSchema? instance = /* AutoTaggingSpecificationSchema(...) */ null;
+  // TODO add properties to the entity
 
   group(AutoTaggingSpecificationSchema, () {
     // int id
@@ -37,9 +37,10 @@ void main() {
       // TODO
     });
 
-    // BuiltList<Field> fields
+    // List<Field> fields
     test('to test the property `fields`', () async {
       // TODO
     });
+
   });
 }

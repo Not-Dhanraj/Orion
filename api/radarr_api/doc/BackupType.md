@@ -1,8 +1,8 @@
-# radarr.model.BackupType
+# radarr_api.model.BackupType
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties

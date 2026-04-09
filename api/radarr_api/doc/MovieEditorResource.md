@@ -1,19 +1,19 @@
-# radarr.model.MovieEditorResource
+# radarr_api.model.MovieEditorResource
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**movieIds** | **BuiltList&lt;int&gt;** |  | [optional] 
+**movieIds** | **List&lt;int&gt;** |  | [optional] 
 **monitored** | **bool** |  | [optional] 
 **qualityProfileId** | **int** |  | [optional] 
 **minimumAvailability** | [**MovieStatusType**](MovieStatusType.md) |  | [optional] 
 **rootFolderPath** | **String** |  | [optional] 
-**tags** | **BuiltList&lt;int&gt;** |  | [optional] 
+**tags** | **List&lt;int&gt;** |  | [optional] 
 **applyTags** | [**ApplyTags**](ApplyTags.md) |  | [optional] 
 **moveFiles** | **bool** |  | [optional] 
 **deleteFiles** | **bool** |  | [optional] 

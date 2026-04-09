@@ -1,8 +1,8 @@
-# radarr.api.QualityDefinitionApi
+# radarr_api.api.QualityDefinitionApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -17,13 +17,13 @@ Method | HTTP request | Description
 
 
 # **apiV3QualitydefinitionGet**
-> BuiltList<QualityDefinitionResource> apiV3QualitydefinitionGet()
+> List<QualityDefinitionResource> apiV3QualitydefinitionGet()
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -33,12 +33,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getQualityDefinitionApi();
+final api = RadarrApi().getQualityDefinitionApi();
 
 try {
     final response = api.apiV3QualitydefinitionGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling QualityDefinitionApi->apiV3QualitydefinitionGet: $e\n');
 }
 ```
@@ -48,7 +48,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;QualityDefinitionResource&gt;**](QualityDefinitionResource.md)
+[**List&lt;QualityDefinitionResource&gt;**](QualityDefinitionResource.md)
 
 ### Authorization
 
@@ -68,7 +68,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -78,13 +78,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getQualityDefinitionApi();
+final api = RadarrApi().getQualityDefinitionApi();
 final int id = 56; // int | 
 
 try {
     final response = api.apiV3QualitydefinitionIdGet(id);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling QualityDefinitionApi->apiV3QualitydefinitionIdGet: $e\n');
 }
 ```
@@ -117,7 +117,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -127,14 +127,14 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getQualityDefinitionApi();
+final api = RadarrApi().getQualityDefinitionApi();
 final String id = id_example; // String | 
 final QualityDefinitionResource qualityDefinitionResource = ; // QualityDefinitionResource | 
 
 try {
     final response = api.apiV3QualitydefinitionIdPut(id, qualityDefinitionResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling QualityDefinitionApi->apiV3QualitydefinitionIdPut: $e\n');
 }
 ```
@@ -168,7 +168,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -178,12 +178,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getQualityDefinitionApi();
+final api = RadarrApi().getQualityDefinitionApi();
 
 try {
     final response = api.apiV3QualitydefinitionLimitsGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling QualityDefinitionApi->apiV3QualitydefinitionLimitsGet: $e\n');
 }
 ```
@@ -213,7 +213,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -223,12 +223,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getQualityDefinitionApi();
-final BuiltList<QualityDefinitionResource> qualityDefinitionResource = ; // BuiltList<QualityDefinitionResource> | 
+final api = RadarrApi().getQualityDefinitionApi();
+final List<QualityDefinitionResource> qualityDefinitionResource = ; // List<QualityDefinitionResource> | 
 
 try {
     api.apiV3QualitydefinitionUpdatePut(qualityDefinitionResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling QualityDefinitionApi->apiV3QualitydefinitionUpdatePut: $e\n');
 }
 ```
@@ -237,7 +237,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **qualityDefinitionResource** | [**BuiltList&lt;QualityDefinitionResource&gt;**](QualityDefinitionResource.md)|  | [optional] 
+ **qualityDefinitionResource** | [**List&lt;QualityDefinitionResource&gt;**](QualityDefinitionResource.md)|  | [optional] 
 
 ### Return type
 

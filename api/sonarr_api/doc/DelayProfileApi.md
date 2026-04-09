@@ -1,8 +1,8 @@
-# sonarr.api.DelayProfileApi
+# sonarr_api.api.DelayProfileApi
 
 ## Load the API package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:8989*
@@ -18,13 +18,13 @@ Method | HTTP request | Description
 
 
 # **apiV3DelayprofileGet**
-> BuiltList<DelayProfileResource> apiV3DelayprofileGet()
+> List<DelayProfileResource> apiV3DelayprofileGet()
 
 
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -34,12 +34,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getDelayProfileApi();
+final api = SonarrApi().getDelayProfileApi();
 
 try {
     final response = api.apiV3DelayprofileGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DelayProfileApi->apiV3DelayprofileGet: $e\n');
 }
 ```
@@ -49,7 +49,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;DelayProfileResource&gt;**](DelayProfileResource.md)
+[**List&lt;DelayProfileResource&gt;**](DelayProfileResource.md)
 
 ### Authorization
 
@@ -69,7 +69,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -79,12 +79,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getDelayProfileApi();
+final api = SonarrApi().getDelayProfileApi();
 final int id = 56; // int | 
 
 try {
     api.apiV3DelayprofileIdDelete(id);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DelayProfileApi->apiV3DelayprofileIdDelete: $e\n');
 }
 ```
@@ -117,7 +117,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -127,13 +127,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getDelayProfileApi();
+final api = SonarrApi().getDelayProfileApi();
 final int id = 56; // int | 
 
 try {
     final response = api.apiV3DelayprofileIdGet(id);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DelayProfileApi->apiV3DelayprofileIdGet: $e\n');
 }
 ```
@@ -166,7 +166,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -176,14 +176,14 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getDelayProfileApi();
+final api = SonarrApi().getDelayProfileApi();
 final String id = id_example; // String | 
 final DelayProfileResource delayProfileResource = ; // DelayProfileResource | 
 
 try {
     final response = api.apiV3DelayprofileIdPut(id, delayProfileResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DelayProfileApi->apiV3DelayprofileIdPut: $e\n');
 }
 ```
@@ -217,7 +217,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -227,13 +227,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getDelayProfileApi();
+final api = SonarrApi().getDelayProfileApi();
 final DelayProfileResource delayProfileResource = ; // DelayProfileResource | 
 
 try {
     final response = api.apiV3DelayprofilePost(delayProfileResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DelayProfileApi->apiV3DelayprofilePost: $e\n');
 }
 ```
@@ -260,13 +260,13 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiV3DelayprofileReorderIdPut**
-> BuiltList<DelayProfileResource> apiV3DelayprofileReorderIdPut(id, after)
+> List<DelayProfileResource> apiV3DelayprofileReorderIdPut(id, after)
 
 
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -276,14 +276,14 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getDelayProfileApi();
+final api = SonarrApi().getDelayProfileApi();
 final int id = 56; // int | 
 final int after = 56; // int | 
 
 try {
     final response = api.apiV3DelayprofileReorderIdPut(id, after);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DelayProfileApi->apiV3DelayprofileReorderIdPut: $e\n');
 }
 ```
@@ -297,7 +297,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**BuiltList&lt;DelayProfileResource&gt;**](DelayProfileResource.md)
+[**List&lt;DelayProfileResource&gt;**](DelayProfileResource.md)
 
 ### Authorization
 

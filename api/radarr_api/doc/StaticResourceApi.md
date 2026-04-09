@@ -1,8 +1,8 @@
-# radarr.api.StaticResourceApi
+# radarr_api.api.StaticResourceApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -22,7 +22,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -32,12 +32,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getStaticResourceApi();
+final api = RadarrApi().getStaticResourceApi();
 final String path = path_example; // String | 
 
 try {
     api.contentPathGet(path);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling StaticResourceApi->contentPathGet: $e\n');
 }
 ```
@@ -70,7 +70,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -80,11 +80,11 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getStaticResourceApi();
+final api = RadarrApi().getStaticResourceApi();
 
 try {
     api.loginGet();
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling StaticResourceApi->loginGet: $e\n');
 }
 ```
@@ -114,7 +114,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -124,12 +124,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getStaticResourceApi();
+final api = RadarrApi().getStaticResourceApi();
 final String path = path_example; // String | 
 
 try {
     api.pathGet(path);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling StaticResourceApi->pathGet: $e\n');
 }
 ```
@@ -162,7 +162,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -172,12 +172,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getStaticResourceApi();
+final api = RadarrApi().getStaticResourceApi();
 final String path = path_example; // String | 
 
 try {
     api.rootGet(path);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling StaticResourceApi->rootGet: $e\n');
 }
 ```

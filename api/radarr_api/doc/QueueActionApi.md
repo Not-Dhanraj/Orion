@@ -1,8 +1,8 @@
-# radarr.api.QueueActionApi
+# radarr_api.api.QueueActionApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -20,7 +20,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -30,12 +30,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getQueueActionApi();
+final api = RadarrApi().getQueueActionApi();
 final QueueBulkResource queueBulkResource = ; // QueueBulkResource | 
 
 try {
     api.apiV3QueueGrabBulkPost(queueBulkResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling QueueActionApi->apiV3QueueGrabBulkPost: $e\n');
 }
 ```
@@ -68,7 +68,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -78,12 +78,12 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getQueueActionApi();
+final api = RadarrApi().getQueueActionApi();
 final int id = 56; // int | 
 
 try {
     api.apiV3QueueGrabIdPost(id);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling QueueActionApi->apiV3QueueGrabIdPost: $e\n');
 }
 ```

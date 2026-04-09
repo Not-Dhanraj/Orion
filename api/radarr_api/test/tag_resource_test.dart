@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for TagResource
 void main() {
-  final instance = TagResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final TagResource? instance = /* TagResource(...) */ null;
+  // TODO add properties to the entity
 
   group(TagResource, () {
     // int id
@@ -16,5 +16,6 @@ void main() {
     test('to test the property `label`', () async {
       // TODO
     });
+
   });
 }

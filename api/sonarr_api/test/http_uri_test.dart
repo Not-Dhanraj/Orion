@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for HttpUri
 void main() {
-  final instance = HttpUriBuilder();
-  // TODO add properties to the builder and call build()
+  final HttpUri? instance = /* HttpUri(...) */ null;
+  // TODO add properties to the entity
 
   group(HttpUri, () {
     // String fullUri
@@ -41,5 +41,6 @@ void main() {
     test('to test the property `fragment`', () async {
       // TODO
     });
+
   });
 }

@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for TagApi
 void main() {
-  final instance = Sonarr().getTagApi();
+  final instance = SonarrApi().getTagApi();
 
   group(TagApi, () {
-    //Future<BuiltList<TagResource>> apiV3TagGet() async
+    //Future<List<TagResource>> apiV3TagGet() async
     test('test apiV3TagGet', () async {
       // TODO
     });
@@ -30,5 +31,6 @@ void main() {
     test('test apiV3TagPost', () async {
       // TODO
     });
+
   });
 }

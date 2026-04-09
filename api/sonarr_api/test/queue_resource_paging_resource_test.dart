@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for QueueResourcePagingResource
 void main() {
-  final instance = QueueResourcePagingResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final QueueResourcePagingResource? instance = /* QueueResourcePagingResource(...) */ null;
+  // TODO add properties to the entity
 
   group(QueueResourcePagingResource, () {
     // int page
@@ -32,9 +32,10 @@ void main() {
       // TODO
     });
 
-    // BuiltList<QueueResource> records
+    // List<QueueResource> records
     test('to test the property `records`', () async {
       // TODO
     });
+
   });
 }

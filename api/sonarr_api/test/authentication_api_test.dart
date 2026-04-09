@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for AuthenticationApi
 void main() {
-  final instance = Sonarr().getAuthenticationApi();
+  final instance = SonarrApi().getAuthenticationApi();
 
   group(AuthenticationApi, () {
     //Future loginPost({ String returnUrl, String username, String password, String rememberMe }) async
@@ -15,5 +16,6 @@ void main() {
     test('test logoutGet', () async {
       // TODO
     });
+
   });
 }

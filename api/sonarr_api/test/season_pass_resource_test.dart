@@ -1,13 +1,13 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for SeasonPassResource
 void main() {
-  final instance = SeasonPassResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final SeasonPassResource? instance = /* SeasonPassResource(...) */ null;
+  // TODO add properties to the entity
 
   group(SeasonPassResource, () {
-    // BuiltList<SeasonPassSeriesResource> series
+    // List<SeasonPassSeriesResource> series
     test('to test the property `series`', () async {
       // TODO
     });
@@ -16,5 +16,6 @@ void main() {
     test('to test the property `monitoringOptions`', () async {
       // TODO
     });
+
   });
 }

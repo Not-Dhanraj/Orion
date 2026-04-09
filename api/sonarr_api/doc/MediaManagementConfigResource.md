@@ -1,8 +1,8 @@
-# sonarr.model.MediaManagementConfigResource
+# sonarr_api.model.MediaManagementConfigResource
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties

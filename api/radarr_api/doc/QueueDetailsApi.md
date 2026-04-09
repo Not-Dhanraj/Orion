@@ -1,8 +1,8 @@
-# radarr.api.QueueDetailsApi
+# radarr_api.api.QueueDetailsApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -13,13 +13,13 @@ Method | HTTP request | Description
 
 
 # **apiV3QueueDetailsGet**
-> BuiltList<QueueResource> apiV3QueueDetailsGet(movieId, includeMovie)
+> List<QueueResource> apiV3QueueDetailsGet(movieId, includeMovie)
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -29,14 +29,14 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getQueueDetailsApi();
+final api = RadarrApi().getQueueDetailsApi();
 final int movieId = 56; // int | 
 final bool includeMovie = true; // bool | 
 
 try {
     final response = api.apiV3QueueDetailsGet(movieId, includeMovie);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling QueueDetailsApi->apiV3QueueDetailsGet: $e\n');
 }
 ```
@@ -50,7 +50,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**BuiltList&lt;QueueResource&gt;**](QueueResource.md)
+[**List&lt;QueueResource&gt;**](QueueResource.md)
 
 ### Authorization
 

@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for MediaManagementConfigResource
 void main() {
-  final instance = MediaManagementConfigResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final MediaManagementConfigResource? instance = /* MediaManagementConfigResource(...) */ null;
+  // TODO add properties to the entity
 
   group(MediaManagementConfigResource, () {
     // int id
@@ -13,8 +13,7 @@ void main() {
     });
 
     // bool autoUnmonitorPreviouslyDownloadedMovies
-    test('to test the property `autoUnmonitorPreviouslyDownloadedMovies`',
-        () async {
+    test('to test the property `autoUnmonitorPreviouslyDownloadedMovies`', () async {
       // TODO
     });
 
@@ -117,5 +116,6 @@ void main() {
     test('to test the property `enableMediaInfo`', () async {
       // TODO
     });
+
   });
 }

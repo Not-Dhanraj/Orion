@@ -1,8 +1,8 @@
-# sonarr.model.TrackedDownloadState
+# sonarr_api.model.TrackedDownloadState
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties

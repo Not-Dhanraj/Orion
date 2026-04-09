@@ -1,8 +1,8 @@
-# radarr.model.IndexerFlagResource
+# radarr_api.model.IndexerFlagResource
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties

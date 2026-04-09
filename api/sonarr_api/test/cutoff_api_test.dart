@@ -1,19 +1,16 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for CutoffApi
 void main() {
-  final instance = Sonarr().getCutoffApi();
+  final instance = SonarrApi().getCutoffApi();
 
   group(CutoffApi, () {
-    //Future<EpisodeResourcePagingResource> apiV3WantedCutoffGet({ int page, int pageSize, String sortKey, SortDirection sortDirection, bool includeSeries, bool includeEpisodeFile, bool includeImages, bool monitored }) async
+    //Future<MovieResourcePagingResource> apiV3WantedCutoffGet({ int page, int pageSize, String sortKey, SortDirection sortDirection, bool monitored }) async
     test('test apiV3WantedCutoffGet', () async {
       // TODO
     });
 
-    //Future<EpisodeResource> apiV3WantedCutoffIdGet(int id) async
-    test('test apiV3WantedCutoffIdGet', () async {
-      // TODO
-    });
   });
 }

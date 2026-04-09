@@ -1,8 +1,8 @@
-# radarr.api.CutoffApi
+# radarr_api.api.CutoffApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -19,7 +19,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -29,7 +29,7 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getCutoffApi();
+final api = RadarrApi().getCutoffApi();
 final int page = 56; // int | 
 final int pageSize = 56; // int | 
 final String sortKey = sortKey_example; // String | 
@@ -39,7 +39,7 @@ final bool monitored = true; // bool |
 try {
     final response = api.apiV3WantedCutoffGet(page, pageSize, sortKey, sortDirection, monitored);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling CutoffApi->apiV3WantedCutoffGet: $e\n');
 }
 ```

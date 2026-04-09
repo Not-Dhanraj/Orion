@@ -1,8 +1,8 @@
-# radarr.model.CommandPriority
+# radarr_api.model.CommandPriority
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties

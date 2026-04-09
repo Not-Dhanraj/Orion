@@ -1,14 +1,16 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for MediaCoverApi
 void main() {
-  final instance = Sonarr().getMediaCoverApi();
+  final instance = SonarrApi().getMediaCoverApi();
 
   group(MediaCoverApi, () {
-    //Future apiV3MediacoverSeriesIdFilenameGet(int seriesId, String filename) async
-    test('test apiV3MediacoverSeriesIdFilenameGet', () async {
+    //Future apiV3MediacoverMovieIdFilenameGet(int movieId, String filename) async
+    test('test apiV3MediacoverMovieIdFilenameGet', () async {
       // TODO
     });
+
   });
 }

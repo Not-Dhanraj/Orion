@@ -1,8 +1,8 @@
-# radarr.api.QueueApi
+# radarr_api.api.QueueApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -21,7 +21,7 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -31,7 +31,7 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getQueueApi();
+final api = RadarrApi().getQueueApi();
 final bool removeFromClient = true; // bool | 
 final bool blocklist = true; // bool | 
 final bool skipRedownload = true; // bool | 
@@ -40,7 +40,7 @@ final QueueBulkResource queueBulkResource = ; // QueueBulkResource |
 
 try {
     api.apiV3QueueBulkDelete(removeFromClient, blocklist, skipRedownload, changeCategory, queueBulkResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling QueueApi->apiV3QueueBulkDelete: $e\n');
 }
 ```
@@ -77,7 +77,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -87,23 +87,23 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getQueueApi();
+final api = RadarrApi().getQueueApi();
 final int page = 56; // int | 
 final int pageSize = 56; // int | 
 final String sortKey = sortKey_example; // String | 
 final SortDirection sortDirection = ; // SortDirection | 
 final bool includeUnknownMovieItems = true; // bool | 
 final bool includeMovie = true; // bool | 
-final BuiltList<int> movieIds = ; // BuiltList<int> | 
+final List<int> movieIds = ; // List<int> | 
 final DownloadProtocol protocol = ; // DownloadProtocol | 
-final BuiltList<int> languages = ; // BuiltList<int> | 
-final BuiltList<int> quality = ; // BuiltList<int> | 
-final BuiltList<QueueStatus> status = ; // BuiltList<QueueStatus> | 
+final List<int> languages = ; // List<int> | 
+final List<int> quality = ; // List<int> | 
+final List<QueueStatus> status = ; // List<QueueStatus> | 
 
 try {
     final response = api.apiV3QueueGet(page, pageSize, sortKey, sortDirection, includeUnknownMovieItems, includeMovie, movieIds, protocol, languages, quality, status);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling QueueApi->apiV3QueueGet: $e\n');
 }
 ```
@@ -118,11 +118,11 @@ Name | Type | Description  | Notes
  **sortDirection** | [**SortDirection**](.md)|  | [optional] 
  **includeUnknownMovieItems** | **bool**|  | [optional] [default to false]
  **includeMovie** | **bool**|  | [optional] [default to false]
- **movieIds** | [**BuiltList&lt;int&gt;**](int.md)|  | [optional] 
+ **movieIds** | [**List&lt;int&gt;**](int.md)|  | [optional] 
  **protocol** | [**DownloadProtocol**](.md)|  | [optional] 
- **languages** | [**BuiltList&lt;int&gt;**](int.md)|  | [optional] 
- **quality** | [**BuiltList&lt;int&gt;**](int.md)|  | [optional] 
- **status** | [**BuiltList&lt;QueueStatus&gt;**](QueueStatus.md)|  | [optional] 
+ **languages** | [**List&lt;int&gt;**](int.md)|  | [optional] 
+ **quality** | [**List&lt;int&gt;**](int.md)|  | [optional] 
+ **status** | [**List&lt;QueueStatus&gt;**](QueueStatus.md)|  | [optional] 
 
 ### Return type
 
@@ -146,7 +146,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -156,7 +156,7 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getQueueApi();
+final api = RadarrApi().getQueueApi();
 final int id = 56; // int | 
 final bool removeFromClient = true; // bool | 
 final bool blocklist = true; // bool | 
@@ -165,7 +165,7 @@ final bool changeCategory = true; // bool |
 
 try {
     api.apiV3QueueIdDelete(id, removeFromClient, blocklist, skipRedownload, changeCategory);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling QueueApi->apiV3QueueIdDelete: $e\n');
 }
 ```

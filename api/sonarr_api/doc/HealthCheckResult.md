@@ -1,8 +1,8 @@
-# sonarr.model.HealthCheckResult
+# sonarr_api.model.HealthCheckResult
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties

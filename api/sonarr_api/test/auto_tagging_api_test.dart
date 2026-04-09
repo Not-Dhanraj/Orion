@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for AutoTaggingApi
 void main() {
-  final instance = Sonarr().getAutoTaggingApi();
+  final instance = SonarrApi().getAutoTaggingApi();
 
   group(AutoTaggingApi, () {
-    //Future<BuiltList<AutoTaggingResource>> apiV3AutotaggingGet() async
+    //Future<List<AutoTaggingResource>> apiV3AutotaggingGet() async
     test('test apiV3AutotaggingGet', () async {
       // TODO
     });
@@ -35,5 +36,6 @@ void main() {
     test('test apiV3AutotaggingSchemaGet', () async {
       // TODO
     });
+
   });
 }

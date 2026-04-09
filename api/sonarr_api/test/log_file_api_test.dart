@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for LogFileApi
 void main() {
-  final instance = Sonarr().getLogFileApi();
+  final instance = SonarrApi().getLogFileApi();
 
   group(LogFileApi, () {
     //Future apiV3LogFileFilenameGet(String filename) async
@@ -11,9 +12,10 @@ void main() {
       // TODO
     });
 
-    //Future<BuiltList<LogFileResource>> apiV3LogFileGet() async
+    //Future<List<LogFileResource>> apiV3LogFileGet() async
     test('test apiV3LogFileGet', () async {
       // TODO
     });
+
   });
 }

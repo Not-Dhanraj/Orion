@@ -1,8 +1,8 @@
-# radarr.model.QueueStatus
+# radarr_api.model.QueueStatus
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties

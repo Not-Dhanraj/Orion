@@ -1,8 +1,8 @@
-# radarr.model.CreditType
+# radarr_api.model.CreditType
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties

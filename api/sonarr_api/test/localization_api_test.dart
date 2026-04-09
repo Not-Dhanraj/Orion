@@ -1,18 +1,14 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for LocalizationApi
 void main() {
-  final instance = Sonarr().getLocalizationApi();
+  final instance = SonarrApi().getLocalizationApi();
 
   group(LocalizationApi, () {
-    //Future<LocalizationResource> apiV3LocalizationGet() async
+    //Future<String> apiV3LocalizationGet() async
     test('test apiV3LocalizationGet', () async {
-      // TODO
-    });
-
-    //Future<LocalizationResource> apiV3LocalizationIdGet(int id) async
-    test('test apiV3LocalizationIdGet', () async {
       // TODO
     });
 
@@ -20,5 +16,6 @@ void main() {
     test('test apiV3LocalizationLanguageGet', () async {
       // TODO
     });
+
   });
 }

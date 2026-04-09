@@ -1,8 +1,8 @@
-# sonarr.model.QueueResourcePagingResource
+# sonarr_api.model.QueueResourcePagingResource
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties
@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **sortKey** | **String** |  | [optional] 
 **sortDirection** | [**SortDirection**](SortDirection.md) |  | [optional] 
 **totalRecords** | **int** |  | [optional] 
-**records** | [**BuiltList&lt;QueueResource&gt;**](QueueResource.md) |  | [optional] 
+**records** | [**List&lt;QueueResource&gt;**](QueueResource.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

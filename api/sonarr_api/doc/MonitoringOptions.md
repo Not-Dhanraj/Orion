@@ -1,8 +1,8 @@
-# sonarr.model.MonitoringOptions
+# sonarr_api.model.MonitoringOptions
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties

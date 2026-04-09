@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for FileSystemApi
 void main() {
-  final instance = Radarr().getFileSystemApi();
+  final instance = RadarrApi().getFileSystemApi();
 
   group(FileSystemApi, () {
     //Future apiV3FilesystemGet({ String path, bool includeFiles, bool allowFoldersWithoutTrailingSlashes }) async
@@ -20,5 +21,6 @@ void main() {
     test('test apiV3FilesystemTypeGet', () async {
       // TODO
     });
+
   });
 }

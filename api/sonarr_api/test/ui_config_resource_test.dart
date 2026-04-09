@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for UiConfigResource
 void main() {
-  final instance = UiConfigResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final UiConfigResource? instance = /* UiConfigResource(...) */ null;
+  // TODO add properties to the entity
 
   group(UiConfigResource, () {
     // int id
@@ -19,6 +19,11 @@ void main() {
 
     // String calendarWeekColumnHeader
     test('to test the property `calendarWeekColumnHeader`', () async {
+      // TODO
+    });
+
+    // MovieRuntimeFormatType movieRuntimeFormat
+    test('to test the property `movieRuntimeFormat`', () async {
       // TODO
     });
 
@@ -47,8 +52,8 @@ void main() {
       // TODO
     });
 
-    // String theme
-    test('to test the property `theme`', () async {
+    // int movieInfoLanguage
+    test('to test the property `movieInfoLanguage`', () async {
       // TODO
     });
 
@@ -56,5 +61,11 @@ void main() {
     test('to test the property `uiLanguage`', () async {
       // TODO
     });
+
+    // String theme
+    test('to test the property `theme`', () async {
+      // TODO
+    });
+
   });
 }

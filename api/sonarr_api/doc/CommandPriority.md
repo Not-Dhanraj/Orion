@@ -1,8 +1,8 @@
-# sonarr.model.CommandPriority
+# sonarr_api.model.CommandPriority
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties

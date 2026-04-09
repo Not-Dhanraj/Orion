@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for ImportListConfigApi
 void main() {
-  final instance = Sonarr().getImportListConfigApi();
+  final instance = SonarrApi().getImportListConfigApi();
 
   group(ImportListConfigApi, () {
     //Future<ImportListConfigResource> apiV3ConfigImportlistGet() async
@@ -20,5 +21,6 @@ void main() {
     test('test apiV3ConfigImportlistIdPut', () async {
       // TODO
     });
+
   });
 }

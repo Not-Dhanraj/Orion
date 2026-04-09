@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for MetadataResource
 void main() {
-  final instance = MetadataResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final MetadataResource? instance = /* MetadataResource(...) */ null;
+  // TODO add properties to the entity
 
   group(MetadataResource, () {
     // int id
@@ -17,7 +17,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<Field> fields
+    // List<Field> fields
     test('to test the property `fields`', () async {
       // TODO
     });
@@ -47,12 +47,12 @@ void main() {
       // TODO
     });
 
-    // BuiltSet<int> tags
+    // Set<int> tags
     test('to test the property `tags`', () async {
       // TODO
     });
 
-    // BuiltList<MetadataResource> presets
+    // List<MetadataResource> presets
     test('to test the property `presets`', () async {
       // TODO
     });
@@ -61,5 +61,6 @@ void main() {
     test('to test the property `enable`', () async {
       // TODO
     });
+
   });
 }

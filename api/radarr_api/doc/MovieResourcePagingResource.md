@@ -1,8 +1,8 @@
-# radarr.model.MovieResourcePagingResource
+# radarr_api.model.MovieResourcePagingResource
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties
@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **sortKey** | **String** |  | [optional] 
 **sortDirection** | [**SortDirection**](SortDirection.md) |  | [optional] 
 **totalRecords** | **int** |  | [optional] 
-**records** | [**BuiltList&lt;MovieResource&gt;**](MovieResource.md) |  | [optional] 
+**records** | [**List&lt;MovieResource&gt;**](MovieResource.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -1,8 +1,8 @@
-# radarr.model.UpdateMechanism
+# radarr_api.model.UpdateMechanism
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties

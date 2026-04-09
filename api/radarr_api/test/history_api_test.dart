@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for HistoryApi
 void main() {
-  final instance = Radarr().getHistoryApi();
+  final instance = RadarrApi().getHistoryApi();
 
   group(HistoryApi, () {
     //Future apiV3HistoryFailedIdPost(int id) async
@@ -11,19 +12,20 @@ void main() {
       // TODO
     });
 
-    //Future<HistoryResourcePagingResource> apiV3HistoryGet({ int page, int pageSize, String sortKey, SortDirection sortDirection, bool includeMovie, BuiltList<int> eventType, String downloadId, BuiltList<int> movieIds, BuiltList<int> languages, BuiltList<int> quality }) async
+    //Future<HistoryResourcePagingResource> apiV3HistoryGet({ int page, int pageSize, String sortKey, SortDirection sortDirection, bool includeMovie, List<int> eventType, String downloadId, List<int> movieIds, List<int> languages, List<int> quality }) async
     test('test apiV3HistoryGet', () async {
       // TODO
     });
 
-    //Future<BuiltList<HistoryResource>> apiV3HistoryMovieGet({ int movieId, MovieHistoryEventType eventType, bool includeMovie }) async
+    //Future<List<HistoryResource>> apiV3HistoryMovieGet({ int movieId, MovieHistoryEventType eventType, bool includeMovie }) async
     test('test apiV3HistoryMovieGet', () async {
       // TODO
     });
 
-    //Future<BuiltList<HistoryResource>> apiV3HistorySinceGet({ DateTime date, MovieHistoryEventType eventType, bool includeMovie }) async
+    //Future<List<HistoryResource>> apiV3HistorySinceGet({ DateTime date, MovieHistoryEventType eventType, bool includeMovie }) async
     test('test apiV3HistorySinceGet', () async {
       // TODO
     });
+
   });
 }

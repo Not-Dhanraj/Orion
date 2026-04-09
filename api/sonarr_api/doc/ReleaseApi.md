@@ -1,8 +1,8 @@
-# sonarr.api.ReleaseApi
+# sonarr_api.api.ReleaseApi
 
 ## Load the API package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:8989*
@@ -14,13 +14,13 @@ Method | HTTP request | Description
 
 
 # **apiV3ReleaseGet**
-> BuiltList<ReleaseResource> apiV3ReleaseGet(seriesId, episodeId, seasonNumber)
+> List<ReleaseResource> apiV3ReleaseGet(seriesId, episodeId, seasonNumber)
 
 
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -30,7 +30,7 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getReleaseApi();
+final api = SonarrApi().getReleaseApi();
 final int seriesId = 56; // int | 
 final int episodeId = 56; // int | 
 final int seasonNumber = 56; // int | 
@@ -38,7 +38,7 @@ final int seasonNumber = 56; // int |
 try {
     final response = api.apiV3ReleaseGet(seriesId, episodeId, seasonNumber);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ReleaseApi->apiV3ReleaseGet: $e\n');
 }
 ```
@@ -53,7 +53,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**BuiltList&lt;ReleaseResource&gt;**](ReleaseResource.md)
+[**List&lt;ReleaseResource&gt;**](ReleaseResource.md)
 
 ### Authorization
 
@@ -73,7 +73,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -83,12 +83,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getReleaseApi();
+final api = SonarrApi().getReleaseApi();
 final ReleaseResource releaseResource = ; // ReleaseResource | 
 
 try {
     api.apiV3ReleasePost(releaseResource);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ReleaseApi->apiV3ReleasePost: $e\n');
 }
 ```

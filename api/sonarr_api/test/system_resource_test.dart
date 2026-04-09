@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for SystemResource
 void main() {
-  final instance = SystemResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final SystemResource? instance = /* SystemResource(...) */ null;
+  // TODO add properties to the entity
 
   group(SystemResource, () {
     // String appName
@@ -102,13 +102,18 @@ void main() {
       // TODO
     });
 
-    // AuthenticationType authentication
-    test('to test the property `authentication`', () async {
+    // DatabaseType databaseType
+    test('to test the property `databaseType`', () async {
       // TODO
     });
 
-    // String sqliteVersion
-    test('to test the property `sqliteVersion`', () async {
+    // String databaseVersion
+    test('to test the property `databaseVersion`', () async {
+      // TODO
+    });
+
+    // AuthenticationType authentication
+    test('to test the property `authentication`', () async {
       // TODO
     });
 
@@ -157,14 +162,5 @@ void main() {
       // TODO
     });
 
-    // String databaseVersion
-    test('to test the property `databaseVersion`', () async {
-      // TODO
-    });
-
-    // DatabaseType databaseType
-    test('to test the property `databaseType`', () async {
-      // TODO
-    });
   });
 }

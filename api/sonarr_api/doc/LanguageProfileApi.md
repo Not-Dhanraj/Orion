@@ -1,8 +1,8 @@
-# sonarr.api.LanguageProfileApi
+# sonarr_api.api.LanguageProfileApi
 
 ## Load the API package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:8989*
@@ -17,13 +17,13 @@ Method | HTTP request | Description
 
 
 # **apiV3LanguageprofileGet**
-> BuiltList<LanguageProfileResource> apiV3LanguageprofileGet()
+> List<LanguageProfileResource> apiV3LanguageprofileGet()
 
 
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -33,12 +33,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getLanguageProfileApi();
+final api = SonarrApi().getLanguageProfileApi();
 
 try {
     final response = api.apiV3LanguageprofileGet();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling LanguageProfileApi->apiV3LanguageprofileGet: $e\n');
 }
 ```
@@ -48,7 +48,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;LanguageProfileResource&gt;**](LanguageProfileResource.md)
+[**List&lt;LanguageProfileResource&gt;**](LanguageProfileResource.md)
 
 ### Authorization
 
@@ -68,7 +68,7 @@ This endpoint does not need any parameter.
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -78,12 +78,12 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getLanguageProfileApi();
+final api = SonarrApi().getLanguageProfileApi();
 final int id = 56; // int | 
 
 try {
     api.apiV3LanguageprofileIdDelete(id);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling LanguageProfileApi->apiV3LanguageprofileIdDelete: $e\n');
 }
 ```
@@ -116,7 +116,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -126,13 +126,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getLanguageProfileApi();
+final api = SonarrApi().getLanguageProfileApi();
 final int id = 56; // int | 
 
 try {
     final response = api.apiV3LanguageprofileIdGet(id);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling LanguageProfileApi->apiV3LanguageprofileIdGet: $e\n');
 }
 ```
@@ -165,7 +165,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -175,14 +175,14 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getLanguageProfileApi();
+final api = SonarrApi().getLanguageProfileApi();
 final String id = id_example; // String | 
 final LanguageProfileResource languageProfileResource = ; // LanguageProfileResource | 
 
 try {
     final response = api.apiV3LanguageprofileIdPut(id, languageProfileResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling LanguageProfileApi->apiV3LanguageprofileIdPut: $e\n');
 }
 ```
@@ -216,7 +216,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -226,13 +226,13 @@ import 'package:sonarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Sonarr().getLanguageProfileApi();
+final api = SonarrApi().getLanguageProfileApi();
 final LanguageProfileResource languageProfileResource = ; // LanguageProfileResource | 
 
 try {
     final response = api.apiV3LanguageprofilePost(languageProfileResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling LanguageProfileApi->apiV3LanguageprofilePost: $e\n');
 }
 ```

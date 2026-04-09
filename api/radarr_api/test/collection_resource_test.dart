@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for CollectionResource
 void main() {
-  final instance = CollectionResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final CollectionResource? instance = /* CollectionResource(...) */ null;
+  // TODO add properties to the entity
 
   group(CollectionResource, () {
     // int id
@@ -27,7 +27,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<MediaCover> images
+    // List<MediaCover> images
     test('to test the property `images`', () async {
       // TODO
     });
@@ -62,7 +62,7 @@ void main() {
       // TODO
     });
 
-    // BuiltList<CollectionMovieResource> movies
+    // List<CollectionMovieResource> movies
     test('to test the property `movies`', () async {
       // TODO
     });
@@ -72,9 +72,10 @@ void main() {
       // TODO
     });
 
-    // BuiltSet<int> tags
+    // Set<int> tags
     test('to test the property `tags`', () async {
       // TODO
     });
+
   });
 }

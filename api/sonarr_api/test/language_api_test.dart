@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for LanguageApi
 void main() {
-  final instance = Sonarr().getLanguageApi();
+  final instance = SonarrApi().getLanguageApi();
 
   group(LanguageApi, () {
-    //Future<BuiltList<LanguageResource>> apiV3LanguageGet() async
+    //Future<List<LanguageResource>> apiV3LanguageGet() async
     test('test apiV3LanguageGet', () async {
       // TODO
     });
@@ -15,5 +16,6 @@ void main() {
     test('test apiV3LanguageIdGet', () async {
       // TODO
     });
+
   });
 }

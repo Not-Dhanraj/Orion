@@ -1,8 +1,8 @@
-# radarr.model.TagResource
+# radarr_api.model.TagResource
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties

@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for TaskApi
 void main() {
-  final instance = Sonarr().getTaskApi();
+  final instance = SonarrApi().getTaskApi();
 
   group(TaskApi, () {
-    //Future<BuiltList<TaskResource>> apiV3SystemTaskGet() async
+    //Future<List<TaskResource>> apiV3SystemTaskGet() async
     test('test apiV3SystemTaskGet', () async {
       // TODO
     });
@@ -15,5 +16,6 @@ void main() {
     test('test apiV3SystemTaskIdGet', () async {
       // TODO
     });
+
   });
 }

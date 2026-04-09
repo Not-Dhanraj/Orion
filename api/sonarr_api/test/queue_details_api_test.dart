@@ -1,14 +1,16 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+
 
 /// tests for QueueDetailsApi
 void main() {
-  final instance = Sonarr().getQueueDetailsApi();
+  final instance = SonarrApi().getQueueDetailsApi();
 
   group(QueueDetailsApi, () {
-    //Future<BuiltList<QueueResource>> apiV3QueueDetailsGet({ int seriesId, BuiltList<int> episodeIds, bool includeSeries, bool includeEpisode }) async
+    //Future<List<QueueResource>> apiV3QueueDetailsGet({ int movieId, bool includeMovie }) async
     test('test apiV3QueueDetailsGet', () async {
       // TODO
     });
+
   });
 }

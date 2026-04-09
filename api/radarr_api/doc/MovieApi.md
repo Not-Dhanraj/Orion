@@ -1,8 +1,8 @@
-# radarr.api.MovieApi
+# radarr_api.api.MovieApi
 
 ## Load the API package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 All URIs are relative to *http://localhost:7878*
@@ -17,13 +17,13 @@ Method | HTTP request | Description
 
 
 # **apiV3MovieGet**
-> BuiltList<MovieResource> apiV3MovieGet(tmdbId, excludeLocalCovers, languageId)
+> List<MovieResource> apiV3MovieGet(tmdbId, excludeLocalCovers, languageId)
 
 
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -33,7 +33,7 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getMovieApi();
+final api = RadarrApi().getMovieApi();
 final int tmdbId = 56; // int | 
 final bool excludeLocalCovers = true; // bool | 
 final int languageId = 56; // int | 
@@ -41,7 +41,7 @@ final int languageId = 56; // int |
 try {
     final response = api.apiV3MovieGet(tmdbId, excludeLocalCovers, languageId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling MovieApi->apiV3MovieGet: $e\n');
 }
 ```
@@ -56,7 +56,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**BuiltList&lt;MovieResource&gt;**](MovieResource.md)
+[**List&lt;MovieResource&gt;**](MovieResource.md)
 
 ### Authorization
 
@@ -76,7 +76,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -86,14 +86,14 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getMovieApi();
+final api = RadarrApi().getMovieApi();
 final int id = 56; // int | 
 final bool deleteFiles = true; // bool | 
 final bool addImportExclusion = true; // bool | 
 
 try {
     api.apiV3MovieIdDelete(id, deleteFiles, addImportExclusion);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling MovieApi->apiV3MovieIdDelete: $e\n');
 }
 ```
@@ -128,7 +128,7 @@ void (empty response body)
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -138,13 +138,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getMovieApi();
+final api = RadarrApi().getMovieApi();
 final int id = 56; // int | 
 
 try {
     final response = api.apiV3MovieIdGet(id);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling MovieApi->apiV3MovieIdGet: $e\n');
 }
 ```
@@ -177,7 +177,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -187,7 +187,7 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getMovieApi();
+final api = RadarrApi().getMovieApi();
 final String id = id_example; // String | 
 final bool moveFiles = true; // bool | 
 final MovieResource movieResource = ; // MovieResource | 
@@ -195,7 +195,7 @@ final MovieResource movieResource = ; // MovieResource |
 try {
     final response = api.apiV3MovieIdPut(id, moveFiles, movieResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling MovieApi->apiV3MovieIdPut: $e\n');
 }
 ```
@@ -230,7 +230,7 @@ Name | Type | Description  | Notes
 
 ### Example
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 // TODO Configure API key authorization: apikey
 //defaultApiClient.getAuthentication<ApiKeyAuth>('apikey').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -240,13 +240,13 @@ import 'package:radarr/api.dart';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //defaultApiClient.getAuthentication<ApiKeyAuth>('X-Api-Key').apiKeyPrefix = 'Bearer';
 
-final api = Radarr().getMovieApi();
+final api = RadarrApi().getMovieApi();
 final MovieResource movieResource = ; // MovieResource | 
 
 try {
     final response = api.apiV3MoviePost(movieResource);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling MovieApi->apiV3MoviePost: $e\n');
 }
 ```

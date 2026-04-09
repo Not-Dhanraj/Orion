@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for CreditApi
 void main() {
-  final instance = Radarr().getCreditApi();
+  final instance = RadarrApi().getCreditApi();
 
   group(CreditApi, () {
     //Future apiV3CreditGet({ int movieId, int movieMetadataId }) async
@@ -15,5 +16,6 @@ void main() {
     test('test apiV3CreditIdGet', () async {
       // TODO
     });
+
   });
 }

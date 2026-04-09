@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for MediaCover
 void main() {
-  final instance = MediaCoverBuilder();
-  // TODO add properties to the builder and call build()
+  final MediaCover? instance = /* MediaCover(...) */ null;
+  // TODO add properties to the entity
 
   group(MediaCover, () {
     // MediaCoverTypes coverType
@@ -21,5 +21,6 @@ void main() {
     test('to test the property `remoteUrl`', () async {
       // TODO
     });
+
   });
 }

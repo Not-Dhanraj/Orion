@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for HostConfigApi
 void main() {
-  final instance = Radarr().getHostConfigApi();
+  final instance = RadarrApi().getHostConfigApi();
 
   group(HostConfigApi, () {
     //Future<HostConfigResource> apiV3ConfigHostGet() async
@@ -20,5 +21,6 @@ void main() {
     test('test apiV3ConfigHostIdPut', () async {
       // TODO
     });
+
   });
 }

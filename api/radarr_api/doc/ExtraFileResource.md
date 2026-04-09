@@ -1,8 +1,8 @@
-# radarr.model.ExtraFileResource
+# radarr_api.model.ExtraFileResource
 
 ## Load the model package
 ```dart
-import 'package:radarr/api.dart';
+import 'package:radarr_api/api.dart';
 ```
 
 ## Properties
@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **movieFileId** | **int** |  | [optional] 
 **relativePath** | **String** |  | [optional] 
 **extension_** | **String** |  | [optional] 
-**languageTags** | **BuiltList&lt;String&gt;** |  | [optional] 
+**languageTags** | **List&lt;String&gt;** |  | [optional] 
 **title** | **String** |  | [optional] 
 **type** | [**ExtraFileType**](ExtraFileType.md) |  | [optional] 
 

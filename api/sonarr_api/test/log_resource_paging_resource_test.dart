@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 // tests for LogResourcePagingResource
 void main() {
-  final instance = LogResourcePagingResourceBuilder();
-  // TODO add properties to the builder and call build()
+  final LogResourcePagingResource? instance = /* LogResourcePagingResource(...) */ null;
+  // TODO add properties to the entity
 
   group(LogResourcePagingResource, () {
     // int page
@@ -32,9 +32,10 @@ void main() {
       // TODO
     });
 
-    // BuiltList<LogResource> records
+    // List<LogResource> records
     test('to test the property `records`', () async {
       // TODO
     });
+
   });
 }

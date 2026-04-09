@@ -1,9 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+
 
 /// tests for QueueActionApi
 void main() {
-  final instance = Radarr().getQueueActionApi();
+  final instance = RadarrApi().getQueueActionApi();
 
   group(QueueActionApi, () {
     //Future apiV3QueueGrabBulkPost({ QueueBulkResource queueBulkResource }) async
@@ -15,5 +16,6 @@ void main() {
     test('test apiV3QueueGrabIdPost', () async {
       // TODO
     });
+
   });
 }

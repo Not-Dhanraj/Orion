@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 // tests for Quality
 void main() {
-  final instance = QualityBuilder();
-  // TODO add properties to the builder and call build()
+  final Quality? instance = /* Quality(...) */ null;
+  // TODO add properties to the entity
 
   group(Quality, () {
     // int id
@@ -31,5 +31,6 @@ void main() {
     test('to test the property `modifier`', () async {
       // TODO
     });
+
   });
 }

@@ -1,8 +1,8 @@
-# sonarr.model.DiskSpaceResource
+# sonarr_api.model.DiskSpaceResource
 
 ## Load the model package
 ```dart
-import 'package:sonarr/api.dart';
+import 'package:sonarr_api/api.dart';
 ```
 
 ## Properties

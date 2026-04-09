@@ -1,5 +1,6 @@
 import 'package:client/src/features/series/presentation/series_add/series_add_controller.dart';
 import 'package:client/src/features/series/presentation/series_add/widgets/series_add_form.dart';
+import 'package:client/src/shared/domain/snackbar_config.dart';
 import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
 import 'package:client/src/shared/widgets/sheets/sheet_header.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
@@ -94,6 +95,7 @@ class SeriesAddSheet extends ConsumerWidget {
     SeriesResource seriesToAdd,
     ColorScheme cs,
   ) async {
+    final hostContext = Navigator.of(context, rootNavigator: true).context;
     final success = await ref
         .read(seriesAddController.notifier)
         .addSeries(seriesToAdd);
@@ -104,13 +106,14 @@ class SeriesAddSheet extends ConsumerWidget {
       context.pop();
       context.pop();
       CustomSnackbar.show(
-        context,
+        hostContext,
         message: 'Successfully added "${series.title}"',
         type: CustomSnackbarType.success,
       );
     } else {
+      context.pop();
       CustomSnackbar.show(
-        context,
+        hostContext,
         message: 'Failed to add series',
         type: CustomSnackbarType.error,
       );

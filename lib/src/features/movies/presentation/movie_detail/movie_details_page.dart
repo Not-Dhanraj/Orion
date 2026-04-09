@@ -3,6 +3,7 @@ import 'package:client/src/features/movies/presentation/movie_edit/movie_edit_sh
 import 'package:client/src/features/releases/domain/release_target.dart';
 import 'package:client/src/features/releases/presentation/release_sheet.dart';
 import 'package:client/src/shared/domain/media_spec.dart';
+import 'package:client/src/shared/domain/snackbar_config.dart';
 import 'package:client/src/shared/utils/movie_utils.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/shared/widgets/media/media_delete_dialog.dart';
@@ -33,6 +34,7 @@ class _MovieDetailsPageState extends ConsumerState<MovieDetailsPage> {
     required bool deleteFiles,
     required bool addImportListExclusion,
   }) async {
+    final hostContext = Navigator.of(context, rootNavigator: true).context;
     try {
       await ref
           .read(movieDetailsController.notifier)
@@ -44,7 +46,7 @@ class _MovieDetailsPageState extends ConsumerState<MovieDetailsPage> {
       if (context.mounted) {
         context.pop();
         CustomSnackbar.show(
-          context,
+          hostContext,
           message: 'Successfully deleted "${movie.title}"',
           type: CustomSnackbarType.success,
         );
@@ -52,7 +54,7 @@ class _MovieDetailsPageState extends ConsumerState<MovieDetailsPage> {
     } catch (e) {
       if (context.mounted) {
         CustomSnackbar.show(
-          context,
+          hostContext,
           message: 'Failed to delete movie: ${e.toString()}',
           type: CustomSnackbarType.error,
         );

@@ -1,7 +1,8 @@
 import 'package:client/src/exceptions/repository_exception.dart';
 import 'package:client/src/features/settings/presentation/widgets/sheet_button.dart';
+import 'package:client/src/shared/domain/snackbar_config.dart';
 import 'package:client/src/shared/widgets/inputs/custom_text_field.dart';
-import 'package:client/src/shared/widgets/dialogs/custom_error_dialog.dart';
+import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -134,6 +135,7 @@ class _ServiceConfigSheetState extends State<ServiceConfigSheet> {
   Future<void> _save() async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
     setState(() => _isLoading = true);
+    final hostContext = Navigator.of(context, rootNavigator: true).context;
 
     try {
       await widget.onSave(
@@ -143,29 +145,26 @@ class _ServiceConfigSheetState extends State<ServiceConfigSheet> {
       if (mounted) context.pop();
     } on RepositoryException catch (e) {
       if (!mounted) return;
-      setState(() => _isLoading = false);
-      _showError(e.message);
+      context.pop();
+
+      if (!hostContext.mounted) return;
+      CustomSnackbar.show(
+        hostContext,
+        message: e.message,
+        type: CustomSnackbarType.error,
+      );
     } catch (e) {
       if (!mounted) return;
-      setState(() => _isLoading = false);
-      _showError(e.toString());
+      context.pop();
+
+      if (!hostContext.mounted) return;
+      CustomSnackbar.show(
+        hostContext,
+        message: e.toString(),
+        type: CustomSnackbarType.error,
+      );
     } finally {
       if (mounted && _isLoading) setState(() => _isLoading = false);
     }
-  }
-
-  void _showError(String message) {
-    showDialog(
-      context: context,
-      barrierColor: Colors.black54,
-      builder: (_) => Dialog(
-        backgroundColor: Colors.transparent,
-        insetPadding: const EdgeInsets.all(24),
-        child: CustomErrorDialog(
-          title: 'CONNECTION FAILED',
-          errorMessage: message,
-        ),
-      ),
-    );
   }
 }

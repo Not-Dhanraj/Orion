@@ -2,6 +2,7 @@ import 'package:client/src/features/series/presentation/series_detail/series_det
 import 'package:client/src/features/series/presentation/series_edit/series_edit_sheet.dart';
 import 'package:client/src/features/series/presentation/season/widgets/season_accordion.dart';
 import 'package:client/src/shared/domain/media_spec.dart';
+import 'package:client/src/shared/domain/snackbar_config.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/shared/utils/series_utils.dart';
 import 'package:client/src/shared/widgets/media/media_delete_dialog.dart';
@@ -32,6 +33,7 @@ class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
     required bool deleteFiles,
     required bool addImportListExclusion,
   }) async {
+    final hostContext = Navigator.of(context, rootNavigator: true).context;
     try {
       await ref
           .read(seriesDetailsController.notifier)
@@ -43,7 +45,7 @@ class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
       if (context.mounted) {
         context.pop();
         CustomSnackbar.show(
-          context,
+          hostContext,
           message: 'Successfully deleted "${series.title}"',
           type: CustomSnackbarType.success,
         );
@@ -51,7 +53,7 @@ class _SeriesDetailsPageState extends ConsumerState<SeriesDetailsPage> {
     } catch (e) {
       if (context.mounted) {
         CustomSnackbar.show(
-          context,
+          hostContext,
           message: 'Failed to delete series: ${e.toString()}',
           type: CustomSnackbarType.error,
         );

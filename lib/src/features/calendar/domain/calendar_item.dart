@@ -1,6 +1,6 @@
 import 'package:client/src/shared/utils/movie_utils.dart';
 import 'package:client/src/shared/utils/series_utils.dart';
-import 'package:radarr_api/radarr_api.dart' show MovieResource, MediaCoverTypes;
+import 'package:radarr_api/radarr_api.dart' show MovieResource;
 import 'package:sonarr_api/sonarr_api.dart' show EpisodeResource;
 
 class CalendarItem {

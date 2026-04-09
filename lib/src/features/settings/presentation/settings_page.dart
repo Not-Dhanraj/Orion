@@ -10,6 +10,7 @@ import 'package:client/src/features/settings/presentation/widgets/sheet_button.d
 import 'package:client/src/features/settings/presentation/widgets/theme_option_row.dart';
 import 'package:client/src/features/settings/presentation/widgets/settings_row.dart';
 import 'package:client/src/features/settings/presentation/widgets/settings_section_header.dart';
+import 'package:client/src/shared/domain/snackbar_config.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/shared/utils/context_extensions.dart';
 import 'package:client/src/shared/utils/string_extension.dart';

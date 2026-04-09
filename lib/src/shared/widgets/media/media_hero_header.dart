@@ -46,6 +46,7 @@ class MediaHeroHeader extends StatelessWidget {
               (posterUrl != null && posterUrl != '')
                   ? Hero(
                       tag: 'media-hero-$id',
+                      transitionOnUserGestures: true,
                       child: CachedNetworkImage(
                         imageUrl: posterUrl!,
                         memCacheWidth: isMobile ? 180 : 234,

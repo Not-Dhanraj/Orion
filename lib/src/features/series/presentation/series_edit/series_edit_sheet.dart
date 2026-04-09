@@ -1,4 +1,5 @@
 import 'package:client/src/features/series/presentation/series_edit/series_edit_controller.dart';
+import 'package:client/src/shared/domain/snackbar_config.dart';
 import 'package:client/src/shared/widgets/indicators/animated_loading_text.dart';
 import 'package:client/src/shared/widgets/indicators/animated_progress_bar.dart';
 import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
@@ -186,6 +187,7 @@ class SeriesEditSheet extends ConsumerWidget {
     WidgetRef ref,
     int seriesId,
   ) async {
+    final hostContext = Navigator.of(context, rootNavigator: true).context;
     final success = await ref
         .read(seriesEditController(seriesId).notifier)
         .saveChanges();
@@ -193,14 +195,15 @@ class SeriesEditSheet extends ConsumerWidget {
     if (context.mounted) {
       if (success) {
         CustomSnackbar.show(
-          context,
+          hostContext,
           message: 'Changes saved successfully',
           type: CustomSnackbarType.success,
         );
         context.pop(true);
       } else {
+        context.pop();
         CustomSnackbar.show(
-          context,
+          hostContext,
           message: 'Failed to save changes',
           type: CustomSnackbarType.error,
         );

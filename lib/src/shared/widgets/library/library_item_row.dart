@@ -73,6 +73,7 @@ class _LibraryItemRowState extends State<LibraryItemRow> {
                             widget.posterUrl!.isNotEmpty)
                         ? Hero(
                             tag: 'media-hero-${widget.id}',
+                            transitionOnUserGestures: true,
                             child: CachedNetworkImage(
                               imageUrl: widget.posterUrl!,
                               memCacheWidth: 60,

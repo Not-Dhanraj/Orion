@@ -1,5 +1,6 @@
 import 'package:client/src/features/movies/presentation/movie_add/movie_add_controller.dart';
 import 'package:client/src/features/movies/presentation/movie_add/widgets/movie_add_form.dart';
+import 'package:client/src/shared/domain/snackbar_config.dart';
 import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/shared/widgets/sheets/sheet_footer.dart';
@@ -94,6 +95,7 @@ class MovieAddSheet extends ConsumerWidget {
     MovieResource movieToAdd,
     ColorScheme cs,
   ) async {
+    final hostContext = Navigator.of(context, rootNavigator: true).context;
     final success = await ref
         .read(movieAddController.notifier)
         .addMovie(movieToAdd);
@@ -104,13 +106,14 @@ class MovieAddSheet extends ConsumerWidget {
       context.pop();
       context.pop(); // Pops the search sheet too, returning to library
       CustomSnackbar.show(
-        context,
+        hostContext,
         message: 'Successfully added "${movie.title}"',
         type: CustomSnackbarType.success,
       );
     } else {
+      context.pop();
       CustomSnackbar.show(
-        context,
+        hostContext,
         message: 'Failed to add movie',
         type: CustomSnackbarType.error,
       );

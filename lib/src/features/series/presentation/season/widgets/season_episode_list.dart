@@ -1,4 +1,6 @@
+import 'package:client/src/features/series/domain/season_page_args.dart';
 import 'package:client/src/features/series/presentation/season/season_controller.dart';
+import 'package:client/src/shared/domain/snackbar_config.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/shared/widgets/dialogs/custom_dialog.dart';
 import 'package:client/src/features/releases/domain/release_target.dart';
@@ -26,7 +28,11 @@ class SeasonEpisodeList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.watch(seasonPageController(series).notifier);
+    final controller = ref.watch(
+      seasonPageController(
+        SeasonPageArgs(seriesId: series.id!, initialSeries: series),
+      ).notifier,
+    );
 
     return Column(
       children: [
@@ -80,9 +86,31 @@ class _EpisodeListItem extends StatelessWidget {
       statusColor: statusColor,
       isMonitored: monitored,
       hasFile: hasFile,
-      onToggleMonitor: () => runWithLoading(
-        () => controller.toggleEpisodesMonitoring([episode.id!], !monitored),
-      ),
+      onToggleMonitor: () => runWithLoading(() async {
+        try {
+          final nextMonitored = !monitored;
+          await controller.toggleEpisodesMonitoring([
+            episode.id!,
+          ], nextMonitored);
+          if (context.mounted) {
+            CustomSnackbar.show(
+              context,
+              message: nextMonitored
+                  ? 'Episode ${FormatUtils.formatEpisodeNumber(episode.episodeNumber)} is now monitored.'
+                  : 'Episode ${FormatUtils.formatEpisodeNumber(episode.episodeNumber)} is now unmonitored.',
+              type: CustomSnackbarType.success,
+            );
+          }
+        } catch (e) {
+          if (context.mounted) {
+            CustomSnackbar.show(
+              context,
+              message: 'Failed to update episode monitoring: $e',
+              type: CustomSnackbarType.error,
+            );
+          }
+        }
+      }),
       onSearch: () => _searchEpisode(context),
       onDelete: hasFile ? () => _confirmDeleteFile(context) : null,
       onShowDetails: () => _showEpisodeDetails(context),
@@ -119,9 +147,10 @@ class _EpisodeListItem extends StatelessWidget {
   }
 
   void _confirmDeleteFile(BuildContext context) {
+    final hostContext = Navigator.of(context, rootNavigator: true).context;
     showDialog(
       context: context,
-      builder: (context) => Dialog(
+      builder: (dialogContext) => Dialog(
         backgroundColor: Colors.transparent,
         elevation: 0,
         child: ConstrainedBox(
@@ -133,25 +162,42 @@ class _EpisodeListItem extends StatelessWidget {
                 'Are you sure you want to delete the file for "${episode.title}"? This cannot be undone.',
             actions: [
               ElevatedButton(
-                onPressed: () => context.pop(),
+                onPressed: () => dialogContext.pop(),
                 child: const Text('Cancel'),
               ),
               OutlinedButton(
                 onPressed: () {
-                  context.pop();
+                  dialogContext.pop();
                   if (episode.episodeFile?.id != null) {
-                    runWithLoading(
-                      () => controller.deleteEpisodeFile(
-                        episode.episodeFile!.id!,
-                      ),
-                    );
+                    runWithLoading(() async {
+                      try {
+                        await controller.deleteEpisodeFile(
+                          episode.episodeFile!.id!,
+                        );
+                        if (hostContext.mounted) {
+                          CustomSnackbar.show(
+                            hostContext,
+                            message: 'Episode file deleted successfully.',
+                            type: CustomSnackbarType.success,
+                          );
+                        }
+                      } catch (e) {
+                        if (hostContext.mounted) {
+                          CustomSnackbar.show(
+                            hostContext,
+                            message: 'Failed to delete episode file: $e',
+                            type: CustomSnackbarType.error,
+                          );
+                        }
+                      }
+                    });
                   }
                 },
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: Theme.of(context).colorScheme.error,
+                  foregroundColor: Theme.of(dialogContext).colorScheme.error,
                   side: BorderSide(
                     color: Theme.of(
-                      context,
+                      dialogContext,
                     ).colorScheme.error.withValues(alpha: 0.4),
                   ),
                 ),

@@ -1,4 +1,6 @@
+import 'package:client/src/features/series/domain/season_page_args.dart';
 import 'package:client/src/features/series/presentation/season/season_controller.dart';
+import 'package:client/src/shared/domain/snackbar_config.dart';
 import 'package:client/src/shared/widgets/indicators/animated_progress_bar.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/features/releases/domain/release_target.dart';
@@ -106,7 +108,11 @@ class _SeasonAccordionState extends ConsumerState<SeasonAccordion>
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final seasonPageState = ref.watch(seasonPageController(widget.series));
+    final seasonArgs = SeasonPageArgs(
+      seriesId: widget.series.id!,
+      initialSeries: widget.series,
+    );
+    final seasonPageState = ref.watch(seasonPageController(seasonArgs));
     final isLoading = seasonPageState.isLoading;
 
     final seasonData = seasonPageState.valueOrNull?.seasons
@@ -149,12 +155,32 @@ class _SeasonAccordionState extends ConsumerState<SeasonAccordion>
                 iconTurns: _iconTurns,
                 onTap: _toggle,
                 onToggleMonitor: () => _runWithLoading(() async {
-                  await ref
-                      .read(seasonPageController(widget.series).notifier)
-                      .toggleSeasonMonitoring(
-                        widget.seasonNumber,
-                        !isMonitored,
+                  try {
+                    final nextMonitored = !isMonitored;
+                    await ref
+                        .read(seasonPageController(seasonArgs).notifier)
+                        .toggleSeasonMonitoring(
+                          widget.seasonNumber,
+                          nextMonitored,
+                        );
+                    if (context.mounted) {
+                      CustomSnackbar.show(
+                        context,
+                        message: nextMonitored
+                            ? 'Season ${widget.seasonNumber} is now monitored.'
+                            : 'Season ${widget.seasonNumber} is now unmonitored.',
+                        type: CustomSnackbarType.success,
                       );
+                    }
+                  } catch (e) {
+                    if (context.mounted) {
+                      CustomSnackbar.show(
+                        context,
+                        message: 'Failed to update season monitoring: $e',
+                        type: CustomSnackbarType.error,
+                      );
+                    }
+                  }
                 }),
                 onSearchAll: () => _searchAll(context, hasMissingFiles),
               ),

@@ -1,4 +1,5 @@
 import 'package:client/src/features/releases/presentation/widgets/release_card.dart';
+import 'package:client/src/shared/domain/snackbar_config.dart';
 import 'package:client/src/shared/widgets/indicators/animated_loading_text.dart';
 import 'package:client/src/shared/widgets/indicators/animated_progress_bar.dart';
 import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
@@ -113,6 +114,10 @@ class ReleaseSheet extends ConsumerWidget {
                                     releases[index].guid,
                                 isAnyDownloading: state.downloadingGuid != null,
                                 onDownload: () {
+                                  final hostContext = Navigator.of(
+                                    context,
+                                    rootNavigator: true,
+                                  ).context;
                                   controller.downloadRelease(
                                     indexerId: releases[index].indexerId,
                                     guid: releases[index].guid,
@@ -120,7 +125,7 @@ class ReleaseSheet extends ConsumerWidget {
                                       if (context.mounted) {
                                         context.pop();
                                         CustomSnackbar.show(
-                                          context,
+                                          hostContext,
                                           message: 'Download started',
                                           type: CustomSnackbarType.success,
                                         );
@@ -128,8 +133,9 @@ class ReleaseSheet extends ConsumerWidget {
                                     },
                                     onError: (e) {
                                       if (context.mounted) {
+                                        context.pop();
                                         CustomSnackbar.show(
-                                          context,
+                                          hostContext,
                                           message: 'Download failed: $e',
                                           type: CustomSnackbarType.error,
                                         );

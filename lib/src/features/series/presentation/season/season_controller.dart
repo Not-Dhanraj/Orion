@@ -1,4 +1,5 @@
 import 'package:client/src/features/series/application/season_service.dart';
+import 'package:client/src/features/series/domain/season_page_args.dart';
 import 'package:client/src/features/series/domain/season_page_state.dart';
 import 'package:client/src/features/series/domain/season_with_episodes.dart';
 import 'package:client/src/features/series/presentation/series_detail/series_details_controller.dart';
@@ -7,14 +8,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sonarr_api/sonarr_api.dart';
 
 class SeasonPageController
-    extends AutoDisposeFamilyAsyncNotifier<SeasonPageState, SeriesResource> {
+    extends AutoDisposeFamilyAsyncNotifier<SeasonPageState, SeasonPageArgs> {
   late SeasonService _seasonService;
 
   @override
-  Future<SeasonPageState> build(SeriesResource series) async {
+  Future<SeasonPageState> build(SeasonPageArgs args) async {
     await Future.delayed(Duration(milliseconds: 800));
     _seasonService = ref.watch(seasonServiceProvider);
-    final episodesBySeason = await _fetchEpisodesBySeason(series.id!);
+    final series = args.initialSeries;
+    final episodesBySeason = await _fetchEpisodesBySeason(args.seriesId);
     final seasons = _buildSeasonsList(series, episodesBySeason);
 
     return SeasonPageState(seriesResource: series, seasons: seasons);
@@ -76,7 +78,6 @@ class SeasonPageController
         monitored: monitored,
       );
 
-      // Moved Side-Effects from Service to Controller
       ref.invalidate(seriesLibraryController);
       ref.read(seriesDetailsController.notifier).initialize(updatedSeries);
 
@@ -107,8 +108,9 @@ class SeasonPageController
           seasons: updatedSeasons,
         ),
       );
-    } catch (e, stackTrace) {
-      state = AsyncError(e, stackTrace);
+    } catch (e) {
+      state = AsyncData(currentState);
+      rethrow;
     }
   }
 
@@ -140,8 +142,9 @@ class SeasonPageController
       }).toList();
 
       state = AsyncData(currentState.copyWith(seasons: updatedSeasons));
-    } catch (e, stackTrace) {
-      state = AsyncError(e, stackTrace);
+    } catch (e) {
+      state = AsyncData(currentState);
+      rethrow;
     }
   }
 
@@ -167,8 +170,9 @@ class SeasonPageController
       }).toList();
 
       state = AsyncData(currentState.copyWith(seasons: updatedSeasons));
-    } catch (e, stackTrace) {
-      state = AsyncError(e, stackTrace);
+    } catch (e) {
+      state = AsyncData(currentState);
+      rethrow;
     }
   }
 }
@@ -177,5 +181,5 @@ final seasonPageController =
     AutoDisposeAsyncNotifierProviderFamily<
       SeasonPageController,
       SeasonPageState,
-      SeriesResource
+      SeasonPageArgs
     >(SeasonPageController.new);

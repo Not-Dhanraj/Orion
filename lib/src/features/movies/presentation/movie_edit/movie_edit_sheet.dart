@@ -1,4 +1,5 @@
 import 'package:client/src/features/movies/presentation/movie_edit/movie_edit_controller.dart';
+import 'package:client/src/shared/domain/snackbar_config.dart';
 import 'package:client/src/shared/widgets/indicators/animated_loading_text.dart';
 import 'package:client/src/shared/widgets/indicators/animated_progress_bar.dart';
 import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
@@ -204,6 +205,7 @@ class MovieEditSheet extends ConsumerWidget {
     WidgetRef ref,
     MovieResource movie,
   ) async {
+    final hostContext = Navigator.of(context, rootNavigator: true).context;
     final success = await ref
         .read(movieEditController(movie).notifier)
         .saveChanges();
@@ -211,14 +213,15 @@ class MovieEditSheet extends ConsumerWidget {
     if (context.mounted) {
       if (success) {
         CustomSnackbar.show(
-          context,
+          hostContext,
           message: 'Changes saved successfully',
           type: CustomSnackbarType.success,
         );
         context.pop(true); // close sheet
       } else {
+        context.pop();
         CustomSnackbar.show(
-          context,
+          hostContext,
           message: 'Failed to save changes',
           type: CustomSnackbarType.error,
         );

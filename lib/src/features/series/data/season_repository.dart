@@ -1,13 +1,12 @@
-import 'package:built_collection/built_collection.dart';
 import 'package:client/src/core/application/api_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 class SeasonRepository {
-  final Sonarr _api;
+  final SonarrApi _api;
   SeasonRepository(this._api);
 
-  Future<BuiltList<EpisodeResource>> getEpisodes({
+  Future<List<EpisodeResource>> getEpisodes({
     required int seriesId,
     bool includeEpisodeFile = true,
   }) async {
@@ -15,7 +14,7 @@ class SeasonRepository {
       seriesId: seriesId,
       includeEpisodeFile: includeEpisodeFile,
     );
-    return response.data ?? BuiltList<EpisodeResource>([]);
+    return response.data ?? [];
   }
 
   Future<void> monitorEpisodes({
@@ -24,9 +23,8 @@ class SeasonRepository {
   }) async {
     await _api.getEpisodeApi().apiV3EpisodeMonitorPut(
       episodesMonitoredResource: EpisodesMonitoredResource(
-        (b) => b
-          ..episodeIds = ListBuilder<int>(episodeIds)
-          ..monitored = monitored,
+        episodeIds: episodeIds,
+        monitored: monitored,
       ),
     );
   }
@@ -52,14 +50,12 @@ class SeasonRepository {
 
     final updatedSeasons = series.seasons?.map((season) {
       if (season.seasonNumber == seasonNumber) {
-        return season.rebuild((s) => s..monitored = monitored);
+        return season.copyWith(monitored: monitored);
       }
       return season;
-    }).toBuiltList();
+    }).toList();
 
-    final updatedSeries = series.rebuild(
-      (s) => s..seasons = updatedSeasons?.toBuilder(),
-    );
+    final updatedSeries = series.copyWith(seasons: updatedSeasons);
 
     final response = await _api.getSeriesApi().apiV3SeriesIdPut(
       id: seriesId.toString(),

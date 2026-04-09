@@ -6,22 +6,20 @@ import 'dart:async';
 
 // ignore: unused_import
 import 'dart:convert';
-import 'package:sonarr_api/lib/deserialize.dart';
 import 'package:dio/dio.dart';
 
 import 'package:sonarr_api/lib/model/season_pass_resource.dart';
 
 class SeasonPassApi {
-
   final Dio _dio;
 
   const SeasonPassApi(this._dio);
 
   /// apiV3SeasonpassPost
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [seasonPassResource] 
+  /// * [seasonPassResource]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -31,7 +29,7 @@ class SeasonPassApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> apiV3SeasonpassPost({ 
+  Future<Response<void>> apiV3SeasonpassPost({
     SeasonPassResource? seasonPassResource,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -43,9 +41,7 @@ class SeasonPassApi {
     final _path = r'/api/v3/seasonpass';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -53,7 +49,8 @@ class SeasonPassApi {
             'name': 'apikey',
             'keyName': 'apikey',
             'where': 'query',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'X-Api-Key',
             'keyName': 'X-Api-Key',
@@ -69,13 +66,10 @@ class SeasonPassApi {
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(seasonPassResource);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(seasonPassResource);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -93,5 +87,4 @@ _bodyData=jsonEncode(seasonPassResource);
 
     return _response;
   }
-
 }

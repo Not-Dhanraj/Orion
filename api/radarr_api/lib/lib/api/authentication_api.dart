@@ -6,24 +6,21 @@ import 'dart:async';
 
 // ignore: unused_import
 import 'dart:convert';
-import 'package:radarr_api/lib/deserialize.dart';
 import 'package:dio/dio.dart';
 
-
 class AuthenticationApi {
-
   final Dio _dio;
 
   const AuthenticationApi(this._dio);
 
   /// loginPost
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [returnUrl] 
-  /// * [username] 
-  /// * [password] 
-  /// * [rememberMe] 
+  /// * [returnUrl]
+  /// * [username]
+  /// * [password]
+  /// * [rememberMe]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -33,7 +30,7 @@ class AuthenticationApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> loginPost({ 
+  Future<Response<void>> loginPost({
     String? returnUrl,
     String? username,
     String? password,
@@ -48,9 +45,7 @@ class AuthenticationApi {
     final _path = r'/login';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -58,7 +53,8 @@ class AuthenticationApi {
             'name': 'apikey',
             'keyName': 'apikey',
             'where': 'query',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'X-Api-Key',
             'keyName': 'X-Api-Key',
@@ -77,11 +73,9 @@ class AuthenticationApi {
 
     dynamic _bodyData;
 
-    try {
-
-    } catch(error, stackTrace) {
+    try {} catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
           queryParameters: _queryParameters,
@@ -106,7 +100,7 @@ class AuthenticationApi {
   }
 
   /// logoutGet
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -118,7 +112,7 @@ class AuthenticationApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> logoutGet({ 
+  Future<Response<void>> logoutGet({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -129,9 +123,7 @@ class AuthenticationApi {
     final _path = r'/logout';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -139,7 +131,8 @@ class AuthenticationApi {
             'name': 'apikey',
             'keyName': 'apikey',
             'where': 'query',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'X-Api-Key',
             'keyName': 'X-Api-Key',
@@ -161,5 +154,4 @@ class AuthenticationApi {
 
     return _response;
   }
-
 }

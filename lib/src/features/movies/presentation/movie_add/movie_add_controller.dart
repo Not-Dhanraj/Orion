@@ -2,7 +2,7 @@ import 'package:client/src/features/movies/application/movie_service.dart';
 import 'package:client/src/features/movies/domain/movie_add_state.dart';
 import 'package:client/src/features/movies/presentation/movie_library/movie_library_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 class MovieAddController extends AutoDisposeAsyncNotifier<MovieAddState> {
   late MovieService _movieService;
@@ -49,22 +49,20 @@ class MovieAddController extends AutoDisposeAsyncNotifier<MovieAddState> {
   }
 
   void selectMovieToState(MovieResource movie) {
-    movie = movie.rebuild(
-      (b) => b
-        ..monitored = movie.addOptions?.monitor != MonitorTypes.none
-        ..minimumAvailability = MovieStatusType.released
-        ..rootFolderPath = state.requireValue.rootFolders!.first.path
-        ..addOptions.update(
-          (b2) => b2
-            ..searchForMovie = false
-            ..monitor = MonitorTypes.movieOnly,
-        ),
+    final addOptions = (movie.addOptions ?? AddMovieOptions()).copyWith(
+      searchForMovie: false,
+      monitor: MonitorTypes.movieOnly,
+    );
+    movie = movie.copyWith(
+      monitored: addOptions.monitor != MonitorTypes.none,
+      minimumAvailability: MovieStatusType.released,
+      rootFolderPath: state.requireValue.rootFolders!.first.path,
+      addOptions: addOptions,
     );
 
     if (state.valueOrNull?.qualityProfiles?.isNotEmpty == true) {
-      movie = movie.rebuild(
-        (b) =>
-            b..qualityProfileId = state.requireValue.qualityProfiles!.first.id,
+      movie = movie.copyWith(
+        qualityProfileId: state.requireValue.qualityProfiles!.first.id,
       );
     }
 

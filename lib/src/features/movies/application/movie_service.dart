@@ -1,7 +1,7 @@
 import 'package:client/src/exceptions/repository_exception.dart';
 import 'package:client/src/features/movies/data/movie_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 class MovieService {
   final MovieRepository _movieRepository;

@@ -3,8 +3,8 @@ import 'package:client/src/core/application/hive_service.dart';
 import 'package:client/src/core/domain/credentials.dart';
 import 'package:client/src/exceptions/auth_exception.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:radarr/radarr.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 class AuthService {
   final Ref _ref;
@@ -17,7 +17,7 @@ class AuthService {
     }
 
     try {
-      var sonarrApi = Sonarr(basePathOverride: url);
+      var sonarrApi = SonarrApi(basePathOverride: url);
       sonarrApi.setApiKey('X-Api-Key', apiKey);
       await Future.delayed(const Duration(seconds: 1));
       var response = await sonarrApi.getSystemApi().apiV3SystemStatusGet();
@@ -56,7 +56,7 @@ class AuthService {
     }
 
     try {
-      var radarrApi = Radarr(basePathOverride: url);
+      var radarrApi = RadarrApi(basePathOverride: url);
       radarrApi.setApiKey('X-Api-Key', apiKey);
       await Future.delayed(const Duration(seconds: 1));
       var response = await radarrApi.getSystemApi().apiV3SystemStatusGet();

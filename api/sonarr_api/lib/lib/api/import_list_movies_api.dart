@@ -6,24 +6,22 @@ import 'dart:async';
 
 // ignore: unused_import
 import 'dart:convert';
-import 'package:sonarr_api/lib/deserialize.dart';
 import 'package:dio/dio.dart';
 
 import 'package:sonarr_api/lib/model/movie_resource.dart';
 
 class ImportListMoviesApi {
-
   final Dio _dio;
 
   const ImportListMoviesApi(this._dio);
 
   /// apiV3ImportlistMovieGet
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [includeRecommendations] 
-  /// * [includeTrending] 
-  /// * [includePopular] 
+  /// * [includeRecommendations]
+  /// * [includeTrending]
+  /// * [includePopular]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -33,7 +31,7 @@ class ImportListMoviesApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> apiV3ImportlistMovieGet({ 
+  Future<Response<void>> apiV3ImportlistMovieGet({
     bool? includeRecommendations = false,
     bool? includeTrending = false,
     bool? includePopular = false,
@@ -47,9 +45,7 @@ class ImportListMoviesApi {
     final _path = r'/api/v3/importlist/movie';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -57,7 +53,8 @@ class ImportListMoviesApi {
             'name': 'apikey',
             'keyName': 'apikey',
             'where': 'query',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'X-Api-Key',
             'keyName': 'X-Api-Key',
@@ -70,7 +67,8 @@ class ImportListMoviesApi {
     );
 
     final _queryParameters = <String, dynamic>{
-      if (includeRecommendations != null) r'includeRecommendations': includeRecommendations,
+      if (includeRecommendations != null)
+        r'includeRecommendations': includeRecommendations,
       if (includeTrending != null) r'includeTrending': includeTrending,
       if (includePopular != null) r'includePopular': includePopular,
     };
@@ -88,10 +86,10 @@ class ImportListMoviesApi {
   }
 
   /// apiV3ImportlistMoviePost
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [movieResource] 
+  /// * [movieResource]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -101,7 +99,7 @@ class ImportListMoviesApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> apiV3ImportlistMoviePost({ 
+  Future<Response<void>> apiV3ImportlistMoviePost({
     List<MovieResource>? movieResource,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -113,9 +111,7 @@ class ImportListMoviesApi {
     final _path = r'/api/v3/importlist/movie';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -123,7 +119,8 @@ class ImportListMoviesApi {
             'name': 'apikey',
             'keyName': 'apikey',
             'where': 'query',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'X-Api-Key',
             'keyName': 'X-Api-Key',
@@ -139,13 +136,10 @@ class ImportListMoviesApi {
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(movieResource);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(movieResource);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -163,5 +157,4 @@ _bodyData=jsonEncode(movieResource);
 
     return _response;
   }
-
 }

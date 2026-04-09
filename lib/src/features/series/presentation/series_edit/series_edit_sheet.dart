@@ -11,7 +11,7 @@ import 'package:client/src/shared/utils/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 class SeriesEditSheet extends ConsumerWidget {
   final SeriesResource series;
@@ -81,9 +81,7 @@ class SeriesEditSheet extends ConsumerWidget {
                                     'Download Monitored episodes in this series',
                                 value: seriesData.monitored ?? false,
                                 onChanged: (value) => controller.updateSeries(
-                                  seriesData.rebuild(
-                                    (b) => b..monitored = value,
-                                  ),
+                                  seriesData.copyWith(monitored: value),
                                 ),
                               ),
                               FormRowDivider(),
@@ -92,9 +90,7 @@ class SeriesEditSheet extends ConsumerWidget {
                                 subtitle: 'Sort episodes into season folders',
                                 value: seriesData.seasonFolder ?? true,
                                 onChanged: (value) => controller.updateSeries(
-                                  seriesData.rebuild(
-                                    (b) => b..seasonFolder = value,
-                                  ),
+                                  seriesData.copyWith(seasonFolder: value),
                                 ),
                               ),
                               FormRowDivider(),
@@ -108,9 +104,7 @@ class SeriesEditSheet extends ConsumerWidget {
                                 itemToString: (t) => t.name.capitalizeByWord(),
                                 onChanged: (selected) =>
                                     controller.updateSeries(
-                                      seriesData.rebuild(
-                                        (b) => b..seriesType = selected,
-                                      ),
+                                      seriesData.copyWith(seriesType: selected),
                                     ),
                               ),
                             ],
@@ -135,9 +129,8 @@ class SeriesEditSheet extends ConsumerWidget {
                                 itemToString: (p) => p.name ?? 'Unknown',
                                 onChanged: (selected) =>
                                     controller.updateSeries(
-                                      seriesData.rebuild(
-                                        (b) =>
-                                            b..qualityProfileId = selected.id,
+                                      seriesData.copyWith(
+                                        qualityProfileId: selected.id,
                                       ),
                                     ),
                               ),

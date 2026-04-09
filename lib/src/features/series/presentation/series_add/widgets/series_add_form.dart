@@ -4,7 +4,7 @@ import 'package:client/src/shared/widgets/inputs/custom_switch_tile.dart';
 import 'package:client/src/shared/utils/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 class SeriesConfigurationForm extends ConsumerWidget {
   final SeriesResource series;
@@ -37,9 +37,8 @@ class SeriesConfigurationForm extends ConsumerWidget {
               title: 'Season Folder',
               subtitle: 'Sort episodes into season folders',
               value: updatedSeries.seasonFolder ?? true,
-              onChanged: (value) => onSeriesChanged(
-                updatedSeries.rebuild((b) => b..seasonFolder = value),
-              ),
+              onChanged: (value) =>
+                  onSeriesChanged(updatedSeries.copyWith(seasonFolder: value)),
             ),
             FormRowDivider(),
             GenericDropdownRow<MonitorTypes>(
@@ -50,8 +49,9 @@ class SeriesConfigurationForm extends ConsumerWidget {
               itemToString: (t) => t.name.capitalizeByWord(),
               onChanged: (newType) {
                 onSeriesChanged(
-                  updatedSeries.rebuild(
-                    (b) => b..addOptions.update((b2) => b2..monitor = newType),
+                  updatedSeries.copyWith(
+                    addOptions: (updatedSeries.addOptions ?? AddSeriesOptions())
+                        .copyWith(monitor: newType),
                   ),
                 );
               },
@@ -64,9 +64,7 @@ class SeriesConfigurationForm extends ConsumerWidget {
               items: SeriesTypes.values.toList(),
               itemToString: (t) => t.name.capitalizeByWord(),
               onChanged: (selected) {
-                onSeriesChanged(
-                  updatedSeries.rebuild((b) => b..seriesType = selected),
-                );
+                onSeriesChanged(updatedSeries.copyWith(seriesType: selected));
               },
             ),
           ],
@@ -87,9 +85,7 @@ class SeriesConfigurationForm extends ConsumerWidget {
               itemToString: (p) => p.name ?? 'Unknown',
               onChanged: (selected) {
                 onSeriesChanged(
-                  updatedSeries.rebuild(
-                    (b) => b..qualityProfileId = selected.id,
-                  ),
+                  updatedSeries.copyWith(qualityProfileId: selected.id),
                 );
               },
             ),
@@ -104,9 +100,7 @@ class SeriesConfigurationForm extends ConsumerWidget {
               itemToString: (f) => f.path ?? 'Unknown',
               onChanged: (selected) {
                 onSeriesChanged(
-                  updatedSeries.rebuild(
-                    (b) => b..rootFolderPath = selected.path,
-                  ),
+                  updatedSeries.copyWith(rootFolderPath: selected.path),
                 );
               },
             ),
@@ -123,11 +117,9 @@ class SeriesConfigurationForm extends ConsumerWidget {
               subtitle: 'Search for all missing episodes when adding',
               value: updatedSeries.addOptions?.searchForMissingEpisodes ?? true,
               onChanged: (value) => onSeriesChanged(
-                updatedSeries.rebuild(
-                  (b) => b
-                    ..addOptions.update(
-                      (b2) => b2..searchForMissingEpisodes = value,
-                    ),
+                updatedSeries.copyWith(
+                  addOptions: (updatedSeries.addOptions ?? AddSeriesOptions())
+                      .copyWith(searchForMissingEpisodes: value),
                 ),
               ),
             ),
@@ -139,11 +131,9 @@ class SeriesConfigurationForm extends ConsumerWidget {
                   updatedSeries.addOptions?.searchForCutoffUnmetEpisodes ??
                   false,
               onChanged: (value) => onSeriesChanged(
-                updatedSeries.rebuild(
-                  (b) => b
-                    ..addOptions.update(
-                      (b2) => b2..searchForCutoffUnmetEpisodes = value,
-                    ),
+                updatedSeries.copyWith(
+                  addOptions: (updatedSeries.addOptions ?? AddSeriesOptions())
+                      .copyWith(searchForCutoffUnmetEpisodes: value),
                 ),
               ),
             ),

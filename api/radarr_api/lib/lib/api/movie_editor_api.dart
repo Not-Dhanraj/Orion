@@ -6,22 +6,20 @@ import 'dart:async';
 
 // ignore: unused_import
 import 'dart:convert';
-import 'package:radarr_api/lib/deserialize.dart';
 import 'package:dio/dio.dart';
 
 import 'package:radarr_api/lib/model/movie_editor_resource.dart';
 
 class MovieEditorApi {
-
   final Dio _dio;
 
   const MovieEditorApi(this._dio);
 
   /// apiV3MovieEditorDelete
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [movieEditorResource] 
+  /// * [movieEditorResource]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -31,7 +29,7 @@ class MovieEditorApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> apiV3MovieEditorDelete({ 
+  Future<Response<void>> apiV3MovieEditorDelete({
     MovieEditorResource? movieEditorResource,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -43,9 +41,7 @@ class MovieEditorApi {
     final _path = r'/api/v3/movie/editor';
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -53,7 +49,8 @@ class MovieEditorApi {
             'name': 'apikey',
             'keyName': 'apikey',
             'where': 'query',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'X-Api-Key',
             'keyName': 'X-Api-Key',
@@ -69,13 +66,10 @@ class MovieEditorApi {
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(movieEditorResource);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(movieEditorResource);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -95,10 +89,10 @@ _bodyData=jsonEncode(movieEditorResource);
   }
 
   /// apiV3MovieEditorPut
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [movieEditorResource] 
+  /// * [movieEditorResource]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -108,7 +102,7 @@ _bodyData=jsonEncode(movieEditorResource);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> apiV3MovieEditorPut({ 
+  Future<Response<void>> apiV3MovieEditorPut({
     MovieEditorResource? movieEditorResource,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -120,9 +114,7 @@ _bodyData=jsonEncode(movieEditorResource);
     final _path = r'/api/v3/movie/editor';
     final _options = Options(
       method: r'PUT',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -130,7 +122,8 @@ _bodyData=jsonEncode(movieEditorResource);
             'name': 'apikey',
             'keyName': 'apikey',
             'where': 'query',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'X-Api-Key',
             'keyName': 'X-Api-Key',
@@ -146,13 +139,10 @@ _bodyData=jsonEncode(movieEditorResource);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(movieEditorResource);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(movieEditorResource);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -170,5 +160,4 @@ _bodyData=jsonEncode(movieEditorResource);
 
     return _response;
   }
-
 }

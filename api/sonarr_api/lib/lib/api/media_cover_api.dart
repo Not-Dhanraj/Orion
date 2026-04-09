@@ -6,22 +6,19 @@ import 'dart:async';
 
 // ignore: unused_import
 import 'dart:convert';
-import 'package:sonarr_api/lib/deserialize.dart';
 import 'package:dio/dio.dart';
 
-
 class MediaCoverApi {
-
   final Dio _dio;
 
   const MediaCoverApi(this._dio);
 
   /// apiV3MediacoverSeriesIdFilenameGet
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [seriesId] 
-  /// * [filename] 
+  /// * [seriesId]
+  /// * [filename]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -31,7 +28,7 @@ class MediaCoverApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> apiV3MediacoverSeriesIdFilenameGet({ 
+  Future<Response<void>> apiV3MediacoverSeriesIdFilenameGet({
     required int seriesId,
     required String filename,
     CancelToken? cancelToken,
@@ -41,12 +38,22 @@ class MediaCoverApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/api/v3/mediacover/{seriesId}/{filename}'.replaceAll('{' r'seriesId' '}', seriesId.toString()).replaceAll('{' r'filename' '}', filename.toString());
+    final _path = r'/api/v3/mediacover/{seriesId}/{filename}'
+        .replaceAll(
+          '{'
+          r'seriesId'
+          '}',
+          seriesId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'filename'
+          '}',
+          filename.toString(),
+        );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -54,7 +61,8 @@ class MediaCoverApi {
             'name': 'apikey',
             'keyName': 'apikey',
             'where': 'query',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'X-Api-Key',
             'keyName': 'X-Api-Key',
@@ -76,5 +84,4 @@ class MediaCoverApi {
 
     return _response;
   }
-
 }

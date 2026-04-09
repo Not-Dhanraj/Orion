@@ -1,4 +1,4 @@
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 class MovieAddState {
   final List<MovieResource>? searchResults;

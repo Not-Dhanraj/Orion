@@ -29,9 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   animations: ^2.0.11
-  built_collection: ^5.1.1
   cached_network_image: ^3.4.1
-  cupertino_icons: ^1.0.8
   entry: ^1.0.1
   flutter:
     sdk: flutter
@@ -48,7 +46,6 @@ dependencies:
     path: ./api/radarr_api
   sonarr_api:
     path: ./api/sonarr_api
-  table_calendar: ^3.0.9
   url_launcher: ^6.3.2
   with_opacity: ^0.0.2
 

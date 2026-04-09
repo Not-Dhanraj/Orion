@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 import 'package:with_opacity/with_opacity.dart';
 
 class MovieResultItem extends StatelessWidget {
@@ -63,7 +63,9 @@ class MovieResultItem extends StatelessWidget {
                   movie.title ?? 'Unknown',
                   style: tt.titleMedium!.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: isAdded ? cs.onSurface.withCustomOpacity(0.45) : null,
+                    color: isAdded
+                        ? cs.onSurface.withCustomOpacity(0.45)
+                        : null,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

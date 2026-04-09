@@ -11,7 +11,7 @@ import 'package:client/src/shared/utils/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 class MovieEditSheet extends ConsumerWidget {
   final MovieResource movie;
@@ -82,9 +82,7 @@ class MovieEditSheet extends ConsumerWidget {
                                     'Download Monitored release when available',
                                 value: movieData.monitored ?? false,
                                 onChanged: (value) => controller.updateMovie(
-                                  movieData.rebuild(
-                                    (b) => b..monitored = value,
-                                  ),
+                                  movieData.copyWith(monitored: value),
                                 ),
                               ),
                               FormRowDivider(),
@@ -102,8 +100,8 @@ class MovieEditSheet extends ConsumerWidget {
                                 ],
                                 itemToString: (t) => t.name.capitalizeByWord(),
                                 onChanged: (newType) => controller.updateMovie(
-                                  movieData.rebuild(
-                                    (b) => b..minimumAvailability = newType,
+                                  movieData.copyWith(
+                                    minimumAvailability: newType,
                                   ),
                                 ),
                               ),
@@ -127,8 +125,8 @@ class MovieEditSheet extends ConsumerWidget {
                                 items: qualityProfiles,
                                 itemToString: (p) => p.name ?? 'Unknown',
                                 onChanged: (selected) => controller.updateMovie(
-                                  movieData.rebuild(
-                                    (b) => b..qualityProfileId = selected.id,
+                                  movieData.copyWith(
+                                    qualityProfileId: selected.id,
                                   ),
                                 ),
                               ),
@@ -148,9 +146,8 @@ class MovieEditSheet extends ConsumerWidget {
                                   itemToString: (f) => f.path ?? 'Unknown',
                                   onChanged: (selected) =>
                                       controller.updateMovie(
-                                        movieData.rebuild(
-                                          (b) =>
-                                              b..rootFolderPath = selected.path,
+                                        movieData.copyWith(
+                                          rootFolderPath: selected.path,
                                         ),
                                       ),
                                 ),

@@ -1,5 +1,5 @@
-import 'package:radarr/radarr.dart' as radarr;
-import 'package:sonarr/sonarr.dart' as sonarr;
+import 'package:radarr_api/radarr_api.dart' as radarr;
+import 'package:sonarr_api/sonarr_api.dart' as sonarr;
 
 class QueueItem {
   final int id;

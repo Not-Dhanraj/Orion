@@ -1,5 +1,7 @@
-import 'package:radarr/radarr.dart' show MovieResource, MediaCoverTypes;
-import 'package:sonarr/sonarr.dart' show EpisodeResource;
+import 'package:client/src/shared/utils/movie_utils.dart';
+import 'package:client/src/shared/utils/series_utils.dart';
+import 'package:radarr_api/radarr_api.dart' show MovieResource, MediaCoverTypes;
+import 'package:sonarr_api/sonarr_api.dart' show EpisodeResource;
 
 class CalendarItem {
   final int id;
@@ -38,12 +40,7 @@ class CalendarItem {
       title: movie.title!,
       airDate: movie.physicalRelease ?? movie.digitalRelease,
       overview: movie.overview ?? '',
-      posterPath: movie.images
-          ?.firstWhere(
-            (img) => img.coverType == MediaCoverTypes.poster,
-            orElse: () => movie.images!.first,
-          )
-          .remoteUrl,
+      posterPath: movie.remotePosterUrlLink,
       hasFile: movie.hasFile ?? false,
       monitored: movie.monitored ?? false,
       isRadarr: true,
@@ -58,12 +55,7 @@ class CalendarItem {
       title: episode.title ?? 'Unknown Episode',
       airDate: episode.airDateUtc,
       overview: episode.overview ?? '',
-      posterPath: episode.series?.images
-          ?.firstWhere(
-            (img) => img.coverType == MediaCoverTypes.poster,
-            orElse: () => episode.series!.images!.first,
-          )
-          .remoteUrl,
+      posterPath: episode.series?.remotePosterUrlLink,
       hasFile: episode.hasFile ?? false,
       monitored: episode.monitored ?? false,
       isRadarr: false,

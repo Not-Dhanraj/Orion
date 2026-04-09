@@ -1,9 +1,11 @@
 import 'package:client/src/core/application/api_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
+// ignore: depend_on_referenced_packages
+import 'package:dio/dio.dart';
 
 class RadarrQueueRepository {
-  final Radarr _api;
+  final RadarrApi _api;
 
   RadarrQueueRepository(this._api);
 
@@ -13,20 +15,29 @@ class RadarrQueueRepository {
     bool? includeUnknownMovieItems = false,
     bool? includeMovie = true,
   }) async {
-    await _api.getCommandApi().apiV3CommandPost(
-      commandResource: CommandResource(
-        (b) => b.name = "RefreshMonitoredDownloads",
-      ),
-    );
+    try {
+      await _api.getCommandApi().apiV3CommandPost(
+        commandResource: CommandResource(name: "RefreshMonitoredDownloads"),
+      );
 
-    final response = await _api.getQueueApi().apiV3QueueGet(
-      page: page,
-      pageSize: pageSize,
-      includeUnknownMovieItems: includeUnknownMovieItems,
-      includeMovie: includeMovie,
-    );
+      final response = await _api.getQueueApi().apiV3QueueGet(
+        page: page,
+        pageSize: pageSize,
+        includeUnknownMovieItems: includeUnknownMovieItems,
+        includeMovie: includeMovie,
+      );
 
-    return response.data?.records?.toList() ?? [];
+      return response.data?.records?.toList() ?? [];
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 400) {
+        final fallbackResponse = await _api.getQueueApi().apiV3QueueGet(
+          page: page,
+          pageSize: pageSize,
+        );
+        return fallbackResponse.data?.records?.toList() ?? [];
+      }
+      rethrow;
+    }
   }
 
   Future<void> deleteQueueItem({

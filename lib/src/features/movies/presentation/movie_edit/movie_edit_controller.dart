@@ -3,7 +3,7 @@ import 'package:client/src/features/movies/domain/movie_edit_state.dart';
 import 'package:client/src/features/movies/presentation/movie_detail/movie_details_controller.dart';
 import 'package:client/src/features/movies/presentation/movie_library/movie_library_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 class MovieEditControllerNotifier
     extends AutoDisposeFamilyAsyncNotifier<MovieEditState, MovieResource> {

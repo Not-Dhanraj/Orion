@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 extension MovieResourceX on MovieResource {
   String? get remotePosterUrlLink {

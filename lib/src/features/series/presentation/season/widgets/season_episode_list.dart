@@ -7,7 +7,7 @@ import 'package:client/src/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 import 'episode_row.dart';
 
 class SeasonEpisodeList extends ConsumerWidget {

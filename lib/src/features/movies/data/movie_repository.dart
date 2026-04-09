@@ -1,13 +1,12 @@
-import 'package:built_collection/built_collection.dart';
 import 'package:client/src/core/application/api_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 class MovieRepository {
-  final Radarr _api;
+  final RadarrApi _api;
   MovieRepository(this._api);
 
-  Future<BuiltList<MovieResource>?> fetchAll() async {
+  Future<List<MovieResource>?> fetchAll() async {
     var response = await _api.getMovieApi().apiV3MovieGet();
     return response.data;
   }
@@ -44,19 +43,19 @@ class MovieRepository {
     );
   }
 
-  Future<BuiltList<MovieResource>?> search(String term) async {
+  Future<List<MovieResource>?> search(String term) async {
     var response = await _api.getMovieLookupApi().apiV3MovieLookupGet(
       term: term,
     );
     return response.data;
   }
 
-  Future<BuiltList<QualityProfileResource>?> fetchQualityProfiles() async {
+  Future<List<QualityProfileResource>?> fetchQualityProfiles() async {
     var response = await _api.getQualityProfileApi().apiV3QualityprofileGet();
     return response.data;
   }
 
-  Future<BuiltList<RootFolderResource>?> fetchRootFolders() async {
+  Future<List<RootFolderResource>?> fetchRootFolders() async {
     var response = await _api.getRootFolderApi().apiV3RootfolderGet();
     return response.data;
   }

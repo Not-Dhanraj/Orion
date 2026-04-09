@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 class SeriesDetailsPage extends ConsumerStatefulWidget {
   final SeriesResource series;

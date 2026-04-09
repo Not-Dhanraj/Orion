@@ -4,7 +4,7 @@ import 'package:client/src/shared/widgets/inputs/custom_switch_tile.dart';
 import 'package:client/src/shared/utils/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 class MovieConfigurationForm extends ConsumerWidget {
   final MovieResource movie;
@@ -40,8 +40,9 @@ class MovieConfigurationForm extends ConsumerWidget {
               itemToString: (t) => t.name.capitalizeByWord(),
               onChanged: (newType) {
                 onMovieChanged(
-                  updatedMovie.rebuild(
-                    (b) => b..addOptions.update((b2) => b2..monitor = newType),
+                  updatedMovie.copyWith(
+                    addOptions: (updatedMovie.addOptions ?? AddMovieOptions())
+                        .copyWith(monitor: newType),
                   ),
                 );
               },
@@ -60,7 +61,7 @@ class MovieConfigurationForm extends ConsumerWidget {
               itemToString: (t) => t.name.capitalizeByWord(),
               onChanged: (newType) {
                 onMovieChanged(
-                  updatedMovie.rebuild((b) => b..minimumAvailability = newType),
+                  updatedMovie.copyWith(minimumAvailability: newType),
                 );
               },
             ),
@@ -82,9 +83,7 @@ class MovieConfigurationForm extends ConsumerWidget {
               itemToString: (p) => p.name ?? 'Unknown',
               onChanged: (selected) {
                 onMovieChanged(
-                  updatedMovie.rebuild(
-                    (b) => b..qualityProfileId = selected.id,
-                  ),
+                  updatedMovie.copyWith(qualityProfileId: selected.id),
                 );
               },
             ),
@@ -99,9 +98,7 @@ class MovieConfigurationForm extends ConsumerWidget {
               itemToString: (f) => f.path ?? 'Unknown',
               onChanged: (selected) {
                 onMovieChanged(
-                  updatedMovie.rebuild(
-                    (b) => b..rootFolderPath = selected.path,
-                  ),
+                  updatedMovie.copyWith(rootFolderPath: selected.path),
                 );
               },
             ),
@@ -117,9 +114,9 @@ class MovieConfigurationForm extends ConsumerWidget {
               subtitle: 'Start searching for missing movie',
               value: updatedMovie.addOptions?.searchForMovie ?? true,
               onChanged: (value) => onMovieChanged(
-                updatedMovie.rebuild(
-                  (b) =>
-                      b..addOptions.update((b2) => b2..searchForMovie = value),
+                updatedMovie.copyWith(
+                  addOptions: (updatedMovie.addOptions ?? AddMovieOptions())
+                      .copyWith(searchForMovie: value),
                 ),
               ),
             ),

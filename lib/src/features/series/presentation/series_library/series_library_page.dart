@@ -9,7 +9,7 @@ import 'package:client/src/shared/utils/series_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 class SeriesLibraryPage extends ConsumerWidget {
   const SeriesLibraryPage({super.key});

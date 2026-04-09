@@ -3,7 +3,7 @@ import 'package:client/src/features/series/domain/series_edit_state.dart';
 import 'package:client/src/features/series/presentation/series_detail/series_details_controller.dart';
 import 'package:client/src/features/series/presentation/series_library/series_library_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 class SeriesEditControllerNotifier
     extends AutoDisposeFamilyAsyncNotifier<SeriesEditState, int> {
@@ -38,7 +38,9 @@ class SeriesEditControllerNotifier
     state = AsyncData(state.value!.copyWith(isLoading: true));
     try {
       await Future.delayed(const Duration(milliseconds: 500));
-      var updatedSeries = await _seriesService.updateSeries(state.value!.series!);
+      var updatedSeries = await _seriesService.updateSeries(
+        state.value!.series!,
+      );
 
       ref.read(seriesDetailsController.notifier).initialize(updatedSeries);
       state = AsyncData(

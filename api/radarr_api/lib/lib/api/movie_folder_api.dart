@@ -6,21 +6,18 @@ import 'dart:async';
 
 // ignore: unused_import
 import 'dart:convert';
-import 'package:radarr_api/lib/deserialize.dart';
 import 'package:dio/dio.dart';
 
-
 class MovieFolderApi {
-
   final Dio _dio;
 
   const MovieFolderApi(this._dio);
 
   /// apiV3MovieIdFolderGet
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [id] 
+  /// * [id]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -30,7 +27,7 @@ class MovieFolderApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> apiV3MovieIdFolderGet({ 
+  Future<Response<void>> apiV3MovieIdFolderGet({
     required int id,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -39,12 +36,15 @@ class MovieFolderApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/api/v3/movie/{id}/folder'.replaceAll('{' r'id' '}', id.toString());
+    final _path = r'/api/v3/movie/{id}/folder'.replaceAll(
+      '{'
+      r'id'
+      '}',
+      id.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -52,7 +52,8 @@ class MovieFolderApi {
             'name': 'apikey',
             'keyName': 'apikey',
             'where': 'query',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'X-Api-Key',
             'keyName': 'X-Api-Key',
@@ -74,5 +75,4 @@ class MovieFolderApi {
 
     return _response;
   }
-
 }

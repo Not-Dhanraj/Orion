@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 extension SeriesResourceUtils on SeriesResource {
   String? get remotePosterUrlLink {
@@ -37,10 +37,10 @@ enum SeasonStatus { complete, unmonitored, unfinished }
 
 extension SeasonStatusExtension on SeasonStatus {
   String get label => switch (this) {
-        SeasonStatus.complete => 'COMPLETE',
-        SeasonStatus.unmonitored => 'UNMONITORED',
-        SeasonStatus.unfinished => 'UNFINISHED',
-      };
+    SeasonStatus.complete => 'COMPLETE',
+    SeasonStatus.unmonitored => 'UNMONITORED',
+    SeasonStatus.unfinished => 'UNFINISHED',
+  };
 }
 
 SeasonStatus resolveSeasonStatus(SeasonResource season) {
@@ -48,7 +48,9 @@ SeasonStatus resolveSeasonStatus(SeasonResource season) {
   final episodeCount = season.statistics?.episodeCount ?? 0;
 
   if (season.monitored == false) return SeasonStatus.unmonitored;
-  if (episodeCount > 0 && fileCount == episodeCount) return SeasonStatus.complete;
+  if (episodeCount > 0 && fileCount == episodeCount) {
+    return SeasonStatus.complete;
+  }
 
   return SeasonStatus.unfinished;
 }

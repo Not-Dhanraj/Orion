@@ -6,22 +6,20 @@ import 'dart:async';
 
 // ignore: unused_import
 import 'dart:convert';
-import 'package:sonarr_api/lib/deserialize.dart';
 import 'package:dio/dio.dart';
 
 import 'package:sonarr_api/lib/model/series_resource.dart';
 
 class SeriesImportApi {
-
   final Dio _dio;
 
   const SeriesImportApi(this._dio);
 
   /// apiV3SeriesImportPost
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [seriesResource] 
+  /// * [seriesResource]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -31,7 +29,7 @@ class SeriesImportApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> apiV3SeriesImportPost({ 
+  Future<Response<void>> apiV3SeriesImportPost({
     List<SeriesResource>? seriesResource,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -43,9 +41,7 @@ class SeriesImportApi {
     final _path = r'/api/v3/series/import';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -53,7 +49,8 @@ class SeriesImportApi {
             'name': 'apikey',
             'keyName': 'apikey',
             'where': 'query',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'X-Api-Key',
             'keyName': 'X-Api-Key',
@@ -69,13 +66,10 @@ class SeriesImportApi {
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(seriesResource);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(seriesResource);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -93,5 +87,4 @@ _bodyData=jsonEncode(seriesResource);
 
     return _response;
   }
-
 }

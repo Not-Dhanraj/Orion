@@ -1,6 +1,6 @@
 import 'package:client/src/features/movies/application/movie_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 class MovieLibraryController extends AsyncNotifier<List<dynamic>> {
   late MovieService _movieService;

@@ -6,23 +6,20 @@ import 'dart:async';
 
 // ignore: unused_import
 import 'dart:convert';
-import 'package:sonarr_api/lib/deserialize.dart';
 import 'package:dio/dio.dart';
 
-
 class FileSystemApi {
-
   final Dio _dio;
 
   const FileSystemApi(this._dio);
 
   /// apiV3FilesystemGet
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [path] 
-  /// * [includeFiles] 
-  /// * [allowFoldersWithoutTrailingSlashes] 
+  /// * [path]
+  /// * [includeFiles]
+  /// * [allowFoldersWithoutTrailingSlashes]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -32,7 +29,7 @@ class FileSystemApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> apiV3FilesystemGet({ 
+  Future<Response<void>> apiV3FilesystemGet({
     String? path,
     bool? includeFiles = false,
     bool? allowFoldersWithoutTrailingSlashes = false,
@@ -46,9 +43,7 @@ class FileSystemApi {
     final _path = r'/api/v3/filesystem';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -56,7 +51,8 @@ class FileSystemApi {
             'name': 'apikey',
             'keyName': 'apikey',
             'where': 'query',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'X-Api-Key',
             'keyName': 'X-Api-Key',
@@ -71,7 +67,9 @@ class FileSystemApi {
     final _queryParameters = <String, dynamic>{
       if (path != null) r'path': path,
       if (includeFiles != null) r'includeFiles': includeFiles,
-      if (allowFoldersWithoutTrailingSlashes != null) r'allowFoldersWithoutTrailingSlashes': allowFoldersWithoutTrailingSlashes,
+      if (allowFoldersWithoutTrailingSlashes != null)
+        r'allowFoldersWithoutTrailingSlashes':
+            allowFoldersWithoutTrailingSlashes,
     };
 
     final _response = await _dio.request<Object>(
@@ -87,10 +85,10 @@ class FileSystemApi {
   }
 
   /// apiV3FilesystemMediafilesGet
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [path] 
+  /// * [path]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -100,7 +98,7 @@ class FileSystemApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> apiV3FilesystemMediafilesGet({ 
+  Future<Response<void>> apiV3FilesystemMediafilesGet({
     String? path,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -112,9 +110,7 @@ class FileSystemApi {
     final _path = r'/api/v3/filesystem/mediafiles';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -122,7 +118,8 @@ class FileSystemApi {
             'name': 'apikey',
             'keyName': 'apikey',
             'where': 'query',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'X-Api-Key',
             'keyName': 'X-Api-Key',
@@ -134,9 +131,7 @@ class FileSystemApi {
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      if (path != null) r'path': path,
-    };
+    final _queryParameters = <String, dynamic>{if (path != null) r'path': path};
 
     final _response = await _dio.request<Object>(
       _path,
@@ -151,10 +146,10 @@ class FileSystemApi {
   }
 
   /// apiV3FilesystemTypeGet
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [path] 
+  /// * [path]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -164,7 +159,7 @@ class FileSystemApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> apiV3FilesystemTypeGet({ 
+  Future<Response<void>> apiV3FilesystemTypeGet({
     String? path,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -176,9 +171,7 @@ class FileSystemApi {
     final _path = r'/api/v3/filesystem/type';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -186,7 +179,8 @@ class FileSystemApi {
             'name': 'apikey',
             'keyName': 'apikey',
             'where': 'query',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'X-Api-Key',
             'keyName': 'X-Api-Key',
@@ -198,9 +192,7 @@ class FileSystemApi {
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      if (path != null) r'path': path,
-    };
+    final _queryParameters = <String, dynamic>{if (path != null) r'path': path};
 
     final _response = await _dio.request<Object>(
       _path,
@@ -213,5 +205,4 @@ class FileSystemApi {
 
     return _response;
   }
-
 }

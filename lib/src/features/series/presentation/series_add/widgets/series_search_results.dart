@@ -5,7 +5,7 @@ import 'package:client/src/features/series/presentation/series_add/widgets/serie
 import 'package:client/src/shared/utils/series_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 import 'package:client/src/shared/widgets/indicators/empty_state_widget.dart';
 
 class SeriesSearchBody extends ConsumerWidget {

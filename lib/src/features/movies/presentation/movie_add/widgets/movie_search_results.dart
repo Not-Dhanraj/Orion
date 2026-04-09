@@ -5,7 +5,7 @@ import 'package:client/src/features/movies/presentation/movie_add/widgets/movie_
 import 'package:client/src/shared/utils/movie_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 import 'package:client/src/shared/widgets/indicators/empty_state_widget.dart';
 
 class MovieSearchBody extends ConsumerWidget {

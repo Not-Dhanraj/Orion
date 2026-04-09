@@ -4,7 +4,7 @@ import 'package:client/src/features/series/domain/season_with_episodes.dart';
 import 'package:client/src/features/series/presentation/series_detail/series_details_controller.dart';
 import 'package:client/src/features/series/presentation/series_library/series_library_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 class SeasonPageController
     extends AutoDisposeFamilyAsyncNotifier<SeasonPageState, SeriesResource> {

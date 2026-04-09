@@ -6,22 +6,20 @@ import 'dart:async';
 
 // ignore: unused_import
 import 'dart:convert';
-import 'package:sonarr_api/lib/deserialize.dart';
 import 'package:dio/dio.dart';
 
 import 'package:sonarr_api/lib/model/series_editor_resource.dart';
 
 class SeriesEditorApi {
-
   final Dio _dio;
 
   const SeriesEditorApi(this._dio);
 
   /// apiV3SeriesEditorDelete
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [seriesEditorResource] 
+  /// * [seriesEditorResource]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -31,7 +29,7 @@ class SeriesEditorApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> apiV3SeriesEditorDelete({ 
+  Future<Response<void>> apiV3SeriesEditorDelete({
     SeriesEditorResource? seriesEditorResource,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -43,9 +41,7 @@ class SeriesEditorApi {
     final _path = r'/api/v3/series/editor';
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -53,7 +49,8 @@ class SeriesEditorApi {
             'name': 'apikey',
             'keyName': 'apikey',
             'where': 'query',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'X-Api-Key',
             'keyName': 'X-Api-Key',
@@ -69,13 +66,10 @@ class SeriesEditorApi {
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(seriesEditorResource);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(seriesEditorResource);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -95,10 +89,10 @@ _bodyData=jsonEncode(seriesEditorResource);
   }
 
   /// apiV3SeriesEditorPut
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [seriesEditorResource] 
+  /// * [seriesEditorResource]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -108,7 +102,7 @@ _bodyData=jsonEncode(seriesEditorResource);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> apiV3SeriesEditorPut({ 
+  Future<Response<void>> apiV3SeriesEditorPut({
     SeriesEditorResource? seriesEditorResource,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -120,9 +114,7 @@ _bodyData=jsonEncode(seriesEditorResource);
     final _path = r'/api/v3/series/editor';
     final _options = Options(
       method: r'PUT',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -130,7 +122,8 @@ _bodyData=jsonEncode(seriesEditorResource);
             'name': 'apikey',
             'keyName': 'apikey',
             'where': 'query',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'X-Api-Key',
             'keyName': 'X-Api-Key',
@@ -146,13 +139,10 @@ _bodyData=jsonEncode(seriesEditorResource);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(seriesEditorResource);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(seriesEditorResource);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -170,5 +160,4 @@ _bodyData=jsonEncode(seriesEditorResource);
 
     return _response;
   }
-
 }

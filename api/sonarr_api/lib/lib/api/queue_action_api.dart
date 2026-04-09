@@ -6,22 +6,20 @@ import 'dart:async';
 
 // ignore: unused_import
 import 'dart:convert';
-import 'package:sonarr_api/lib/deserialize.dart';
 import 'package:dio/dio.dart';
 
 import 'package:sonarr_api/lib/model/queue_bulk_resource.dart';
 
 class QueueActionApi {
-
   final Dio _dio;
 
   const QueueActionApi(this._dio);
 
   /// apiV3QueueGrabBulkPost
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [queueBulkResource] 
+  /// * [queueBulkResource]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -31,7 +29,7 @@ class QueueActionApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> apiV3QueueGrabBulkPost({ 
+  Future<Response<void>> apiV3QueueGrabBulkPost({
     QueueBulkResource? queueBulkResource,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -43,9 +41,7 @@ class QueueActionApi {
     final _path = r'/api/v3/queue/grab/bulk';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -53,7 +49,8 @@ class QueueActionApi {
             'name': 'apikey',
             'keyName': 'apikey',
             'where': 'query',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'X-Api-Key',
             'keyName': 'X-Api-Key',
@@ -69,13 +66,10 @@ class QueueActionApi {
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(queueBulkResource);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(queueBulkResource);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -95,10 +89,10 @@ _bodyData=jsonEncode(queueBulkResource);
   }
 
   /// apiV3QueueGrabIdPost
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [id] 
+  /// * [id]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -108,7 +102,7 @@ _bodyData=jsonEncode(queueBulkResource);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> apiV3QueueGrabIdPost({ 
+  Future<Response<void>> apiV3QueueGrabIdPost({
     required int id,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -117,12 +111,15 @@ _bodyData=jsonEncode(queueBulkResource);
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/api/v3/queue/grab/{id}'.replaceAll('{' r'id' '}', id.toString());
+    final _path = r'/api/v3/queue/grab/{id}'.replaceAll(
+      '{'
+      r'id'
+      '}',
+      id.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -130,7 +127,8 @@ _bodyData=jsonEncode(queueBulkResource);
             'name': 'apikey',
             'keyName': 'apikey',
             'where': 'query',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'X-Api-Key',
             'keyName': 'X-Api-Key',
@@ -152,5 +150,4 @@ _bodyData=jsonEncode(queueBulkResource);
 
     return _response;
   }
-
 }

@@ -1,9 +1,9 @@
 import 'package:client/src/core/application/api_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 class SonarrCalendarRepository {
-  final Sonarr _sonarrApi;
+  final SonarrApi _sonarrApi;
 
   SonarrCalendarRepository(this._sonarrApi);
 
@@ -32,6 +32,8 @@ class SonarrCalendarRepository {
   }
 }
 
-final sonarrCalendarRepositoryProvider = Provider<SonarrCalendarRepository>((ref) {
+final sonarrCalendarRepositoryProvider = Provider<SonarrCalendarRepository>((
+  ref,
+) {
   return SonarrCalendarRepository(ref.watch(seriesApiProvider));
 });

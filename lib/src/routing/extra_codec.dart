@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:radarr/radarr.dart' as radarr;
-import 'package:sonarr/sonarr.dart' as sonarr;
+import 'package:radarr_api/radarr_api.dart' as radarr;
+import 'package:sonarr_api/sonarr_api.dart' as sonarr;
 
 class ExtraCodec extends Codec<Object?, Object?> {
   const ExtraCodec();
@@ -23,23 +23,11 @@ class _ExtraEncoder extends Converter<Object?, Object?> {
     if (input == null) return null;
 
     if (input is radarr.MovieResource) {
-      return {
-        '__type': ExtraCodec._typeMovieResource,
-        'data': radarr.standardSerializers.serializeWith(
-          radarr.MovieResource.serializer,
-          input,
-        ),
-      };
+      return {'__type': ExtraCodec._typeMovieResource, 'data': input.toJson()};
     }
 
     if (input is sonarr.SeriesResource) {
-      return {
-        '__type': ExtraCodec._typeSeriesResource,
-        'data': sonarr.standardSerializers.serializeWith(
-          sonarr.SeriesResource.serializer,
-          input,
-        ),
-      };
+      return {'__type': ExtraCodec._typeSeriesResource, 'data': input.toJson()};
     }
 
     if (input is Map ||
@@ -68,17 +56,19 @@ class _ExtraDecoder extends Converter<Object?, Object?> {
       final data = input['data'];
 
       if (type == ExtraCodec._typeMovieResource) {
-        return radarr.standardSerializers.deserializeWith(
-          radarr.MovieResource.serializer,
-          data,
-        );
+        if (data is Map) {
+          return radarr.MovieResource.fromJson(Map<String, dynamic>.from(data));
+        }
+        return null;
       }
 
       if (type == ExtraCodec._typeSeriesResource) {
-        return sonarr.standardSerializers.deserializeWith(
-          sonarr.SeriesResource.serializer,
-          data,
-        );
+        if (data is Map) {
+          return sonarr.SeriesResource.fromJson(
+            Map<String, dynamic>.from(data),
+          );
+        }
+        return null;
       }
     }
 

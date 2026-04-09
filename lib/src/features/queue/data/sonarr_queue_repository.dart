@@ -1,9 +1,9 @@
 import 'package:client/src/core/application/api_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 class SonarrQueueRepository {
-  final Sonarr _api;
+  final SonarrApi _api;
 
   SonarrQueueRepository(this._api);
 
@@ -15,9 +15,7 @@ class SonarrQueueRepository {
     bool? includeEpisode = true,
   }) async {
     await _api.getCommandApi().apiV3CommandPost(
-      commandResource: CommandResource(
-        (b) => b.name = "RefreshMonitoredDownloads",
-      ),
+      commandResource: CommandResource(name: "RefreshMonitoredDownloads"),
     );
 
     final response = await _api.getQueueApi().apiV3QueueGet(

@@ -6,26 +6,24 @@ import 'dart:async';
 
 // ignore: unused_import
 import 'dart:convert';
-import 'package:radarr_api/lib/deserialize.dart';
 import 'package:dio/dio.dart';
 
 import 'package:radarr_api/lib/model/calendar_release_type.dart';
 
 class CalendarFeedApi {
-
   final Dio _dio;
 
   const CalendarFeedApi(this._dio);
 
   /// feedV3CalendarRadarrIcsGet
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [pastDays] 
-  /// * [futureDays] 
-  /// * [tags] 
-  /// * [unmonitored] 
-  /// * [releaseTypes] 
+  /// * [pastDays]
+  /// * [futureDays]
+  /// * [tags]
+  /// * [unmonitored]
+  /// * [releaseTypes]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -35,7 +33,7 @@ class CalendarFeedApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> feedV3CalendarRadarrIcsGet({ 
+  Future<Response<void>> feedV3CalendarRadarrIcsGet({
     int? pastDays = 7,
     int? futureDays = 28,
     String? tags = '',
@@ -51,9 +49,7 @@ class CalendarFeedApi {
     final _path = r'/feed/v3/calendar/radarr.ics';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -61,7 +57,8 @@ class CalendarFeedApi {
             'name': 'apikey',
             'keyName': 'apikey',
             'where': 'query',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'X-Api-Key',
             'keyName': 'X-Api-Key',
@@ -92,5 +89,4 @@ class CalendarFeedApi {
 
     return _response;
   }
-
 }

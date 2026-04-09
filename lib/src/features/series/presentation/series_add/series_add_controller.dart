@@ -2,7 +2,7 @@ import 'package:client/src/features/series/application/series_service.dart';
 import 'package:client/src/features/series/domain/series_add_state.dart';
 import 'package:client/src/features/series/presentation/series_library/series_library_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 class SeriesAddController extends AutoDisposeAsyncNotifier<SeriesAddState> {
   late SeriesService _seriesService;
@@ -50,23 +50,21 @@ class SeriesAddController extends AutoDisposeAsyncNotifier<SeriesAddState> {
 
   // This SeriesResource is copied to state and this selected series is then updated to server(if added). DON'T REMOVE THIS (or create a new approach)
   void selectSeriesToState(SeriesResource series) {
-    series = series.rebuild(
-      (b) => b
-        ..seasonFolder = true
-        ..seriesType = SeriesTypes.standard
-        ..rootFolderPath = state.requireValue.rootFolders!.first.path
-        ..addOptions.update(
-          (b2) => b2
-            ..monitor = MonitorTypes.none
-            ..searchForMissingEpisodes = false
-            ..searchForCutoffUnmetEpisodes = false,
-        ),
+    final addOptions = (series.addOptions ?? AddSeriesOptions()).copyWith(
+      monitor: MonitorTypes.none,
+      searchForMissingEpisodes: false,
+      searchForCutoffUnmetEpisodes: false,
+    );
+    series = series.copyWith(
+      seasonFolder: true,
+      seriesType: SeriesTypes.standard,
+      rootFolderPath: state.requireValue.rootFolders!.first.path,
+      addOptions: addOptions,
     );
 
     if (state.valueOrNull?.qualityProfiles?.isNotEmpty == true) {
-      series = series.rebuild(
-        (b) =>
-            b..qualityProfileId = state.requireValue.qualityProfiles!.first.id,
+      series = series.copyWith(
+        qualityProfileId: state.requireValue.qualityProfiles!.first.id,
       );
     }
 

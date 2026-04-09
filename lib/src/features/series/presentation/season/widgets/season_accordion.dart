@@ -5,7 +5,7 @@ import 'package:client/src/features/releases/domain/release_target.dart';
 import 'package:client/src/features/releases/presentation/release_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 import 'season_accordion_header.dart';
 import 'season_episode_list.dart';

@@ -1,20 +1,17 @@
-import 'package:built_collection/built_collection.dart';
 import 'package:client/src/core/application/api_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:radarr/radarr.dart';
+import 'package:radarr_api/radarr_api.dart';
 
 class RadarrReleaseRepository {
-  final Radarr _api;
+  final RadarrApi _api;
 
   RadarrReleaseRepository(this._api);
 
-  Future<BuiltList<ReleaseResource>> getReleases({
-    required int movieId,
-  }) async {
+  Future<List<ReleaseResource>> getReleases({required int movieId}) async {
     final response = await _api.getReleaseApi().apiV3ReleaseGet(
-          movieId: movieId,
-        );
-    return response.data ?? BuiltList<ReleaseResource>([]);
+      movieId: movieId,
+    );
+    return response.data ?? [];
   }
 
   Future<void> downloadRelease({
@@ -22,15 +19,13 @@ class RadarrReleaseRepository {
     required String guid,
   }) async {
     await _api.getReleaseApi().apiV3ReleasePost(
-          releaseResource: ReleaseResource(
-            (r) => r
-              ..indexerId = indexerId
-              ..guid = guid,
-          ),
-        );
+      releaseResource: ReleaseResource(indexerId: indexerId, guid: guid),
+    );
   }
 }
 
-final radarrReleaseRepositoryProvider = Provider<RadarrReleaseRepository>((ref) {
+final radarrReleaseRepositoryProvider = Provider<RadarrReleaseRepository>((
+  ref,
+) {
   return RadarrReleaseRepository(ref.watch(moviesApiProvider));
 });

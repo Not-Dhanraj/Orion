@@ -1,4 +1,4 @@
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 class SeriesEditState {
   final SeriesResource? series;

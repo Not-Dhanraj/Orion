@@ -1,13 +1,12 @@
-import 'package:built_collection/built_collection.dart';
 import 'package:client/src/core/application/api_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sonarr/sonarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
 
 class SeriesRepository {
-  final Sonarr _api;
+  final SonarrApi _api;
   SeriesRepository(this._api);
 
-  Future<BuiltList<SeriesResource>?> fetchAll() async {
+  Future<List<SeriesResource>?> fetchAll() async {
     var response = await _api.getSeriesApi().apiV3SeriesGet();
     return response.data;
   }
@@ -44,19 +43,19 @@ class SeriesRepository {
     );
   }
 
-  Future<BuiltList<SeriesResource>?> search(String term) async {
+  Future<List<SeriesResource>?> search(String term) async {
     var response = await _api.getSeriesLookupApi().apiV3SeriesLookupGet(
       term: term,
     );
     return response.data;
   }
 
-  Future<BuiltList<QualityProfileResource>?> fetchQualityProfiles() async {
+  Future<List<QualityProfileResource>?> fetchQualityProfiles() async {
     var response = await _api.getQualityProfileApi().apiV3QualityprofileGet();
     return response.data;
   }
 
-  Future<BuiltList<RootFolderResource>?> fetchRootFolders() async {
+  Future<List<RootFolderResource>?> fetchRootFolders() async {
     var response = await _api.getRootFolderApi().apiV3RootfolderGet();
     return response.data;
   }

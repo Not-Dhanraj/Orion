@@ -6,21 +6,18 @@ import 'dart:async';
 
 // ignore: unused_import
 import 'dart:convert';
-import 'package:sonarr_api/lib/deserialize.dart';
 import 'package:dio/dio.dart';
 
-
 class StaticResourceApi {
-
   final Dio _dio;
 
   const StaticResourceApi(this._dio);
 
   /// contentPathGet
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [path] 
+  /// * [path]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -30,7 +27,7 @@ class StaticResourceApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> contentPathGet({ 
+  Future<Response<void>> contentPathGet({
     required String path,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -39,12 +36,15 @@ class StaticResourceApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/content/{path}'.replaceAll('{' r'path' '}', path.toString());
+    final _path = r'/content/{path}'.replaceAll(
+      '{'
+      r'path'
+      '}',
+      path.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -52,7 +52,8 @@ class StaticResourceApi {
             'name': 'apikey',
             'keyName': 'apikey',
             'where': 'query',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'X-Api-Key',
             'keyName': 'X-Api-Key',
@@ -76,7 +77,7 @@ class StaticResourceApi {
   }
 
   /// loginGet
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -88,7 +89,7 @@ class StaticResourceApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> loginGet({ 
+  Future<Response<void>> loginGet({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -99,9 +100,7 @@ class StaticResourceApi {
     final _path = r'/login';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -109,7 +108,8 @@ class StaticResourceApi {
             'name': 'apikey',
             'keyName': 'apikey',
             'where': 'query',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'X-Api-Key',
             'keyName': 'X-Api-Key',
@@ -133,10 +133,10 @@ class StaticResourceApi {
   }
 
   /// pathGet
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [path] 
+  /// * [path]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -146,7 +146,7 @@ class StaticResourceApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> pathGet({ 
+  Future<Response<void>> pathGet({
     required String path,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -155,12 +155,15 @@ class StaticResourceApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/{path}'.replaceAll('{' r'path' '}', path.toString());
+    final _path = r'/{path}'.replaceAll(
+      '{'
+      r'path'
+      '}',
+      path.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -168,7 +171,8 @@ class StaticResourceApi {
             'name': 'apikey',
             'keyName': 'apikey',
             'where': 'query',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'X-Api-Key',
             'keyName': 'X-Api-Key',
@@ -192,10 +196,10 @@ class StaticResourceApi {
   }
 
   /// rootGet
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [path] 
+  /// * [path]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -205,7 +209,7 @@ class StaticResourceApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> rootGet({ 
+  Future<Response<void>> rootGet({
     required String path,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -214,12 +218,15 @@ class StaticResourceApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/'.replaceAll('{' r'path' '}', path.toString());
+    final _path = r'/'.replaceAll(
+      '{'
+      r'path'
+      '}',
+      path.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -227,7 +234,8 @@ class StaticResourceApi {
             'name': 'apikey',
             'keyName': 'apikey',
             'where': 'query',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'X-Api-Key',
             'keyName': 'X-Api-Key',
@@ -249,5 +257,4 @@ class StaticResourceApi {
 
     return _response;
   }
-
 }

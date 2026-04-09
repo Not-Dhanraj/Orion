@@ -10,8 +10,8 @@ import 'package:client/src/features/settings/presentation/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sonarr/sonarr.dart';
-import 'package:radarr/radarr.dart';
+import 'package:sonarr_api/sonarr_api.dart';
+import 'package:radarr_api/radarr_api.dart';
 import 'package:client/src/routing/extra_codec.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();

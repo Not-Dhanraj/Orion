@@ -46,6 +46,8 @@ dependencies:
     path: ./api/radarr_api
   sonarr_api:
     path: ./api/sonarr_api
+  jelly_api:
+    path: ./api/jelly_api
   url_launcher: ^6.3.2
   with_opacity: ^0.0.2
 

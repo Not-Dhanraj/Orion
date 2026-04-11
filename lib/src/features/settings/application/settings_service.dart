@@ -1,4 +1,4 @@
-import 'package:client/src/core/application/hive_service.dart';
+import 'package:client/src/core/application/app_storage_service.dart';
 import 'package:client/src/core/domain/credentials.dart';
 import 'package:client/src/exceptions/repository_exception.dart';
 import 'package:client/src/features/settings/data/settings_validation_repository.dart';
@@ -7,9 +7,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SettingsService {
   final SettingsValidationRepository _validator;
-  final HiveService _hive;
+  final AppStorageService _storageService;
 
-  SettingsService(this._validator, this._hive);
+  SettingsService(this._validator, this._storageService);
 
   Future<void> validateAndSaveSonarrCredentials(
     String url,
@@ -28,7 +28,7 @@ class SettingsService {
     }
 
     try {
-      await _hive.saveSonarrCredentials(
+      await _storageService.saveSonarrCredentials(
         SonarrCredentials(sonarrUrl: normalizedUrl, sonarrApi: apiKey),
       );
     } catch (e, st) {
@@ -57,7 +57,7 @@ class SettingsService {
     }
 
     try {
-      await _hive.saveRadarrCredentials(
+      await _storageService.saveRadarrCredentials(
         RadarrCredentials(radarrUrl: normalizedUrl, radarrApi: apiKey),
       );
     } catch (e, st) {
@@ -73,6 +73,6 @@ class SettingsService {
 final settingsServiceProvider = Provider<SettingsService>(
   (ref) => SettingsService(
     ref.watch(settingsValidationRepositoryProvider),
-    ref.watch(hiveProvider),
+    ref.watch(appStorageProvider),
   ),
 );

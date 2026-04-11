@@ -1,11 +1,11 @@
-import 'package:client/src/core/application/hive_service.dart';
+import 'package:client/src/core/application/app_storage_service.dart';
 import 'package:client/src/exceptions/api_not_found.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radarr_api/radarr_api.dart';
 import 'package:sonarr_api/sonarr_api.dart';
 
 final seriesApiProvider = Provider<SonarrApi>((ref) {
-  final credentials = ref.watch(hiveProvider);
+  final credentials = ref.watch(appStorageProvider);
   var sonarrCred = credentials.getSonarrCredentials();
   if (sonarrCred == null) {
     throw ApiNotFoundException('Sonarr API not found in local storage');
@@ -16,7 +16,7 @@ final seriesApiProvider = Provider<SonarrApi>((ref) {
 });
 
 final moviesApiProvider = Provider<RadarrApi>((ref) {
-  final credentials = ref.watch(hiveProvider);
+  final credentials = ref.watch(appStorageProvider);
   var radarrCred = credentials.getRadarrCredentials();
   if (radarrCred == null) {
     throw ApiNotFoundException('Radarr API not found in local storage');

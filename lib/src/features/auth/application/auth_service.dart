@@ -1,5 +1,5 @@
 import 'package:client/src/core/application/enabled_provider.dart';
-import 'package:client/src/core/application/hive_service.dart';
+import 'package:client/src/core/application/app_storage_service.dart';
 import 'package:client/src/core/domain/credentials.dart';
 import 'package:client/src/exceptions/auth_exception.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,8 +8,8 @@ import 'package:sonarr_api/sonarr_api.dart';
 
 class AuthService {
   final Ref _ref;
-  final HiveService _hiveService;
-  AuthService(this._ref, this._hiveService);
+  final AppStorageService _storageService;
+  AuthService(this._ref, this._storageService);
 
   Future<void> makeSonarrRequest(String url, String apiKey) async {
     if (url.isEmpty || apiKey.isEmpty) {
@@ -93,7 +93,7 @@ class AuthService {
     final normalizedUrl = url.endsWith('/') ? url : '$url/';
 
     try {
-      await _hiveService.saveSonarrCredentials(
+      await _storageService.saveSonarrCredentials(
         SonarrCredentials(sonarrUrl: normalizedUrl, sonarrApi: apiKey),
       );
       _ref.invalidate(enabledNotifierProvider);
@@ -110,7 +110,7 @@ class AuthService {
     final normalizedUrl = url.endsWith('/') ? url : '$url/';
 
     try {
-      await _hiveService.saveRadarrCredentials(
+      await _storageService.saveRadarrCredentials(
         RadarrCredentials(radarrUrl: normalizedUrl, radarrApi: apiKey),
       );
       _ref.invalidate(enabledNotifierProvider);
@@ -141,5 +141,5 @@ class AuthService {
 enum ServiceType { sonarr, radarr }
 
 final authServiceProvider = Provider<AuthService>((ref) {
-  return AuthService(ref, ref.watch(hiveProvider));
+  return AuthService(ref, ref.watch(appStorageProvider));
 });

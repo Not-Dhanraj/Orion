@@ -80,6 +80,7 @@ class SeriesLibraryPage extends ConsumerWidget {
   Future<void> showSeriesSearchSheet(BuildContext context) {
     return showModalBottomSheet<void>(
       context: context,
+      useRootNavigator: true,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
       isScrollControlled: true,
       useSafeArea: true,

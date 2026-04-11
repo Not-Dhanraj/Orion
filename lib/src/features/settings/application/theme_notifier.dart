@@ -1,18 +1,16 @@
 import 'package:client/src/constants/app_const.dart';
-import 'package:client/src/core/application/hive_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce/hive.dart';
 
 class ThemeModeNotifier extends Notifier<ThemeMode> {
-  static const String _themeBoxName = HiveService.themeBoxName;
   final _appConst = AppConst();
 
   @override
   ThemeMode build() {
     try {
-      if (Hive.isBoxOpen(_themeBoxName)) {
-        final box = Hive.box(_themeBoxName);
+      if (Hive.isBoxOpen(_appConst.themeBoxName)) {
+        final box = Hive.box(_appConst.themeBoxName);
         final themeValue = box.get(
           _appConst.themeModeKey,
           defaultValue: ThemeMode.system.index,
@@ -26,7 +24,7 @@ class ThemeModeNotifier extends Notifier<ThemeMode> {
   }
 
   Future<void> setThemeMode(ThemeMode mode) async {
-    final box = Hive.box(_themeBoxName);
+    final box = Hive.box(_appConst.themeBoxName);
     await box.put(_appConst.themeModeKey, mode.index);
     state = mode;
   }

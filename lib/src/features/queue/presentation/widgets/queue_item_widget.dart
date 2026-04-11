@@ -158,38 +158,41 @@ class QueueItemWidget extends ConsumerWidget {
     showDialog<void>(
       context: context,
       builder: (_) => Dialog(
-        child: CustomDialog(
-          title: 'REMOVE FROM QUEUE',
-          heading: item.title,
-          body: 'Choose how to handle this download.',
-          actions: [
-            TextButton(
-              onPressed: () => remove(fromClient: false, blacklist: false),
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 600),
+          child: CustomDialog(
+            title: 'REMOVE FROM QUEUE',
+            heading: item.title,
+            body: 'Choose how to handle this download.',
+            actions: [
+              TextButton(
+                onPressed: () => remove(fromClient: false, blacklist: false),
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                ),
+                child: const Text('Ignore'),
               ),
-              child: const Text('Ignore'),
-            ),
-            TextButton(
-              onPressed: () => remove(fromClient: true, blacklist: false),
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+              TextButton(
+                onPressed: () => remove(fromClient: true, blacklist: false),
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                ),
+                child: const Text('Remove from Client'),
               ),
-              child: const Text('Remove from Client'),
-            ),
-            TextButton(
-              onPressed: () => remove(fromClient: true, blacklist: true),
-              style: TextButton.styleFrom(
-                foregroundColor: Theme.of(context).colorScheme.error,
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+              TextButton(
+                onPressed: () => remove(fromClient: true, blacklist: true),
+                style: TextButton.styleFrom(
+                  foregroundColor: Theme.of(context).colorScheme.error,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                ),
+                child: const Text('Blacklist'),
               ),
-              child: const Text('Blacklist'),
-            ),
-            OutlinedButton(
-              onPressed: () => context.pop(),
-              child: const Text('Cancel'),
-            ),
-          ],
+              OutlinedButton(
+                onPressed: () => context.pop(),
+                child: const Text('Cancel'),
+              ),
+            ],
+          ),
         ),
       ),
     );

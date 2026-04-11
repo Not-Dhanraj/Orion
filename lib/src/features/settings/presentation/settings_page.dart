@@ -256,6 +256,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   }) {
     showModalBottomSheet(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (_) => ServiceConfigSheet(
@@ -277,6 +278,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
     showModalBottomSheet(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (ctx) => Padding(
@@ -368,6 +370,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
     showModalBottomSheet(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       builder: (_) => StatefulBuilder(
         builder: (ctx, setSheetState) {

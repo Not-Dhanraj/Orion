@@ -98,7 +98,8 @@ SyncPlayGroupJoinedUpdate _$SyncPlayGroupJoinedUpdateFromJson(
       type: $checkedConvert(
         'Type',
         (v) =>
-            $enumDecodeNullable(_$GroupUpdateTypeEnumMap, v) ?? 'GroupJoined',
+            $enumDecodeNullable(_$GroupUpdateTypeEnumMap, v) ??
+            GroupUpdateType.groupJoined,
       ),
     );
     return val;

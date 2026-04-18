@@ -85,7 +85,9 @@ GroupUpdate _$GroupUpdateFromJson(Map<String, dynamic> json) => $checkedCreate(
       data: $checkedConvert('Data', (v) => v as String?),
       type: $checkedConvert(
         'Type',
-        (v) => $enumDecodeNullable(_$GroupUpdateTypeEnumMap, v) ?? 'UserLeft',
+        (v) =>
+            $enumDecodeNullable(_$GroupUpdateTypeEnumMap, v) ??
+            GroupUpdateType.userLeft,
       ),
     );
     return val;

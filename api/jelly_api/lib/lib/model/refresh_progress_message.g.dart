@@ -102,7 +102,7 @@ RefreshProgressMessage _$RefreshProgressMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            'RefreshProgress',
+            SessionMessageType.refreshProgress,
       ),
     );
     return val;

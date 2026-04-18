@@ -839,16 +839,21 @@ MediaStream _$MediaStreamFromJson(Map<String, dynamic> json) => $checkedCreate(
       ),
       videoRange: $checkedConvert(
         'VideoRange',
-        (v) => $enumDecodeNullable(_$VideoRangeEnumMap, v) ?? 'Unknown',
+        (v) =>
+            $enumDecodeNullable(_$VideoRangeEnumMap, v) ?? VideoRange.unknown,
       ),
       videoRangeType: $checkedConvert(
         'VideoRangeType',
-        (v) => $enumDecodeNullable(_$VideoRangeTypeEnumMap, v) ?? 'Unknown',
+        (v) =>
+            $enumDecodeNullable(_$VideoRangeTypeEnumMap, v) ??
+            VideoRangeType.unknown,
       ),
       videoDoViTitle: $checkedConvert('VideoDoViTitle', (v) => v as String?),
       audioSpatialFormat: $checkedConvert(
         'AudioSpatialFormat',
-        (v) => $enumDecodeNullable(_$AudioSpatialFormatEnumMap, v) ?? 'None',
+        (v) =>
+            $enumDecodeNullable(_$AudioSpatialFormatEnumMap, v) ??
+            AudioSpatialFormat.none,
       ),
       localizedUndefined: $checkedConvert(
         'LocalizedUndefined',

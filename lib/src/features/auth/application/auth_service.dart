@@ -3,6 +3,7 @@ import 'package:client/src/core/application/app_storage_service.dart';
 import 'package:client/src/core/domain/credentials.dart';
 import 'package:client/src/exceptions/auth_exception.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jelly_api/jelly_api.dart';
 import 'package:radarr_api/radarr_api.dart';
 import 'package:sonarr_api/sonarr_api.dart';
 
@@ -136,9 +137,55 @@ class AuthService {
       await configureRadarr(url, apiKey);
     }
   }
+
+  Future<void> validateAndConfigureJellyfin(String url, String username, String password) async {
+    if (url.isEmpty || username.isEmpty) {
+      throw AuthException('Jellyfin URL and username cannot be empty');
+    }
+
+    final normalizedUrl = url.endsWith('/') ? url : '$url/';
+
+    try {
+      var jellyApi = JellyApi(basePathOverride: normalizedUrl);
+      final authHeader = 'MediaBrowser Client="Orion", Device="Flutter", DeviceId="orion-app", Version="1.0.0"';
+      
+      final response = await jellyApi.getUserApi().authenticateUserByName(
+        authenticateUserByName: AuthenticateUserByName(username: username, pw: password),
+        headers: {'X-Emby-Authorization': authHeader},
+      );
+
+      if (response.statusCode != 200) {
+        throw AuthException('Jellyfin API returned an error: ${response.statusMessage}');
+      }
+
+      final data = response.data;
+      if (data == null || data.accessToken == null || data.user?.id == null) {
+        throw AuthException('Jellyfin login failed: No access token or user ID returned');
+      }
+
+      await _storageService.saveJellyfinCredentials(
+        JellyfinCredentials(
+          jellyfinUrl: normalizedUrl,
+          username: username,
+          accessToken: data.accessToken!,
+          userId: data.user!.id!,
+        ),
+      );
+      _ref.invalidate(enabledNotifierProvider);
+    } catch (e, stackTrace) {
+      if (e is AuthException) {
+        rethrow;
+      }
+      throw AuthException(
+        'Failed to connect to Jellyfin. Please check your credentials and server URL.',
+        error: e,
+        stackTrace: stackTrace,
+      );
+    }
+  }
 }
 
-enum ServiceType { sonarr, radarr }
+enum ServiceType { sonarr, radarr, jellyfin }
 
 final authServiceProvider = Provider<AuthService>((ref) {
   return AuthService(ref, ref.watch(appStorageProvider));

@@ -21,3 +21,21 @@ class RadarrCredentials {
   String toString() =>
       'RadarrCredentials(url: $radarrUrl, api: ${radarrApi.substring(0, 8)}...)';
 }
+
+class JellyfinCredentials {
+  final String jellyfinUrl;
+  final String username;
+  final String accessToken;
+  final String userId;
+
+  JellyfinCredentials({
+    required this.jellyfinUrl,
+    required this.username,
+    required this.accessToken,
+    required this.userId,
+  });
+
+  @override
+  String toString() =>
+      'JellyfinCredentials(url: $jellyfinUrl, username: $username, userId: $userId, accessToken: ${accessToken.substring(0, 8)}...)';
+}

@@ -9,6 +9,7 @@ class EnabledNotifier extends Notifier<Enabled> {
     return Enabled(
       sonarr: credentialService.hasSonarrCredentials(),
       radarr: credentialService.hasRadarrCredentials(),
+      jellyfin: credentialService.hasJellyfinCredentials(),
     );
   }
 }

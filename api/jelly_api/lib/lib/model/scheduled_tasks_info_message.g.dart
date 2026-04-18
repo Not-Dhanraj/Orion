@@ -102,7 +102,7 @@ ScheduledTasksInfoMessage _$ScheduledTasksInfoMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            'ScheduledTasksInfo',
+            SessionMessageType.scheduledTasksInfo,
       ),
     );
     return val;

@@ -107,7 +107,7 @@ PluginInstallationCancelledMessage _$PluginInstallationCancelledMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            'PackageInstallationCancelled',
+            SessionMessageType.packageInstallationCancelled,
       ),
     );
     return val;

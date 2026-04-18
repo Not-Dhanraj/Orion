@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'package:radarr_api/radarr_api.dart' as radarr;
 import 'package:sonarr_api/sonarr_api.dart' as sonarr;
+import 'package:client/src/features/jellyfin/domain/jellyfin_match_result.dart';
 
 class ExtraCodec extends Codec<Object?, Object?> {
   const ExtraCodec();
 
   static const _typeMovieResource = 'MovieResource';
   static const _typeSeriesResource = 'SeriesResource';
+  static const _typeJellyfinMatch = 'JellyfinMatchResult';
 
   @override
   Converter<Object?, Object?> get decoder => const _ExtraDecoder();
@@ -28,6 +30,10 @@ class _ExtraEncoder extends Converter<Object?, Object?> {
 
     if (input is sonarr.SeriesResource) {
       return {'__type': ExtraCodec._typeSeriesResource, 'data': input.toJson()};
+    }
+
+    if (input is JellyfinMatchResult) {
+      return {'__type': ExtraCodec._typeJellyfinMatch, 'data': input.toJson()};
     }
 
     if (input is Map ||
@@ -65,6 +71,15 @@ class _ExtraDecoder extends Converter<Object?, Object?> {
       if (type == ExtraCodec._typeSeriesResource) {
         if (data is Map) {
           return sonarr.SeriesResource.fromJson(
+            Map<String, dynamic>.from(data),
+          );
+        }
+        return null;
+      }
+
+      if (type == ExtraCodec._typeJellyfinMatch) {
+        if (data is Map) {
+          return JellyfinMatchResult.fromJson(
             Map<String, dynamic>.from(data),
           );
         }

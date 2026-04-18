@@ -114,7 +114,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       serviceName: 'Sonarr',
                       initialUrl: settings.sonarrCredentials!.sonarrUrl,
                       initialApiKey: settings.sonarrCredentials!.sonarrApi,
-                      onSave: (url, api) => ref
+                      onSave: (url, api, [pass]) => ref
                           .read(settingsController.notifier)
                           .validateAndUpdateSonarrCredentials(url, api),
                     ),
@@ -140,7 +140,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     serviceName: 'Sonarr',
                     initialUrl: '',
                     initialApiKey: '',
-                    onSave: (url, api) => ref
+                    onSave: (url, api, [pass]) => ref
                         .read(settingsController.notifier)
                         .validateAndUpdateSonarrCredentials(url, api),
                   ),
@@ -173,7 +173,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     serviceName: 'Radarr',
                     initialUrl: settings.radarrCredentials!.radarrUrl,
                     initialApiKey: settings.radarrCredentials!.radarrApi,
-                    onSave: (url, api) => ref
+                    onSave: (url, api, [pass]) => ref
                         .read(settingsController.notifier)
                         .validateAndUpdateRadarrCredentials(url, api),
                   ),
@@ -191,9 +191,64 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     serviceName: 'Radarr',
                     initialUrl: '',
                     initialApiKey: '',
-                    onSave: (url, api) => ref
+                    onSave: (url, api, [pass]) => ref
                         .read(settingsController.notifier)
                         .validateAndUpdateRadarrCredentials(url, api),
+                  ),
+                ),
+              const SizedBox(height: 32),
+              SettingsSectionHeader(
+                title: 'JELLYFIN CONFIGURATION',
+                isActive: settings.jellyfinCredentials != null,
+              ),
+              const SizedBox(height: 12),
+              if (settings.jellyfinCredentials != null) ...[
+                SettingsRowGroup(
+                  rows: [
+                    SettingsRow(
+                      label: 'Server URL',
+                      trailing: SettingsReadonlyValue(
+                        value:
+                            settings.jellyfinCredentials!.jellyfinUrl.maskServerUrl,
+                      ),
+                    ),
+                    SettingsRow(
+                      label: 'Username',
+                      trailing: SettingsReadonlyValue(
+                        value: settings.jellyfinCredentials!.username,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                ServiceActionRow(
+                  onEdit: () => _showServerConfigSheet(
+                    serviceName: 'Jellyfin',
+                    isJellyfin: true,
+                    initialUrl: settings.jellyfinCredentials!.jellyfinUrl,
+                    initialApiKey: settings.jellyfinCredentials!.username,
+                    onSave: (url, username, [password]) => ref
+                        .read(settingsController.notifier)
+                        .validateAndUpdateJellyfinCredentials(url, username, password ?? ''),
+                  ),
+                  onDelete: () => _showDeleteConfirmationSheet(
+                    serviceName: 'Jellyfin',
+                    onConfirm: () => ref
+                        .read(settingsController.notifier)
+                        .deleteJellyfinService(),
+                  ),
+                ),
+              ] else
+                AddServiceRow(
+                  label: 'Add Jellyfin',
+                  onTap: () => _showServerConfigSheet(
+                    serviceName: 'Jellyfin',
+                    isJellyfin: true,
+                    initialUrl: '',
+                    initialApiKey: '',
+                    onSave: (url, username, [password]) => ref
+                        .read(settingsController.notifier)
+                        .validateAndUpdateJellyfinCredentials(url, username, password ?? ''),
                   ),
                 ),
               const SizedBox(height: 32),
@@ -250,9 +305,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
   void _showServerConfigSheet({
     required String serviceName,
+    bool isJellyfin = false,
     required String initialUrl,
     required String initialApiKey,
-    required Future<void> Function(String, String) onSave,
+    required Future<void> Function(String, String, [String?]) onSave,
   }) {
     showModalBottomSheet(
       context: context,
@@ -262,6 +318,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       builder: (_) => ServiceConfigSheet(
         serviceName: serviceName,
         isRadarr: serviceName == 'Radarr',
+        isJellyfin: isJellyfin,
         initialUrl: initialUrl,
         initialApiKey: initialApiKey,
         onSave: onSave,

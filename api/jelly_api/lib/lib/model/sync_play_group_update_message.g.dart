@@ -101,7 +101,7 @@ SyncPlayGroupUpdateMessage _$SyncPlayGroupUpdateMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            'SyncPlayGroupUpdate',
+            SessionMessageType.syncPlayGroupUpdate,
       ),
     );
     return val;

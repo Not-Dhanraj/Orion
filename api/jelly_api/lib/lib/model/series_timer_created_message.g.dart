@@ -102,7 +102,7 @@ SeriesTimerCreatedMessage _$SeriesTimerCreatedMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            'SeriesTimerCreated',
+            SessionMessageType.seriesTimerCreated,
       ),
     );
     return val;

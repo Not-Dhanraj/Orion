@@ -98,7 +98,7 @@ SyncPlayStateUpdate _$SyncPlayStateUpdateFromJson(Map<String, dynamic> json) =>
             'Type',
             (v) =>
                 $enumDecodeNullable(_$GroupUpdateTypeEnumMap, v) ??
-                'StateUpdate',
+                GroupUpdateType.stateUpdate,
           ),
         );
         return val;

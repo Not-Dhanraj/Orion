@@ -101,7 +101,7 @@ PluginUninstalledMessage _$PluginUninstalledMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            'PackageUninstalled',
+            SessionMessageType.packageUninstalled,
       ),
     );
     return val;

@@ -93,7 +93,9 @@ SyncPlayNotInGroupUpdate _$SyncPlayNotInGroupUpdateFromJson(
       data: $checkedConvert('Data', (v) => v as String?),
       type: $checkedConvert(
         'Type',
-        (v) => $enumDecodeNullable(_$GroupUpdateTypeEnumMap, v) ?? 'NotInGroup',
+        (v) =>
+            $enumDecodeNullable(_$GroupUpdateTypeEnumMap, v) ??
+            GroupUpdateType.notInGroup,
       ),
     );
     return val;

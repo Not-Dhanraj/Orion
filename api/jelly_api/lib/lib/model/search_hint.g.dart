@@ -420,7 +420,7 @@ SearchHint _$SearchHintFromJson(Map<String, dynamic> json) => $checkedCreate(
       ),
       mediaType: $checkedConvert(
         'MediaType',
-        (v) => $enumDecodeNullable(_$MediaTypeEnumMap, v) ?? 'Unknown',
+        (v) => $enumDecodeNullable(_$MediaTypeEnumMap, v) ?? MediaType.unknown,
       ),
       startDate: $checkedConvert(
         'StartDate',

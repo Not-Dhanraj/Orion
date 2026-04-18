@@ -81,7 +81,7 @@ SessionsStartMessage _$SessionsStartMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            'SessionsStart',
+            SessionMessageType.sessionsStart,
       ),
     );
     return val;

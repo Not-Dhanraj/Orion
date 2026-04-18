@@ -65,7 +65,7 @@ SessionsStopMessage _$SessionsStopMessageFromJson(Map<String, dynamic> json) =>
           'MessageType',
           (v) =>
               $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-              'SessionsStop',
+              SessionMessageType.sessionsStop,
         ),
       );
       return val;

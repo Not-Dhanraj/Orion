@@ -65,7 +65,9 @@ InboundKeepAliveMessage _$InboundKeepAliveMessageFromJson(
   final val = InboundKeepAliveMessage(
     messageType: $checkedConvert(
       'MessageType',
-      (v) => $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ?? 'KeepAlive',
+      (v) =>
+          $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
+          SessionMessageType.keepAlive,
     ),
   );
   return val;

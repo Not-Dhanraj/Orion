@@ -113,7 +113,8 @@ MediaSegmentDto _$MediaSegmentDtoFromJson(Map<String, dynamic> json) =>
           type: $checkedConvert(
             'Type',
             (v) =>
-                $enumDecodeNullable(_$MediaSegmentTypeEnumMap, v) ?? 'Unknown',
+                $enumDecodeNullable(_$MediaSegmentTypeEnumMap, v) ??
+                MediaSegmentType.unknown,
           ),
           startTicks: $checkedConvert(
             'StartTicks',

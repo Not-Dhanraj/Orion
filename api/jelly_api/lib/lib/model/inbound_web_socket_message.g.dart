@@ -81,7 +81,7 @@ InboundWebSocketMessage _$InboundWebSocketMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            'SessionsStop',
+            SessionMessageType.sessionsStop,
       ),
     );
     return val;

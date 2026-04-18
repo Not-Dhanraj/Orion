@@ -93,7 +93,9 @@ SyncPlayGroupLeftUpdate _$SyncPlayGroupLeftUpdateFromJson(
       data: $checkedConvert('Data', (v) => v as String?),
       type: $checkedConvert(
         'Type',
-        (v) => $enumDecodeNullable(_$GroupUpdateTypeEnumMap, v) ?? 'GroupLeft',
+        (v) =>
+            $enumDecodeNullable(_$GroupUpdateTypeEnumMap, v) ??
+            GroupUpdateType.groupLeft,
       ),
     );
     return val;

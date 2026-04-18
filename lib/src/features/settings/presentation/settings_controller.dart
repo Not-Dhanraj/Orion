@@ -16,10 +16,12 @@ class SettingsController extends Notifier<SettingsData> {
     _storageService = ref.watch(appStorageProvider);
     final radarrCredentials = _storageService.getRadarrCredentials();
     final sonarrCredentials = _storageService.getSonarrCredentials();
+    final jellyfinCredentials = _storageService.getJellyfinCredentials();
 
     return SettingsData(
       radarrCredentials: radarrCredentials,
       sonarrCredentials: sonarrCredentials,
+      jellyfinCredentials: jellyfinCredentials,
     );
   }
 
@@ -57,6 +59,23 @@ class SettingsController extends Notifier<SettingsData> {
     }
   }
 
+  Future<void> validateAndUpdateJellyfinCredentials(
+    String url,
+    String username,
+    String password,
+  ) async {
+    try {
+      final credentials = await _settingsService.validateAndSaveJellyfinCredentials(
+        url,
+        username,
+        password,
+      );
+      state = state.copyWith(jellyfinCredentials: credentials);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> deleteRadarrService() async {
     await _storageService.deleteRadarrCredentials();
     ref.invalidate(enabledNotifierProvider);
@@ -69,6 +88,13 @@ class SettingsController extends Notifier<SettingsData> {
     ref.invalidate(enabledNotifierProvider);
 
     state = state.copyWith(sonarrCredentials: null);
+  }
+
+  Future<void> deleteJellyfinService() async {
+    await _storageService.deleteJellyfinCredentials();
+    ref.invalidate(enabledNotifierProvider);
+
+    state = state.copyWith(jellyfinCredentials: null);
   }
 }
 

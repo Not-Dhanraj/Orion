@@ -104,6 +104,40 @@ class AuthController extends Notifier<AuthState> {
     }
   }
 
+  Future<void> updateJellyfin(
+    String url,
+    String username,
+    String password,
+    BuildContext context,
+  ) async {
+    state = state.copyWith(isLoadingJellyfin: true, clearJellyfinError: true);
+
+    try {
+      await _authService.validateAndConfigureJellyfin(url, username, password);
+
+      state = state.copyWith(
+        isLoadingJellyfin: false,
+        jellyfinConfigured: true,
+        currentStep: WelcomeStep.selector,
+      );
+
+      await Future.delayed(const Duration(milliseconds: 500));
+      if (context.mounted) {
+        showSuccessSnackbar(
+          context,
+          'Jellyfin linked successfully. Initializing system...',
+        );
+      }
+    } catch (e) {
+      final errorMessage = e is AuthException
+          ? e.message
+          : 'An unexpected error occurred: ${e.toString()}';
+
+      state = state.copyWith(isLoadingJellyfin: false, jellyfinError: errorMessage);
+      if (context.mounted) showErrorSnackbar(context, errorMessage);
+    }
+  }
+
   void showErrorSnackbar(BuildContext context, String message) {
     if (context.mounted) {
       CustomSnackbar.show(

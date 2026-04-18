@@ -1,6 +1,7 @@
 import 'package:client/src/core/application/app_storage_service.dart';
 import 'package:client/src/exceptions/api_not_found.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jelly_api/jelly_api.dart';
 import 'package:radarr_api/radarr_api.dart';
 import 'package:sonarr_api/sonarr_api.dart';
 
@@ -24,4 +25,15 @@ final moviesApiProvider = Provider<RadarrApi>((ref) {
   var radarrApi = RadarrApi(basePathOverride: radarrCred.radarrUrl);
   radarrApi.setApiKey('X-Api-Key', radarrCred.radarrApi);
   return radarrApi;
+});
+
+final jellyfinApiProvider = Provider<JellyApi>((ref) {
+  final credentials = ref.watch(appStorageProvider);
+  var jellyfinCred = credentials.getJellyfinCredentials();
+  if (jellyfinCred == null) {
+    throw ApiNotFoundException('Jellyfin API not found in local storage');
+  }
+  var jellyApi = JellyApi(basePathOverride: jellyfinCred.jellyfinUrl);
+  jellyApi.setBearerAuth('CustomAuthentication', jellyfinCred.accessToken);
+  return jellyApi;
 });

@@ -1,3 +1,4 @@
+import 'package:client/src/features/jellyfin/application/jellyfin_matching_service.dart';
 import 'package:client/src/features/series/domain/season_page_args.dart';
 import 'package:client/src/features/series/presentation/season/season_controller.dart';
 import 'package:client/src/shared/domain/snackbar_config.dart';
@@ -49,7 +50,7 @@ class SeasonEpisodeList extends ConsumerWidget {
   }
 }
 
-class _EpisodeListItem extends StatelessWidget {
+class _EpisodeListItem extends ConsumerWidget {
   final EpisodeResource episode;
   final SeriesResource series;
   final int seasonNumber;
@@ -65,7 +66,7 @@ class _EpisodeListItem extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final cs = Theme.of(context).colorScheme;
     final hasFile = episode.hasFile ?? false;
     final monitored = episode.monitored ?? false;
@@ -112,9 +113,52 @@ class _EpisodeListItem extends StatelessWidget {
         }
       }),
       onSearch: () => _searchEpisode(context),
-      onDelete: hasFile ? () => _confirmDeleteFile(context) : null,
+      onDelete: hasFile ? () => _confirmDeleteFile(context, ref) : null,
       onShowDetails: () => _showEpisodeDetails(context),
+      onPlay: hasFile ? () => _playEpisode(context, ref) : null,
     );
+  }
+
+  Future<void> _playEpisode(BuildContext context, WidgetRef ref) async {
+    final tvdbId = series.tvdbId;
+    if (tvdbId == null || tvdbId == 0) {
+      CustomSnackbar.show(
+        context,
+        message: 'Cannot play: Series has no valid TVDB ID for matching.',
+        type: CustomSnackbarType.error,
+      );
+      return;
+    }
+
+    runWithLoading(() async {
+      try {
+        final matchingService = ref.read(jellyfinMatchingServiceProvider);
+        final match = await matchingService.matchEpisode(
+          tvdbId,
+          seasonNumber,
+          episode.episodeNumber ?? 0,
+        );
+
+        if (match != null && context.mounted) {
+          context.push('/jellyfinPlayer', extra: match);
+        } else if (context.mounted) {
+          CustomSnackbar.show(
+            context,
+            message:
+                'No match found on Jellyfin for S${seasonNumber.toString().padLeft(2, "0")}E${(episode.episodeNumber ?? 0).toString().padLeft(2, "0")}.',
+            type: CustomSnackbarType.error,
+          );
+        }
+      } catch (e) {
+        if (context.mounted) {
+          CustomSnackbar.show(
+            context,
+            message: 'Jellyfin error: $e',
+            type: CustomSnackbarType.error,
+          );
+        }
+      }
+    });
   }
 
   Future<void> _searchEpisode(BuildContext context) async {
@@ -146,7 +190,7 @@ class _EpisodeListItem extends StatelessWidget {
     );
   }
 
-  void _confirmDeleteFile(BuildContext context) {
+  void _confirmDeleteFile(BuildContext context, WidgetRef ref) {
     final hostContext = Navigator.of(context, rootNavigator: true).context;
     showDialog(
       context: context,

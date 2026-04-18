@@ -98,7 +98,7 @@ SyncPlayLibraryAccessDeniedUpdate _$SyncPlayLibraryAccessDeniedUpdateFromJson(
         'Type',
         (v) =>
             $enumDecodeNullable(_$GroupUpdateTypeEnumMap, v) ??
-            'LibraryAccessDenied',
+            GroupUpdateType.libraryAccessDenied,
       ),
     );
     return val;

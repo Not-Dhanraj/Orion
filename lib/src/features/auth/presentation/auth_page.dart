@@ -18,11 +18,13 @@ class AuthScreen extends ConsumerStatefulWidget {
 class _AuthScreenState extends ConsumerState<AuthScreen> {
   final _urlController = TextEditingController();
   final _apiKeyController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   void dispose() {
     _urlController.dispose();
     _apiKeyController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -49,6 +51,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
             onServiceSelect: (type) {
               _urlController.clear();
               _apiKeyController.clear();
+              _passwordController.clear();
               notifier.selectService(type);
             },
             onProceed: _navigateToHome,
@@ -57,13 +60,16 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
           final serviceType = state.selectedServiceType ?? ServiceType.sonarr;
           final isLoading = serviceType == ServiceType.sonarr
               ? state.isLoadingSonarr
-              : state.isLoadingRadarr;
+              : serviceType == ServiceType.radarr
+                  ? state.isLoadingRadarr
+                  : state.isLoadingJellyfin;
 
           return WelcomeFormStep(
             key: const ValueKey('form'),
             serviceType: serviceType,
             urlController: _urlController,
             apiKeyController: _apiKeyController,
+            passwordController: _passwordController,
             isLoading: isLoading,
             onBack: () => notifier.setStep(WelcomeStep.selector),
             onConnect: () {
@@ -73,10 +79,17 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                   _apiKeyController.text,
                   context,
                 );
-              } else {
+              } else if (serviceType == ServiceType.radarr) {
                 notifier.updateRadarr(
                   _urlController.text,
                   _apiKeyController.text,
+                  context,
+                );
+              } else if (serviceType == ServiceType.jellyfin) {
+                notifier.updateJellyfin(
+                  _urlController.text,
+                  _apiKeyController.text, // Username
+                  _passwordController.text,
                   context,
                 );
               }

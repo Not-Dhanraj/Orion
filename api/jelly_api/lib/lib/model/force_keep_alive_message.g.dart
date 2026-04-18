@@ -97,7 +97,7 @@ ForceKeepAliveMessage _$ForceKeepAliveMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            'ForceKeepAlive',
+            SessionMessageType.forceKeepAlive,
       ),
     );
     return val;

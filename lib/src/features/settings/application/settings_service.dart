@@ -4,6 +4,7 @@ import 'package:client/src/exceptions/repository_exception.dart';
 import 'package:client/src/features/settings/data/settings_validation_repository.dart';
 import 'package:client/src/shared/utils/string_extension.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jelly_api/jelly_api.dart';
 
 class SettingsService {
   final SettingsValidationRepository _validator;
@@ -66,6 +67,39 @@ class SettingsService {
         error: e,
         stackTrace: st,
       );
+    }
+  }
+
+  Future<JellyfinCredentials> validateAndSaveJellyfinCredentials(
+    String url,
+    String username,
+    String password,
+  ) async {
+    final normalizedUrl = url.toNormalizedUrl();
+    try {
+      var jellyApi = JellyApi(basePathOverride: normalizedUrl);
+      final authHeader = 'MediaBrowser Client="Orion", Device="Flutter", DeviceId="orion-app", Version="1.0.0"';
+      final response = await jellyApi.getUserApi().authenticateUserByName(
+        authenticateUserByName: AuthenticateUserByName(username: username, pw: password),
+        headers: {'X-Emby-Authorization': authHeader},
+      );
+      if (response.statusCode != 200) {
+        throw Exception('API returned ${response.statusMessage}');
+      }
+      final data = response.data;
+      if (data == null || data.accessToken == null || data.user?.id == null) {
+        throw Exception('No access token returned');
+      }
+      final creds = JellyfinCredentials(
+        jellyfinUrl: normalizedUrl,
+        username: username,
+        accessToken: data.accessToken!,
+        userId: data.user!.id!,
+      );
+      await _storageService.saveJellyfinCredentials(creds);
+      return creds;
+    } catch (e, st) {
+      throw RepositoryException('Failed to validate Jellyfin connection', error: e, stackTrace: st);
     }
   }
 }

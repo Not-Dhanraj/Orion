@@ -12,6 +12,7 @@ class EpisodeRow extends StatelessWidget {
   final VoidCallback onSearch;
   final VoidCallback? onDelete;
   final VoidCallback? onShowDetails;
+  final VoidCallback? onPlay;
 
   const EpisodeRow({
     super.key,
@@ -25,6 +26,7 @@ class EpisodeRow extends StatelessWidget {
     required this.onSearch,
     this.onDelete,
     this.onShowDetails,
+    this.onPlay,
   });
 
   @override
@@ -113,6 +115,13 @@ class EpisodeRow extends StatelessWidget {
                     color: cs.error.withValues(alpha: 0.7),
                     onPressed: onDelete,
                     tooltip: 'Delete File',
+                  ),
+                if (hasFile && onPlay != null)
+                  IconButton(
+                    icon: const Icon(TablerIcons.player_play_filled, size: 16),
+                    color: cs.primary,
+                    onPressed: onPlay,
+                    tooltip: 'Play Episode',
                   ),
                 const SizedBox(width: 8),
                 Container(

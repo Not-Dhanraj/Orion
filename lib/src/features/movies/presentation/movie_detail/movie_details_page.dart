@@ -1,3 +1,4 @@
+import 'package:client/src/features/jellyfin/application/jellyfin_match_providers.dart';
 import 'package:client/src/features/movies/presentation/movie_detail/movie_details_controller.dart';
 import 'package:client/src/features/movies/presentation/movie_edit/movie_edit_sheet.dart';
 import 'package:client/src/features/releases/domain/release_target.dart';
@@ -5,6 +6,7 @@ import 'package:client/src/features/releases/presentation/release_sheet.dart';
 import 'package:client/src/shared/domain/media_spec.dart';
 import 'package:client/src/shared/domain/snackbar_config.dart';
 import 'package:client/src/shared/utils/movie_utils.dart';
+import 'package:client/src/shared/widgets/dialogs/custom_dialog.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/shared/widgets/media/media_delete_dialog.dart';
 import 'package:client/src/shared/widgets/media/media_hero_header.dart';
@@ -12,6 +14,7 @@ import 'package:client/src/shared/widgets/media/media_overview.dart';
 import 'package:client/src/shared/widgets/media/media_specs_grid.dart';
 import 'package:client/src/shared/domain/telemetry_models.dart';
 import 'package:client/src/shared/widgets/media/media_telemetry.dart';
+import 'package:client/src/features/jellyfin/domain/jellyfin_match_result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
@@ -62,6 +65,69 @@ class _MovieDetailsPageState extends ConsumerState<MovieDetailsPage> {
     }
   }
 
+  Future<void> _deleteFile(BuildContext context) async {
+    try {
+      await ref.read(movieDetailsController.notifier).deleteMovieFile();
+      if (context.mounted) {
+        CustomSnackbar.show(
+          context,
+          message: 'Movie file deleted.',
+          type: CustomSnackbarType.success,
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        CustomSnackbar.show(
+          context,
+          message: 'Failed to delete file: ${e.toString()}',
+          type: CustomSnackbarType.error,
+        );
+      }
+    }
+  }
+
+  void _confirmDeleteFile(BuildContext context) {
+    final movie = ref.read(movieDetailsController);
+    showDialog(
+      context: context,
+      builder: (dialogContext) => Dialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 480),
+          child: CustomDialog(
+            title: 'DELETE FILE',
+            heading: 'Delete downloaded file for "${movie.title}"?',
+            body:
+                'The movie will remain monitored in Radarr. Only the file on disk will be removed.',
+            actions: [
+              ElevatedButton(
+                onPressed: () => dialogContext.pop(),
+                child: const Text('CANCEL'),
+              ),
+              OutlinedButton.icon(
+                onPressed: () {
+                  dialogContext.pop();
+                  _deleteFile(context);
+                },
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Theme.of(dialogContext).colorScheme.error,
+                  side: BorderSide(
+                    color: Theme.of(
+                      dialogContext,
+                    ).colorScheme.error.withValues(alpha: 0.4),
+                  ),
+                ),
+                icon: const Icon(TablerIcons.trash, size: 14),
+                label: const Text('DELETE FILE'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   void _confirmDelete(BuildContext context, MovieResource movie) {
     showDialog(
       context: context,
@@ -82,6 +148,13 @@ class _MovieDetailsPageState extends ConsumerState<MovieDetailsPage> {
   @override
   Widget build(BuildContext context) {
     final movie = ref.watch(movieDetailsController);
+    final tmdbId = movie.tmdbId ?? 0;
+    final matchAsync = tmdbId > 0
+        ? ref.watch(jellyfinMovieMatchProvider(tmdbId))
+        : const AsyncValue<JellyfinMatchResult?>.data(null);
+    final jellyMatchIsLoading = matchAsync.isLoading;
+    final jellymatch = matchAsync.valueOrNull;
+
     final cs = Theme.of(context).colorScheme;
     final tt = Theme.of(context).textTheme;
 
@@ -114,20 +187,55 @@ class _MovieDetailsPageState extends ConsumerState<MovieDetailsPage> {
                   syncStatusLabel: 'DOWNLOAD STATUS',
                   isMonitored: movie.monitored ?? false,
                   actions: [
-                    if (movie.hasFile == true)
-                      ElevatedButton(
+                    if (jellyMatchIsLoading)
+                      const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    else if (jellymatch != null) ...[
+                      ElevatedButton.icon(
                         onPressed: () {
-                          CustomSnackbar.show(
-                            context,
-                            message: 'Movie is already downloaded!',
-                            type: CustomSnackbarType.info,
-                          );
+                          context.push('/jellyfinPlayer', extra: jellymatch);
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: cs.primaryContainer,
-                          foregroundColor: cs.onSecondaryContainer,
+                          backgroundColor: cs.primary,
+                          foregroundColor: cs.onPrimary,
                         ),
-                        child: const Text('DOWNLOADED'),
+                        icon: const Icon(
+                          TablerIcons.player_play_filled,
+                          size: 16,
+                        ),
+                        label: Text(
+                          jellymatch.isPartiallyPlayed
+                              ? 'RESUME (${(jellymatch.playbackPercentage * 100).toStringAsFixed(0)}%)'
+                              : 'WATCH NOW',
+                        ),
+                      ),
+                      if (movie.hasFile == true)
+                        OutlinedButton.icon(
+                          onPressed: () => _confirmDeleteFile(context),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: cs.error,
+                            side: BorderSide(
+                              color: cs.error.withValues(alpha: 0.4),
+                            ),
+                          ),
+                          icon: const Icon(TablerIcons.trash, size: 14),
+                          label: const Text('FILE'),
+                        ),
+                    ] else if (movie.hasFile == true)
+                      OutlinedButton.icon(
+                        onPressed: () => _confirmDeleteFile(context),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: cs.onSurface,
+                          backgroundColor: cs.primaryContainer.withValues(
+                            alpha: 0.5,
+                          ),
+                          side: BorderSide(color: cs.primaryContainer),
+                        ),
+                        icon: const Icon(TablerIcons.check, size: 14),
+                        label: const Text('DOWNLOADED'),
                       )
                     else
                       ElevatedButton(

@@ -102,7 +102,7 @@ LibraryChangedMessage _$LibraryChangedMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            'LibraryChanged',
+            SessionMessageType.libraryChanged,
       ),
     );
     return val;

@@ -11,6 +11,7 @@ class AppStorageService {
   final FlutterSecureStorage _secureStorage;
   SonarrCredentials? _sonarrCredentials;
   RadarrCredentials? _radarrCredentials;
+  JellyfinCredentials? _jellyfinCredentials;
 
   AppStorageService({FlutterSecureStorage? secureStorage})
     : _secureStorage = secureStorage ?? const FlutterSecureStorage();
@@ -46,6 +47,20 @@ class AppStorageService {
     );
   }
 
+  Future<void> saveJellyfinCredentials(JellyfinCredentials credentials) async {
+    var appConst = AppConst();
+    _jellyfinCredentials = credentials;
+    await _secureStorage.write(
+      key: appConst.jellyfinCredKey,
+      value: jsonEncode({
+        'url': credentials.jellyfinUrl,
+        'username': credentials.username,
+        'accessToken': credentials.accessToken,
+        'userId': credentials.userId,
+      }),
+    );
+  }
+
   SonarrCredentials? getSonarrCredentials() {
     return _sonarrCredentials;
   }
@@ -54,9 +69,15 @@ class AppStorageService {
     return _radarrCredentials;
   }
 
+  JellyfinCredentials? getJellyfinCredentials() {
+    return _jellyfinCredentials;
+  }
+
   bool hasSonarrCredentials() => _sonarrCredentials != null;
 
   bool hasRadarrCredentials() => _radarrCredentials != null;
+
+  bool hasJellyfinCredentials() => _jellyfinCredentials != null;
 
   Future<void> deleteSonarrCredentials() async {
     var appConst = AppConst();
@@ -70,13 +91,21 @@ class AppStorageService {
     await _secureStorage.delete(key: appConst.radarrCredKey);
   }
 
+  Future<void> deleteJellyfinCredentials() async {
+    var appConst = AppConst();
+    _jellyfinCredentials = null;
+    await _secureStorage.delete(key: appConst.jellyfinCredKey);
+  }
+
   Future<void> _loadCredentials() async {
     var appConst = AppConst();
     final sonarrData = await _secureStorage.read(key: appConst.sonarrCredKey);
     final radarrData = await _secureStorage.read(key: appConst.radarrCredKey);
+    final jellyfinData = await _secureStorage.read(key: appConst.jellyfinCredKey);
 
     _sonarrCredentials = _decodeSonarrCredentials(sonarrData);
     _radarrCredentials = _decodeRadarrCredentials(radarrData);
+    _jellyfinCredentials = _decodeJellyfinCredentials(jellyfinData);
   }
 
   SonarrCredentials? _decodeSonarrCredentials(String? data) {
@@ -123,6 +152,39 @@ class AppStorageService {
       return RadarrCredentials(radarrUrl: url, radarrApi: api);
     } catch (e) {
       debugPrint('Error decoding Radarr credentials: $e');
+      return null;
+    }
+  }
+
+  JellyfinCredentials? _decodeJellyfinCredentials(String? data) {
+    if (data == null || data.isEmpty) {
+      return null;
+    }
+
+    try {
+      final decoded = jsonDecode(data);
+      if (decoded is! Map<String, dynamic>) {
+        return null;
+      }
+
+      final url = decoded['url'];
+      final username = decoded['username'];
+      final accessToken = decoded['accessToken'];
+      final userId = decoded['userId'];
+      
+      if (url is! String || username is! String || accessToken is! String || userId is! String || 
+          url.isEmpty || username.isEmpty || accessToken.isEmpty || userId.isEmpty) {
+        return null;
+      }
+
+      return JellyfinCredentials(
+        jellyfinUrl: url, 
+        username: username,
+        accessToken: accessToken,
+        userId: userId,
+      );
+    } catch (e) {
+      debugPrint('Error decoding Jellyfin credentials: $e');
       return null;
     }
   }

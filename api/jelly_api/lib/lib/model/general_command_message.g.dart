@@ -102,7 +102,7 @@ GeneralCommandMessage _$GeneralCommandMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            'GeneralCommand',
+            SessionMessageType.generalCommand,
       ),
     );
     return val;

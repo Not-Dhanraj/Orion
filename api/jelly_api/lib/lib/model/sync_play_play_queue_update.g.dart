@@ -98,7 +98,9 @@ SyncPlayPlayQueueUpdate _$SyncPlayPlayQueueUpdateFromJson(
       ),
       type: $checkedConvert(
         'Type',
-        (v) => $enumDecodeNullable(_$GroupUpdateTypeEnumMap, v) ?? 'PlayQueue',
+        (v) =>
+            $enumDecodeNullable(_$GroupUpdateTypeEnumMap, v) ??
+            GroupUpdateType.playQueue,
       ),
     );
     return val;

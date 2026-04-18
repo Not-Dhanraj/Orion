@@ -98,7 +98,7 @@ PlaystateMessage _$PlaystateMessageFromJson(Map<String, dynamic> json) =>
             'MessageType',
             (v) =>
                 $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-                'Playstate',
+                SessionMessageType.playstate,
           ),
         );
         return val;

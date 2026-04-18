@@ -70,7 +70,7 @@ ActivityLogEntryStopMessage _$ActivityLogEntryStopMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            'ActivityLogEntryStop',
+            SessionMessageType.activityLogEntryStop,
       ),
     );
     return val;

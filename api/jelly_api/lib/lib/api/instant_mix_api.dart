@@ -12,16 +12,14 @@ import 'package:dio/dio.dart';
 import 'package:jelly_api/lib/model/base_item_dto_query_result.dart';
 import 'package:jelly_api/lib/model/image_type.dart';
 import 'package:jelly_api/lib/model/item_fields.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 
 class InstantMixApi {
-
   final Dio _dio;
 
   const InstantMixApi(this._dio);
 
   /// Creates an instant playlist based on a given album.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -41,7 +39,7 @@ class InstantMixApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getInstantMixFromAlbum({ 
+  Future<Response<BaseItemDtoQueryResult>> getInstantMixFromAlbum({
     required String itemId,
     String? userId,
     int? limit,
@@ -57,12 +55,15 @@ class InstantMixApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Albums/{itemId}/InstantMix'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Albums/{itemId}/InstantMix'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -99,9 +100,14 @@ class InstantMixApi {
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -125,7 +131,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Creates an instant playlist based on a given artist.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -145,7 +151,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getInstantMixFromArtists({ 
+  Future<Response<BaseItemDtoQueryResult>> getInstantMixFromArtists({
     required String itemId,
     String? userId,
     int? limit,
@@ -161,12 +167,15 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Artists/{itemId}/InstantMix'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Artists/{itemId}/InstantMix'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -203,9 +212,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -229,7 +243,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Creates an instant playlist based on a given artist.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [id] - The item id.
@@ -250,7 +264,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
   @Deprecated('This operation has been deprecated')
-  Future<Response<BaseItemDtoQueryResult>> getInstantMixFromArtists2({ 
+  Future<Response<BaseItemDtoQueryResult>> getInstantMixFromArtists2({
     required String id,
     String? userId,
     int? limit,
@@ -269,9 +283,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     final _path = r'/Artists/InstantMix';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -309,9 +321,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -335,7 +352,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Creates an instant playlist based on a given item.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -355,7 +372,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getInstantMixFromItem({ 
+  Future<Response<BaseItemDtoQueryResult>> getInstantMixFromItem({
     required String itemId,
     String? userId,
     int? limit,
@@ -371,12 +388,15 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/InstantMix'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Items/{itemId}/InstantMix'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -413,9 +433,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -439,7 +464,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Creates an instant playlist based on a given genre.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [id] - The item id.
@@ -459,7 +484,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getInstantMixFromMusicGenreById({ 
+  Future<Response<BaseItemDtoQueryResult>> getInstantMixFromMusicGenreById({
     required String id,
     String? userId,
     int? limit,
@@ -478,9 +503,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     final _path = r'/MusicGenres/InstantMix';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -518,9 +541,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -544,7 +572,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Creates an instant playlist based on a given genre.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - The genre name.
@@ -564,7 +592,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getInstantMixFromMusicGenreByName({ 
+  Future<Response<BaseItemDtoQueryResult>> getInstantMixFromMusicGenreByName({
     required String name,
     String? userId,
     int? limit,
@@ -580,12 +608,15 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/MusicGenres/{name}/InstantMix'.replaceAll('{' r'name' '}', name.toString());
+    final _path = r'/MusicGenres/{name}/InstantMix'.replaceAll(
+      '{'
+      r'name'
+      '}',
+      name.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -622,9 +653,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -648,7 +684,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Creates an instant playlist based on a given playlist.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -668,7 +704,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getInstantMixFromPlaylist({ 
+  Future<Response<BaseItemDtoQueryResult>> getInstantMixFromPlaylist({
     required String itemId,
     String? userId,
     int? limit,
@@ -684,12 +720,15 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Playlists/{itemId}/InstantMix'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Playlists/{itemId}/InstantMix'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -726,9 +765,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -752,7 +796,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Creates an instant playlist based on a given song.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -772,7 +816,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getInstantMixFromSong({ 
+  Future<Response<BaseItemDtoQueryResult>> getInstantMixFromSong({
     required String itemId,
     String? userId,
     int? limit,
@@ -788,12 +832,15 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Songs/{itemId}/InstantMix'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Songs/{itemId}/InstantMix'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -830,9 +877,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -854,5 +906,4 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
       extra: _response.extra,
     );
   }
-
 }

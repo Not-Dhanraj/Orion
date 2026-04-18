@@ -13,16 +13,14 @@ import 'package:jelly_api/lib/model/base_item_dto_query_result.dart';
 import 'package:jelly_api/lib/model/image_type.dart';
 import 'package:jelly_api/lib/model/item_fields.dart';
 import 'package:jelly_api/lib/model/item_sort_by.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 
 class TvShowsApi {
-
   final Dio _dio;
 
   const TvShowsApi(this._dio);
 
   /// Gets episodes for a tv season.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [seriesId] - The series id.
@@ -49,7 +47,7 @@ class TvShowsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getEpisodes({ 
+  Future<Response<BaseItemDtoQueryResult>> getEpisodes({
     required String seriesId,
     String? userId,
     List<ItemFields>? fields,
@@ -72,12 +70,15 @@ class TvShowsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Shows/{seriesId}/Episodes'.replaceAll('{' r'seriesId' '}', seriesId.toString());
+    final _path = r'/Shows/{seriesId}/Episodes'.replaceAll(
+      '{'
+      r'seriesId'
+      '}',
+      seriesId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -121,9 +122,14 @@ class TvShowsApi {
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -147,7 +153,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Gets a list of next up episodes.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [userId] - The user id of the user to get the next up episodes for.
@@ -174,7 +180,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getNextUp({ 
+  Future<Response<BaseItemDtoQueryResult>> getNextUp({
     String? userId,
     int? startIndex,
     int? limit,
@@ -187,7 +193,8 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     bool? enableUserData,
     DateTime? nextUpDateCutoff,
     bool? enableTotalRecordCount = true,
-    @Deprecated('disableFirstEpisode is deprecated') bool? disableFirstEpisode = false,
+    @Deprecated('disableFirstEpisode is deprecated')
+    bool? disableFirstEpisode = false,
     bool? enableResumable = true,
     bool? enableRewatching = false,
     CancelToken? cancelToken,
@@ -200,9 +207,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     final _path = r'/Shows/NextUp';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -229,8 +234,10 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
       if (enableImageTypes != null) r'enableImageTypes': enableImageTypes,
       if (enableUserData != null) r'enableUserData': enableUserData,
       if (nextUpDateCutoff != null) r'nextUpDateCutoff': nextUpDateCutoff,
-      if (enableTotalRecordCount != null) r'enableTotalRecordCount': enableTotalRecordCount,
-      if (disableFirstEpisode != null) r'disableFirstEpisode': disableFirstEpisode,
+      if (enableTotalRecordCount != null)
+        r'enableTotalRecordCount': enableTotalRecordCount,
+      if (disableFirstEpisode != null)
+        r'disableFirstEpisode': disableFirstEpisode,
       if (enableResumable != null) r'enableResumable': enableResumable,
       if (enableRewatching != null) r'enableRewatching': enableRewatching,
     };
@@ -247,9 +254,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -273,7 +285,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Gets seasons for a tv series.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [seriesId] - The series id.
@@ -295,7 +307,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getSeasons({ 
+  Future<Response<BaseItemDtoQueryResult>> getSeasons({
     required String seriesId,
     String? userId,
     List<ItemFields>? fields,
@@ -313,12 +325,15 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Shows/{seriesId}/Seasons'.replaceAll('{' r'seriesId' '}', seriesId.toString());
+    final _path = r'/Shows/{seriesId}/Seasons'.replaceAll(
+      '{'
+      r'seriesId'
+      '}',
+      seriesId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -357,9 +372,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -383,7 +403,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Gets a list of upcoming episodes.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [userId] - The user id of the user to get the upcoming episodes for.
@@ -404,7 +424,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getUpcomingEpisodes({ 
+  Future<Response<BaseItemDtoQueryResult>> getUpcomingEpisodes({
     String? userId,
     int? startIndex,
     int? limit,
@@ -424,9 +444,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     final _path = r'/Shows/Upcoming';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -465,9 +483,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -489,5 +512,4 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
       extra: _response.extra,
     );
   }
-
 }

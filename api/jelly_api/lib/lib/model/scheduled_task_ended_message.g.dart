@@ -101,7 +101,7 @@ ScheduledTaskEndedMessage _$ScheduledTaskEndedMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            SessionMessageType.scheduledTaskEnded,
+            'ScheduledTaskEnded',
       ),
     );
     return val;

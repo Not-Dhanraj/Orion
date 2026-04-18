@@ -17,18 +17,16 @@ import 'package:jelly_api/lib/model/media_type.dart';
 import 'package:jelly_api/lib/model/playlist_creation_result.dart';
 import 'package:jelly_api/lib/model/playlist_dto.dart';
 import 'package:jelly_api/lib/model/playlist_user_permissions.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 import 'package:jelly_api/lib/model/update_playlist_dto.dart';
 import 'package:jelly_api/lib/model/update_playlist_user_dto.dart';
 
 class PlaylistsApi {
-
   final Dio _dio;
 
   const PlaylistsApi(this._dio);
 
   /// Adds items to a playlist.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [playlistId] - The playlist id.
@@ -43,7 +41,7 @@ class PlaylistsApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> addItemToPlaylist({ 
+  Future<Response<void>> addItemToPlaylist({
     required String playlistId,
     List<String>? ids,
     String? userId,
@@ -54,12 +52,15 @@ class PlaylistsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Playlists/{playlistId}/Items'.replaceAll('{' r'playlistId' '}', playlistId.toString());
+    final _path = r'/Playlists/{playlistId}/Items'.replaceAll(
+      '{'
+      r'playlistId'
+      '}',
+      playlistId.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -109,7 +110,7 @@ class PlaylistsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [PlaylistCreationResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<PlaylistCreationResult>> createPlaylist({ 
+  Future<Response<PlaylistCreationResult>> createPlaylist({
     @Deprecated('name is deprecated') String? name,
     @Deprecated('ids is deprecated') List<String>? ids,
     @Deprecated('userId is deprecated') String? userId,
@@ -125,9 +126,7 @@ class PlaylistsApi {
     final _path = r'/Playlists';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -153,10 +152,10 @@ class PlaylistsApi {
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(createPlaylistDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(createPlaylistDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
           queryParameters: _queryParameters,
@@ -180,9 +179,14 @@ _bodyData=jsonEncode(createPlaylistDto);
     PlaylistCreationResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<PlaylistCreationResult, PlaylistCreationResult>(rawData, 'PlaylistCreationResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<PlaylistCreationResult, PlaylistCreationResult>(
+              rawData,
+              'PlaylistCreationResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -206,7 +210,7 @@ _responseData = rawData == null ? null : deserialize<PlaylistCreationResult, Pla
   }
 
   /// Get a playlist.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [playlistId] - The playlist id.
@@ -219,7 +223,7 @@ _responseData = rawData == null ? null : deserialize<PlaylistCreationResult, Pla
   ///
   /// Returns a [Future] containing a [Response] with a [PlaylistDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<PlaylistDto>> getPlaylist({ 
+  Future<Response<PlaylistDto>> getPlaylist({
     required String playlistId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -228,12 +232,15 @@ _responseData = rawData == null ? null : deserialize<PlaylistCreationResult, Pla
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Playlists/{playlistId}'.replaceAll('{' r'playlistId' '}', playlistId.toString());
+    final _path = r'/Playlists/{playlistId}'.replaceAll(
+      '{'
+      r'playlistId'
+      '}',
+      playlistId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -259,9 +266,14 @@ _responseData = rawData == null ? null : deserialize<PlaylistCreationResult, Pla
     PlaylistDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<PlaylistDto, PlaylistDto>(rawData, 'PlaylistDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<PlaylistDto, PlaylistDto>(
+              rawData,
+              'PlaylistDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -285,7 +297,7 @@ _responseData = rawData == null ? null : deserialize<PlaylistDto, PlaylistDto>(r
   }
 
   /// Gets the original items of a playlist.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [playlistId] - The playlist id.
@@ -306,7 +318,7 @@ _responseData = rawData == null ? null : deserialize<PlaylistDto, PlaylistDto>(r
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getPlaylistItems({ 
+  Future<Response<BaseItemDtoQueryResult>> getPlaylistItems({
     required String playlistId,
     String? userId,
     int? startIndex,
@@ -323,12 +335,15 @@ _responseData = rawData == null ? null : deserialize<PlaylistDto, PlaylistDto>(r
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Playlists/{playlistId}/Items'.replaceAll('{' r'playlistId' '}', playlistId.toString());
+    final _path = r'/Playlists/{playlistId}/Items'.replaceAll(
+      '{'
+      r'playlistId'
+      '}',
+      playlistId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -366,9 +381,14 @@ _responseData = rawData == null ? null : deserialize<PlaylistDto, PlaylistDto>(r
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -392,7 +412,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Get a playlist user.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [playlistId] - The playlist id.
@@ -406,7 +426,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [PlaylistUserPermissions] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<PlaylistUserPermissions>> getPlaylistUser({ 
+  Future<Response<PlaylistUserPermissions>> getPlaylistUser({
     required String playlistId,
     required String userId,
     CancelToken? cancelToken,
@@ -416,12 +436,22 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Playlists/{playlistId}/Users/{userId}'.replaceAll('{' r'playlistId' '}', playlistId.toString()).replaceAll('{' r'userId' '}', userId.toString());
+    final _path = r'/Playlists/{playlistId}/Users/{userId}'
+        .replaceAll(
+          '{'
+          r'playlistId'
+          '}',
+          playlistId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'userId'
+          '}',
+          userId.toString(),
+        );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -447,9 +477,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     PlaylistUserPermissions? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<PlaylistUserPermissions, PlaylistUserPermissions>(rawData, 'PlaylistUserPermissions', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<PlaylistUserPermissions, PlaylistUserPermissions>(
+              rawData,
+              'PlaylistUserPermissions',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -473,7 +508,7 @@ _responseData = rawData == null ? null : deserialize<PlaylistUserPermissions, Pl
   }
 
   /// Get a playlist&#39;s users.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [playlistId] - The playlist id.
@@ -486,7 +521,7 @@ _responseData = rawData == null ? null : deserialize<PlaylistUserPermissions, Pl
   ///
   /// Returns a [Future] containing a [Response] with a [List<PlaylistUserPermissions>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<PlaylistUserPermissions>>> getPlaylistUsers({ 
+  Future<Response<List<PlaylistUserPermissions>>> getPlaylistUsers({
     required String playlistId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -495,12 +530,15 @@ _responseData = rawData == null ? null : deserialize<PlaylistUserPermissions, Pl
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Playlists/{playlistId}/Users'.replaceAll('{' r'playlistId' '}', playlistId.toString());
+    final _path = r'/Playlists/{playlistId}/Users'.replaceAll(
+      '{'
+      r'playlistId'
+      '}',
+      playlistId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -526,9 +564,14 @@ _responseData = rawData == null ? null : deserialize<PlaylistUserPermissions, Pl
     List<PlaylistUserPermissions>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<PlaylistUserPermissions>, PlaylistUserPermissions>(rawData, 'List<PlaylistUserPermissions>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<PlaylistUserPermissions>, PlaylistUserPermissions>(
+              rawData,
+              'List<PlaylistUserPermissions>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -552,7 +595,7 @@ _responseData = rawData == null ? null : deserialize<List<PlaylistUserPermission
   }
 
   /// Moves a playlist item.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [playlistId] - The playlist id.
@@ -567,7 +610,7 @@ _responseData = rawData == null ? null : deserialize<List<PlaylistUserPermission
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> moveItem({ 
+  Future<Response<void>> moveItem({
     required String playlistId,
     required String itemId,
     required int newIndex,
@@ -578,12 +621,28 @@ _responseData = rawData == null ? null : deserialize<List<PlaylistUserPermission
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Playlists/{playlistId}/Items/{itemId}/Move/{newIndex}'.replaceAll('{' r'playlistId' '}', playlistId.toString()).replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'newIndex' '}', newIndex.toString());
+    final _path = r'/Playlists/{playlistId}/Items/{itemId}/Move/{newIndex}'
+        .replaceAll(
+          '{'
+          r'playlistId'
+          '}',
+          playlistId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'itemId'
+          '}',
+          itemId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'newIndex'
+          '}',
+          newIndex.toString(),
+        );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -610,7 +669,7 @@ _responseData = rawData == null ? null : deserialize<List<PlaylistUserPermission
   }
 
   /// Removes items from a playlist.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [playlistId] - The playlist id.
@@ -624,7 +683,7 @@ _responseData = rawData == null ? null : deserialize<List<PlaylistUserPermission
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> removeItemFromPlaylist({ 
+  Future<Response<void>> removeItemFromPlaylist({
     required String playlistId,
     List<String>? entryIds,
     CancelToken? cancelToken,
@@ -634,12 +693,15 @@ _responseData = rawData == null ? null : deserialize<List<PlaylistUserPermission
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Playlists/{playlistId}/Items'.replaceAll('{' r'playlistId' '}', playlistId.toString());
+    final _path = r'/Playlists/{playlistId}/Items'.replaceAll(
+      '{'
+      r'playlistId'
+      '}',
+      playlistId.toString(),
+    );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -671,7 +733,7 @@ _responseData = rawData == null ? null : deserialize<List<PlaylistUserPermission
   }
 
   /// Remove a user from a playlist&#39;s users.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [playlistId] - The playlist id.
@@ -685,7 +747,7 @@ _responseData = rawData == null ? null : deserialize<List<PlaylistUserPermission
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> removeUserFromPlaylist({ 
+  Future<Response<void>> removeUserFromPlaylist({
     required String playlistId,
     required String userId,
     CancelToken? cancelToken,
@@ -695,12 +757,22 @@ _responseData = rawData == null ? null : deserialize<List<PlaylistUserPermission
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Playlists/{playlistId}/Users/{userId}'.replaceAll('{' r'playlistId' '}', playlistId.toString()).replaceAll('{' r'userId' '}', userId.toString());
+    final _path = r'/Playlists/{playlistId}/Users/{userId}'
+        .replaceAll(
+          '{'
+          r'playlistId'
+          '}',
+          playlistId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'userId'
+          '}',
+          userId.toString(),
+        );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -727,7 +799,7 @@ _responseData = rawData == null ? null : deserialize<List<PlaylistUserPermission
   }
 
   /// Updates a playlist.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [playlistId] - The playlist id.
@@ -741,7 +813,7 @@ _responseData = rawData == null ? null : deserialize<List<PlaylistUserPermission
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> updatePlaylist({ 
+  Future<Response<void>> updatePlaylist({
     required String playlistId,
     required UpdatePlaylistDto updatePlaylistDto,
     CancelToken? cancelToken,
@@ -751,12 +823,15 @@ _responseData = rawData == null ? null : deserialize<List<PlaylistUserPermission
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Playlists/{playlistId}'.replaceAll('{' r'playlistId' '}', playlistId.toString());
+    final _path = r'/Playlists/{playlistId}'.replaceAll(
+      '{'
+      r'playlistId'
+      '}',
+      playlistId.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -775,13 +850,10 @@ _responseData = rawData == null ? null : deserialize<List<PlaylistUserPermission
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(updatePlaylistDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(updatePlaylistDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -801,7 +873,7 @@ _bodyData=jsonEncode(updatePlaylistDto);
   }
 
   /// Modify a user of a playlist&#39;s users.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [playlistId] - The playlist id.
@@ -816,7 +888,7 @@ _bodyData=jsonEncode(updatePlaylistDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> updatePlaylistUser({ 
+  Future<Response<void>> updatePlaylistUser({
     required String playlistId,
     required String userId,
     required UpdatePlaylistUserDto updatePlaylistUserDto,
@@ -827,12 +899,22 @@ _bodyData=jsonEncode(updatePlaylistDto);
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Playlists/{playlistId}/Users/{userId}'.replaceAll('{' r'playlistId' '}', playlistId.toString()).replaceAll('{' r'userId' '}', userId.toString());
+    final _path = r'/Playlists/{playlistId}/Users/{userId}'
+        .replaceAll(
+          '{'
+          r'playlistId'
+          '}',
+          playlistId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'userId'
+          '}',
+          userId.toString(),
+        );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -851,13 +933,10 @@ _bodyData=jsonEncode(updatePlaylistDto);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(updatePlaylistUserDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(updatePlaylistUserDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -875,5 +954,4 @@ _bodyData=jsonEncode(updatePlaylistUserDto);
 
     return _response;
   }
-
 }

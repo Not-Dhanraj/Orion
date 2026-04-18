@@ -3,16 +3,7 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:jelly_api/lib/model/sync_play_group_joined_update.dart';
-import 'package:jelly_api/lib/model/sync_play_library_access_denied_update.dart';
-import 'package:jelly_api/lib/model/sync_play_not_in_group_update.dart';
-import 'package:jelly_api/lib/model/sync_play_group_does_not_exist_update.dart';
 import 'package:jelly_api/lib/model/group_update_type.dart';
-import 'package:jelly_api/lib/model/sync_play_group_left_update.dart';
-import 'package:jelly_api/lib/model/sync_play_play_queue_update.dart';
-import 'package:jelly_api/lib/model/sync_play_state_update.dart';
-import 'package:jelly_api/lib/model/sync_play_user_left_update.dart';
-import 'package:jelly_api/lib/model/sync_play_user_joined_update.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:json_annotation/json_annotation.dart';
 

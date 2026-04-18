@@ -6,21 +6,18 @@ import 'dart:async';
 
 // ignore: unused_import
 import 'dart:convert';
-import 'package:jelly_api/lib/deserialize.dart';
 import 'package:dio/dio.dart';
 
 import 'dart:typed_data';
 import 'package:jelly_api/lib/model/media_stream_protocol.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 
 class UniversalAudioApi {
-
   final Dio _dio;
 
   const UniversalAudioApi(this._dio);
 
   /// Gets an audio stream.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -51,7 +48,7 @@ class UniversalAudioApi {
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getUniversalAudioStream({ 
+  Future<Response<Uint8List>> getUniversalAudioStream({
     required String itemId,
     List<String>? container,
     String? mediaSourceId,
@@ -78,13 +75,16 @@ class UniversalAudioApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Audio/{itemId}/universal'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Audio/{itemId}/universal'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -106,17 +106,23 @@ class UniversalAudioApi {
       if (userId != null) r'userId': userId,
       if (audioCodec != null) r'audioCodec': audioCodec,
       if (maxAudioChannels != null) r'maxAudioChannels': maxAudioChannels,
-      if (transcodingAudioChannels != null) r'transcodingAudioChannels': transcodingAudioChannels,
-      if (maxStreamingBitrate != null) r'maxStreamingBitrate': maxStreamingBitrate,
+      if (transcodingAudioChannels != null)
+        r'transcodingAudioChannels': transcodingAudioChannels,
+      if (maxStreamingBitrate != null)
+        r'maxStreamingBitrate': maxStreamingBitrate,
       if (audioBitRate != null) r'audioBitRate': audioBitRate,
       if (startTimeTicks != null) r'startTimeTicks': startTimeTicks,
-      if (transcodingContainer != null) r'transcodingContainer': transcodingContainer,
-      if (transcodingProtocol != null) r'transcodingProtocol': transcodingProtocol,
+      if (transcodingContainer != null)
+        r'transcodingContainer': transcodingContainer,
+      if (transcodingProtocol != null)
+        r'transcodingProtocol': transcodingProtocol,
       if (maxAudioSampleRate != null) r'maxAudioSampleRate': maxAudioSampleRate,
       if (maxAudioBitDepth != null) r'maxAudioBitDepth': maxAudioBitDepth,
       if (enableRemoteMedia != null) r'enableRemoteMedia': enableRemoteMedia,
-      if (enableAudioVbrEncoding != null) r'enableAudioVbrEncoding': enableAudioVbrEncoding,
-      if (breakOnNonKeyFrames != null) r'breakOnNonKeyFrames': breakOnNonKeyFrames,
+      if (enableAudioVbrEncoding != null)
+        r'enableAudioVbrEncoding': enableAudioVbrEncoding,
+      if (breakOnNonKeyFrames != null)
+        r'breakOnNonKeyFrames': breakOnNonKeyFrames,
       if (enableRedirection != null) r'enableRedirection': enableRedirection,
     };
 
@@ -132,9 +138,8 @@ class UniversalAudioApi {
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -158,7 +163,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets an audio stream.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -189,7 +194,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> headUniversalAudioStream({ 
+  Future<Response<Uint8List>> headUniversalAudioStream({
     required String itemId,
     List<String>? container,
     String? mediaSourceId,
@@ -216,13 +221,16 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Audio/{itemId}/universal'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Audio/{itemId}/universal'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'HEAD',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -244,17 +252,23 @@ _responseData = rawData == null ? null : rawData as Uint8List;
       if (userId != null) r'userId': userId,
       if (audioCodec != null) r'audioCodec': audioCodec,
       if (maxAudioChannels != null) r'maxAudioChannels': maxAudioChannels,
-      if (transcodingAudioChannels != null) r'transcodingAudioChannels': transcodingAudioChannels,
-      if (maxStreamingBitrate != null) r'maxStreamingBitrate': maxStreamingBitrate,
+      if (transcodingAudioChannels != null)
+        r'transcodingAudioChannels': transcodingAudioChannels,
+      if (maxStreamingBitrate != null)
+        r'maxStreamingBitrate': maxStreamingBitrate,
       if (audioBitRate != null) r'audioBitRate': audioBitRate,
       if (startTimeTicks != null) r'startTimeTicks': startTimeTicks,
-      if (transcodingContainer != null) r'transcodingContainer': transcodingContainer,
-      if (transcodingProtocol != null) r'transcodingProtocol': transcodingProtocol,
+      if (transcodingContainer != null)
+        r'transcodingContainer': transcodingContainer,
+      if (transcodingProtocol != null)
+        r'transcodingProtocol': transcodingProtocol,
       if (maxAudioSampleRate != null) r'maxAudioSampleRate': maxAudioSampleRate,
       if (maxAudioBitDepth != null) r'maxAudioBitDepth': maxAudioBitDepth,
       if (enableRemoteMedia != null) r'enableRemoteMedia': enableRemoteMedia,
-      if (enableAudioVbrEncoding != null) r'enableAudioVbrEncoding': enableAudioVbrEncoding,
-      if (breakOnNonKeyFrames != null) r'breakOnNonKeyFrames': breakOnNonKeyFrames,
+      if (enableAudioVbrEncoding != null)
+        r'enableAudioVbrEncoding': enableAudioVbrEncoding,
+      if (breakOnNonKeyFrames != null)
+        r'breakOnNonKeyFrames': breakOnNonKeyFrames,
       if (enableRedirection != null) r'enableRedirection': enableRedirection,
     };
 
@@ -270,9 +284,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -294,5 +307,4 @@ _responseData = rawData == null ? null : rawData as Uint8List;
       extra: _response.extra,
     );
   }
-
 }

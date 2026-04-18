@@ -97,7 +97,7 @@ WebSocketMessage _$WebSocketMessageFromJson(Map<String, dynamic> json) =>
             'MessageType',
             (v) =>
                 $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-                SessionMessageType.syncPlayGroupUpdate,
+                'SyncPlayGroupUpdate',
           ),
           messageId: $checkedConvert('MessageId', (v) => v as String?),
         );

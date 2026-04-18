@@ -10,6 +10,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'sessions_message.g.dart';
 
+
 @CopyWith()
 @JsonSerializable(
   checked: true,
@@ -20,46 +21,68 @@ part 'sessions_message.g.dart';
 class SessionsMessage {
   /// Returns a new [SessionsMessage] instance.
   SessionsMessage({
-    this.data,
 
-    this.messageId,
+     this.data,
 
-    this.messageType = SessionMessageType.sessions,
+     this.messageId,
+
+     this.messageType = SessionMessageType.sessions,
   });
 
-  /// Gets or sets the data.
-  @JsonKey(name: r'Data', required: false, includeIfNull: false)
+      /// Gets or sets the data.
+  @JsonKey(
+    
+    name: r'Data',
+    required: false,
+    includeIfNull: false,
+  )
+
+
   final List<SessionInfoDto>? data;
 
-  /// Gets or sets the message id.
-  @JsonKey(name: r'MessageId', required: false, includeIfNull: false)
+
+
+      /// Gets or sets the message id.
+  @JsonKey(
+    
+    name: r'MessageId',
+    required: false,
+    includeIfNull: false,
+  )
+
+
   final String? messageId;
 
-  /// The different kinds of messages that are used in the WebSocket api.
+
+
+      /// The different kinds of messages that are used in the WebSocket api.
   @JsonKey(
     defaultValue: SessionMessageType.sessions,
     name: r'MessageType',
     required: false,
     includeIfNull: false,
   )
+
+
   final SessionMessageType? messageType;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is SessionsMessage &&
-          other.data == data &&
-          other.messageId == messageId &&
-          other.messageType == messageType;
 
-  @override
-  int get hashCode =>
-      (data == null ? 0 : data.hashCode) +
-      messageId.hashCode +
-      messageType.hashCode;
 
-  factory SessionsMessage.fromJson(Map<String, dynamic> json) =>
-      _$SessionsMessageFromJson(json);
+
+
+    @override
+    bool operator ==(Object other) => identical(this, other) || other is SessionsMessage &&
+      other.data == data &&
+      other.messageId == messageId &&
+      other.messageType == messageType;
+
+    @override
+    int get hashCode =>
+        (data == null ? 0 : data.hashCode) +
+        messageId.hashCode +
+        messageType.hashCode;
+
+  factory SessionsMessage.fromJson(Map<String, dynamic> json) => _$SessionsMessageFromJson(json);
 
   Map<String, dynamic> toJson() => _$SessionsMessageToJson(this);
 
@@ -67,4 +90,6 @@ class SessionsMessage {
   String toString() {
     return toJson().toString();
   }
+
 }
+

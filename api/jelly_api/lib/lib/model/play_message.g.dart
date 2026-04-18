@@ -94,9 +94,7 @@ PlayMessage _$PlayMessageFromJson(Map<String, dynamic> json) => $checkedCreate(
       messageId: $checkedConvert('MessageId', (v) => v as String?),
       messageType: $checkedConvert(
         'MessageType',
-        (v) =>
-            $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            SessionMessageType.play,
+        (v) => $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ?? 'Play',
       ),
     );
     return val;

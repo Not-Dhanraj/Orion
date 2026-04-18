@@ -11,17 +11,15 @@ import 'package:dio/dio.dart';
 
 import 'package:jelly_api/lib/model/base_item_dto_query_result.dart';
 import 'package:jelly_api/lib/model/collection_type.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 import 'package:jelly_api/lib/model/special_view_option_dto.dart';
 
 class UserViewsApi {
-
   final Dio _dio;
 
   const UserViewsApi(this._dio);
 
   /// Get user view grouping options.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [userId] - User id.
@@ -34,7 +32,7 @@ class UserViewsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [List<SpecialViewOptionDto>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<SpecialViewOptionDto>>> getGroupingOptions({ 
+  Future<Response<List<SpecialViewOptionDto>>> getGroupingOptions({
     String? userId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -46,9 +44,7 @@ class UserViewsApi {
     final _path = r'/UserViews/GroupingOptions';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -79,9 +75,14 @@ class UserViewsApi {
     List<SpecialViewOptionDto>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<SpecialViewOptionDto>, SpecialViewOptionDto>(rawData, 'List<SpecialViewOptionDto>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<SpecialViewOptionDto>, SpecialViewOptionDto>(
+              rawData,
+              'List<SpecialViewOptionDto>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -105,7 +106,7 @@ _responseData = rawData == null ? null : deserialize<List<SpecialViewOptionDto>,
   }
 
   /// Get user views.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [userId] - User id.
@@ -121,7 +122,7 @@ _responseData = rawData == null ? null : deserialize<List<SpecialViewOptionDto>,
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getUserViews({ 
+  Future<Response<BaseItemDtoQueryResult>> getUserViews({
     String? userId,
     bool? includeExternalContent,
     List<CollectionType>? presetViews,
@@ -136,9 +137,7 @@ _responseData = rawData == null ? null : deserialize<List<SpecialViewOptionDto>,
     final _path = r'/UserViews';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -155,7 +154,8 @@ _responseData = rawData == null ? null : deserialize<List<SpecialViewOptionDto>,
 
     final _queryParameters = <String, dynamic>{
       if (userId != null) r'userId': userId,
-      if (includeExternalContent != null) r'includeExternalContent': includeExternalContent,
+      if (includeExternalContent != null)
+        r'includeExternalContent': includeExternalContent,
       if (presetViews != null) r'presetViews': presetViews,
       if (includeHidden != null) r'includeHidden': includeHidden,
     };
@@ -172,9 +172,14 @@ _responseData = rawData == null ? null : deserialize<List<SpecialViewOptionDto>,
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -196,5 +201,4 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
       extra: _response.extra,
     );
   }
-
 }

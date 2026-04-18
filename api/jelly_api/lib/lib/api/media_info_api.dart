@@ -14,16 +14,14 @@ import 'package:jelly_api/lib/model/live_stream_response.dart';
 import 'package:jelly_api/lib/model/open_live_stream_dto.dart';
 import 'package:jelly_api/lib/model/playback_info_dto.dart';
 import 'package:jelly_api/lib/model/playback_info_response.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 
 class MediaInfoApi {
-
   final Dio _dio;
 
   const MediaInfoApi(this._dio);
 
   /// Closes a media source.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [liveStreamId] - The livestream id.
@@ -36,7 +34,7 @@ class MediaInfoApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> closeLiveStream({ 
+  Future<Response<void>> closeLiveStream({
     required String liveStreamId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -48,9 +46,7 @@ class MediaInfoApi {
     final _path = r'/LiveStreams/Close';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -65,9 +61,7 @@ class MediaInfoApi {
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      r'liveStreamId': liveStreamId,
-    };
+    final _queryParameters = <String, dynamic>{r'liveStreamId': liveStreamId};
 
     final _response = await _dio.request<Object>(
       _path,
@@ -82,7 +76,7 @@ class MediaInfoApi {
   }
 
   /// Tests the network with a request with the size of the bitrate.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [size] - The bitrate. Defaults to 102400.
@@ -95,7 +89,7 @@ class MediaInfoApi {
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getBitrateTestBytes({ 
+  Future<Response<Uint8List>> getBitrateTestBytes({
     int? size = 102400,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -108,9 +102,7 @@ class MediaInfoApi {
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -125,9 +117,7 @@ class MediaInfoApi {
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      if (size != null) r'size': size,
-    };
+    final _queryParameters = <String, dynamic>{if (size != null) r'size': size};
 
     final _response = await _dio.request<Object>(
       _path,
@@ -141,9 +131,8 @@ class MediaInfoApi {
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -167,7 +156,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets live playback media info for an item.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -181,7 +170,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [PlaybackInfoResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<PlaybackInfoResponse>> getPlaybackInfo({ 
+  Future<Response<PlaybackInfoResponse>> getPlaybackInfo({
     required String itemId,
     String? userId,
     CancelToken? cancelToken,
@@ -191,12 +180,15 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/PlaybackInfo'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Items/{itemId}/PlaybackInfo'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -227,9 +219,14 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     PlaybackInfoResponse? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<PlaybackInfoResponse, PlaybackInfoResponse>(rawData, 'PlaybackInfoResponse', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<PlaybackInfoResponse, PlaybackInfoResponse>(
+              rawData,
+              'PlaybackInfoResponse',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -281,7 +278,7 @@ _responseData = rawData == null ? null : deserialize<PlaybackInfoResponse, Playb
   ///
   /// Returns a [Future] containing a [Response] with a [PlaybackInfoResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<PlaybackInfoResponse>> getPostedPlaybackInfo({ 
+  Future<Response<PlaybackInfoResponse>> getPostedPlaybackInfo({
     required String itemId,
     @Deprecated('userId is deprecated') String? userId,
     @Deprecated('maxStreamingBitrate is deprecated') int? maxStreamingBitrate,
@@ -295,8 +292,10 @@ _responseData = rawData == null ? null : deserialize<PlaybackInfoResponse, Playb
     @Deprecated('enableDirectPlay is deprecated') bool? enableDirectPlay,
     @Deprecated('enableDirectStream is deprecated') bool? enableDirectStream,
     @Deprecated('enableTranscoding is deprecated') bool? enableTranscoding,
-    @Deprecated('allowVideoStreamCopy is deprecated') bool? allowVideoStreamCopy,
-    @Deprecated('allowAudioStreamCopy is deprecated') bool? allowAudioStreamCopy,
+    @Deprecated('allowVideoStreamCopy is deprecated')
+    bool? allowVideoStreamCopy,
+    @Deprecated('allowAudioStreamCopy is deprecated')
+    bool? allowAudioStreamCopy,
     PlaybackInfoDto? playbackInfoDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -305,12 +304,15 @@ _responseData = rawData == null ? null : deserialize<PlaybackInfoResponse, Playb
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/PlaybackInfo'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Items/{itemId}/PlaybackInfo'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -328,10 +330,12 @@ _responseData = rawData == null ? null : deserialize<PlaybackInfoResponse, Playb
 
     final _queryParameters = <String, dynamic>{
       if (userId != null) r'userId': userId,
-      if (maxStreamingBitrate != null) r'maxStreamingBitrate': maxStreamingBitrate,
+      if (maxStreamingBitrate != null)
+        r'maxStreamingBitrate': maxStreamingBitrate,
       if (startTimeTicks != null) r'startTimeTicks': startTimeTicks,
       if (audioStreamIndex != null) r'audioStreamIndex': audioStreamIndex,
-      if (subtitleStreamIndex != null) r'subtitleStreamIndex': subtitleStreamIndex,
+      if (subtitleStreamIndex != null)
+        r'subtitleStreamIndex': subtitleStreamIndex,
       if (maxAudioChannels != null) r'maxAudioChannels': maxAudioChannels,
       if (mediaSourceId != null) r'mediaSourceId': mediaSourceId,
       if (liveStreamId != null) r'liveStreamId': liveStreamId,
@@ -339,17 +343,19 @@ _responseData = rawData == null ? null : deserialize<PlaybackInfoResponse, Playb
       if (enableDirectPlay != null) r'enableDirectPlay': enableDirectPlay,
       if (enableDirectStream != null) r'enableDirectStream': enableDirectStream,
       if (enableTranscoding != null) r'enableTranscoding': enableTranscoding,
-      if (allowVideoStreamCopy != null) r'allowVideoStreamCopy': allowVideoStreamCopy,
-      if (allowAudioStreamCopy != null) r'allowAudioStreamCopy': allowAudioStreamCopy,
+      if (allowVideoStreamCopy != null)
+        r'allowVideoStreamCopy': allowVideoStreamCopy,
+      if (allowAudioStreamCopy != null)
+        r'allowAudioStreamCopy': allowAudioStreamCopy,
     };
 
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(playbackInfoDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(playbackInfoDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
           queryParameters: _queryParameters,
@@ -373,9 +379,14 @@ _bodyData=jsonEncode(playbackInfoDto);
     PlaybackInfoResponse? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<PlaybackInfoResponse, PlaybackInfoResponse>(rawData, 'PlaybackInfoResponse', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<PlaybackInfoResponse, PlaybackInfoResponse>(
+              rawData,
+              'PlaybackInfoResponse',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -399,7 +410,7 @@ _responseData = rawData == null ? null : deserialize<PlaybackInfoResponse, Playb
   }
 
   /// Opens a media source.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [openToken] - The open token.
@@ -424,7 +435,7 @@ _responseData = rawData == null ? null : deserialize<PlaybackInfoResponse, Playb
   ///
   /// Returns a [Future] containing a [Response] with a [LiveStreamResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<LiveStreamResponse>> openLiveStream({ 
+  Future<Response<LiveStreamResponse>> openLiveStream({
     String? openToken,
     String? userId,
     String? playSessionId,
@@ -448,9 +459,7 @@ _responseData = rawData == null ? null : deserialize<PlaybackInfoResponse, Playb
     final _path = r'/LiveStreams/Open';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -470,24 +479,28 @@ _responseData = rawData == null ? null : deserialize<PlaybackInfoResponse, Playb
       if (openToken != null) r'openToken': openToken,
       if (userId != null) r'userId': userId,
       if (playSessionId != null) r'playSessionId': playSessionId,
-      if (maxStreamingBitrate != null) r'maxStreamingBitrate': maxStreamingBitrate,
+      if (maxStreamingBitrate != null)
+        r'maxStreamingBitrate': maxStreamingBitrate,
       if (startTimeTicks != null) r'startTimeTicks': startTimeTicks,
       if (audioStreamIndex != null) r'audioStreamIndex': audioStreamIndex,
-      if (subtitleStreamIndex != null) r'subtitleStreamIndex': subtitleStreamIndex,
+      if (subtitleStreamIndex != null)
+        r'subtitleStreamIndex': subtitleStreamIndex,
       if (maxAudioChannels != null) r'maxAudioChannels': maxAudioChannels,
       if (itemId != null) r'itemId': itemId,
       if (enableDirectPlay != null) r'enableDirectPlay': enableDirectPlay,
       if (enableDirectStream != null) r'enableDirectStream': enableDirectStream,
-      if (alwaysBurnInSubtitleWhenTranscoding != null) r'alwaysBurnInSubtitleWhenTranscoding': alwaysBurnInSubtitleWhenTranscoding,
+      if (alwaysBurnInSubtitleWhenTranscoding != null)
+        r'alwaysBurnInSubtitleWhenTranscoding':
+            alwaysBurnInSubtitleWhenTranscoding,
     };
 
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(openLiveStreamDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(openLiveStreamDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
           queryParameters: _queryParameters,
@@ -511,9 +524,14 @@ _bodyData=jsonEncode(openLiveStreamDto);
     LiveStreamResponse? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<LiveStreamResponse, LiveStreamResponse>(rawData, 'LiveStreamResponse', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<LiveStreamResponse, LiveStreamResponse>(
+              rawData,
+              'LiveStreamResponse',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -535,5 +553,4 @@ _responseData = rawData == null ? null : deserialize<LiveStreamResponse, LiveStr
       extra: _response.extra,
     );
   }
-
 }

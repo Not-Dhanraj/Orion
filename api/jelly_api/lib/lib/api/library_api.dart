@@ -19,18 +19,16 @@ import 'package:jelly_api/lib/model/item_fields.dart';
 import 'package:jelly_api/lib/model/item_sort_by.dart';
 import 'package:jelly_api/lib/model/library_options_result_dto.dart';
 import 'package:jelly_api/lib/model/media_update_info_dto.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 import 'package:jelly_api/lib/model/sort_order.dart';
 import 'package:jelly_api/lib/model/theme_media_result.dart';
 
 class LibraryApi {
-
   final Dio _dio;
 
   const LibraryApi(this._dio);
 
   /// Deletes an item from the library and filesystem.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -43,7 +41,7 @@ class LibraryApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> deleteItem({ 
+  Future<Response<void>> deleteItem({
     required String itemId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -52,12 +50,15 @@ class LibraryApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Items/{itemId}'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -84,7 +85,7 @@ class LibraryApi {
   }
 
   /// Deletes items from the library and filesystem.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [ids] - The item ids.
@@ -97,7 +98,7 @@ class LibraryApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> deleteItems({ 
+  Future<Response<void>> deleteItems({
     List<String>? ids,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -109,9 +110,7 @@ class LibraryApi {
     final _path = r'/Items';
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -126,9 +125,7 @@ class LibraryApi {
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      if (ids != null) r'ids': ids,
-    };
+    final _queryParameters = <String, dynamic>{if (ids != null) r'ids': ids};
 
     final _response = await _dio.request<Object>(
       _path,
@@ -143,7 +140,7 @@ class LibraryApi {
   }
 
   /// Gets all parents of an item.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -157,7 +154,7 @@ class LibraryApi {
   ///
   /// Returns a [Future] containing a [Response] with a [List<BaseItemDto>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<BaseItemDto>>> getAncestors({ 
+  Future<Response<List<BaseItemDto>>> getAncestors({
     required String itemId,
     String? userId,
     CancelToken? cancelToken,
@@ -167,12 +164,15 @@ class LibraryApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/Ancestors'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Items/{itemId}/Ancestors'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -203,9 +203,14 @@ class LibraryApi {
     List<BaseItemDto>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<BaseItemDto>, BaseItemDto>(rawData, 'List<BaseItemDto>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<BaseItemDto>, BaseItemDto>(
+              rawData,
+              'List<BaseItemDto>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -229,10 +234,10 @@ _responseData = rawData == null ? null : deserialize<List<BaseItemDto>, BaseItem
   }
 
   /// Gets critic review for an item.
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [itemId] 
+  /// * [itemId]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -243,7 +248,7 @@ _responseData = rawData == null ? null : deserialize<List<BaseItemDto>, BaseItem
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
   @Deprecated('This operation has been deprecated')
-  Future<Response<BaseItemDtoQueryResult>> getCriticReviews({ 
+  Future<Response<BaseItemDtoQueryResult>> getCriticReviews({
     required String itemId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -252,12 +257,15 @@ _responseData = rawData == null ? null : deserialize<List<BaseItemDto>, BaseItem
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/CriticReviews'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Items/{itemId}/CriticReviews'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -283,9 +291,14 @@ _responseData = rawData == null ? null : deserialize<List<BaseItemDto>, BaseItem
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -309,7 +322,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Downloads item media.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -322,7 +335,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getDownload({ 
+  Future<Response<Uint8List>> getDownload({
     required String itemId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -331,13 +344,16 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/Download'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Items/{itemId}/Download'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -363,9 +379,8 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -389,7 +404,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Get the original file of an item.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -402,7 +417,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getFile({ 
+  Future<Response<Uint8List>> getFile({
     required String itemId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -411,13 +426,16 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/File'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Items/{itemId}/File'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -443,9 +461,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -469,7 +486,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Get item counts.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [userId] - Optional. Get counts from a specific user's library.
@@ -483,7 +500,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [ItemCounts] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ItemCounts>> getItemCounts({ 
+  Future<Response<ItemCounts>> getItemCounts({
     String? userId,
     bool? isFavorite,
     CancelToken? cancelToken,
@@ -496,9 +513,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     final _path = r'/Items/Counts';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -530,9 +545,14 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ItemCounts? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<ItemCounts, ItemCounts>(rawData, 'ItemCounts', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<ItemCounts, ItemCounts>(
+              rawData,
+              'ItemCounts',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -556,7 +576,7 @@ _responseData = rawData == null ? null : deserialize<ItemCounts, ItemCounts>(raw
   }
 
   /// Gets the library options info.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [libraryContentType] - Library content type.
@@ -570,7 +590,7 @@ _responseData = rawData == null ? null : deserialize<ItemCounts, ItemCounts>(raw
   ///
   /// Returns a [Future] containing a [Response] with a [LibraryOptionsResultDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<LibraryOptionsResultDto>> getLibraryOptionsInfo({ 
+  Future<Response<LibraryOptionsResultDto>> getLibraryOptionsInfo({
     CollectionType? libraryContentType,
     bool? isNewLibrary = false,
     CancelToken? cancelToken,
@@ -583,9 +603,7 @@ _responseData = rawData == null ? null : deserialize<ItemCounts, ItemCounts>(raw
     final _path = r'/Libraries/AvailableOptions';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -617,9 +635,14 @@ _responseData = rawData == null ? null : deserialize<ItemCounts, ItemCounts>(raw
     LibraryOptionsResultDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<LibraryOptionsResultDto, LibraryOptionsResultDto>(rawData, 'LibraryOptionsResultDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<LibraryOptionsResultDto, LibraryOptionsResultDto>(
+              rawData,
+              'LibraryOptionsResultDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -643,7 +666,7 @@ _responseData = rawData == null ? null : deserialize<LibraryOptionsResultDto, Li
   }
 
   /// Gets all user media folders.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [isHidden] - Optional. Filter by folders that are marked hidden, or not.
@@ -656,7 +679,7 @@ _responseData = rawData == null ? null : deserialize<LibraryOptionsResultDto, Li
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getMediaFolders({ 
+  Future<Response<BaseItemDtoQueryResult>> getMediaFolders({
     bool? isHidden,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -668,9 +691,7 @@ _responseData = rawData == null ? null : deserialize<LibraryOptionsResultDto, Li
     final _path = r'/Library/MediaFolders';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -701,9 +722,14 @@ _responseData = rawData == null ? null : deserialize<LibraryOptionsResultDto, Li
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -727,7 +753,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Gets a list of physical paths from virtual folders.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -739,7 +765,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [List<String>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<String>>> getPhysicalPaths({ 
+  Future<Response<List<String>>> getPhysicalPaths({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -750,9 +776,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     final _path = r'/Library/PhysicalPaths';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -778,9 +802,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     List<String>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<String>, String>(rawData, 'List<String>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<String>, String>(
+              rawData,
+              'List<String>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -804,7 +833,7 @@ _responseData = rawData == null ? null : deserialize<List<String>, String>(rawDa
   }
 
   /// Gets similar items.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -821,7 +850,7 @@ _responseData = rawData == null ? null : deserialize<List<String>, String>(rawDa
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getSimilarAlbums({ 
+  Future<Response<BaseItemDtoQueryResult>> getSimilarAlbums({
     required String itemId,
     List<String>? excludeArtistIds,
     String? userId,
@@ -834,12 +863,15 @@ _responseData = rawData == null ? null : deserialize<List<String>, String>(rawDa
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Albums/{itemId}/Similar'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Albums/{itemId}/Similar'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -873,9 +905,14 @@ _responseData = rawData == null ? null : deserialize<List<String>, String>(rawDa
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -899,7 +936,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Gets similar items.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -916,7 +953,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getSimilarArtists({ 
+  Future<Response<BaseItemDtoQueryResult>> getSimilarArtists({
     required String itemId,
     List<String>? excludeArtistIds,
     String? userId,
@@ -929,12 +966,15 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Artists/{itemId}/Similar'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Artists/{itemId}/Similar'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -968,9 +1008,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -994,7 +1039,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Gets similar items.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -1011,7 +1056,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getSimilarItems({ 
+  Future<Response<BaseItemDtoQueryResult>> getSimilarItems({
     required String itemId,
     List<String>? excludeArtistIds,
     String? userId,
@@ -1024,12 +1069,15 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/Similar'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Items/{itemId}/Similar'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1063,9 +1111,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1089,7 +1142,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Gets similar items.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -1106,7 +1159,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getSimilarMovies({ 
+  Future<Response<BaseItemDtoQueryResult>> getSimilarMovies({
     required String itemId,
     List<String>? excludeArtistIds,
     String? userId,
@@ -1119,12 +1172,15 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Movies/{itemId}/Similar'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Movies/{itemId}/Similar'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1158,9 +1214,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1184,7 +1245,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Gets similar items.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -1201,7 +1262,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getSimilarShows({ 
+  Future<Response<BaseItemDtoQueryResult>> getSimilarShows({
     required String itemId,
     List<String>? excludeArtistIds,
     String? userId,
@@ -1214,12 +1275,15 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Shows/{itemId}/Similar'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Shows/{itemId}/Similar'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1253,9 +1317,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1279,7 +1348,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Gets similar items.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -1296,7 +1365,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getSimilarTrailers({ 
+  Future<Response<BaseItemDtoQueryResult>> getSimilarTrailers({
     required String itemId,
     List<String>? excludeArtistIds,
     String? userId,
@@ -1309,12 +1378,15 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Trailers/{itemId}/Similar'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Trailers/{itemId}/Similar'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1348,9 +1420,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1374,7 +1451,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Get theme songs and videos for an item.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -1391,7 +1468,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [AllThemeMediaResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<AllThemeMediaResult>> getThemeMedia({ 
+  Future<Response<AllThemeMediaResult>> getThemeMedia({
     required String itemId,
     String? userId,
     bool? inheritFromParent = false,
@@ -1404,12 +1481,15 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/ThemeMedia'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Items/{itemId}/ThemeMedia'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1443,9 +1523,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     AllThemeMediaResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<AllThemeMediaResult, AllThemeMediaResult>(rawData, 'AllThemeMediaResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<AllThemeMediaResult, AllThemeMediaResult>(
+              rawData,
+              'AllThemeMediaResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1469,7 +1554,7 @@ _responseData = rawData == null ? null : deserialize<AllThemeMediaResult, AllThe
   }
 
   /// Get theme songs for an item.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -1486,7 +1571,7 @@ _responseData = rawData == null ? null : deserialize<AllThemeMediaResult, AllThe
   ///
   /// Returns a [Future] containing a [Response] with a [ThemeMediaResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ThemeMediaResult>> getThemeSongs({ 
+  Future<Response<ThemeMediaResult>> getThemeSongs({
     required String itemId,
     String? userId,
     bool? inheritFromParent = false,
@@ -1499,12 +1584,15 @@ _responseData = rawData == null ? null : deserialize<AllThemeMediaResult, AllThe
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/ThemeSongs'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Items/{itemId}/ThemeSongs'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1538,9 +1626,14 @@ _responseData = rawData == null ? null : deserialize<AllThemeMediaResult, AllThe
     ThemeMediaResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<ThemeMediaResult, ThemeMediaResult>(rawData, 'ThemeMediaResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<ThemeMediaResult, ThemeMediaResult>(
+              rawData,
+              'ThemeMediaResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1564,7 +1657,7 @@ _responseData = rawData == null ? null : deserialize<ThemeMediaResult, ThemeMedi
   }
 
   /// Get theme videos for an item.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -1581,7 +1674,7 @@ _responseData = rawData == null ? null : deserialize<ThemeMediaResult, ThemeMedi
   ///
   /// Returns a [Future] containing a [Response] with a [ThemeMediaResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ThemeMediaResult>> getThemeVideos({ 
+  Future<Response<ThemeMediaResult>> getThemeVideos({
     required String itemId,
     String? userId,
     bool? inheritFromParent = false,
@@ -1594,12 +1687,15 @@ _responseData = rawData == null ? null : deserialize<ThemeMediaResult, ThemeMedi
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/ThemeVideos'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Items/{itemId}/ThemeVideos'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1633,9 +1729,14 @@ _responseData = rawData == null ? null : deserialize<ThemeMediaResult, ThemeMedi
     ThemeMediaResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<ThemeMediaResult, ThemeMediaResult>(rawData, 'ThemeMediaResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<ThemeMediaResult, ThemeMediaResult>(
+              rawData,
+              'ThemeMediaResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1659,7 +1760,7 @@ _responseData = rawData == null ? null : deserialize<ThemeMediaResult, ThemeMedi
   }
 
   /// Reports that new movies have been added by an external source.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [tmdbId] - The tmdbId.
@@ -1673,7 +1774,7 @@ _responseData = rawData == null ? null : deserialize<ThemeMediaResult, ThemeMedi
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> postAddedMovies({ 
+  Future<Response<void>> postAddedMovies({
     String? tmdbId,
     String? imdbId,
     CancelToken? cancelToken,
@@ -1686,9 +1787,7 @@ _responseData = rawData == null ? null : deserialize<ThemeMediaResult, ThemeMedi
     final _path = r'/Library/Movies/Added';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1721,7 +1820,7 @@ _responseData = rawData == null ? null : deserialize<ThemeMediaResult, ThemeMedi
   }
 
   /// Reports that new episodes of a series have been added by an external source.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [tvdbId] - The tvdbId.
@@ -1734,7 +1833,7 @@ _responseData = rawData == null ? null : deserialize<ThemeMediaResult, ThemeMedi
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> postAddedSeries({ 
+  Future<Response<void>> postAddedSeries({
     String? tvdbId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1746,9 +1845,7 @@ _responseData = rawData == null ? null : deserialize<ThemeMediaResult, ThemeMedi
     final _path = r'/Library/Series/Added';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1780,7 +1877,7 @@ _responseData = rawData == null ? null : deserialize<ThemeMediaResult, ThemeMedi
   }
 
   /// Reports that new movies have been added by an external source.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [mediaUpdateInfoDto] - The update paths.
@@ -1793,7 +1890,7 @@ _responseData = rawData == null ? null : deserialize<ThemeMediaResult, ThemeMedi
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> postUpdatedMedia({ 
+  Future<Response<void>> postUpdatedMedia({
     required MediaUpdateInfoDto mediaUpdateInfoDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1805,9 +1902,7 @@ _responseData = rawData == null ? null : deserialize<ThemeMediaResult, ThemeMedi
     final _path = r'/Library/Media/Updated';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1826,13 +1921,10 @@ _responseData = rawData == null ? null : deserialize<ThemeMediaResult, ThemeMedi
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(mediaUpdateInfoDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(mediaUpdateInfoDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -1852,7 +1944,7 @@ _bodyData=jsonEncode(mediaUpdateInfoDto);
   }
 
   /// Reports that new movies have been added by an external source.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [tmdbId] - The tmdbId.
@@ -1866,7 +1958,7 @@ _bodyData=jsonEncode(mediaUpdateInfoDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> postUpdatedMovies({ 
+  Future<Response<void>> postUpdatedMovies({
     String? tmdbId,
     String? imdbId,
     CancelToken? cancelToken,
@@ -1879,9 +1971,7 @@ _bodyData=jsonEncode(mediaUpdateInfoDto);
     final _path = r'/Library/Movies/Updated';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1914,7 +2004,7 @@ _bodyData=jsonEncode(mediaUpdateInfoDto);
   }
 
   /// Reports that new episodes of a series have been added by an external source.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [tvdbId] - The tvdbId.
@@ -1927,7 +2017,7 @@ _bodyData=jsonEncode(mediaUpdateInfoDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> postUpdatedSeries({ 
+  Future<Response<void>> postUpdatedSeries({
     String? tvdbId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1939,9 +2029,7 @@ _bodyData=jsonEncode(mediaUpdateInfoDto);
     final _path = r'/Library/Series/Updated';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1973,7 +2061,7 @@ _bodyData=jsonEncode(mediaUpdateInfoDto);
   }
 
   /// Starts a library scan.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -1985,7 +2073,7 @@ _bodyData=jsonEncode(mediaUpdateInfoDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> refreshLibrary({ 
+  Future<Response<void>> refreshLibrary({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -1996,9 +2084,7 @@ _bodyData=jsonEncode(mediaUpdateInfoDto);
     final _path = r'/Library/Refresh';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -2023,5 +2109,4 @@ _bodyData=jsonEncode(mediaUpdateInfoDto);
 
     return _response;
   }
-
 }

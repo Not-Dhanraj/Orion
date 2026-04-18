@@ -13,16 +13,14 @@ import 'dart:typed_data';
 import 'package:jelly_api/lib/model/image_format.dart';
 import 'package:jelly_api/lib/model/image_info.dart';
 import 'package:jelly_api/lib/model/image_type.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 
 class ImageApi {
-
   final Dio _dio;
 
   const ImageApi(this._dio);
 
   /// Delete a custom splashscreen.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -34,7 +32,7 @@ class ImageApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> deleteCustomSplashscreen({ 
+  Future<Response<void>> deleteCustomSplashscreen({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -45,9 +43,7 @@ class ImageApi {
     final _path = r'/Branding/Splashscreen';
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -74,7 +70,7 @@ class ImageApi {
   }
 
   /// Delete an item&#39;s image.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item id.
@@ -89,7 +85,7 @@ class ImageApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> deleteItemImage({ 
+  Future<Response<void>> deleteItemImage({
     required String itemId,
     required ImageType imageType,
     int? imageIndex,
@@ -100,12 +96,22 @@ class ImageApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/Images/{imageType}'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'imageType' '}', imageType.toString());
+    final _path = r'/Items/{itemId}/Images/{imageType}'
+        .replaceAll(
+          '{'
+          r'itemId'
+          '}',
+          itemId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -137,7 +143,7 @@ class ImageApi {
   }
 
   /// Delete an item&#39;s image.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item id.
@@ -152,7 +158,7 @@ class ImageApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> deleteItemImageByIndex({ 
+  Future<Response<void>> deleteItemImageByIndex({
     required String itemId,
     required ImageType imageType,
     required int imageIndex,
@@ -163,12 +169,28 @@ class ImageApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/Images/{imageType}/{imageIndex}'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'imageType' '}', imageType.toString()).replaceAll('{' r'imageIndex' '}', imageIndex.toString());
+    final _path = r'/Items/{itemId}/Images/{imageType}/{imageIndex}'
+        .replaceAll(
+          '{'
+          r'itemId'
+          '}',
+          itemId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageIndex'
+          '}',
+          imageIndex.toString(),
+        );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -195,7 +217,7 @@ class ImageApi {
   }
 
   /// Delete the user&#39;s image.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [userId] - User Id.
@@ -208,7 +230,7 @@ class ImageApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> deleteUserImage({ 
+  Future<Response<void>> deleteUserImage({
     String? userId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -220,9 +242,7 @@ class ImageApi {
     final _path = r'/UserImage';
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -254,7 +274,7 @@ class ImageApi {
   }
 
   /// Get artist image by name.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - Artist name.
@@ -283,7 +303,7 @@ class ImageApi {
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getArtistImage({ 
+  Future<Response<Uint8List>> getArtistImage({
     required String name,
     required ImageType imageType,
     required int imageIndex,
@@ -308,17 +328,30 @@ class ImageApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Artists/{name}/Images/{imageType}/{imageIndex}'.replaceAll('{' r'name' '}', name.toString()).replaceAll('{' r'imageType' '}', imageType.toString()).replaceAll('{' r'imageIndex' '}', imageIndex.toString());
+    final _path = r'/Artists/{name}/Images/{imageType}/{imageIndex}'
+        .replaceAll(
+          '{'
+          r'name'
+          '}',
+          name.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageIndex'
+          '}',
+          imageIndex.toString(),
+        );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -351,9 +384,8 @@ class ImageApi {
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -377,7 +409,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Get genre image by name.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - Genre name.
@@ -406,7 +438,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getGenreImage({ 
+  Future<Response<Uint8List>> getGenreImage({
     required String name,
     required ImageType imageType,
     String? tag,
@@ -431,17 +463,24 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Genres/{name}/Images/{imageType}'.replaceAll('{' r'name' '}', name.toString()).replaceAll('{' r'imageType' '}', imageType.toString());
+    final _path = r'/Genres/{name}/Images/{imageType}'
+        .replaceAll(
+          '{'
+          r'name'
+          '}',
+          name.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -475,9 +514,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -501,7 +539,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Get genre image by name.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - Genre name.
@@ -530,7 +568,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getGenreImageByIndex({ 
+  Future<Response<Uint8List>> getGenreImageByIndex({
     required String name,
     required ImageType imageType,
     required int imageIndex,
@@ -555,17 +593,30 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Genres/{name}/Images/{imageType}/{imageIndex}'.replaceAll('{' r'name' '}', name.toString()).replaceAll('{' r'imageType' '}', imageType.toString()).replaceAll('{' r'imageIndex' '}', imageIndex.toString());
+    final _path = r'/Genres/{name}/Images/{imageType}/{imageIndex}'
+        .replaceAll(
+          '{'
+          r'name'
+          '}',
+          name.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageIndex'
+          '}',
+          imageIndex.toString(),
+        );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -598,9 +649,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -624,7 +674,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets the item&#39;s image.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item id.
@@ -653,7 +703,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getItemImage({ 
+  Future<Response<Uint8List>> getItemImage({
     required String itemId,
     required ImageType imageType,
     int? maxWidth,
@@ -678,17 +728,24 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/Images/{imageType}'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'imageType' '}', imageType.toString());
+    final _path = r'/Items/{itemId}/Images/{imageType}'
+        .replaceAll(
+          '{'
+          r'itemId'
+          '}',
+          itemId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -722,9 +779,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -748,7 +804,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets the item&#39;s image.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item id.
@@ -777,7 +833,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getItemImage2({ 
+  Future<Response<Uint8List>> getItemImage2({
     required String itemId,
     required ImageType imageType,
     required int maxWidth,
@@ -802,17 +858,67 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/Images/{imageType}/{imageIndex}/{tag}/{format}/{maxWidth}/{maxHeight}/{percentPlayed}/{unplayedCount}'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'imageType' '}', imageType.toString()).replaceAll('{' r'maxWidth' '}', maxWidth.toString()).replaceAll('{' r'maxHeight' '}', maxHeight.toString()).replaceAll('{' r'tag' '}', tag.toString()).replaceAll('{' r'format' '}', format.toString()).replaceAll('{' r'percentPlayed' '}', percentPlayed.toString()).replaceAll('{' r'unplayedCount' '}', unplayedCount.toString()).replaceAll('{' r'imageIndex' '}', imageIndex.toString());
+    final _path =
+        r'/Items/{itemId}/Images/{imageType}/{imageIndex}/{tag}/{format}/{maxWidth}/{maxHeight}/{percentPlayed}/{unplayedCount}'
+            .replaceAll(
+              '{'
+              r'itemId'
+              '}',
+              itemId.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'imageType'
+              '}',
+              imageType.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'maxWidth'
+              '}',
+              maxWidth.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'maxHeight'
+              '}',
+              maxHeight.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'tag'
+              '}',
+              tag.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'format'
+              '}',
+              format.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'percentPlayed'
+              '}',
+              percentPlayed.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'unplayedCount'
+              '}',
+              unplayedCount.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'imageIndex'
+              '}',
+              imageIndex.toString(),
+            );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -839,9 +945,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -865,7 +970,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets the item&#39;s image.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item id.
@@ -894,7 +999,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getItemImageByIndex({ 
+  Future<Response<Uint8List>> getItemImageByIndex({
     required String itemId,
     required ImageType imageType,
     required int imageIndex,
@@ -919,17 +1024,30 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/Images/{imageType}/{imageIndex}'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'imageType' '}', imageType.toString()).replaceAll('{' r'imageIndex' '}', imageIndex.toString());
+    final _path = r'/Items/{itemId}/Images/{imageType}/{imageIndex}'
+        .replaceAll(
+          '{'
+          r'itemId'
+          '}',
+          itemId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageIndex'
+          '}',
+          imageIndex.toString(),
+        );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -962,9 +1080,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -988,7 +1105,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Get item image infos.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item id.
@@ -1001,7 +1118,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [List<ImageInfo>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<ImageInfo>>> getItemImageInfos({ 
+  Future<Response<List<ImageInfo>>> getItemImageInfos({
     required String itemId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1010,12 +1127,15 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/Images'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Items/{itemId}/Images'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1041,9 +1161,14 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     List<ImageInfo>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<ImageInfo>, ImageInfo>(rawData, 'List<ImageInfo>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<ImageInfo>, ImageInfo>(
+              rawData,
+              'List<ImageInfo>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1067,7 +1192,7 @@ _responseData = rawData == null ? null : deserialize<List<ImageInfo>, ImageInfo>
   }
 
   /// Get music genre image by name.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - Music genre name.
@@ -1096,7 +1221,7 @@ _responseData = rawData == null ? null : deserialize<List<ImageInfo>, ImageInfo>
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getMusicGenreImage({ 
+  Future<Response<Uint8List>> getMusicGenreImage({
     required String name,
     required ImageType imageType,
     String? tag,
@@ -1121,17 +1246,24 @@ _responseData = rawData == null ? null : deserialize<List<ImageInfo>, ImageInfo>
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/MusicGenres/{name}/Images/{imageType}'.replaceAll('{' r'name' '}', name.toString()).replaceAll('{' r'imageType' '}', imageType.toString());
+    final _path = r'/MusicGenres/{name}/Images/{imageType}'
+        .replaceAll(
+          '{'
+          r'name'
+          '}',
+          name.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -1165,9 +1297,8 @@ _responseData = rawData == null ? null : deserialize<List<ImageInfo>, ImageInfo>
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1191,7 +1322,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Get music genre image by name.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - Music genre name.
@@ -1220,7 +1351,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getMusicGenreImageByIndex({ 
+  Future<Response<Uint8List>> getMusicGenreImageByIndex({
     required String name,
     required ImageType imageType,
     required int imageIndex,
@@ -1245,17 +1376,30 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/MusicGenres/{name}/Images/{imageType}/{imageIndex}'.replaceAll('{' r'name' '}', name.toString()).replaceAll('{' r'imageType' '}', imageType.toString()).replaceAll('{' r'imageIndex' '}', imageIndex.toString());
+    final _path = r'/MusicGenres/{name}/Images/{imageType}/{imageIndex}'
+        .replaceAll(
+          '{'
+          r'name'
+          '}',
+          name.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageIndex'
+          '}',
+          imageIndex.toString(),
+        );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -1288,9 +1432,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1314,7 +1457,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Get person image by name.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - Person name.
@@ -1343,7 +1486,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getPersonImage({ 
+  Future<Response<Uint8List>> getPersonImage({
     required String name,
     required ImageType imageType,
     String? tag,
@@ -1368,17 +1511,24 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Persons/{name}/Images/{imageType}'.replaceAll('{' r'name' '}', name.toString()).replaceAll('{' r'imageType' '}', imageType.toString());
+    final _path = r'/Persons/{name}/Images/{imageType}'
+        .replaceAll(
+          '{'
+          r'name'
+          '}',
+          name.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -1412,9 +1562,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1438,7 +1587,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Get person image by name.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - Person name.
@@ -1467,7 +1616,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getPersonImageByIndex({ 
+  Future<Response<Uint8List>> getPersonImageByIndex({
     required String name,
     required ImageType imageType,
     required int imageIndex,
@@ -1492,17 +1641,30 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Persons/{name}/Images/{imageType}/{imageIndex}'.replaceAll('{' r'name' '}', name.toString()).replaceAll('{' r'imageType' '}', imageType.toString()).replaceAll('{' r'imageIndex' '}', imageIndex.toString());
+    final _path = r'/Persons/{name}/Images/{imageType}/{imageIndex}'
+        .replaceAll(
+          '{'
+          r'name'
+          '}',
+          name.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageIndex'
+          '}',
+          imageIndex.toString(),
+        );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -1535,9 +1697,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1561,7 +1722,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Generates or gets the splashscreen.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [tag] - Supply the cache tag from the item object to receive strong caching headers.
@@ -1575,7 +1736,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getSplashscreen({ 
+  Future<Response<Uint8List>> getSplashscreen({
     String? tag,
     ImageFormat? format,
     CancelToken? cancelToken,
@@ -1589,13 +1750,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -1616,9 +1772,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1642,7 +1797,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Get studio image by name.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - Studio name.
@@ -1671,7 +1826,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getStudioImage({ 
+  Future<Response<Uint8List>> getStudioImage({
     required String name,
     required ImageType imageType,
     String? tag,
@@ -1696,17 +1851,24 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Studios/{name}/Images/{imageType}'.replaceAll('{' r'name' '}', name.toString()).replaceAll('{' r'imageType' '}', imageType.toString());
+    final _path = r'/Studios/{name}/Images/{imageType}'
+        .replaceAll(
+          '{'
+          r'name'
+          '}',
+          name.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -1740,9 +1902,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1766,7 +1927,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Get studio image by name.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - Studio name.
@@ -1795,7 +1956,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getStudioImageByIndex({ 
+  Future<Response<Uint8List>> getStudioImageByIndex({
     required String name,
     required ImageType imageType,
     required int imageIndex,
@@ -1820,17 +1981,30 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Studios/{name}/Images/{imageType}/{imageIndex}'.replaceAll('{' r'name' '}', name.toString()).replaceAll('{' r'imageType' '}', imageType.toString()).replaceAll('{' r'imageIndex' '}', imageIndex.toString());
+    final _path = r'/Studios/{name}/Images/{imageType}/{imageIndex}'
+        .replaceAll(
+          '{'
+          r'name'
+          '}',
+          name.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageIndex'
+          '}',
+          imageIndex.toString(),
+        );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -1863,9 +2037,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1889,7 +2062,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Get user profile image.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [userId] - User id.
@@ -1904,7 +2077,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getUserImage({ 
+  Future<Response<Uint8List>> getUserImage({
     String? userId,
     String? tag,
     ImageFormat? format,
@@ -1919,13 +2092,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -1947,9 +2115,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1973,7 +2140,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Get artist image by name.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - Artist name.
@@ -2002,7 +2169,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> headArtistImage({ 
+  Future<Response<Uint8List>> headArtistImage({
     required String name,
     required ImageType imageType,
     required int imageIndex,
@@ -2027,17 +2194,30 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Artists/{name}/Images/{imageType}/{imageIndex}'.replaceAll('{' r'name' '}', name.toString()).replaceAll('{' r'imageType' '}', imageType.toString()).replaceAll('{' r'imageIndex' '}', imageIndex.toString());
+    final _path = r'/Artists/{name}/Images/{imageType}/{imageIndex}'
+        .replaceAll(
+          '{'
+          r'name'
+          '}',
+          name.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageIndex'
+          '}',
+          imageIndex.toString(),
+        );
     final _options = Options(
       method: r'HEAD',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -2070,9 +2250,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -2096,7 +2275,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Get genre image by name.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - Genre name.
@@ -2125,7 +2304,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> headGenreImage({ 
+  Future<Response<Uint8List>> headGenreImage({
     required String name,
     required ImageType imageType,
     String? tag,
@@ -2150,17 +2329,24 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Genres/{name}/Images/{imageType}'.replaceAll('{' r'name' '}', name.toString()).replaceAll('{' r'imageType' '}', imageType.toString());
+    final _path = r'/Genres/{name}/Images/{imageType}'
+        .replaceAll(
+          '{'
+          r'name'
+          '}',
+          name.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        );
     final _options = Options(
       method: r'HEAD',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -2194,9 +2380,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -2220,7 +2405,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Get genre image by name.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - Genre name.
@@ -2249,7 +2434,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> headGenreImageByIndex({ 
+  Future<Response<Uint8List>> headGenreImageByIndex({
     required String name,
     required ImageType imageType,
     required int imageIndex,
@@ -2274,17 +2459,30 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Genres/{name}/Images/{imageType}/{imageIndex}'.replaceAll('{' r'name' '}', name.toString()).replaceAll('{' r'imageType' '}', imageType.toString()).replaceAll('{' r'imageIndex' '}', imageIndex.toString());
+    final _path = r'/Genres/{name}/Images/{imageType}/{imageIndex}'
+        .replaceAll(
+          '{'
+          r'name'
+          '}',
+          name.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageIndex'
+          '}',
+          imageIndex.toString(),
+        );
     final _options = Options(
       method: r'HEAD',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -2317,9 +2515,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -2343,7 +2540,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets the item&#39;s image.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item id.
@@ -2372,7 +2569,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> headItemImage({ 
+  Future<Response<Uint8List>> headItemImage({
     required String itemId,
     required ImageType imageType,
     int? maxWidth,
@@ -2397,17 +2594,24 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/Images/{imageType}'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'imageType' '}', imageType.toString());
+    final _path = r'/Items/{itemId}/Images/{imageType}'
+        .replaceAll(
+          '{'
+          r'itemId'
+          '}',
+          itemId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        );
     final _options = Options(
       method: r'HEAD',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -2441,9 +2645,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -2467,7 +2670,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets the item&#39;s image.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item id.
@@ -2496,7 +2699,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> headItemImage2({ 
+  Future<Response<Uint8List>> headItemImage2({
     required String itemId,
     required ImageType imageType,
     required int maxWidth,
@@ -2521,17 +2724,67 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/Images/{imageType}/{imageIndex}/{tag}/{format}/{maxWidth}/{maxHeight}/{percentPlayed}/{unplayedCount}'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'imageType' '}', imageType.toString()).replaceAll('{' r'maxWidth' '}', maxWidth.toString()).replaceAll('{' r'maxHeight' '}', maxHeight.toString()).replaceAll('{' r'tag' '}', tag.toString()).replaceAll('{' r'format' '}', format.toString()).replaceAll('{' r'percentPlayed' '}', percentPlayed.toString()).replaceAll('{' r'unplayedCount' '}', unplayedCount.toString()).replaceAll('{' r'imageIndex' '}', imageIndex.toString());
+    final _path =
+        r'/Items/{itemId}/Images/{imageType}/{imageIndex}/{tag}/{format}/{maxWidth}/{maxHeight}/{percentPlayed}/{unplayedCount}'
+            .replaceAll(
+              '{'
+              r'itemId'
+              '}',
+              itemId.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'imageType'
+              '}',
+              imageType.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'maxWidth'
+              '}',
+              maxWidth.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'maxHeight'
+              '}',
+              maxHeight.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'tag'
+              '}',
+              tag.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'format'
+              '}',
+              format.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'percentPlayed'
+              '}',
+              percentPlayed.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'unplayedCount'
+              '}',
+              unplayedCount.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'imageIndex'
+              '}',
+              imageIndex.toString(),
+            );
     final _options = Options(
       method: r'HEAD',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -2558,9 +2811,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -2584,7 +2836,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets the item&#39;s image.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item id.
@@ -2613,7 +2865,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> headItemImageByIndex({ 
+  Future<Response<Uint8List>> headItemImageByIndex({
     required String itemId,
     required ImageType imageType,
     required int imageIndex,
@@ -2638,17 +2890,30 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/Images/{imageType}/{imageIndex}'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'imageType' '}', imageType.toString()).replaceAll('{' r'imageIndex' '}', imageIndex.toString());
+    final _path = r'/Items/{itemId}/Images/{imageType}/{imageIndex}'
+        .replaceAll(
+          '{'
+          r'itemId'
+          '}',
+          itemId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageIndex'
+          '}',
+          imageIndex.toString(),
+        );
     final _options = Options(
       method: r'HEAD',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -2681,9 +2946,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -2707,7 +2971,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Get music genre image by name.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - Music genre name.
@@ -2736,7 +3000,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> headMusicGenreImage({ 
+  Future<Response<Uint8List>> headMusicGenreImage({
     required String name,
     required ImageType imageType,
     String? tag,
@@ -2761,17 +3025,24 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/MusicGenres/{name}/Images/{imageType}'.replaceAll('{' r'name' '}', name.toString()).replaceAll('{' r'imageType' '}', imageType.toString());
+    final _path = r'/MusicGenres/{name}/Images/{imageType}'
+        .replaceAll(
+          '{'
+          r'name'
+          '}',
+          name.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        );
     final _options = Options(
       method: r'HEAD',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -2805,9 +3076,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -2831,7 +3101,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Get music genre image by name.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - Music genre name.
@@ -2860,7 +3130,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> headMusicGenreImageByIndex({ 
+  Future<Response<Uint8List>> headMusicGenreImageByIndex({
     required String name,
     required ImageType imageType,
     required int imageIndex,
@@ -2885,17 +3155,30 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/MusicGenres/{name}/Images/{imageType}/{imageIndex}'.replaceAll('{' r'name' '}', name.toString()).replaceAll('{' r'imageType' '}', imageType.toString()).replaceAll('{' r'imageIndex' '}', imageIndex.toString());
+    final _path = r'/MusicGenres/{name}/Images/{imageType}/{imageIndex}'
+        .replaceAll(
+          '{'
+          r'name'
+          '}',
+          name.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageIndex'
+          '}',
+          imageIndex.toString(),
+        );
     final _options = Options(
       method: r'HEAD',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -2928,9 +3211,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -2954,7 +3236,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Get person image by name.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - Person name.
@@ -2983,7 +3265,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> headPersonImage({ 
+  Future<Response<Uint8List>> headPersonImage({
     required String name,
     required ImageType imageType,
     String? tag,
@@ -3008,17 +3290,24 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Persons/{name}/Images/{imageType}'.replaceAll('{' r'name' '}', name.toString()).replaceAll('{' r'imageType' '}', imageType.toString());
+    final _path = r'/Persons/{name}/Images/{imageType}'
+        .replaceAll(
+          '{'
+          r'name'
+          '}',
+          name.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        );
     final _options = Options(
       method: r'HEAD',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -3052,9 +3341,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -3078,7 +3366,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Get person image by name.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - Person name.
@@ -3107,7 +3395,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> headPersonImageByIndex({ 
+  Future<Response<Uint8List>> headPersonImageByIndex({
     required String name,
     required ImageType imageType,
     required int imageIndex,
@@ -3132,17 +3420,30 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Persons/{name}/Images/{imageType}/{imageIndex}'.replaceAll('{' r'name' '}', name.toString()).replaceAll('{' r'imageType' '}', imageType.toString()).replaceAll('{' r'imageIndex' '}', imageIndex.toString());
+    final _path = r'/Persons/{name}/Images/{imageType}/{imageIndex}'
+        .replaceAll(
+          '{'
+          r'name'
+          '}',
+          name.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageIndex'
+          '}',
+          imageIndex.toString(),
+        );
     final _options = Options(
       method: r'HEAD',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -3175,9 +3476,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -3201,7 +3501,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Get studio image by name.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - Studio name.
@@ -3230,7 +3530,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> headStudioImage({ 
+  Future<Response<Uint8List>> headStudioImage({
     required String name,
     required ImageType imageType,
     String? tag,
@@ -3255,17 +3555,24 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Studios/{name}/Images/{imageType}'.replaceAll('{' r'name' '}', name.toString()).replaceAll('{' r'imageType' '}', imageType.toString());
+    final _path = r'/Studios/{name}/Images/{imageType}'
+        .replaceAll(
+          '{'
+          r'name'
+          '}',
+          name.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        );
     final _options = Options(
       method: r'HEAD',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -3299,9 +3606,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -3325,7 +3631,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Get studio image by name.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - Studio name.
@@ -3354,7 +3660,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> headStudioImageByIndex({ 
+  Future<Response<Uint8List>> headStudioImageByIndex({
     required String name,
     required ImageType imageType,
     required int imageIndex,
@@ -3379,17 +3685,30 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Studios/{name}/Images/{imageType}/{imageIndex}'.replaceAll('{' r'name' '}', name.toString()).replaceAll('{' r'imageType' '}', imageType.toString()).replaceAll('{' r'imageIndex' '}', imageIndex.toString());
+    final _path = r'/Studios/{name}/Images/{imageType}/{imageIndex}'
+        .replaceAll(
+          '{'
+          r'name'
+          '}',
+          name.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageIndex'
+          '}',
+          imageIndex.toString(),
+        );
     final _options = Options(
       method: r'HEAD',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -3422,9 +3741,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -3448,7 +3766,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Get user profile image.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [userId] - User id.
@@ -3463,7 +3781,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> headUserImage({ 
+  Future<Response<Uint8List>> headUserImage({
     String? userId,
     String? tag,
     ImageFormat? format,
@@ -3478,13 +3796,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     final _options = Options(
       method: r'HEAD',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -3506,9 +3819,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -3532,11 +3844,11 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Sets the user image.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [userId] - User Id.
-  /// * [body] 
+  /// * [body]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -3546,7 +3858,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> postUserImage({ 
+  Future<Response<void>> postUserImage({
     String? userId,
     MultipartFile? body,
     CancelToken? cancelToken,
@@ -3559,9 +3871,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     final _path = r'/UserImage';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -3584,10 +3894,10 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(body);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(body);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
           queryParameters: _queryParameters,
@@ -3612,12 +3922,12 @@ _bodyData=jsonEncode(body);
   }
 
   /// Set item image.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item id.
   /// * [imageType] - Image type.
-  /// * [body] 
+  /// * [body]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -3627,7 +3937,7 @@ _bodyData=jsonEncode(body);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> setItemImage({ 
+  Future<Response<void>> setItemImage({
     required String itemId,
     required ImageType imageType,
     MultipartFile? body,
@@ -3638,12 +3948,22 @@ _bodyData=jsonEncode(body);
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/Images/{imageType}'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'imageType' '}', imageType.toString());
+    final _path = r'/Items/{itemId}/Images/{imageType}'
+        .replaceAll(
+          '{'
+          r'itemId'
+          '}',
+          itemId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -3662,13 +3982,10 @@ _bodyData=jsonEncode(body);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(body);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(body);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -3688,13 +4005,13 @@ _bodyData=jsonEncode(body);
   }
 
   /// Set item image.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item id.
   /// * [imageType] - Image type.
   /// * [imageIndex] - (Unused) Image index.
-  /// * [body] 
+  /// * [body]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -3704,7 +4021,7 @@ _bodyData=jsonEncode(body);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> setItemImageByIndex({ 
+  Future<Response<void>> setItemImageByIndex({
     required String itemId,
     required ImageType imageType,
     required int imageIndex,
@@ -3716,12 +4033,28 @@ _bodyData=jsonEncode(body);
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/Images/{imageType}/{imageIndex}'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'imageType' '}', imageType.toString()).replaceAll('{' r'imageIndex' '}', imageIndex.toString());
+    final _path = r'/Items/{itemId}/Images/{imageType}/{imageIndex}'
+        .replaceAll(
+          '{'
+          r'itemId'
+          '}',
+          itemId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageIndex'
+          '}',
+          imageIndex.toString(),
+        );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -3740,13 +4073,10 @@ _bodyData=jsonEncode(body);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(body);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(body);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -3766,7 +4096,7 @@ _bodyData=jsonEncode(body);
   }
 
   /// Updates the index for an item image.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item id.
@@ -3782,7 +4112,7 @@ _bodyData=jsonEncode(body);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> updateItemImageIndex({ 
+  Future<Response<void>> updateItemImageIndex({
     required String itemId,
     required ImageType imageType,
     required int imageIndex,
@@ -3794,12 +4124,28 @@ _bodyData=jsonEncode(body);
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/Images/{imageType}/{imageIndex}/Index'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'imageType' '}', imageType.toString()).replaceAll('{' r'imageIndex' '}', imageIndex.toString());
+    final _path = r'/Items/{itemId}/Images/{imageType}/{imageIndex}/Index'
+        .replaceAll(
+          '{'
+          r'itemId'
+          '}',
+          itemId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageType'
+          '}',
+          imageType.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'imageIndex'
+          '}',
+          imageIndex.toString(),
+        );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -3814,9 +4160,7 @@ _bodyData=jsonEncode(body);
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      r'newIndex': newIndex,
-    };
+    final _queryParameters = <String, dynamic>{r'newIndex': newIndex};
 
     final _response = await _dio.request<Object>(
       _path,
@@ -3831,10 +4175,10 @@ _bodyData=jsonEncode(body);
   }
 
   /// Uploads a custom splashscreen.  The body is expected to the image contents base64 encoded.
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [body] 
+  /// * [body]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -3844,7 +4188,7 @@ _bodyData=jsonEncode(body);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> uploadCustomSplashscreen({ 
+  Future<Response<void>> uploadCustomSplashscreen({
     MultipartFile? body,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -3856,9 +4200,7 @@ _bodyData=jsonEncode(body);
     final _path = r'/Branding/Splashscreen';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -3877,13 +4219,10 @@ _bodyData=jsonEncode(body);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(body);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(body);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -3901,5 +4240,4 @@ _bodyData=jsonEncode(body);
 
     return _response;
   }
-
 }

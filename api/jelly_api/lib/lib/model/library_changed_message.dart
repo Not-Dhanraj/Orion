@@ -10,6 +10,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'library_changed_message.g.dart';
 
+
 @CopyWith()
 @JsonSerializable(
   checked: true,
@@ -20,46 +21,68 @@ part 'library_changed_message.g.dart';
 class LibraryChangedMessage {
   /// Returns a new [LibraryChangedMessage] instance.
   LibraryChangedMessage({
-    this.data,
 
-    this.messageId,
+     this.data,
 
-    this.messageType = SessionMessageType.libraryChanged,
+     this.messageId,
+
+     this.messageType = SessionMessageType.libraryChanged,
   });
 
-  /// Class LibraryUpdateInfo.
-  @JsonKey(name: r'Data', required: false, includeIfNull: false)
+      /// Class LibraryUpdateInfo.
+  @JsonKey(
+    
+    name: r'Data',
+    required: false,
+    includeIfNull: false,
+  )
+
+
   final LibraryUpdateInfo? data;
 
-  /// Gets or sets the message id.
-  @JsonKey(name: r'MessageId', required: false, includeIfNull: false)
+
+
+      /// Gets or sets the message id.
+  @JsonKey(
+    
+    name: r'MessageId',
+    required: false,
+    includeIfNull: false,
+  )
+
+
   final String? messageId;
 
-  /// The different kinds of messages that are used in the WebSocket api.
+
+
+      /// The different kinds of messages that are used in the WebSocket api.
   @JsonKey(
     defaultValue: SessionMessageType.libraryChanged,
     name: r'MessageType',
     required: false,
     includeIfNull: false,
   )
+
+
   final SessionMessageType? messageType;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is LibraryChangedMessage &&
-          other.data == data &&
-          other.messageId == messageId &&
-          other.messageType == messageType;
 
-  @override
-  int get hashCode =>
-      (data == null ? 0 : data.hashCode) +
-      messageId.hashCode +
-      messageType.hashCode;
 
-  factory LibraryChangedMessage.fromJson(Map<String, dynamic> json) =>
-      _$LibraryChangedMessageFromJson(json);
+
+
+    @override
+    bool operator ==(Object other) => identical(this, other) || other is LibraryChangedMessage &&
+      other.data == data &&
+      other.messageId == messageId &&
+      other.messageType == messageType;
+
+    @override
+    int get hashCode =>
+        (data == null ? 0 : data.hashCode) +
+        messageId.hashCode +
+        messageType.hashCode;
+
+  factory LibraryChangedMessage.fromJson(Map<String, dynamic> json) => _$LibraryChangedMessageFromJson(json);
 
   Map<String, dynamic> toJson() => _$LibraryChangedMessageToJson(this);
 
@@ -67,4 +90,6 @@ class LibraryChangedMessage {
   String toString() {
     return toJson().toString();
   }
+
 }
+

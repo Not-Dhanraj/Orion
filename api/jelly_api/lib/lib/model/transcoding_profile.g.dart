@@ -281,9 +281,7 @@ TranscodingProfile _$TranscodingProfileFromJson(Map<String, dynamic> json) =>
           ),
           transcodeSeekInfo: $checkedConvert(
             'TranscodeSeekInfo',
-            (v) =>
-                $enumDecodeNullable(_$TranscodeSeekInfoEnumMap, v) ??
-                TranscodeSeekInfo.auto,
+            (v) => $enumDecodeNullable(_$TranscodeSeekInfoEnumMap, v) ?? 'Auto',
           ),
           copyTimestamps: $checkedConvert(
             'CopyTimestamps',
@@ -292,8 +290,7 @@ TranscodingProfile _$TranscodingProfileFromJson(Map<String, dynamic> json) =>
           context: $checkedConvert(
             'Context',
             (v) =>
-                $enumDecodeNullable(_$EncodingContextEnumMap, v) ??
-                EncodingContext.streaming,
+                $enumDecodeNullable(_$EncodingContextEnumMap, v) ?? 'Streaming',
           ),
           enableSubtitlesInManifest: $checkedConvert(
             'EnableSubtitlesInManifest',

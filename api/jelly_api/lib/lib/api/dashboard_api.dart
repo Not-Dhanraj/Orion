@@ -11,16 +11,14 @@ import 'package:dio/dio.dart';
 
 import 'dart:typed_data';
 import 'package:jelly_api/lib/model/configuration_page_info.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 
 class DashboardApi {
-
   final Dio _dio;
 
   const DashboardApi(this._dio);
 
   /// Gets the configuration pages.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [enableInMainMenu] - Whether to enable in the main menu.
@@ -33,7 +31,7 @@ class DashboardApi {
   ///
   /// Returns a [Future] containing a [Response] with a [List<ConfigurationPageInfo>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<ConfigurationPageInfo>>> getConfigurationPages({ 
+  Future<Response<List<ConfigurationPageInfo>>> getConfigurationPages({
     bool? enableInMainMenu,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -45,9 +43,7 @@ class DashboardApi {
     final _path = r'/web/ConfigurationPages';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -78,9 +74,14 @@ class DashboardApi {
     List<ConfigurationPageInfo>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<ConfigurationPageInfo>, ConfigurationPageInfo>(rawData, 'List<ConfigurationPageInfo>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<ConfigurationPageInfo>, ConfigurationPageInfo>(
+              rawData,
+              'List<ConfigurationPageInfo>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -104,7 +105,7 @@ _responseData = rawData == null ? null : deserialize<List<ConfigurationPageInfo>
   }
 
   /// Gets a dashboard configuration page.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - The name of the page.
@@ -117,7 +118,7 @@ _responseData = rawData == null ? null : deserialize<List<ConfigurationPageInfo>
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getDashboardConfigurationPage({ 
+  Future<Response<Uint8List>> getDashboardConfigurationPage({
     String? name,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -130,19 +131,12 @@ _responseData = rawData == null ? null : deserialize<List<ConfigurationPageInfo>
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      if (name != null) r'name': name,
-    };
+    final _queryParameters = <String, dynamic>{if (name != null) r'name': name};
 
     final _response = await _dio.request<Object>(
       _path,
@@ -156,9 +150,8 @@ _responseData = rawData == null ? null : deserialize<List<ConfigurationPageInfo>
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -180,5 +173,4 @@ _responseData = rawData == null ? null : rawData as Uint8List;
       extra: _response.extra,
     );
   }
-
 }

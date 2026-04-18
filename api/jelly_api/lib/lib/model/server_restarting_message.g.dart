@@ -85,7 +85,7 @@ ServerRestartingMessage _$ServerRestartingMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            SessionMessageType.serverRestarting,
+            'ServerRestarting',
       ),
     );
     return val;

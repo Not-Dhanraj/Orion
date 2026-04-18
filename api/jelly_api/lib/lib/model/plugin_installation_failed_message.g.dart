@@ -105,7 +105,7 @@ PluginInstallationFailedMessage _$PluginInstallationFailedMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            SessionMessageType.packageInstallationFailed,
+            'PackageInstallationFailed',
       ),
     );
     return val;

@@ -14,16 +14,14 @@ import 'package:jelly_api/lib/model/base_item_dto_query_result.dart';
 import 'package:jelly_api/lib/model/image_type.dart';
 import 'package:jelly_api/lib/model/item_fields.dart';
 import 'package:jelly_api/lib/model/item_filter.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 
 class PersonsApi {
-
   final Dio _dio;
 
   const PersonsApi(this._dio);
 
   /// Get person by name.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - Person name.
@@ -37,7 +35,7 @@ class PersonsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDto>> getPerson({ 
+  Future<Response<BaseItemDto>> getPerson({
     required String name,
     String? userId,
     CancelToken? cancelToken,
@@ -47,12 +45,15 @@ class PersonsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Persons/{name}'.replaceAll('{' r'name' '}', name.toString());
+    final _path = r'/Persons/{name}'.replaceAll(
+      '{'
+      r'name'
+      '}',
+      name.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -83,9 +84,14 @@ class PersonsApi {
     BaseItemDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(rawData, 'BaseItemDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDto, BaseItemDto>(
+              rawData,
+              'BaseItemDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -109,7 +115,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(r
   }
 
   /// Gets all persons.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [limit] - Optional. The maximum number of records to return.
@@ -134,7 +140,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(r
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getPersons({ 
+  Future<Response<BaseItemDtoQueryResult>> getPersons({
     int? limit,
     String? searchTerm,
     List<ItemFields>? fields,
@@ -158,9 +164,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(r
     final _path = r'/Persons';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -203,9 +207,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(r
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -227,5 +236,4 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
       extra: _response.extra,
     );
   }
-
 }

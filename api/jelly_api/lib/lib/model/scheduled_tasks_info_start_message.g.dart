@@ -85,7 +85,7 @@ ScheduledTasksInfoStartMessage _$ScheduledTasksInfoStartMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            SessionMessageType.scheduledTasksInfoStart,
+            'ScheduledTasksInfoStart',
       ),
     );
     return val;

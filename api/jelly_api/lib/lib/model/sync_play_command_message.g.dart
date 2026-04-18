@@ -101,7 +101,7 @@ SyncPlayCommandMessage _$SyncPlayCommandMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            SessionMessageType.syncPlayCommand,
+            'SyncPlayCommand',
       ),
     );
     return val;

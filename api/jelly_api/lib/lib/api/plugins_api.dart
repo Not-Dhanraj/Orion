@@ -11,16 +11,14 @@ import 'package:dio/dio.dart';
 
 import 'dart:typed_data';
 import 'package:jelly_api/lib/model/plugin_info.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 
 class PluginsApi {
-
   final Dio _dio;
 
   const PluginsApi(this._dio);
 
   /// Disable a plugin.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [pluginId] - Plugin id.
@@ -34,7 +32,7 @@ class PluginsApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> disablePlugin({ 
+  Future<Response<void>> disablePlugin({
     required String pluginId,
     required String version,
     CancelToken? cancelToken,
@@ -44,12 +42,22 @@ class PluginsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Plugins/{pluginId}/{version}/Disable'.replaceAll('{' r'pluginId' '}', pluginId.toString()).replaceAll('{' r'version' '}', version.toString());
+    final _path = r'/Plugins/{pluginId}/{version}/Disable'
+        .replaceAll(
+          '{'
+          r'pluginId'
+          '}',
+          pluginId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'version'
+          '}',
+          version.toString(),
+        );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -76,7 +84,7 @@ class PluginsApi {
   }
 
   /// Enables a disabled plugin.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [pluginId] - Plugin id.
@@ -90,7 +98,7 @@ class PluginsApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> enablePlugin({ 
+  Future<Response<void>> enablePlugin({
     required String pluginId,
     required String version,
     CancelToken? cancelToken,
@@ -100,12 +108,22 @@ class PluginsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Plugins/{pluginId}/{version}/Enable'.replaceAll('{' r'pluginId' '}', pluginId.toString()).replaceAll('{' r'version' '}', version.toString());
+    final _path = r'/Plugins/{pluginId}/{version}/Enable'
+        .replaceAll(
+          '{'
+          r'pluginId'
+          '}',
+          pluginId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'version'
+          '}',
+          version.toString(),
+        );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -132,7 +150,7 @@ class PluginsApi {
   }
 
   /// Gets plugin configuration.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [pluginId] - Plugin id.
@@ -145,7 +163,7 @@ class PluginsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [Object] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Object>> getPluginConfiguration({ 
+  Future<Response<Object>> getPluginConfiguration({
     required String pluginId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -154,12 +172,15 @@ class PluginsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Plugins/{pluginId}/Configuration'.replaceAll('{' r'pluginId' '}', pluginId.toString());
+    final _path = r'/Plugins/{pluginId}/Configuration'.replaceAll(
+      '{'
+      r'pluginId'
+      '}',
+      pluginId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -185,9 +206,10 @@ class PluginsApi {
     Object? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<Object, Object>(rawData, 'Object', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<Object, Object>(rawData, 'Object', growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -211,7 +233,7 @@ _responseData = rawData == null ? null : deserialize<Object, Object>(rawData, 'O
   }
 
   /// Gets a plugin&#39;s image.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [pluginId] - Plugin id.
@@ -225,7 +247,7 @@ _responseData = rawData == null ? null : deserialize<Object, Object>(rawData, 'O
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getPluginImage({ 
+  Future<Response<Uint8List>> getPluginImage({
     required String pluginId,
     required String version,
     CancelToken? cancelToken,
@@ -235,13 +257,23 @@ _responseData = rawData == null ? null : deserialize<Object, Object>(rawData, 'O
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Plugins/{pluginId}/{version}/Image'.replaceAll('{' r'pluginId' '}', pluginId.toString()).replaceAll('{' r'version' '}', version.toString());
+    final _path = r'/Plugins/{pluginId}/{version}/Image'
+        .replaceAll(
+          '{'
+          r'pluginId'
+          '}',
+          pluginId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'version'
+          '}',
+          version.toString(),
+        );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -267,9 +299,8 @@ _responseData = rawData == null ? null : deserialize<Object, Object>(rawData, 'O
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -293,7 +324,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets a plugin&#39;s manifest.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [pluginId] - Plugin id.
@@ -306,7 +337,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> getPluginManifest({ 
+  Future<Response<void>> getPluginManifest({
     required String pluginId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -315,12 +346,15 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Plugins/{pluginId}/Manifest'.replaceAll('{' r'pluginId' '}', pluginId.toString());
+    final _path = r'/Plugins/{pluginId}/Manifest'.replaceAll(
+      '{'
+      r'pluginId'
+      '}',
+      pluginId.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -347,7 +381,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets a list of currently installed plugins.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -359,7 +393,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [List<PluginInfo>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<PluginInfo>>> getPlugins({ 
+  Future<Response<List<PluginInfo>>> getPlugins({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -370,9 +404,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     final _path = r'/Plugins';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -398,9 +430,14 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     List<PluginInfo>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<PluginInfo>, PluginInfo>(rawData, 'List<PluginInfo>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<PluginInfo>, PluginInfo>(
+              rawData,
+              'List<PluginInfo>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -424,7 +461,7 @@ _responseData = rawData == null ? null : deserialize<List<PluginInfo>, PluginInf
   }
 
   /// Uninstalls a plugin.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [pluginId] - Plugin id.
@@ -438,7 +475,7 @@ _responseData = rawData == null ? null : deserialize<List<PluginInfo>, PluginInf
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
   @Deprecated('This operation has been deprecated')
-  Future<Response<void>> uninstallPlugin({ 
+  Future<Response<void>> uninstallPlugin({
     required String pluginId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -447,12 +484,15 @@ _responseData = rawData == null ? null : deserialize<List<PluginInfo>, PluginInf
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Plugins/{pluginId}'.replaceAll('{' r'pluginId' '}', pluginId.toString());
+    final _path = r'/Plugins/{pluginId}'.replaceAll(
+      '{'
+      r'pluginId'
+      '}',
+      pluginId.toString(),
+    );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -479,7 +519,7 @@ _responseData = rawData == null ? null : deserialize<List<PluginInfo>, PluginInf
   }
 
   /// Uninstalls a plugin by version.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [pluginId] - Plugin id.
@@ -493,7 +533,7 @@ _responseData = rawData == null ? null : deserialize<List<PluginInfo>, PluginInf
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> uninstallPluginByVersion({ 
+  Future<Response<void>> uninstallPluginByVersion({
     required String pluginId,
     required String version,
     CancelToken? cancelToken,
@@ -503,12 +543,22 @@ _responseData = rawData == null ? null : deserialize<List<PluginInfo>, PluginInf
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Plugins/{pluginId}/{version}'.replaceAll('{' r'pluginId' '}', pluginId.toString()).replaceAll('{' r'version' '}', version.toString());
+    final _path = r'/Plugins/{pluginId}/{version}'
+        .replaceAll(
+          '{'
+          r'pluginId'
+          '}',
+          pluginId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'version'
+          '}',
+          version.toString(),
+        );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -548,7 +598,7 @@ _responseData = rawData == null ? null : deserialize<List<PluginInfo>, PluginInf
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> updatePluginConfiguration({ 
+  Future<Response<void>> updatePluginConfiguration({
     required String pluginId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -557,12 +607,15 @@ _responseData = rawData == null ? null : deserialize<List<PluginInfo>, PluginInf
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Plugins/{pluginId}/Configuration'.replaceAll('{' r'pluginId' '}', pluginId.toString());
+    final _path = r'/Plugins/{pluginId}/Configuration'.replaceAll(
+      '{'
+      r'pluginId'
+      '}',
+      pluginId.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -587,5 +640,4 @@ _responseData = rawData == null ? null : deserialize<List<PluginInfo>, PluginInf
 
     return _response;
   }
-
 }

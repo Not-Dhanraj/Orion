@@ -17,7 +17,6 @@ import 'package:jelly_api/lib/model/item_filter.dart';
 import 'package:jelly_api/lib/model/item_sort_by.dart';
 import 'package:jelly_api/lib/model/location_type.dart';
 import 'package:jelly_api/lib/model/media_type.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 import 'package:jelly_api/lib/model/series_status.dart';
 import 'package:jelly_api/lib/model/sort_order.dart';
 import 'package:jelly_api/lib/model/update_user_item_data_dto.dart';
@@ -25,13 +24,12 @@ import 'package:jelly_api/lib/model/user_item_data_dto.dart';
 import 'package:jelly_api/lib/model/video_type.dart';
 
 class ItemsApi {
-
   final Dio _dio;
 
   const ItemsApi(this._dio);
 
   /// Get Item User Data.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -45,7 +43,7 @@ class ItemsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [UserItemDataDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<UserItemDataDto>> getItemUserData({ 
+  Future<Response<UserItemDataDto>> getItemUserData({
     required String itemId,
     String? userId,
     CancelToken? cancelToken,
@@ -55,12 +53,15 @@ class ItemsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/UserItems/{itemId}/UserData'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/UserItems/{itemId}/UserData'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -91,9 +92,14 @@ class ItemsApi {
     UserItemDataDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDataDto>(rawData, 'UserItemDataDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<UserItemDataDto, UserItemDataDto>(
+              rawData,
+              'UserItemDataDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -117,7 +123,7 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
   }
 
   /// Gets items based on a query.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [userId] - The user id supplied as query parameter; this is required when not using an API key.
@@ -215,7 +221,7 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getItems({ 
+  Future<Response<BaseItemDtoQueryResult>> getItems({
     String? userId,
     String? maxOfficialRating,
     bool? hasThemeSong,
@@ -312,9 +318,7 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
     final _path = r'/Items';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -344,14 +348,16 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
       if (isHd != null) r'isHd': isHd,
       if (is4K != null) r'is4K': is4K,
       if (locationTypes != null) r'locationTypes': locationTypes,
-      if (excludeLocationTypes != null) r'excludeLocationTypes': excludeLocationTypes,
+      if (excludeLocationTypes != null)
+        r'excludeLocationTypes': excludeLocationTypes,
       if (isMissing != null) r'isMissing': isMissing,
       if (isUnaired != null) r'isUnaired': isUnaired,
       if (minCommunityRating != null) r'minCommunityRating': minCommunityRating,
       if (minCriticRating != null) r'minCriticRating': minCriticRating,
       if (minPremiereDate != null) r'minPremiereDate': minPremiereDate,
       if (minDateLastSaved != null) r'minDateLastSaved': minDateLastSaved,
-      if (minDateLastSavedForUser != null) r'minDateLastSavedForUser': minDateLastSavedForUser,
+      if (minDateLastSavedForUser != null)
+        r'minDateLastSavedForUser': minDateLastSavedForUser,
       if (maxPremiereDate != null) r'maxPremiereDate': maxPremiereDate,
       if (hasOverview != null) r'hasOverview': hasOverview,
       if (hasImdbId != null) r'hasImdbId': hasImdbId,
@@ -393,7 +399,8 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
       if (excludeArtistIds != null) r'excludeArtistIds': excludeArtistIds,
       if (artistIds != null) r'artistIds': artistIds,
       if (albumArtistIds != null) r'albumArtistIds': albumArtistIds,
-      if (contributingArtistIds != null) r'contributingArtistIds': contributingArtistIds,
+      if (contributingArtistIds != null)
+        r'contributingArtistIds': contributingArtistIds,
       if (albums != null) r'albums': albums,
       if (albumIds != null) r'albumIds': albumIds,
       if (ids != null) r'ids': ids,
@@ -402,19 +409,22 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
       if (isLocked != null) r'isLocked': isLocked,
       if (isPlaceHolder != null) r'isPlaceHolder': isPlaceHolder,
       if (hasOfficialRating != null) r'hasOfficialRating': hasOfficialRating,
-      if (collapseBoxSetItems != null) r'collapseBoxSetItems': collapseBoxSetItems,
+      if (collapseBoxSetItems != null)
+        r'collapseBoxSetItems': collapseBoxSetItems,
       if (minWidth != null) r'minWidth': minWidth,
       if (minHeight != null) r'minHeight': minHeight,
       if (maxWidth != null) r'maxWidth': maxWidth,
       if (maxHeight != null) r'maxHeight': maxHeight,
       if (is3D != null) r'is3D': is3D,
       if (seriesStatus != null) r'seriesStatus': seriesStatus,
-      if (nameStartsWithOrGreater != null) r'nameStartsWithOrGreater': nameStartsWithOrGreater,
+      if (nameStartsWithOrGreater != null)
+        r'nameStartsWithOrGreater': nameStartsWithOrGreater,
       if (nameStartsWith != null) r'nameStartsWith': nameStartsWith,
       if (nameLessThan != null) r'nameLessThan': nameLessThan,
       if (studioIds != null) r'studioIds': studioIds,
       if (genreIds != null) r'genreIds': genreIds,
-      if (enableTotalRecordCount != null) r'enableTotalRecordCount': enableTotalRecordCount,
+      if (enableTotalRecordCount != null)
+        r'enableTotalRecordCount': enableTotalRecordCount,
       if (enableImages != null) r'enableImages': enableImages,
     };
 
@@ -430,9 +440,14 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -456,7 +471,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Gets items based on a query.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [userId] - The user id.
@@ -483,7 +498,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getResumeItems({ 
+  Future<Response<BaseItemDtoQueryResult>> getResumeItems({
     String? userId,
     int? startIndex,
     int? limit,
@@ -509,9 +524,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     final _path = r'/UserItems/Resume';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -539,9 +552,11 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
       if (enableImageTypes != null) r'enableImageTypes': enableImageTypes,
       if (excludeItemTypes != null) r'excludeItemTypes': excludeItemTypes,
       if (includeItemTypes != null) r'includeItemTypes': includeItemTypes,
-      if (enableTotalRecordCount != null) r'enableTotalRecordCount': enableTotalRecordCount,
+      if (enableTotalRecordCount != null)
+        r'enableTotalRecordCount': enableTotalRecordCount,
       if (enableImages != null) r'enableImages': enableImages,
-      if (excludeActiveSessions != null) r'excludeActiveSessions': excludeActiveSessions,
+      if (excludeActiveSessions != null)
+        r'excludeActiveSessions': excludeActiveSessions,
     };
 
     final _response = await _dio.request<Object>(
@@ -556,9 +571,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -582,7 +602,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Update Item User Data.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -597,7 +617,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [UserItemDataDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<UserItemDataDto>> updateItemUserData({ 
+  Future<Response<UserItemDataDto>> updateItemUserData({
     required String itemId,
     required UpdateUserItemDataDto updateUserItemDataDto,
     String? userId,
@@ -608,12 +628,15 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/UserItems/{itemId}/UserData'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/UserItems/{itemId}/UserData'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -636,10 +659,10 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(updateUserItemDataDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(updateUserItemDataDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
           queryParameters: _queryParameters,
@@ -663,9 +686,14 @@ _bodyData=jsonEncode(updateUserItemDataDto);
     UserItemDataDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDataDto>(rawData, 'UserItemDataDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<UserItemDataDto, UserItemDataDto>(
+              rawData,
+              'UserItemDataDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -687,5 +715,4 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
       extra: _response.extra,
     );
   }
-
 }

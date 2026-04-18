@@ -11,17 +11,15 @@ import 'package:dio/dio.dart';
 
 import 'package:jelly_api/lib/model/default_directory_browser_info_dto.dart';
 import 'package:jelly_api/lib/model/file_system_entry_info.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 import 'package:jelly_api/lib/model/validate_path_dto.dart';
 
 class EnvironmentApi {
-
   final Dio _dio;
 
   const EnvironmentApi(this._dio);
 
   /// Get Default directory browser.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -33,7 +31,7 @@ class EnvironmentApi {
   ///
   /// Returns a [Future] containing a [Response] with a [DefaultDirectoryBrowserInfoDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<DefaultDirectoryBrowserInfoDto>> getDefaultDirectoryBrowser({ 
+  Future<Response<DefaultDirectoryBrowserInfoDto>> getDefaultDirectoryBrowser({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -44,9 +42,7 @@ class EnvironmentApi {
     final _path = r'/Environment/DefaultDirectoryBrowser';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -72,9 +68,13 @@ class EnvironmentApi {
     DefaultDirectoryBrowserInfoDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<DefaultDirectoryBrowserInfoDto, DefaultDirectoryBrowserInfoDto>(rawData, 'DefaultDirectoryBrowserInfoDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<
+              DefaultDirectoryBrowserInfoDto,
+              DefaultDirectoryBrowserInfoDto
+            >(rawData, 'DefaultDirectoryBrowserInfoDto', growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -98,7 +98,7 @@ _responseData = rawData == null ? null : deserialize<DefaultDirectoryBrowserInfo
   }
 
   /// Gets the contents of a given directory in the file system.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [path] - The path.
@@ -113,7 +113,7 @@ _responseData = rawData == null ? null : deserialize<DefaultDirectoryBrowserInfo
   ///
   /// Returns a [Future] containing a [Response] with a [List<FileSystemEntryInfo>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<FileSystemEntryInfo>>> getDirectoryContents({ 
+  Future<Response<List<FileSystemEntryInfo>>> getDirectoryContents({
     required String path,
     bool? includeFiles = false,
     bool? includeDirectories = false,
@@ -127,9 +127,7 @@ _responseData = rawData == null ? null : deserialize<DefaultDirectoryBrowserInfo
     final _path = r'/Environment/DirectoryContents';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -162,9 +160,14 @@ _responseData = rawData == null ? null : deserialize<DefaultDirectoryBrowserInfo
     List<FileSystemEntryInfo>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<FileSystemEntryInfo>, FileSystemEntryInfo>(rawData, 'List<FileSystemEntryInfo>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<FileSystemEntryInfo>, FileSystemEntryInfo>(
+              rawData,
+              'List<FileSystemEntryInfo>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -188,7 +191,7 @@ _responseData = rawData == null ? null : deserialize<List<FileSystemEntryInfo>, 
   }
 
   /// Gets available drives from the server&#39;s file system.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -200,7 +203,7 @@ _responseData = rawData == null ? null : deserialize<List<FileSystemEntryInfo>, 
   ///
   /// Returns a [Future] containing a [Response] with a [List<FileSystemEntryInfo>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<FileSystemEntryInfo>>> getDrives({ 
+  Future<Response<List<FileSystemEntryInfo>>> getDrives({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -211,9 +214,7 @@ _responseData = rawData == null ? null : deserialize<List<FileSystemEntryInfo>, 
     final _path = r'/Environment/Drives';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -239,9 +240,14 @@ _responseData = rawData == null ? null : deserialize<List<FileSystemEntryInfo>, 
     List<FileSystemEntryInfo>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<FileSystemEntryInfo>, FileSystemEntryInfo>(rawData, 'List<FileSystemEntryInfo>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<FileSystemEntryInfo>, FileSystemEntryInfo>(
+              rawData,
+              'List<FileSystemEntryInfo>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -265,7 +271,7 @@ _responseData = rawData == null ? null : deserialize<List<FileSystemEntryInfo>, 
   }
 
   /// Gets network paths.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -278,7 +284,7 @@ _responseData = rawData == null ? null : deserialize<List<FileSystemEntryInfo>, 
   /// Returns a [Future] containing a [Response] with a [List<FileSystemEntryInfo>] as data
   /// Throws [DioException] if API call or serialization fails
   @Deprecated('This operation has been deprecated')
-  Future<Response<List<FileSystemEntryInfo>>> getNetworkShares({ 
+  Future<Response<List<FileSystemEntryInfo>>> getNetworkShares({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -289,9 +295,7 @@ _responseData = rawData == null ? null : deserialize<List<FileSystemEntryInfo>, 
     final _path = r'/Environment/NetworkShares';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -317,9 +321,14 @@ _responseData = rawData == null ? null : deserialize<List<FileSystemEntryInfo>, 
     List<FileSystemEntryInfo>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<FileSystemEntryInfo>, FileSystemEntryInfo>(rawData, 'List<FileSystemEntryInfo>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<FileSystemEntryInfo>, FileSystemEntryInfo>(
+              rawData,
+              'List<FileSystemEntryInfo>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -343,7 +352,7 @@ _responseData = rawData == null ? null : deserialize<List<FileSystemEntryInfo>, 
   }
 
   /// Gets the parent path of a given path.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [path] - The path.
@@ -356,7 +365,7 @@ _responseData = rawData == null ? null : deserialize<List<FileSystemEntryInfo>, 
   ///
   /// Returns a [Future] containing a [Response] with a [String] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<String>> getParentPath({ 
+  Future<Response<String>> getParentPath({
     required String path,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -368,9 +377,7 @@ _responseData = rawData == null ? null : deserialize<List<FileSystemEntryInfo>, 
     final _path = r'/Environment/ParentPath';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -385,9 +392,7 @@ _responseData = rawData == null ? null : deserialize<List<FileSystemEntryInfo>, 
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      r'path': path,
-    };
+    final _queryParameters = <String, dynamic>{r'path': path};
 
     final _response = await _dio.request<Object>(
       _path,
@@ -401,9 +406,10 @@ _responseData = rawData == null ? null : deserialize<List<FileSystemEntryInfo>, 
     String? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<String, String>(rawData, 'String', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<String, String>(rawData, 'String', growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -427,7 +433,7 @@ _responseData = rawData == null ? null : deserialize<String, String>(rawData, 'S
   }
 
   /// Validates path.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [validatePathDto] - Validate request object.
@@ -440,7 +446,7 @@ _responseData = rawData == null ? null : deserialize<String, String>(rawData, 'S
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> validatePath({ 
+  Future<Response<void>> validatePath({
     required ValidatePathDto validatePathDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -452,9 +458,7 @@ _responseData = rawData == null ? null : deserialize<String, String>(rawData, 'S
     final _path = r'/Environment/ValidatePath';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -473,13 +477,10 @@ _responseData = rawData == null ? null : deserialize<String, String>(rawData, 'S
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(validatePathDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(validatePathDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -497,5 +498,4 @@ _bodyData=jsonEncode(validatePathDto);
 
     return _response;
   }
-
 }

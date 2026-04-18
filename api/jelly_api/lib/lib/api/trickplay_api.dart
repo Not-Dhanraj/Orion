@@ -6,20 +6,17 @@ import 'dart:async';
 
 // ignore: unused_import
 import 'dart:convert';
-import 'package:jelly_api/lib/deserialize.dart';
 import 'package:dio/dio.dart';
 
 import 'dart:typed_data';
-import 'package:jelly_api/lib/model/problem_details.dart';
 
 class TrickplayApi {
-
   final Dio _dio;
 
   const TrickplayApi(this._dio);
 
   /// Gets an image tiles playlist for trickplay.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -34,7 +31,7 @@ class TrickplayApi {
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getTrickplayHlsPlaylist({ 
+  Future<Response<Uint8List>> getTrickplayHlsPlaylist({
     required String itemId,
     required int width,
     String? mediaSourceId,
@@ -45,13 +42,23 @@ class TrickplayApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Videos/{itemId}/Trickplay/{width}/tiles.m3u8'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'width' '}', width.toString());
+    final _path = r'/Videos/{itemId}/Trickplay/{width}/tiles.m3u8'
+        .replaceAll(
+          '{'
+          r'itemId'
+          '}',
+          itemId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'width'
+          '}',
+          width.toString(),
+        );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -82,9 +89,8 @@ class TrickplayApi {
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -108,7 +114,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets a trickplay tile image.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -124,7 +130,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getTrickplayTileImage({ 
+  Future<Response<Uint8List>> getTrickplayTileImage({
     required String itemId,
     required int width,
     required int index,
@@ -136,13 +142,29 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Videos/{itemId}/Trickplay/{width}/{index}.jpg'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'width' '}', width.toString()).replaceAll('{' r'index' '}', index.toString());
+    final _path = r'/Videos/{itemId}/Trickplay/{width}/{index}.jpg'
+        .replaceAll(
+          '{'
+          r'itemId'
+          '}',
+          itemId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'width'
+          '}',
+          width.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'index'
+          '}',
+          index.toString(),
+        );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -173,9 +195,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -197,5 +218,4 @@ _responseData = rawData == null ? null : rawData as Uint8List;
       extra: _response.extra,
     );
   }
-
 }

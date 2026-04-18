@@ -9,6 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'activity_log_entry_start_message.g.dart';
 
+
 @CopyWith()
 @JsonSerializable(
   checked: true,
@@ -19,36 +20,51 @@ part 'activity_log_entry_start_message.g.dart';
 class ActivityLogEntryStartMessage {
   /// Returns a new [ActivityLogEntryStartMessage] instance.
   ActivityLogEntryStartMessage({
-    this.data,
 
-    this.messageType = SessionMessageType.activityLogEntryStart,
+     this.data,
+
+     this.messageType = SessionMessageType.activityLogEntryStart,
   });
 
-  /// Gets or sets the data.
-  @JsonKey(name: r'Data', required: false, includeIfNull: false)
+      /// Gets or sets the data.
+  @JsonKey(
+    
+    name: r'Data',
+    required: false,
+    includeIfNull: false,
+  )
+
+
   final String? data;
 
-  /// The different kinds of messages that are used in the WebSocket api.
+
+
+      /// The different kinds of messages that are used in the WebSocket api.
   @JsonKey(
     defaultValue: SessionMessageType.activityLogEntryStart,
     name: r'MessageType',
     required: false,
     includeIfNull: false,
   )
+
+
   final SessionMessageType? messageType;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ActivityLogEntryStartMessage &&
-          other.data == data &&
-          other.messageType == messageType;
 
-  @override
-  int get hashCode => (data == null ? 0 : data.hashCode) + messageType.hashCode;
 
-  factory ActivityLogEntryStartMessage.fromJson(Map<String, dynamic> json) =>
-      _$ActivityLogEntryStartMessageFromJson(json);
+
+
+    @override
+    bool operator ==(Object other) => identical(this, other) || other is ActivityLogEntryStartMessage &&
+      other.data == data &&
+      other.messageType == messageType;
+
+    @override
+    int get hashCode =>
+        (data == null ? 0 : data.hashCode) +
+        messageType.hashCode;
+
+  factory ActivityLogEntryStartMessage.fromJson(Map<String, dynamic> json) => _$ActivityLogEntryStartMessageFromJson(json);
 
   Map<String, dynamic> toJson() => _$ActivityLogEntryStartMessageToJson(this);
 
@@ -56,4 +72,6 @@ class ActivityLogEntryStartMessage {
   String toString() {
     return toJson().toString();
   }
+
 }
+

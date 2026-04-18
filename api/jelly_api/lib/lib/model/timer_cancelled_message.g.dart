@@ -102,7 +102,7 @@ TimerCancelledMessage _$TimerCancelledMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            SessionMessageType.timerCancelled,
+            'TimerCancelled',
       ),
     );
     return val;

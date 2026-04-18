@@ -11,18 +11,16 @@ import 'package:dio/dio.dart';
 
 import 'dart:typed_data';
 import 'package:jelly_api/lib/model/font_file.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 import 'package:jelly_api/lib/model/remote_subtitle_info.dart';
 import 'package:jelly_api/lib/model/upload_subtitle_dto.dart';
 
 class SubtitleApi {
-
   final Dio _dio;
 
   const SubtitleApi(this._dio);
 
   /// Deletes an external subtitle file.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -36,7 +34,7 @@ class SubtitleApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> deleteSubtitle({ 
+  Future<Response<void>> deleteSubtitle({
     required String itemId,
     required int index,
     CancelToken? cancelToken,
@@ -46,12 +44,22 @@ class SubtitleApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Videos/{itemId}/Subtitles/{index}'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'index' '}', index.toString());
+    final _path = r'/Videos/{itemId}/Subtitles/{index}'
+        .replaceAll(
+          '{'
+          r'itemId'
+          '}',
+          itemId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'index'
+          '}',
+          index.toString(),
+        );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -78,7 +86,7 @@ class SubtitleApi {
   }
 
   /// Downloads a remote subtitle.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -92,7 +100,7 @@ class SubtitleApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> downloadRemoteSubtitles({ 
+  Future<Response<void>> downloadRemoteSubtitles({
     required String itemId,
     required String subtitleId,
     CancelToken? cancelToken,
@@ -102,12 +110,22 @@ class SubtitleApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/RemoteSearch/Subtitles/{subtitleId}'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'subtitleId' '}', subtitleId.toString());
+    final _path = r'/Items/{itemId}/RemoteSearch/Subtitles/{subtitleId}'
+        .replaceAll(
+          '{'
+          r'itemId'
+          '}',
+          itemId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'subtitleId'
+          '}',
+          subtitleId.toString(),
+        );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -134,7 +152,7 @@ class SubtitleApi {
   }
 
   /// Gets a fallback font file.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - The name of the fallback font file to get.
@@ -147,7 +165,7 @@ class SubtitleApi {
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getFallbackFont({ 
+  Future<Response<Uint8List>> getFallbackFont({
     required String name,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -156,13 +174,16 @@ class SubtitleApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/FallbackFont/Fonts/{name}'.replaceAll('{' r'name' '}', name.toString());
+    final _path = r'/FallbackFont/Fonts/{name}'.replaceAll(
+      '{'
+      r'name'
+      '}',
+      name.toString(),
+    );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -188,9 +209,8 @@ class SubtitleApi {
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -214,7 +234,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets a list of available fallback font files.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -226,7 +246,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [List<FontFile>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<FontFile>>> getFallbackFontList({ 
+  Future<Response<List<FontFile>>> getFallbackFontList({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -237,9 +257,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     final _path = r'/FallbackFont/Fonts';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -265,9 +283,14 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     List<FontFile>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<FontFile>, FontFile>(rawData, 'List<FontFile>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<FontFile>, FontFile>(
+              rawData,
+              'List<FontFile>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -291,7 +314,7 @@ _responseData = rawData == null ? null : deserialize<List<FontFile>, FontFile>(r
   }
 
   /// Gets the remote subtitles.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [subtitleId] - The item id.
@@ -304,7 +327,7 @@ _responseData = rawData == null ? null : deserialize<List<FontFile>, FontFile>(r
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getRemoteSubtitles({ 
+  Future<Response<Uint8List>> getRemoteSubtitles({
     required String subtitleId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -313,13 +336,16 @@ _responseData = rawData == null ? null : deserialize<List<FontFile>, FontFile>(r
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Providers/Subtitles/Subtitles/{subtitleId}'.replaceAll('{' r'subtitleId' '}', subtitleId.toString());
+    final _path = r'/Providers/Subtitles/Subtitles/{subtitleId}'.replaceAll(
+      '{'
+      r'subtitleId'
+      '}',
+      subtitleId.toString(),
+    );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -345,9 +371,8 @@ _responseData = rawData == null ? null : deserialize<List<FontFile>, FontFile>(r
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -371,7 +396,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets subtitles in a specified format.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [routeItemId] - The (route) item id.
@@ -395,7 +420,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getSubtitle({ 
+  Future<Response<Uint8List>> getSubtitle({
     required String routeItemId,
     required String routeMediaSourceId,
     required int routeIndex,
@@ -415,17 +440,37 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Videos/{routeItemId}/{routeMediaSourceId}/Subtitles/{routeIndex}/Stream.{routeFormat}'.replaceAll('{' r'routeItemId' '}', routeItemId.toString()).replaceAll('{' r'routeMediaSourceId' '}', routeMediaSourceId.toString()).replaceAll('{' r'routeIndex' '}', routeIndex.toString()).replaceAll('{' r'routeFormat' '}', routeFormat.toString());
+    final _path =
+        r'/Videos/{routeItemId}/{routeMediaSourceId}/Subtitles/{routeIndex}/Stream.{routeFormat}'
+            .replaceAll(
+              '{'
+              r'routeItemId'
+              '}',
+              routeItemId.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'routeMediaSourceId'
+              '}',
+              routeMediaSourceId.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'routeIndex'
+              '}',
+              routeIndex.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'routeFormat'
+              '}',
+              routeFormat.toString(),
+            );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -452,9 +497,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -478,7 +522,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets an HLS subtitle playlist.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -494,7 +538,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getSubtitlePlaylist({ 
+  Future<Response<Uint8List>> getSubtitlePlaylist({
     required String itemId,
     required int index,
     required String mediaSourceId,
@@ -506,13 +550,30 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Videos/{itemId}/{mediaSourceId}/Subtitles/{index}/subtitles.m3u8'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'index' '}', index.toString()).replaceAll('{' r'mediaSourceId' '}', mediaSourceId.toString());
+    final _path =
+        r'/Videos/{itemId}/{mediaSourceId}/Subtitles/{index}/subtitles.m3u8'
+            .replaceAll(
+              '{'
+              r'itemId'
+              '}',
+              itemId.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'index'
+              '}',
+              index.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'mediaSourceId'
+              '}',
+              mediaSourceId.toString(),
+            );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -527,9 +588,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      r'segmentLength': segmentLength,
-    };
+    final _queryParameters = <String, dynamic>{r'segmentLength': segmentLength};
 
     final _response = await _dio.request<Object>(
       _path,
@@ -543,9 +602,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -569,7 +627,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets subtitles in a specified format.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [routeItemId] - The (route) item id.
@@ -594,7 +652,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getSubtitleWithTicks({ 
+  Future<Response<Uint8List>> getSubtitleWithTicks({
     required String routeItemId,
     required String routeMediaSourceId,
     required int routeIndex,
@@ -615,17 +673,43 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Videos/{routeItemId}/{routeMediaSourceId}/Subtitles/{routeIndex}/{routeStartPositionTicks}/Stream.{routeFormat}'.replaceAll('{' r'routeItemId' '}', routeItemId.toString()).replaceAll('{' r'routeMediaSourceId' '}', routeMediaSourceId.toString()).replaceAll('{' r'routeIndex' '}', routeIndex.toString()).replaceAll('{' r'routeStartPositionTicks' '}', routeStartPositionTicks.toString()).replaceAll('{' r'routeFormat' '}', routeFormat.toString());
+    final _path =
+        r'/Videos/{routeItemId}/{routeMediaSourceId}/Subtitles/{routeIndex}/{routeStartPositionTicks}/Stream.{routeFormat}'
+            .replaceAll(
+              '{'
+              r'routeItemId'
+              '}',
+              routeItemId.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'routeMediaSourceId'
+              '}',
+              routeMediaSourceId.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'routeIndex'
+              '}',
+              routeIndex.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'routeStartPositionTicks'
+              '}',
+              routeStartPositionTicks.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'routeFormat'
+              '}',
+              routeFormat.toString(),
+            );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -652,9 +736,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -678,7 +761,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Search remote subtitles.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -693,7 +776,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [List<RemoteSubtitleInfo>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<RemoteSubtitleInfo>>> searchRemoteSubtitles({ 
+  Future<Response<List<RemoteSubtitleInfo>>> searchRemoteSubtitles({
     required String itemId,
     required String language,
     bool? isPerfectMatch,
@@ -704,12 +787,22 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/RemoteSearch/Subtitles/{language}'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'language' '}', language.toString());
+    final _path = r'/Items/{itemId}/RemoteSearch/Subtitles/{language}'
+        .replaceAll(
+          '{'
+          r'itemId'
+          '}',
+          itemId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'language'
+          '}',
+          language.toString(),
+        );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -740,9 +833,14 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     List<RemoteSubtitleInfo>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<RemoteSubtitleInfo>, RemoteSubtitleInfo>(rawData, 'List<RemoteSubtitleInfo>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<RemoteSubtitleInfo>, RemoteSubtitleInfo>(
+              rawData,
+              'List<RemoteSubtitleInfo>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -766,7 +864,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSubtitleInfo>, R
   }
 
   /// Upload an external subtitle file.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item the subtitle belongs to.
@@ -780,7 +878,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSubtitleInfo>, R
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> uploadSubtitle({ 
+  Future<Response<void>> uploadSubtitle({
     required String itemId,
     required UploadSubtitleDto uploadSubtitleDto,
     CancelToken? cancelToken,
@@ -790,12 +888,15 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSubtitleInfo>, R
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Videos/{itemId}/Subtitles'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Videos/{itemId}/Subtitles'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -814,13 +915,10 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSubtitleInfo>, R
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(uploadSubtitleDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(uploadSubtitleDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -838,5 +936,4 @@ _bodyData=jsonEncode(uploadSubtitleDto);
 
     return _response;
   }
-
 }

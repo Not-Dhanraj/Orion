@@ -6,20 +6,17 @@ import 'dart:async';
 
 // ignore: unused_import
 import 'dart:convert';
-import 'package:jelly_api/lib/deserialize.dart';
 import 'package:dio/dio.dart';
 
 import 'dart:typed_data';
-import 'package:jelly_api/lib/model/problem_details.dart';
 
 class HlsSegmentApi {
-
   final Dio _dio;
 
   const HlsSegmentApi(this._dio);
 
   /// Gets the specified audio segment for an audio item.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -33,7 +30,7 @@ class HlsSegmentApi {
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getHlsAudioSegmentLegacyAac({ 
+  Future<Response<Uint8List>> getHlsAudioSegmentLegacyAac({
     required String itemId,
     required String segmentId,
     CancelToken? cancelToken,
@@ -43,17 +40,24 @@ class HlsSegmentApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Audio/{itemId}/hls/{segmentId}/stream.aac'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'segmentId' '}', segmentId.toString());
+    final _path = r'/Audio/{itemId}/hls/{segmentId}/stream.aac'
+        .replaceAll(
+          '{'
+          r'itemId'
+          '}',
+          itemId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'segmentId'
+          '}',
+          segmentId.toString(),
+        );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -68,9 +72,8 @@ class HlsSegmentApi {
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -94,7 +97,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets the specified audio segment for an audio item.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -108,7 +111,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getHlsAudioSegmentLegacyMp3({ 
+  Future<Response<Uint8List>> getHlsAudioSegmentLegacyMp3({
     required String itemId,
     required String segmentId,
     CancelToken? cancelToken,
@@ -118,17 +121,24 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Audio/{itemId}/hls/{segmentId}/stream.mp3'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'segmentId' '}', segmentId.toString());
+    final _path = r'/Audio/{itemId}/hls/{segmentId}/stream.mp3'
+        .replaceAll(
+          '{'
+          r'itemId'
+          '}',
+          itemId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'segmentId'
+          '}',
+          segmentId.toString(),
+        );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -143,9 +153,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -169,7 +178,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets a hls video playlist.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The video id.
@@ -183,7 +192,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getHlsPlaylistLegacy({ 
+  Future<Response<Uint8List>> getHlsPlaylistLegacy({
     required String itemId,
     required String playlistId,
     CancelToken? cancelToken,
@@ -193,13 +202,23 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Videos/{itemId}/hls/{playlistId}/stream.m3u8'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'playlistId' '}', playlistId.toString());
+    final _path = r'/Videos/{itemId}/hls/{playlistId}/stream.m3u8'
+        .replaceAll(
+          '{'
+          r'itemId'
+          '}',
+          itemId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'playlistId'
+          '}',
+          playlistId.toString(),
+        );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -225,9 +244,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -251,7 +269,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets a hls video segment.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -267,7 +285,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getHlsVideoSegmentLegacy({ 
+  Future<Response<Uint8List>> getHlsVideoSegmentLegacy({
     required String itemId,
     required String playlistId,
     required String segmentId,
@@ -279,17 +297,37 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Videos/{itemId}/hls/{playlistId}/{segmentId}.{segmentContainer}'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'playlistId' '}', playlistId.toString()).replaceAll('{' r'segmentId' '}', segmentId.toString()).replaceAll('{' r'segmentContainer' '}', segmentContainer.toString());
+    final _path =
+        r'/Videos/{itemId}/hls/{playlistId}/{segmentId}.{segmentContainer}'
+            .replaceAll(
+              '{'
+              r'itemId'
+              '}',
+              itemId.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'playlistId'
+              '}',
+              playlistId.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'segmentId'
+              '}',
+              segmentId.toString(),
+            )
+            .replaceAll(
+              '{'
+              r'segmentContainer'
+              '}',
+              segmentContainer.toString(),
+            );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -304,9 +342,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -330,7 +367,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Stops an active encoding.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [deviceId] - The device id of the client requesting. Used to stop encoding processes when needed.
@@ -344,7 +381,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> stopEncodingProcess({ 
+  Future<Response<void>> stopEncodingProcess({
     required String deviceId,
     required String playSessionId,
     CancelToken? cancelToken,
@@ -357,9 +394,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     final _path = r'/Videos/ActiveEncodings';
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -390,5 +425,4 @@ _responseData = rawData == null ? null : rawData as Uint8List;
 
     return _response;
   }
-
 }

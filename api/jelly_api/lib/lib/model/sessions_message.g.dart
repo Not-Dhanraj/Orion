@@ -98,7 +98,7 @@ SessionsMessage _$SessionsMessageFromJson(Map<String, dynamic> json) =>
             'MessageType',
             (v) =>
                 $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-                SessionMessageType.sessions,
+                'Sessions',
           ),
         );
         return val;

@@ -13,18 +13,16 @@ import 'package:jelly_api/lib/model/play_method.dart';
 import 'package:jelly_api/lib/model/playback_progress_info.dart';
 import 'package:jelly_api/lib/model/playback_start_info.dart';
 import 'package:jelly_api/lib/model/playback_stop_info.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 import 'package:jelly_api/lib/model/repeat_mode.dart';
 import 'package:jelly_api/lib/model/user_item_data_dto.dart';
 
 class PlaystateApi {
-
   final Dio _dio;
 
   const PlaystateApi(this._dio);
 
   /// Marks an item as played for user.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item id.
@@ -39,7 +37,7 @@ class PlaystateApi {
   ///
   /// Returns a [Future] containing a [Response] with a [UserItemDataDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<UserItemDataDto>> markPlayedItem({ 
+  Future<Response<UserItemDataDto>> markPlayedItem({
     required String itemId,
     String? userId,
     DateTime? datePlayed,
@@ -50,12 +48,15 @@ class PlaystateApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/UserPlayedItems/{itemId}'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/UserPlayedItems/{itemId}'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -87,9 +88,14 @@ class PlaystateApi {
     UserItemDataDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDataDto>(rawData, 'UserItemDataDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<UserItemDataDto, UserItemDataDto>(
+              rawData,
+              'UserItemDataDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -113,7 +119,7 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
   }
 
   /// Marks an item as unplayed for user.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item id.
@@ -127,7 +133,7 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
   ///
   /// Returns a [Future] containing a [Response] with a [UserItemDataDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<UserItemDataDto>> markUnplayedItem({ 
+  Future<Response<UserItemDataDto>> markUnplayedItem({
     required String itemId,
     String? userId,
     CancelToken? cancelToken,
@@ -137,12 +143,15 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/UserPlayedItems/{itemId}'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/UserPlayedItems/{itemId}'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -173,9 +182,14 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
     UserItemDataDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDataDto>(rawData, 'UserItemDataDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<UserItemDataDto, UserItemDataDto>(
+              rawData,
+              'UserItemDataDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -199,7 +213,7 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
   }
 
   /// Reports a session&#39;s playback progress.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item id.
@@ -224,7 +238,7 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
   @Deprecated('This operation has been deprecated')
-  Future<Response<void>> onPlaybackProgress({ 
+  Future<Response<void>> onPlaybackProgress({
     required String itemId,
     String? mediaSourceId,
     int? positionTicks,
@@ -244,12 +258,15 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/PlayingItems/{itemId}/Progress'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/PlayingItems/{itemId}/Progress'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -268,7 +285,8 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
       if (mediaSourceId != null) r'mediaSourceId': mediaSourceId,
       if (positionTicks != null) r'positionTicks': positionTicks,
       if (audioStreamIndex != null) r'audioStreamIndex': audioStreamIndex,
-      if (subtitleStreamIndex != null) r'subtitleStreamIndex': subtitleStreamIndex,
+      if (subtitleStreamIndex != null)
+        r'subtitleStreamIndex': subtitleStreamIndex,
       if (volumeLevel != null) r'volumeLevel': volumeLevel,
       if (playMethod != null) r'playMethod': playMethod,
       if (liveStreamId != null) r'liveStreamId': liveStreamId,
@@ -291,7 +309,7 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
   }
 
   /// Reports that a session has begun playing an item.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item id.
@@ -312,7 +330,7 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
   @Deprecated('This operation has been deprecated')
-  Future<Response<void>> onPlaybackStart({ 
+  Future<Response<void>> onPlaybackStart({
     required String itemId,
     String? mediaSourceId,
     int? audioStreamIndex,
@@ -328,12 +346,15 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/PlayingItems/{itemId}'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/PlayingItems/{itemId}'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -351,7 +372,8 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
     final _queryParameters = <String, dynamic>{
       if (mediaSourceId != null) r'mediaSourceId': mediaSourceId,
       if (audioStreamIndex != null) r'audioStreamIndex': audioStreamIndex,
-      if (subtitleStreamIndex != null) r'subtitleStreamIndex': subtitleStreamIndex,
+      if (subtitleStreamIndex != null)
+        r'subtitleStreamIndex': subtitleStreamIndex,
       if (playMethod != null) r'playMethod': playMethod,
       if (liveStreamId != null) r'liveStreamId': liveStreamId,
       if (playSessionId != null) r'playSessionId': playSessionId,
@@ -371,7 +393,7 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
   }
 
   /// Reports that a session has stopped playing an item.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item id.
@@ -390,7 +412,7 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
   @Deprecated('This operation has been deprecated')
-  Future<Response<void>> onPlaybackStopped({ 
+  Future<Response<void>> onPlaybackStopped({
     required String itemId,
     String? mediaSourceId,
     String? nextMediaType,
@@ -404,12 +426,15 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/PlayingItems/{itemId}'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/PlayingItems/{itemId}'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -445,7 +470,7 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
   }
 
   /// Pings a playback session.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [playSessionId] - Playback session id.
@@ -458,7 +483,7 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> pingPlaybackSession({ 
+  Future<Response<void>> pingPlaybackSession({
     required String playSessionId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -470,9 +495,7 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
     final _path = r'/Sessions/Playing/Ping';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -487,9 +510,7 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      r'playSessionId': playSessionId,
-    };
+    final _queryParameters = <String, dynamic>{r'playSessionId': playSessionId};
 
     final _response = await _dio.request<Object>(
       _path,
@@ -504,7 +525,7 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
   }
 
   /// Reports playback progress within a session.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [playbackProgressInfo] - The playback progress info.
@@ -517,7 +538,7 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> reportPlaybackProgress({ 
+  Future<Response<void>> reportPlaybackProgress({
     PlaybackProgressInfo? playbackProgressInfo,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -529,9 +550,7 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
     final _path = r'/Sessions/Playing/Progress';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -550,13 +569,10 @@ _responseData = rawData == null ? null : deserialize<UserItemDataDto, UserItemDa
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(playbackProgressInfo);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(playbackProgressInfo);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -576,7 +592,7 @@ _bodyData=jsonEncode(playbackProgressInfo);
   }
 
   /// Reports playback has started within a session.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [playbackStartInfo] - The playback start info.
@@ -589,7 +605,7 @@ _bodyData=jsonEncode(playbackProgressInfo);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> reportPlaybackStart({ 
+  Future<Response<void>> reportPlaybackStart({
     PlaybackStartInfo? playbackStartInfo,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -601,9 +617,7 @@ _bodyData=jsonEncode(playbackProgressInfo);
     final _path = r'/Sessions/Playing';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -622,13 +636,10 @@ _bodyData=jsonEncode(playbackProgressInfo);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(playbackStartInfo);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(playbackStartInfo);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -648,7 +659,7 @@ _bodyData=jsonEncode(playbackStartInfo);
   }
 
   /// Reports playback has stopped within a session.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [playbackStopInfo] - The playback stop info.
@@ -661,7 +672,7 @@ _bodyData=jsonEncode(playbackStartInfo);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> reportPlaybackStopped({ 
+  Future<Response<void>> reportPlaybackStopped({
     PlaybackStopInfo? playbackStopInfo,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -673,9 +684,7 @@ _bodyData=jsonEncode(playbackStartInfo);
     final _path = r'/Sessions/Playing/Stopped';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -694,13 +703,10 @@ _bodyData=jsonEncode(playbackStartInfo);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(playbackStopInfo);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(playbackStopInfo);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -718,5 +724,4 @@ _bodyData=jsonEncode(playbackStopInfo);
 
     return _response;
   }
-
 }

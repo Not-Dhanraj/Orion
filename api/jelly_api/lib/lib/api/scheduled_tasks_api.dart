@@ -9,18 +9,16 @@ import 'dart:convert';
 import 'package:jelly_api/lib/deserialize.dart';
 import 'package:dio/dio.dart';
 
-import 'package:jelly_api/lib/model/problem_details.dart';
 import 'package:jelly_api/lib/model/task_info.dart';
 import 'package:jelly_api/lib/model/task_trigger_info.dart';
 
 class ScheduledTasksApi {
-
   final Dio _dio;
 
   const ScheduledTasksApi(this._dio);
 
   /// Get task by id.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [taskId] - Task Id.
@@ -33,7 +31,7 @@ class ScheduledTasksApi {
   ///
   /// Returns a [Future] containing a [Response] with a [TaskInfo] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<TaskInfo>> getTask({ 
+  Future<Response<TaskInfo>> getTask({
     required String taskId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -42,12 +40,15 @@ class ScheduledTasksApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/ScheduledTasks/{taskId}'.replaceAll('{' r'taskId' '}', taskId.toString());
+    final _path = r'/ScheduledTasks/{taskId}'.replaceAll(
+      '{'
+      r'taskId'
+      '}',
+      taskId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -73,9 +74,14 @@ class ScheduledTasksApi {
     TaskInfo? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<TaskInfo, TaskInfo>(rawData, 'TaskInfo', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<TaskInfo, TaskInfo>(
+              rawData,
+              'TaskInfo',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -99,7 +105,7 @@ _responseData = rawData == null ? null : deserialize<TaskInfo, TaskInfo>(rawData
   }
 
   /// Get tasks.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [isHidden] - Optional filter tasks that are hidden, or not.
@@ -113,7 +119,7 @@ _responseData = rawData == null ? null : deserialize<TaskInfo, TaskInfo>(rawData
   ///
   /// Returns a [Future] containing a [Response] with a [List<TaskInfo>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<TaskInfo>>> getTasks({ 
+  Future<Response<List<TaskInfo>>> getTasks({
     bool? isHidden,
     bool? isEnabled,
     CancelToken? cancelToken,
@@ -126,9 +132,7 @@ _responseData = rawData == null ? null : deserialize<TaskInfo, TaskInfo>(rawData
     final _path = r'/ScheduledTasks';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -160,9 +164,14 @@ _responseData = rawData == null ? null : deserialize<TaskInfo, TaskInfo>(rawData
     List<TaskInfo>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<TaskInfo>, TaskInfo>(rawData, 'List<TaskInfo>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<TaskInfo>, TaskInfo>(
+              rawData,
+              'List<TaskInfo>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -186,7 +195,7 @@ _responseData = rawData == null ? null : deserialize<List<TaskInfo>, TaskInfo>(r
   }
 
   /// Start specified task.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [taskId] - Task Id.
@@ -199,7 +208,7 @@ _responseData = rawData == null ? null : deserialize<List<TaskInfo>, TaskInfo>(r
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> startTask({ 
+  Future<Response<void>> startTask({
     required String taskId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -208,12 +217,15 @@ _responseData = rawData == null ? null : deserialize<List<TaskInfo>, TaskInfo>(r
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/ScheduledTasks/Running/{taskId}'.replaceAll('{' r'taskId' '}', taskId.toString());
+    final _path = r'/ScheduledTasks/Running/{taskId}'.replaceAll(
+      '{'
+      r'taskId'
+      '}',
+      taskId.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -240,7 +252,7 @@ _responseData = rawData == null ? null : deserialize<List<TaskInfo>, TaskInfo>(r
   }
 
   /// Stop specified task.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [taskId] - Task Id.
@@ -253,7 +265,7 @@ _responseData = rawData == null ? null : deserialize<List<TaskInfo>, TaskInfo>(r
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> stopTask({ 
+  Future<Response<void>> stopTask({
     required String taskId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -262,12 +274,15 @@ _responseData = rawData == null ? null : deserialize<List<TaskInfo>, TaskInfo>(r
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/ScheduledTasks/Running/{taskId}'.replaceAll('{' r'taskId' '}', taskId.toString());
+    final _path = r'/ScheduledTasks/Running/{taskId}'.replaceAll(
+      '{'
+      r'taskId'
+      '}',
+      taskId.toString(),
+    );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -294,7 +309,7 @@ _responseData = rawData == null ? null : deserialize<List<TaskInfo>, TaskInfo>(r
   }
 
   /// Update specified task triggers.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [taskId] - Task Id.
@@ -308,7 +323,7 @@ _responseData = rawData == null ? null : deserialize<List<TaskInfo>, TaskInfo>(r
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> updateTask({ 
+  Future<Response<void>> updateTask({
     required String taskId,
     required List<TaskTriggerInfo> taskTriggerInfo,
     CancelToken? cancelToken,
@@ -318,12 +333,15 @@ _responseData = rawData == null ? null : deserialize<List<TaskInfo>, TaskInfo>(r
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/ScheduledTasks/{taskId}/Triggers'.replaceAll('{' r'taskId' '}', taskId.toString());
+    final _path = r'/ScheduledTasks/{taskId}/Triggers'.replaceAll(
+      '{'
+      r'taskId'
+      '}',
+      taskId.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -342,13 +360,10 @@ _responseData = rawData == null ? null : deserialize<List<TaskInfo>, TaskInfo>(r
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(taskTriggerInfo);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(taskTriggerInfo);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -366,5 +381,4 @@ _bodyData=jsonEncode(taskTriggerInfo);
 
     return _response;
   }
-
 }

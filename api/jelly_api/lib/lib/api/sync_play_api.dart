@@ -19,7 +19,6 @@ import 'package:jelly_api/lib/model/next_item_request_dto.dart';
 import 'package:jelly_api/lib/model/ping_request_dto.dart';
 import 'package:jelly_api/lib/model/play_request_dto.dart';
 import 'package:jelly_api/lib/model/previous_item_request_dto.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 import 'package:jelly_api/lib/model/queue_request_dto.dart';
 import 'package:jelly_api/lib/model/ready_request_dto.dart';
 import 'package:jelly_api/lib/model/remove_from_playlist_request_dto.dart';
@@ -29,13 +28,12 @@ import 'package:jelly_api/lib/model/set_repeat_mode_request_dto.dart';
 import 'package:jelly_api/lib/model/set_shuffle_mode_request_dto.dart';
 
 class SyncPlayApi {
-
   final Dio _dio;
 
   const SyncPlayApi(this._dio);
 
   /// Notify SyncPlay group that member is buffering.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [bufferRequestDto] - The player status.
@@ -48,7 +46,7 @@ class SyncPlayApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> syncPlayBuffering({ 
+  Future<Response<void>> syncPlayBuffering({
     required BufferRequestDto bufferRequestDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -60,9 +58,7 @@ class SyncPlayApi {
     final _path = r'/SyncPlay/Buffering';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -81,13 +77,10 @@ class SyncPlayApi {
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(bufferRequestDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(bufferRequestDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -107,7 +100,7 @@ _bodyData=jsonEncode(bufferRequestDto);
   }
 
   /// Create a new SyncPlay group.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [newGroupRequestDto] - The settings of the new group.
@@ -120,7 +113,7 @@ _bodyData=jsonEncode(bufferRequestDto);
   ///
   /// Returns a [Future] containing a [Response] with a [GroupInfoDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GroupInfoDto>> syncPlayCreateGroup({ 
+  Future<Response<GroupInfoDto>> syncPlayCreateGroup({
     required NewGroupRequestDto newGroupRequestDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -132,9 +125,7 @@ _bodyData=jsonEncode(bufferRequestDto);
     final _path = r'/SyncPlay/New';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -153,13 +144,10 @@ _bodyData=jsonEncode(bufferRequestDto);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(newGroupRequestDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(newGroupRequestDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -178,9 +166,14 @@ _bodyData=jsonEncode(newGroupRequestDto);
     GroupInfoDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<GroupInfoDto, GroupInfoDto>(rawData, 'GroupInfoDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<GroupInfoDto, GroupInfoDto>(
+              rawData,
+              'GroupInfoDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -204,7 +197,7 @@ _responseData = rawData == null ? null : deserialize<GroupInfoDto, GroupInfoDto>
   }
 
   /// Gets a SyncPlay group by id.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [id] - The id of the group.
@@ -217,7 +210,7 @@ _responseData = rawData == null ? null : deserialize<GroupInfoDto, GroupInfoDto>
   ///
   /// Returns a [Future] containing a [Response] with a [GroupInfoDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GroupInfoDto>> syncPlayGetGroup({ 
+  Future<Response<GroupInfoDto>> syncPlayGetGroup({
     required String id,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -226,12 +219,15 @@ _responseData = rawData == null ? null : deserialize<GroupInfoDto, GroupInfoDto>
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/SyncPlay/{id}'.replaceAll('{' r'id' '}', id.toString());
+    final _path = r'/SyncPlay/{id}'.replaceAll(
+      '{'
+      r'id'
+      '}',
+      id.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -257,9 +253,14 @@ _responseData = rawData == null ? null : deserialize<GroupInfoDto, GroupInfoDto>
     GroupInfoDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<GroupInfoDto, GroupInfoDto>(rawData, 'GroupInfoDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<GroupInfoDto, GroupInfoDto>(
+              rawData,
+              'GroupInfoDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -283,7 +284,7 @@ _responseData = rawData == null ? null : deserialize<GroupInfoDto, GroupInfoDto>
   }
 
   /// Gets all SyncPlay groups.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -295,7 +296,7 @@ _responseData = rawData == null ? null : deserialize<GroupInfoDto, GroupInfoDto>
   ///
   /// Returns a [Future] containing a [Response] with a [List<GroupInfoDto>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<GroupInfoDto>>> syncPlayGetGroups({ 
+  Future<Response<List<GroupInfoDto>>> syncPlayGetGroups({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -306,9 +307,7 @@ _responseData = rawData == null ? null : deserialize<GroupInfoDto, GroupInfoDto>
     final _path = r'/SyncPlay/List';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -334,9 +333,14 @@ _responseData = rawData == null ? null : deserialize<GroupInfoDto, GroupInfoDto>
     List<GroupInfoDto>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<GroupInfoDto>, GroupInfoDto>(rawData, 'List<GroupInfoDto>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<GroupInfoDto>, GroupInfoDto>(
+              rawData,
+              'List<GroupInfoDto>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -360,7 +364,7 @@ _responseData = rawData == null ? null : deserialize<List<GroupInfoDto>, GroupIn
   }
 
   /// Join an existing SyncPlay group.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [joinGroupRequestDto] - The group to join.
@@ -373,7 +377,7 @@ _responseData = rawData == null ? null : deserialize<List<GroupInfoDto>, GroupIn
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> syncPlayJoinGroup({ 
+  Future<Response<void>> syncPlayJoinGroup({
     required JoinGroupRequestDto joinGroupRequestDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -385,9 +389,7 @@ _responseData = rawData == null ? null : deserialize<List<GroupInfoDto>, GroupIn
     final _path = r'/SyncPlay/Join';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -406,13 +408,10 @@ _responseData = rawData == null ? null : deserialize<List<GroupInfoDto>, GroupIn
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(joinGroupRequestDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(joinGroupRequestDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -432,7 +431,7 @@ _bodyData=jsonEncode(joinGroupRequestDto);
   }
 
   /// Leave the joined SyncPlay group.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -444,7 +443,7 @@ _bodyData=jsonEncode(joinGroupRequestDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> syncPlayLeaveGroup({ 
+  Future<Response<void>> syncPlayLeaveGroup({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -455,9 +454,7 @@ _bodyData=jsonEncode(joinGroupRequestDto);
     final _path = r'/SyncPlay/Leave';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -484,7 +481,7 @@ _bodyData=jsonEncode(joinGroupRequestDto);
   }
 
   /// Request to move an item in the playlist in SyncPlay group.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [movePlaylistItemRequestDto] - The new position for the item.
@@ -497,7 +494,7 @@ _bodyData=jsonEncode(joinGroupRequestDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> syncPlayMovePlaylistItem({ 
+  Future<Response<void>> syncPlayMovePlaylistItem({
     required MovePlaylistItemRequestDto movePlaylistItemRequestDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -509,9 +506,7 @@ _bodyData=jsonEncode(joinGroupRequestDto);
     final _path = r'/SyncPlay/MovePlaylistItem';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -530,13 +525,10 @@ _bodyData=jsonEncode(joinGroupRequestDto);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(movePlaylistItemRequestDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(movePlaylistItemRequestDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -556,7 +548,7 @@ _bodyData=jsonEncode(movePlaylistItemRequestDto);
   }
 
   /// Request next item in SyncPlay group.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [nextItemRequestDto] - The current item information.
@@ -569,7 +561,7 @@ _bodyData=jsonEncode(movePlaylistItemRequestDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> syncPlayNextItem({ 
+  Future<Response<void>> syncPlayNextItem({
     required NextItemRequestDto nextItemRequestDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -581,9 +573,7 @@ _bodyData=jsonEncode(movePlaylistItemRequestDto);
     final _path = r'/SyncPlay/NextItem';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -602,13 +592,10 @@ _bodyData=jsonEncode(movePlaylistItemRequestDto);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(nextItemRequestDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(nextItemRequestDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -628,7 +615,7 @@ _bodyData=jsonEncode(nextItemRequestDto);
   }
 
   /// Request pause in SyncPlay group.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -640,7 +627,7 @@ _bodyData=jsonEncode(nextItemRequestDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> syncPlayPause({ 
+  Future<Response<void>> syncPlayPause({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -651,9 +638,7 @@ _bodyData=jsonEncode(nextItemRequestDto);
     final _path = r'/SyncPlay/Pause';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -680,7 +665,7 @@ _bodyData=jsonEncode(nextItemRequestDto);
   }
 
   /// Update session ping.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [pingRequestDto] - The new ping.
@@ -693,7 +678,7 @@ _bodyData=jsonEncode(nextItemRequestDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> syncPlayPing({ 
+  Future<Response<void>> syncPlayPing({
     required PingRequestDto pingRequestDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -705,9 +690,7 @@ _bodyData=jsonEncode(nextItemRequestDto);
     final _path = r'/SyncPlay/Ping';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -726,13 +709,10 @@ _bodyData=jsonEncode(nextItemRequestDto);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(pingRequestDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(pingRequestDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -752,7 +732,7 @@ _bodyData=jsonEncode(pingRequestDto);
   }
 
   /// Request previous item in SyncPlay group.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [previousItemRequestDto] - The current item information.
@@ -765,7 +745,7 @@ _bodyData=jsonEncode(pingRequestDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> syncPlayPreviousItem({ 
+  Future<Response<void>> syncPlayPreviousItem({
     required PreviousItemRequestDto previousItemRequestDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -777,9 +757,7 @@ _bodyData=jsonEncode(pingRequestDto);
     final _path = r'/SyncPlay/PreviousItem';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -798,13 +776,10 @@ _bodyData=jsonEncode(pingRequestDto);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(previousItemRequestDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(previousItemRequestDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -824,7 +799,7 @@ _bodyData=jsonEncode(previousItemRequestDto);
   }
 
   /// Request to queue items to the playlist of a SyncPlay group.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [queueRequestDto] - The items to add.
@@ -837,7 +812,7 @@ _bodyData=jsonEncode(previousItemRequestDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> syncPlayQueue({ 
+  Future<Response<void>> syncPlayQueue({
     required QueueRequestDto queueRequestDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -849,9 +824,7 @@ _bodyData=jsonEncode(previousItemRequestDto);
     final _path = r'/SyncPlay/Queue';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -870,13 +843,10 @@ _bodyData=jsonEncode(previousItemRequestDto);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(queueRequestDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(queueRequestDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -896,7 +866,7 @@ _bodyData=jsonEncode(queueRequestDto);
   }
 
   /// Notify SyncPlay group that member is ready for playback.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [readyRequestDto] - The player status.
@@ -909,7 +879,7 @@ _bodyData=jsonEncode(queueRequestDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> syncPlayReady({ 
+  Future<Response<void>> syncPlayReady({
     required ReadyRequestDto readyRequestDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -921,9 +891,7 @@ _bodyData=jsonEncode(queueRequestDto);
     final _path = r'/SyncPlay/Ready';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -942,13 +910,10 @@ _bodyData=jsonEncode(queueRequestDto);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(readyRequestDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(readyRequestDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -968,7 +933,7 @@ _bodyData=jsonEncode(readyRequestDto);
   }
 
   /// Request to remove items from the playlist in SyncPlay group.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [removeFromPlaylistRequestDto] - The items to remove.
@@ -981,7 +946,7 @@ _bodyData=jsonEncode(readyRequestDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> syncPlayRemoveFromPlaylist({ 
+  Future<Response<void>> syncPlayRemoveFromPlaylist({
     required RemoveFromPlaylistRequestDto removeFromPlaylistRequestDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -993,9 +958,7 @@ _bodyData=jsonEncode(readyRequestDto);
     final _path = r'/SyncPlay/RemoveFromPlaylist';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1014,13 +977,10 @@ _bodyData=jsonEncode(readyRequestDto);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(removeFromPlaylistRequestDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(removeFromPlaylistRequestDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -1040,7 +1000,7 @@ _bodyData=jsonEncode(removeFromPlaylistRequestDto);
   }
 
   /// Request seek in SyncPlay group.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [seekRequestDto] - The new playback position.
@@ -1053,7 +1013,7 @@ _bodyData=jsonEncode(removeFromPlaylistRequestDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> syncPlaySeek({ 
+  Future<Response<void>> syncPlaySeek({
     required SeekRequestDto seekRequestDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1065,9 +1025,7 @@ _bodyData=jsonEncode(removeFromPlaylistRequestDto);
     final _path = r'/SyncPlay/Seek';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1086,13 +1044,10 @@ _bodyData=jsonEncode(removeFromPlaylistRequestDto);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(seekRequestDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(seekRequestDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -1112,7 +1067,7 @@ _bodyData=jsonEncode(seekRequestDto);
   }
 
   /// Request SyncPlay group to ignore member during group-wait.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [ignoreWaitRequestDto] - The settings to set.
@@ -1125,7 +1080,7 @@ _bodyData=jsonEncode(seekRequestDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> syncPlaySetIgnoreWait({ 
+  Future<Response<void>> syncPlaySetIgnoreWait({
     required IgnoreWaitRequestDto ignoreWaitRequestDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1137,9 +1092,7 @@ _bodyData=jsonEncode(seekRequestDto);
     final _path = r'/SyncPlay/SetIgnoreWait';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1158,13 +1111,10 @@ _bodyData=jsonEncode(seekRequestDto);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(ignoreWaitRequestDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(ignoreWaitRequestDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -1184,7 +1134,7 @@ _bodyData=jsonEncode(ignoreWaitRequestDto);
   }
 
   /// Request to set new playlist in SyncPlay group.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [playRequestDto] - The new playlist to play in the group.
@@ -1197,7 +1147,7 @@ _bodyData=jsonEncode(ignoreWaitRequestDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> syncPlaySetNewQueue({ 
+  Future<Response<void>> syncPlaySetNewQueue({
     required PlayRequestDto playRequestDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1209,9 +1159,7 @@ _bodyData=jsonEncode(ignoreWaitRequestDto);
     final _path = r'/SyncPlay/SetNewQueue';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1230,13 +1178,10 @@ _bodyData=jsonEncode(ignoreWaitRequestDto);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(playRequestDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(playRequestDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -1256,7 +1201,7 @@ _bodyData=jsonEncode(playRequestDto);
   }
 
   /// Request to change playlist item in SyncPlay group.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [setPlaylistItemRequestDto] - The new item to play.
@@ -1269,7 +1214,7 @@ _bodyData=jsonEncode(playRequestDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> syncPlaySetPlaylistItem({ 
+  Future<Response<void>> syncPlaySetPlaylistItem({
     required SetPlaylistItemRequestDto setPlaylistItemRequestDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1281,9 +1226,7 @@ _bodyData=jsonEncode(playRequestDto);
     final _path = r'/SyncPlay/SetPlaylistItem';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1302,13 +1245,10 @@ _bodyData=jsonEncode(playRequestDto);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(setPlaylistItemRequestDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(setPlaylistItemRequestDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -1328,7 +1268,7 @@ _bodyData=jsonEncode(setPlaylistItemRequestDto);
   }
 
   /// Request to set repeat mode in SyncPlay group.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [setRepeatModeRequestDto] - The new repeat mode.
@@ -1341,7 +1281,7 @@ _bodyData=jsonEncode(setPlaylistItemRequestDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> syncPlaySetRepeatMode({ 
+  Future<Response<void>> syncPlaySetRepeatMode({
     required SetRepeatModeRequestDto setRepeatModeRequestDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1353,9 +1293,7 @@ _bodyData=jsonEncode(setPlaylistItemRequestDto);
     final _path = r'/SyncPlay/SetRepeatMode';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1374,13 +1312,10 @@ _bodyData=jsonEncode(setPlaylistItemRequestDto);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(setRepeatModeRequestDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(setRepeatModeRequestDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -1400,7 +1335,7 @@ _bodyData=jsonEncode(setRepeatModeRequestDto);
   }
 
   /// Request to set shuffle mode in SyncPlay group.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [setShuffleModeRequestDto] - The new shuffle mode.
@@ -1413,7 +1348,7 @@ _bodyData=jsonEncode(setRepeatModeRequestDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> syncPlaySetShuffleMode({ 
+  Future<Response<void>> syncPlaySetShuffleMode({
     required SetShuffleModeRequestDto setShuffleModeRequestDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1425,9 +1360,7 @@ _bodyData=jsonEncode(setRepeatModeRequestDto);
     final _path = r'/SyncPlay/SetShuffleMode';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1446,13 +1379,10 @@ _bodyData=jsonEncode(setRepeatModeRequestDto);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(setShuffleModeRequestDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(setShuffleModeRequestDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -1472,7 +1402,7 @@ _bodyData=jsonEncode(setShuffleModeRequestDto);
   }
 
   /// Request stop in SyncPlay group.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -1484,7 +1414,7 @@ _bodyData=jsonEncode(setShuffleModeRequestDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> syncPlayStop({ 
+  Future<Response<void>> syncPlayStop({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -1495,9 +1425,7 @@ _bodyData=jsonEncode(setShuffleModeRequestDto);
     final _path = r'/SyncPlay/Stop';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1524,7 +1452,7 @@ _bodyData=jsonEncode(setShuffleModeRequestDto);
   }
 
   /// Request unpause in SyncPlay group.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -1536,7 +1464,7 @@ _bodyData=jsonEncode(setShuffleModeRequestDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> syncPlayUnpause({ 
+  Future<Response<void>> syncPlayUnpause({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -1547,9 +1475,7 @@ _bodyData=jsonEncode(setShuffleModeRequestDto);
     final _path = r'/SyncPlay/Unpause';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1574,5 +1500,4 @@ _bodyData=jsonEncode(setShuffleModeRequestDto);
 
     return _response;
   }
-
 }

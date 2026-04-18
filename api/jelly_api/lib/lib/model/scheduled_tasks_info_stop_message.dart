@@ -9,6 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'scheduled_tasks_info_stop_message.g.dart';
 
+
 @CopyWith()
 @JsonSerializable(
   checked: true,
@@ -19,29 +20,34 @@ part 'scheduled_tasks_info_stop_message.g.dart';
 class ScheduledTasksInfoStopMessage {
   /// Returns a new [ScheduledTasksInfoStopMessage] instance.
   ScheduledTasksInfoStopMessage({
-    this.messageType = SessionMessageType.scheduledTasksInfoStop,
+
+     this.messageType = SessionMessageType.scheduledTasksInfoStop,
   });
 
-  /// The different kinds of messages that are used in the WebSocket api.
+      /// The different kinds of messages that are used in the WebSocket api.
   @JsonKey(
     defaultValue: SessionMessageType.scheduledTasksInfoStop,
     name: r'MessageType',
     required: false,
     includeIfNull: false,
   )
+
+
   final SessionMessageType? messageType;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ScheduledTasksInfoStopMessage &&
-          other.messageType == messageType;
 
-  @override
-  int get hashCode => messageType.hashCode;
 
-  factory ScheduledTasksInfoStopMessage.fromJson(Map<String, dynamic> json) =>
-      _$ScheduledTasksInfoStopMessageFromJson(json);
+
+
+    @override
+    bool operator ==(Object other) => identical(this, other) || other is ScheduledTasksInfoStopMessage &&
+      other.messageType == messageType;
+
+    @override
+    int get hashCode =>
+        messageType.hashCode;
+
+  factory ScheduledTasksInfoStopMessage.fromJson(Map<String, dynamic> json) => _$ScheduledTasksInfoStopMessageFromJson(json);
 
   Map<String, dynamic> toJson() => _$ScheduledTasksInfoStopMessageToJson(this);
 
@@ -49,4 +55,6 @@ class ScheduledTasksInfoStopMessage {
   String toString() {
     return toJson().toString();
   }
+
 }
+

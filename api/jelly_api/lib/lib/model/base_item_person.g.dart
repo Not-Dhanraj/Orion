@@ -130,8 +130,7 @@ BaseItemPerson _$BaseItemPersonFromJson(
       role: $checkedConvert('Role', (v) => v as String?),
       type: $checkedConvert(
         'Type',
-        (v) =>
-            $enumDecodeNullable(_$PersonKindEnumMap, v) ?? PersonKind.unknown,
+        (v) => $enumDecodeNullable(_$PersonKindEnumMap, v) ?? 'Unknown',
       ),
       primaryImageTag: $checkedConvert('PrimaryImageTag', (v) => v as String?),
       imageBlurHashes: $checkedConvert(

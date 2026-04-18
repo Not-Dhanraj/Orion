@@ -71,7 +71,7 @@ ScheduledTasksInfoStopMessage _$ScheduledTasksInfoStopMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            SessionMessageType.scheduledTasksInfoStop,
+            'ScheduledTasksInfoStop',
       ),
     );
     return val;

@@ -85,7 +85,7 @@ ServerShuttingDownMessage _$ServerShuttingDownMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            SessionMessageType.serverShuttingDown,
+            'ServerShuttingDown',
       ),
     );
     return val;

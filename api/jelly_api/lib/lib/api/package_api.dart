@@ -10,17 +10,15 @@ import 'package:jelly_api/lib/deserialize.dart';
 import 'package:dio/dio.dart';
 
 import 'package:jelly_api/lib/model/package_info.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 import 'package:jelly_api/lib/model/repository_info.dart';
 
 class PackageApi {
-
   final Dio _dio;
 
   const PackageApi(this._dio);
 
   /// Cancels a package installation.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [packageId] - Installation Id.
@@ -33,7 +31,7 @@ class PackageApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> cancelPackageInstallation({ 
+  Future<Response<void>> cancelPackageInstallation({
     required String packageId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -42,12 +40,15 @@ class PackageApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Packages/Installing/{packageId}'.replaceAll('{' r'packageId' '}', packageId.toString());
+    final _path = r'/Packages/Installing/{packageId}'.replaceAll(
+      '{'
+      r'packageId'
+      '}',
+      packageId.toString(),
+    );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -74,7 +75,7 @@ class PackageApi {
   }
 
   /// Gets a package by name or assembly GUID.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - The name of the package.
@@ -88,7 +89,7 @@ class PackageApi {
   ///
   /// Returns a [Future] containing a [Response] with a [PackageInfo] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<PackageInfo>> getPackageInfo({ 
+  Future<Response<PackageInfo>> getPackageInfo({
     required String name,
     String? assemblyGuid,
     CancelToken? cancelToken,
@@ -98,12 +99,15 @@ class PackageApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Packages/{name}'.replaceAll('{' r'name' '}', name.toString());
+    final _path = r'/Packages/{name}'.replaceAll(
+      '{'
+      r'name'
+      '}',
+      name.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -134,9 +138,14 @@ class PackageApi {
     PackageInfo? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<PackageInfo, PackageInfo>(rawData, 'PackageInfo', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<PackageInfo, PackageInfo>(
+              rawData,
+              'PackageInfo',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -160,7 +169,7 @@ _responseData = rawData == null ? null : deserialize<PackageInfo, PackageInfo>(r
   }
 
   /// Gets available packages.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -172,7 +181,7 @@ _responseData = rawData == null ? null : deserialize<PackageInfo, PackageInfo>(r
   ///
   /// Returns a [Future] containing a [Response] with a [List<PackageInfo>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<PackageInfo>>> getPackages({ 
+  Future<Response<List<PackageInfo>>> getPackages({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -183,9 +192,7 @@ _responseData = rawData == null ? null : deserialize<PackageInfo, PackageInfo>(r
     final _path = r'/Packages';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -211,9 +218,14 @@ _responseData = rawData == null ? null : deserialize<PackageInfo, PackageInfo>(r
     List<PackageInfo>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<PackageInfo>, PackageInfo>(rawData, 'List<PackageInfo>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<PackageInfo>, PackageInfo>(
+              rawData,
+              'List<PackageInfo>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -237,7 +249,7 @@ _responseData = rawData == null ? null : deserialize<List<PackageInfo>, PackageI
   }
 
   /// Gets all package repositories.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -249,7 +261,7 @@ _responseData = rawData == null ? null : deserialize<List<PackageInfo>, PackageI
   ///
   /// Returns a [Future] containing a [Response] with a [List<RepositoryInfo>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<RepositoryInfo>>> getRepositories({ 
+  Future<Response<List<RepositoryInfo>>> getRepositories({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -260,9 +272,7 @@ _responseData = rawData == null ? null : deserialize<List<PackageInfo>, PackageI
     final _path = r'/Repositories';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -288,9 +298,14 @@ _responseData = rawData == null ? null : deserialize<List<PackageInfo>, PackageI
     List<RepositoryInfo>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<RepositoryInfo>, RepositoryInfo>(rawData, 'List<RepositoryInfo>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<RepositoryInfo>, RepositoryInfo>(
+              rawData,
+              'List<RepositoryInfo>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -314,7 +329,7 @@ _responseData = rawData == null ? null : deserialize<List<RepositoryInfo>, Repos
   }
 
   /// Installs a package.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - Package name.
@@ -330,7 +345,7 @@ _responseData = rawData == null ? null : deserialize<List<RepositoryInfo>, Repos
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> installPackage({ 
+  Future<Response<void>> installPackage({
     required String name,
     String? assemblyGuid,
     String? version,
@@ -342,12 +357,15 @@ _responseData = rawData == null ? null : deserialize<List<RepositoryInfo>, Repos
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Packages/Installed/{name}'.replaceAll('{' r'name' '}', name.toString());
+    final _path = r'/Packages/Installed/{name}'.replaceAll(
+      '{'
+      r'name'
+      '}',
+      name.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -381,7 +399,7 @@ _responseData = rawData == null ? null : deserialize<List<RepositoryInfo>, Repos
   }
 
   /// Sets the enabled and existing package repositories.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [repositoryInfo] - The list of package repositories.
@@ -394,7 +412,7 @@ _responseData = rawData == null ? null : deserialize<List<RepositoryInfo>, Repos
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> setRepositories({ 
+  Future<Response<void>> setRepositories({
     required List<RepositoryInfo> repositoryInfo,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -406,9 +424,7 @@ _responseData = rawData == null ? null : deserialize<List<RepositoryInfo>, Repos
     final _path = r'/Repositories';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -427,13 +443,10 @@ _responseData = rawData == null ? null : deserialize<List<RepositoryInfo>, Repos
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(repositoryInfo);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(repositoryInfo);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -451,5 +464,4 @@ _bodyData=jsonEncode(repositoryInfo);
 
     return _response;
   }
-
 }

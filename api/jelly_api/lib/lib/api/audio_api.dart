@@ -6,7 +6,6 @@ import 'dart:async';
 
 // ignore: unused_import
 import 'dart:convert';
-import 'package:jelly_api/lib/deserialize.dart';
 import 'package:dio/dio.dart';
 
 import 'dart:typed_data';
@@ -14,13 +13,12 @@ import 'package:jelly_api/lib/model/encoding_context.dart';
 import 'package:jelly_api/lib/model/subtitle_delivery_method.dart';
 
 class AudioApi {
-
   final Dio _dio;
 
   const AudioApi(this._dio);
 
   /// Gets an audio stream.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -82,7 +80,7 @@ class AudioApi {
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getAudioStream({ 
+  Future<Response<Uint8List>> getAudioStream({
     required String itemId,
     String? container,
     bool? static_,
@@ -140,17 +138,17 @@ class AudioApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Audio/{itemId}/stream'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Audio/{itemId}/stream'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -167,10 +165,14 @@ class AudioApi {
       if (mediaSourceId != null) r'mediaSourceId': mediaSourceId,
       if (deviceId != null) r'deviceId': deviceId,
       if (audioCodec != null) r'audioCodec': audioCodec,
-      if (enableAutoStreamCopy != null) r'enableAutoStreamCopy': enableAutoStreamCopy,
-      if (allowVideoStreamCopy != null) r'allowVideoStreamCopy': allowVideoStreamCopy,
-      if (allowAudioStreamCopy != null) r'allowAudioStreamCopy': allowAudioStreamCopy,
-      if (breakOnNonKeyFrames != null) r'breakOnNonKeyFrames': breakOnNonKeyFrames,
+      if (enableAutoStreamCopy != null)
+        r'enableAutoStreamCopy': enableAutoStreamCopy,
+      if (allowVideoStreamCopy != null)
+        r'allowVideoStreamCopy': allowVideoStreamCopy,
+      if (allowAudioStreamCopy != null)
+        r'allowAudioStreamCopy': allowAudioStreamCopy,
+      if (breakOnNonKeyFrames != null)
+        r'breakOnNonKeyFrames': breakOnNonKeyFrames,
       if (audioSampleRate != null) r'audioSampleRate': audioSampleRate,
       if (maxAudioBitDepth != null) r'maxAudioBitDepth': maxAudioBitDepth,
       if (audioBitRate != null) r'audioBitRate': audioBitRate,
@@ -185,17 +187,21 @@ class AudioApi {
       if (width != null) r'width': width,
       if (height != null) r'height': height,
       if (videoBitRate != null) r'videoBitRate': videoBitRate,
-      if (subtitleStreamIndex != null) r'subtitleStreamIndex': subtitleStreamIndex,
+      if (subtitleStreamIndex != null)
+        r'subtitleStreamIndex': subtitleStreamIndex,
       if (subtitleMethod != null) r'subtitleMethod': subtitleMethod,
       if (maxRefFrames != null) r'maxRefFrames': maxRefFrames,
       if (maxVideoBitDepth != null) r'maxVideoBitDepth': maxVideoBitDepth,
       if (requireAvc != null) r'requireAvc': requireAvc,
       if (deInterlace != null) r'deInterlace': deInterlace,
-      if (requireNonAnamorphic != null) r'requireNonAnamorphic': requireNonAnamorphic,
-      if (transcodingMaxAudioChannels != null) r'transcodingMaxAudioChannels': transcodingMaxAudioChannels,
+      if (requireNonAnamorphic != null)
+        r'requireNonAnamorphic': requireNonAnamorphic,
+      if (transcodingMaxAudioChannels != null)
+        r'transcodingMaxAudioChannels': transcodingMaxAudioChannels,
       if (cpuCoreLimit != null) r'cpuCoreLimit': cpuCoreLimit,
       if (liveStreamId != null) r'liveStreamId': liveStreamId,
-      if (enableMpegtsM2TsMode != null) r'enableMpegtsM2TsMode': enableMpegtsM2TsMode,
+      if (enableMpegtsM2TsMode != null)
+        r'enableMpegtsM2TsMode': enableMpegtsM2TsMode,
       if (videoCodec != null) r'videoCodec': videoCodec,
       if (subtitleCodec != null) r'subtitleCodec': subtitleCodec,
       if (transcodeReasons != null) r'transcodeReasons': transcodeReasons,
@@ -203,7 +209,8 @@ class AudioApi {
       if (videoStreamIndex != null) r'videoStreamIndex': videoStreamIndex,
       if (context != null) r'context': context,
       if (streamOptions != null) r'streamOptions': streamOptions,
-      if (enableAudioVbrEncoding != null) r'enableAudioVbrEncoding': enableAudioVbrEncoding,
+      if (enableAudioVbrEncoding != null)
+        r'enableAudioVbrEncoding': enableAudioVbrEncoding,
     };
 
     final _response = await _dio.request<Object>(
@@ -218,9 +225,8 @@ class AudioApi {
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -244,7 +250,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets an audio stream.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -306,7 +312,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getAudioStreamByContainer({ 
+  Future<Response<Uint8List>> getAudioStreamByContainer({
     required String itemId,
     required String container,
     bool? static_,
@@ -364,17 +370,24 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Audio/{itemId}/stream.{container}'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'container' '}', container.toString());
+    final _path = r'/Audio/{itemId}/stream.{container}'
+        .replaceAll(
+          '{'
+          r'itemId'
+          '}',
+          itemId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'container'
+          '}',
+          container.toString(),
+        );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -390,10 +403,14 @@ _responseData = rawData == null ? null : rawData as Uint8List;
       if (mediaSourceId != null) r'mediaSourceId': mediaSourceId,
       if (deviceId != null) r'deviceId': deviceId,
       if (audioCodec != null) r'audioCodec': audioCodec,
-      if (enableAutoStreamCopy != null) r'enableAutoStreamCopy': enableAutoStreamCopy,
-      if (allowVideoStreamCopy != null) r'allowVideoStreamCopy': allowVideoStreamCopy,
-      if (allowAudioStreamCopy != null) r'allowAudioStreamCopy': allowAudioStreamCopy,
-      if (breakOnNonKeyFrames != null) r'breakOnNonKeyFrames': breakOnNonKeyFrames,
+      if (enableAutoStreamCopy != null)
+        r'enableAutoStreamCopy': enableAutoStreamCopy,
+      if (allowVideoStreamCopy != null)
+        r'allowVideoStreamCopy': allowVideoStreamCopy,
+      if (allowAudioStreamCopy != null)
+        r'allowAudioStreamCopy': allowAudioStreamCopy,
+      if (breakOnNonKeyFrames != null)
+        r'breakOnNonKeyFrames': breakOnNonKeyFrames,
       if (audioSampleRate != null) r'audioSampleRate': audioSampleRate,
       if (maxAudioBitDepth != null) r'maxAudioBitDepth': maxAudioBitDepth,
       if (audioBitRate != null) r'audioBitRate': audioBitRate,
@@ -408,17 +425,21 @@ _responseData = rawData == null ? null : rawData as Uint8List;
       if (width != null) r'width': width,
       if (height != null) r'height': height,
       if (videoBitRate != null) r'videoBitRate': videoBitRate,
-      if (subtitleStreamIndex != null) r'subtitleStreamIndex': subtitleStreamIndex,
+      if (subtitleStreamIndex != null)
+        r'subtitleStreamIndex': subtitleStreamIndex,
       if (subtitleMethod != null) r'subtitleMethod': subtitleMethod,
       if (maxRefFrames != null) r'maxRefFrames': maxRefFrames,
       if (maxVideoBitDepth != null) r'maxVideoBitDepth': maxVideoBitDepth,
       if (requireAvc != null) r'requireAvc': requireAvc,
       if (deInterlace != null) r'deInterlace': deInterlace,
-      if (requireNonAnamorphic != null) r'requireNonAnamorphic': requireNonAnamorphic,
-      if (transcodingMaxAudioChannels != null) r'transcodingMaxAudioChannels': transcodingMaxAudioChannels,
+      if (requireNonAnamorphic != null)
+        r'requireNonAnamorphic': requireNonAnamorphic,
+      if (transcodingMaxAudioChannels != null)
+        r'transcodingMaxAudioChannels': transcodingMaxAudioChannels,
       if (cpuCoreLimit != null) r'cpuCoreLimit': cpuCoreLimit,
       if (liveStreamId != null) r'liveStreamId': liveStreamId,
-      if (enableMpegtsM2TsMode != null) r'enableMpegtsM2TsMode': enableMpegtsM2TsMode,
+      if (enableMpegtsM2TsMode != null)
+        r'enableMpegtsM2TsMode': enableMpegtsM2TsMode,
       if (videoCodec != null) r'videoCodec': videoCodec,
       if (subtitleCodec != null) r'subtitleCodec': subtitleCodec,
       if (transcodeReasons != null) r'transcodeReasons': transcodeReasons,
@@ -426,7 +447,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
       if (videoStreamIndex != null) r'videoStreamIndex': videoStreamIndex,
       if (context != null) r'context': context,
       if (streamOptions != null) r'streamOptions': streamOptions,
-      if (enableAudioVbrEncoding != null) r'enableAudioVbrEncoding': enableAudioVbrEncoding,
+      if (enableAudioVbrEncoding != null)
+        r'enableAudioVbrEncoding': enableAudioVbrEncoding,
     };
 
     final _response = await _dio.request<Object>(
@@ -441,9 +463,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -467,7 +488,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets an audio stream.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -529,7 +550,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> headAudioStream({ 
+  Future<Response<Uint8List>> headAudioStream({
     required String itemId,
     String? container,
     bool? static_,
@@ -587,17 +608,17 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Audio/{itemId}/stream'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Audio/{itemId}/stream'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'HEAD',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -614,10 +635,14 @@ _responseData = rawData == null ? null : rawData as Uint8List;
       if (mediaSourceId != null) r'mediaSourceId': mediaSourceId,
       if (deviceId != null) r'deviceId': deviceId,
       if (audioCodec != null) r'audioCodec': audioCodec,
-      if (enableAutoStreamCopy != null) r'enableAutoStreamCopy': enableAutoStreamCopy,
-      if (allowVideoStreamCopy != null) r'allowVideoStreamCopy': allowVideoStreamCopy,
-      if (allowAudioStreamCopy != null) r'allowAudioStreamCopy': allowAudioStreamCopy,
-      if (breakOnNonKeyFrames != null) r'breakOnNonKeyFrames': breakOnNonKeyFrames,
+      if (enableAutoStreamCopy != null)
+        r'enableAutoStreamCopy': enableAutoStreamCopy,
+      if (allowVideoStreamCopy != null)
+        r'allowVideoStreamCopy': allowVideoStreamCopy,
+      if (allowAudioStreamCopy != null)
+        r'allowAudioStreamCopy': allowAudioStreamCopy,
+      if (breakOnNonKeyFrames != null)
+        r'breakOnNonKeyFrames': breakOnNonKeyFrames,
       if (audioSampleRate != null) r'audioSampleRate': audioSampleRate,
       if (maxAudioBitDepth != null) r'maxAudioBitDepth': maxAudioBitDepth,
       if (audioBitRate != null) r'audioBitRate': audioBitRate,
@@ -632,17 +657,21 @@ _responseData = rawData == null ? null : rawData as Uint8List;
       if (width != null) r'width': width,
       if (height != null) r'height': height,
       if (videoBitRate != null) r'videoBitRate': videoBitRate,
-      if (subtitleStreamIndex != null) r'subtitleStreamIndex': subtitleStreamIndex,
+      if (subtitleStreamIndex != null)
+        r'subtitleStreamIndex': subtitleStreamIndex,
       if (subtitleMethod != null) r'subtitleMethod': subtitleMethod,
       if (maxRefFrames != null) r'maxRefFrames': maxRefFrames,
       if (maxVideoBitDepth != null) r'maxVideoBitDepth': maxVideoBitDepth,
       if (requireAvc != null) r'requireAvc': requireAvc,
       if (deInterlace != null) r'deInterlace': deInterlace,
-      if (requireNonAnamorphic != null) r'requireNonAnamorphic': requireNonAnamorphic,
-      if (transcodingMaxAudioChannels != null) r'transcodingMaxAudioChannels': transcodingMaxAudioChannels,
+      if (requireNonAnamorphic != null)
+        r'requireNonAnamorphic': requireNonAnamorphic,
+      if (transcodingMaxAudioChannels != null)
+        r'transcodingMaxAudioChannels': transcodingMaxAudioChannels,
       if (cpuCoreLimit != null) r'cpuCoreLimit': cpuCoreLimit,
       if (liveStreamId != null) r'liveStreamId': liveStreamId,
-      if (enableMpegtsM2TsMode != null) r'enableMpegtsM2TsMode': enableMpegtsM2TsMode,
+      if (enableMpegtsM2TsMode != null)
+        r'enableMpegtsM2TsMode': enableMpegtsM2TsMode,
       if (videoCodec != null) r'videoCodec': videoCodec,
       if (subtitleCodec != null) r'subtitleCodec': subtitleCodec,
       if (transcodeReasons != null) r'transcodeReasons': transcodeReasons,
@@ -650,7 +679,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
       if (videoStreamIndex != null) r'videoStreamIndex': videoStreamIndex,
       if (context != null) r'context': context,
       if (streamOptions != null) r'streamOptions': streamOptions,
-      if (enableAudioVbrEncoding != null) r'enableAudioVbrEncoding': enableAudioVbrEncoding,
+      if (enableAudioVbrEncoding != null)
+        r'enableAudioVbrEncoding': enableAudioVbrEncoding,
     };
 
     final _response = await _dio.request<Object>(
@@ -665,9 +695,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -691,7 +720,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets an audio stream.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -753,7 +782,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> headAudioStreamByContainer({ 
+  Future<Response<Uint8List>> headAudioStreamByContainer({
     required String itemId,
     required String container,
     bool? static_,
@@ -811,17 +840,24 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Audio/{itemId}/stream.{container}'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'container' '}', container.toString());
+    final _path = r'/Audio/{itemId}/stream.{container}'
+        .replaceAll(
+          '{'
+          r'itemId'
+          '}',
+          itemId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'container'
+          '}',
+          container.toString(),
+        );
     final _options = Options(
       method: r'HEAD',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -837,10 +873,14 @@ _responseData = rawData == null ? null : rawData as Uint8List;
       if (mediaSourceId != null) r'mediaSourceId': mediaSourceId,
       if (deviceId != null) r'deviceId': deviceId,
       if (audioCodec != null) r'audioCodec': audioCodec,
-      if (enableAutoStreamCopy != null) r'enableAutoStreamCopy': enableAutoStreamCopy,
-      if (allowVideoStreamCopy != null) r'allowVideoStreamCopy': allowVideoStreamCopy,
-      if (allowAudioStreamCopy != null) r'allowAudioStreamCopy': allowAudioStreamCopy,
-      if (breakOnNonKeyFrames != null) r'breakOnNonKeyFrames': breakOnNonKeyFrames,
+      if (enableAutoStreamCopy != null)
+        r'enableAutoStreamCopy': enableAutoStreamCopy,
+      if (allowVideoStreamCopy != null)
+        r'allowVideoStreamCopy': allowVideoStreamCopy,
+      if (allowAudioStreamCopy != null)
+        r'allowAudioStreamCopy': allowAudioStreamCopy,
+      if (breakOnNonKeyFrames != null)
+        r'breakOnNonKeyFrames': breakOnNonKeyFrames,
       if (audioSampleRate != null) r'audioSampleRate': audioSampleRate,
       if (maxAudioBitDepth != null) r'maxAudioBitDepth': maxAudioBitDepth,
       if (audioBitRate != null) r'audioBitRate': audioBitRate,
@@ -855,17 +895,21 @@ _responseData = rawData == null ? null : rawData as Uint8List;
       if (width != null) r'width': width,
       if (height != null) r'height': height,
       if (videoBitRate != null) r'videoBitRate': videoBitRate,
-      if (subtitleStreamIndex != null) r'subtitleStreamIndex': subtitleStreamIndex,
+      if (subtitleStreamIndex != null)
+        r'subtitleStreamIndex': subtitleStreamIndex,
       if (subtitleMethod != null) r'subtitleMethod': subtitleMethod,
       if (maxRefFrames != null) r'maxRefFrames': maxRefFrames,
       if (maxVideoBitDepth != null) r'maxVideoBitDepth': maxVideoBitDepth,
       if (requireAvc != null) r'requireAvc': requireAvc,
       if (deInterlace != null) r'deInterlace': deInterlace,
-      if (requireNonAnamorphic != null) r'requireNonAnamorphic': requireNonAnamorphic,
-      if (transcodingMaxAudioChannels != null) r'transcodingMaxAudioChannels': transcodingMaxAudioChannels,
+      if (requireNonAnamorphic != null)
+        r'requireNonAnamorphic': requireNonAnamorphic,
+      if (transcodingMaxAudioChannels != null)
+        r'transcodingMaxAudioChannels': transcodingMaxAudioChannels,
       if (cpuCoreLimit != null) r'cpuCoreLimit': cpuCoreLimit,
       if (liveStreamId != null) r'liveStreamId': liveStreamId,
-      if (enableMpegtsM2TsMode != null) r'enableMpegtsM2TsMode': enableMpegtsM2TsMode,
+      if (enableMpegtsM2TsMode != null)
+        r'enableMpegtsM2TsMode': enableMpegtsM2TsMode,
       if (videoCodec != null) r'videoCodec': videoCodec,
       if (subtitleCodec != null) r'subtitleCodec': subtitleCodec,
       if (transcodeReasons != null) r'transcodeReasons': transcodeReasons,
@@ -873,7 +917,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
       if (videoStreamIndex != null) r'videoStreamIndex': videoStreamIndex,
       if (context != null) r'context': context,
       if (streamOptions != null) r'streamOptions': streamOptions,
-      if (enableAudioVbrEncoding != null) r'enableAudioVbrEncoding': enableAudioVbrEncoding,
+      if (enableAudioVbrEncoding != null)
+        r'enableAudioVbrEncoding': enableAudioVbrEncoding,
     };
 
     final _response = await _dio.request<Object>(
@@ -888,9 +933,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -912,5 +956,4 @@ _responseData = rawData == null ? null : rawData as Uint8List;
       extra: _response.extra,
     );
   }
-
 }

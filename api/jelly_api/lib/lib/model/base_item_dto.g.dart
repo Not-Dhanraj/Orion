@@ -2180,7 +2180,7 @@ BaseItemDto _$BaseItemDtoFromJson(Map<String, dynamic> json) => $checkedCreate(
       ),
       mediaType: $checkedConvert(
         'MediaType',
-        (v) => $enumDecodeNullable(_$MediaTypeEnumMap, v) ?? MediaType.unknown,
+        (v) => $enumDecodeNullable(_$MediaTypeEnumMap, v) ?? 'Unknown',
       ),
       endDate: $checkedConvert(
         'EndDate',

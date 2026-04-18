@@ -10,17 +10,15 @@ import 'package:jelly_api/lib/deserialize.dart';
 import 'package:dio/dio.dart';
 
 import 'package:jelly_api/lib/model/lyric_dto.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 import 'package:jelly_api/lib/model/remote_lyric_info_dto.dart';
 
 class LyricsApi {
-
   final Dio _dio;
 
   const LyricsApi(this._dio);
 
   /// Deletes an external lyric file.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -33,7 +31,7 @@ class LyricsApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> deleteLyrics({ 
+  Future<Response<void>> deleteLyrics({
     required String itemId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -42,12 +40,15 @@ class LyricsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Audio/{itemId}/Lyrics'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Audio/{itemId}/Lyrics'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -74,7 +75,7 @@ class LyricsApi {
   }
 
   /// Downloads a remote lyric.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -88,7 +89,7 @@ class LyricsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [LyricDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<LyricDto>> downloadRemoteLyrics({ 
+  Future<Response<LyricDto>> downloadRemoteLyrics({
     required String itemId,
     required String lyricId,
     CancelToken? cancelToken,
@@ -98,12 +99,22 @@ class LyricsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Audio/{itemId}/RemoteSearch/Lyrics/{lyricId}'.replaceAll('{' r'itemId' '}', itemId.toString()).replaceAll('{' r'lyricId' '}', lyricId.toString());
+    final _path = r'/Audio/{itemId}/RemoteSearch/Lyrics/{lyricId}'
+        .replaceAll(
+          '{'
+          r'itemId'
+          '}',
+          itemId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'lyricId'
+          '}',
+          lyricId.toString(),
+        );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -129,9 +140,14 @@ class LyricsApi {
     LyricDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<LyricDto, LyricDto>(rawData, 'LyricDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<LyricDto, LyricDto>(
+              rawData,
+              'LyricDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -155,7 +171,7 @@ _responseData = rawData == null ? null : deserialize<LyricDto, LyricDto>(rawData
   }
 
   /// Gets an item&#39;s lyrics.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item id.
@@ -168,7 +184,7 @@ _responseData = rawData == null ? null : deserialize<LyricDto, LyricDto>(rawData
   ///
   /// Returns a [Future] containing a [Response] with a [LyricDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<LyricDto>> getLyrics({ 
+  Future<Response<LyricDto>> getLyrics({
     required String itemId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -177,12 +193,15 @@ _responseData = rawData == null ? null : deserialize<LyricDto, LyricDto>(rawData
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Audio/{itemId}/Lyrics'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Audio/{itemId}/Lyrics'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -208,9 +227,14 @@ _responseData = rawData == null ? null : deserialize<LyricDto, LyricDto>(rawData
     LyricDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<LyricDto, LyricDto>(rawData, 'LyricDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<LyricDto, LyricDto>(
+              rawData,
+              'LyricDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -234,7 +258,7 @@ _responseData = rawData == null ? null : deserialize<LyricDto, LyricDto>(rawData
   }
 
   /// Gets the remote lyrics.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [lyricId] - The remote provider item id.
@@ -247,7 +271,7 @@ _responseData = rawData == null ? null : deserialize<LyricDto, LyricDto>(rawData
   ///
   /// Returns a [Future] containing a [Response] with a [LyricDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<LyricDto>> getRemoteLyrics({ 
+  Future<Response<LyricDto>> getRemoteLyrics({
     required String lyricId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -256,12 +280,15 @@ _responseData = rawData == null ? null : deserialize<LyricDto, LyricDto>(rawData
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Providers/Lyrics/{lyricId}'.replaceAll('{' r'lyricId' '}', lyricId.toString());
+    final _path = r'/Providers/Lyrics/{lyricId}'.replaceAll(
+      '{'
+      r'lyricId'
+      '}',
+      lyricId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -287,9 +314,14 @@ _responseData = rawData == null ? null : deserialize<LyricDto, LyricDto>(rawData
     LyricDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<LyricDto, LyricDto>(rawData, 'LyricDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<LyricDto, LyricDto>(
+              rawData,
+              'LyricDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -313,7 +345,7 @@ _responseData = rawData == null ? null : deserialize<LyricDto, LyricDto>(rawData
   }
 
   /// Search remote lyrics.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -326,7 +358,7 @@ _responseData = rawData == null ? null : deserialize<LyricDto, LyricDto>(rawData
   ///
   /// Returns a [Future] containing a [Response] with a [List<RemoteLyricInfoDto>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<RemoteLyricInfoDto>>> searchRemoteLyrics({ 
+  Future<Response<List<RemoteLyricInfoDto>>> searchRemoteLyrics({
     required String itemId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -335,12 +367,15 @@ _responseData = rawData == null ? null : deserialize<LyricDto, LyricDto>(rawData
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Audio/{itemId}/RemoteSearch/Lyrics'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Audio/{itemId}/RemoteSearch/Lyrics'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -366,9 +401,14 @@ _responseData = rawData == null ? null : deserialize<LyricDto, LyricDto>(rawData
     List<RemoteLyricInfoDto>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<RemoteLyricInfoDto>, RemoteLyricInfoDto>(rawData, 'List<RemoteLyricInfoDto>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<RemoteLyricInfoDto>, RemoteLyricInfoDto>(
+              rawData,
+              'List<RemoteLyricInfoDto>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -392,12 +432,12 @@ _responseData = rawData == null ? null : deserialize<List<RemoteLyricInfoDto>, R
   }
 
   /// Upload an external lyric file.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item the lyric belongs to.
   /// * [fileName] - Name of the file being uploaded.
-  /// * [body] 
+  /// * [body]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -407,7 +447,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteLyricInfoDto>, R
   ///
   /// Returns a [Future] containing a [Response] with a [LyricDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<LyricDto>> uploadLyrics({ 
+  Future<Response<LyricDto>> uploadLyrics({
     required String itemId,
     required String fileName,
     MultipartFile? body,
@@ -418,12 +458,15 @@ _responseData = rawData == null ? null : deserialize<List<RemoteLyricInfoDto>, R
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Audio/{itemId}/Lyrics'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Audio/{itemId}/Lyrics'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -439,17 +482,15 @@ _responseData = rawData == null ? null : deserialize<List<RemoteLyricInfoDto>, R
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      r'fileName': fileName,
-    };
+    final _queryParameters = <String, dynamic>{r'fileName': fileName};
 
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(body);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(body);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
           queryParameters: _queryParameters,
@@ -473,9 +514,14 @@ _bodyData=jsonEncode(body);
     LyricDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<LyricDto, LyricDto>(rawData, 'LyricDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<LyricDto, LyricDto>(
+              rawData,
+              'LyricDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -497,5 +543,4 @@ _responseData = rawData == null ? null : deserialize<LyricDto, LyricDto>(rawData
       extra: _response.extra,
     );
   }
-
 }

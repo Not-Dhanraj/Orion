@@ -85,7 +85,7 @@ ActivityLogEntryStartMessage _$ActivityLogEntryStartMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            SessionMessageType.activityLogEntryStart,
+            'ActivityLogEntryStart',
       ),
     );
     return val;

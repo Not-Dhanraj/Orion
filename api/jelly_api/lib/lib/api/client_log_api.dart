@@ -10,19 +10,17 @@ import 'package:jelly_api/lib/deserialize.dart';
 import 'package:dio/dio.dart';
 
 import 'package:jelly_api/lib/model/client_log_document_response_dto.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 
 class ClientLogApi {
-
   final Dio _dio;
 
   const ClientLogApi(this._dio);
 
   /// Upload a document.
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [body] 
+  /// * [body]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -32,7 +30,7 @@ class ClientLogApi {
   ///
   /// Returns a [Future] containing a [Response] with a [ClientLogDocumentResponseDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ClientLogDocumentResponseDto>> logFile({ 
+  Future<Response<ClientLogDocumentResponseDto>> logFile({
     MultipartFile? body,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -44,9 +42,7 @@ class ClientLogApi {
     final _path = r'/ClientLog/Document';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -65,13 +61,10 @@ class ClientLogApi {
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(body);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(body);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -90,9 +83,13 @@ _bodyData=jsonEncode(body);
     ClientLogDocumentResponseDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<ClientLogDocumentResponseDto, ClientLogDocumentResponseDto>(rawData, 'ClientLogDocumentResponseDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<
+              ClientLogDocumentResponseDto,
+              ClientLogDocumentResponseDto
+            >(rawData, 'ClientLogDocumentResponseDto', growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -114,5 +111,4 @@ _responseData = rawData == null ? null : deserialize<ClientLogDocumentResponseDt
       extra: _response.extra,
     );
   }
-
 }

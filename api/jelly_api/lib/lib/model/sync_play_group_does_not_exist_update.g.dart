@@ -98,7 +98,7 @@ SyncPlayGroupDoesNotExistUpdate _$SyncPlayGroupDoesNotExistUpdateFromJson(
         'Type',
         (v) =>
             $enumDecodeNullable(_$GroupUpdateTypeEnumMap, v) ??
-            GroupUpdateType.groupDoesNotExist,
+            'GroupDoesNotExist',
       ),
     );
     return val;

@@ -12,16 +12,14 @@ import 'package:dio/dio.dart';
 import 'package:jelly_api/lib/model/device_info_dto.dart';
 import 'package:jelly_api/lib/model/device_info_dto_query_result.dart';
 import 'package:jelly_api/lib/model/device_options_dto.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 
 class DevicesApi {
-
   final Dio _dio;
 
   const DevicesApi(this._dio);
 
   /// Deletes a device.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [id] - Device Id.
@@ -34,7 +32,7 @@ class DevicesApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> deleteDevice({ 
+  Future<Response<void>> deleteDevice({
     required String id,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -46,9 +44,7 @@ class DevicesApi {
     final _path = r'/Devices';
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -63,9 +59,7 @@ class DevicesApi {
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      r'id': id,
-    };
+    final _queryParameters = <String, dynamic>{r'id': id};
 
     final _response = await _dio.request<Object>(
       _path,
@@ -80,7 +74,7 @@ class DevicesApi {
   }
 
   /// Get info for a device.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [id] - Device Id.
@@ -93,7 +87,7 @@ class DevicesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [DeviceInfoDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<DeviceInfoDto>> getDeviceInfo({ 
+  Future<Response<DeviceInfoDto>> getDeviceInfo({
     required String id,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -105,9 +99,7 @@ class DevicesApi {
     final _path = r'/Devices/Info';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -122,9 +114,7 @@ class DevicesApi {
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      r'id': id,
-    };
+    final _queryParameters = <String, dynamic>{r'id': id};
 
     final _response = await _dio.request<Object>(
       _path,
@@ -138,9 +128,14 @@ class DevicesApi {
     DeviceInfoDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<DeviceInfoDto, DeviceInfoDto>(rawData, 'DeviceInfoDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<DeviceInfoDto, DeviceInfoDto>(
+              rawData,
+              'DeviceInfoDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -164,7 +159,7 @@ _responseData = rawData == null ? null : deserialize<DeviceInfoDto, DeviceInfoDt
   }
 
   /// Get options for a device.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [id] - Device Id.
@@ -177,7 +172,7 @@ _responseData = rawData == null ? null : deserialize<DeviceInfoDto, DeviceInfoDt
   ///
   /// Returns a [Future] containing a [Response] with a [DeviceOptionsDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<DeviceOptionsDto>> getDeviceOptions({ 
+  Future<Response<DeviceOptionsDto>> getDeviceOptions({
     required String id,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -189,9 +184,7 @@ _responseData = rawData == null ? null : deserialize<DeviceInfoDto, DeviceInfoDt
     final _path = r'/Devices/Options';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -206,9 +199,7 @@ _responseData = rawData == null ? null : deserialize<DeviceInfoDto, DeviceInfoDt
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      r'id': id,
-    };
+    final _queryParameters = <String, dynamic>{r'id': id};
 
     final _response = await _dio.request<Object>(
       _path,
@@ -222,9 +213,14 @@ _responseData = rawData == null ? null : deserialize<DeviceInfoDto, DeviceInfoDt
     DeviceOptionsDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<DeviceOptionsDto, DeviceOptionsDto>(rawData, 'DeviceOptionsDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<DeviceOptionsDto, DeviceOptionsDto>(
+              rawData,
+              'DeviceOptionsDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -248,7 +244,7 @@ _responseData = rawData == null ? null : deserialize<DeviceOptionsDto, DeviceOpt
   }
 
   /// Get Devices.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [userId] - Gets or sets the user identifier.
@@ -261,7 +257,7 @@ _responseData = rawData == null ? null : deserialize<DeviceOptionsDto, DeviceOpt
   ///
   /// Returns a [Future] containing a [Response] with a [DeviceInfoDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<DeviceInfoDtoQueryResult>> getDevices({ 
+  Future<Response<DeviceInfoDtoQueryResult>> getDevices({
     String? userId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -273,9 +269,7 @@ _responseData = rawData == null ? null : deserialize<DeviceOptionsDto, DeviceOpt
     final _path = r'/Devices';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -306,9 +300,14 @@ _responseData = rawData == null ? null : deserialize<DeviceOptionsDto, DeviceOpt
     DeviceInfoDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<DeviceInfoDtoQueryResult, DeviceInfoDtoQueryResult>(rawData, 'DeviceInfoDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<DeviceInfoDtoQueryResult, DeviceInfoDtoQueryResult>(
+              rawData,
+              'DeviceInfoDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -332,7 +331,7 @@ _responseData = rawData == null ? null : deserialize<DeviceInfoDtoQueryResult, D
   }
 
   /// Update device options.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [id] - Device Id.
@@ -346,7 +345,7 @@ _responseData = rawData == null ? null : deserialize<DeviceInfoDtoQueryResult, D
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> updateDeviceOptions({ 
+  Future<Response<void>> updateDeviceOptions({
     required String id,
     required DeviceOptionsDto deviceOptionsDto,
     CancelToken? cancelToken,
@@ -359,9 +358,7 @@ _responseData = rawData == null ? null : deserialize<DeviceInfoDtoQueryResult, D
     final _path = r'/Devices/Options';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -377,17 +374,15 @@ _responseData = rawData == null ? null : deserialize<DeviceInfoDtoQueryResult, D
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      r'id': id,
-    };
+    final _queryParameters = <String, dynamic>{r'id': id};
 
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(deviceOptionsDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(deviceOptionsDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
           queryParameters: _queryParameters,
@@ -410,5 +405,4 @@ _bodyData=jsonEncode(deviceOptionsDto);
 
     return _response;
   }
-
 }

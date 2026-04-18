@@ -10,6 +10,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'sync_play_play_queue_update.g.dart';
 
+
 @CopyWith()
 @JsonSerializable(
   checked: true,
@@ -20,43 +21,68 @@ part 'sync_play_play_queue_update.g.dart';
 class SyncPlayPlayQueueUpdate {
   /// Returns a new [SyncPlayPlayQueueUpdate] instance.
   SyncPlayPlayQueueUpdate({
-    this.groupId,
 
-    this.data,
+     this.groupId,
 
-    this.type = GroupUpdateType.playQueue,
+     this.data,
+
+     this.type = GroupUpdateType.playQueue,
   });
 
-  /// Gets the group identifier.
-  @JsonKey(name: r'GroupId', required: false, includeIfNull: false)
+      /// Gets the group identifier.
+  @JsonKey(
+    
+    name: r'GroupId',
+    required: false,
+    includeIfNull: false,
+  )
+
+
   final String? groupId;
 
-  /// Gets the update data.
-  @JsonKey(name: r'Data', required: false, includeIfNull: false)
+
+
+      /// Gets the update data.
+  @JsonKey(
+    
+    name: r'Data',
+    required: false,
+    includeIfNull: false,
+  )
+
+
   final PlayQueueUpdate? data;
 
-  /// Enum GroupUpdateType.
+
+
+      /// Enum GroupUpdateType.
   @JsonKey(
     defaultValue: GroupUpdateType.playQueue,
     name: r'Type',
     required: false,
     includeIfNull: false,
   )
+
+
   final GroupUpdateType? type;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is SyncPlayPlayQueueUpdate &&
-          other.groupId == groupId &&
-          other.data == data &&
-          other.type == type;
 
-  @override
-  int get hashCode => groupId.hashCode + data.hashCode + type.hashCode;
 
-  factory SyncPlayPlayQueueUpdate.fromJson(Map<String, dynamic> json) =>
-      _$SyncPlayPlayQueueUpdateFromJson(json);
+
+
+    @override
+    bool operator ==(Object other) => identical(this, other) || other is SyncPlayPlayQueueUpdate &&
+      other.groupId == groupId &&
+      other.data == data &&
+      other.type == type;
+
+    @override
+    int get hashCode =>
+        groupId.hashCode +
+        data.hashCode +
+        type.hashCode;
+
+  factory SyncPlayPlayQueueUpdate.fromJson(Map<String, dynamic> json) => _$SyncPlayPlayQueueUpdateFromJson(json);
 
   Map<String, dynamic> toJson() => _$SyncPlayPlayQueueUpdateToJson(this);
 
@@ -64,4 +90,6 @@ class SyncPlayPlayQueueUpdate {
   String toString() {
     return toJson().toString();
   }
+
 }
+

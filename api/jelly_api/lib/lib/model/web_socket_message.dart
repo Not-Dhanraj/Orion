@@ -3,10 +3,8 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:jelly_api/lib/model/outbound_web_socket_message.dart';
 import 'package:jelly_api/lib/model/session_message_type.dart';
 import 'package:jelly_api/lib/model/group_update.dart';
-import 'package:jelly_api/lib/model/inbound_web_socket_message.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:json_annotation/json_annotation.dart';
 

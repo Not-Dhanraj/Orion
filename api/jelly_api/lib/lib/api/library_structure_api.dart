@@ -12,19 +12,17 @@ import 'package:dio/dio.dart';
 import 'package:jelly_api/lib/model/add_virtual_folder_dto.dart';
 import 'package:jelly_api/lib/model/collection_type_options.dart';
 import 'package:jelly_api/lib/model/media_path_dto.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 import 'package:jelly_api/lib/model/update_library_options_dto.dart';
 import 'package:jelly_api/lib/model/update_media_path_request_dto.dart';
 import 'package:jelly_api/lib/model/virtual_folder_info.dart';
 
 class LibraryStructureApi {
-
   final Dio _dio;
 
   const LibraryStructureApi(this._dio);
 
   /// Add a media path to a library.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [mediaPathDto] - The media path dto.
@@ -38,7 +36,7 @@ class LibraryStructureApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> addMediaPath({ 
+  Future<Response<void>> addMediaPath({
     required MediaPathDto mediaPathDto,
     bool? refreshLibrary = false,
     CancelToken? cancelToken,
@@ -51,9 +49,7 @@ class LibraryStructureApi {
     final _path = r'/Library/VirtualFolders/Paths';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -76,10 +72,10 @@ class LibraryStructureApi {
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(mediaPathDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(mediaPathDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
           queryParameters: _queryParameters,
@@ -104,7 +100,7 @@ _bodyData=jsonEncode(mediaPathDto);
   }
 
   /// Adds a virtual folder.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - The name of the virtual folder.
@@ -121,7 +117,7 @@ _bodyData=jsonEncode(mediaPathDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> addVirtualFolder({ 
+  Future<Response<void>> addVirtualFolder({
     String? name,
     CollectionTypeOptions? collectionType,
     List<String>? paths,
@@ -137,9 +133,7 @@ _bodyData=jsonEncode(mediaPathDto);
     final _path = r'/Library/VirtualFolders';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -165,10 +159,10 @@ _bodyData=jsonEncode(mediaPathDto);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(addVirtualFolderDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(addVirtualFolderDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
           queryParameters: _queryParameters,
@@ -193,7 +187,7 @@ _bodyData=jsonEncode(addVirtualFolderDto);
   }
 
   /// Gets all virtual folders.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -205,7 +199,7 @@ _bodyData=jsonEncode(addVirtualFolderDto);
   ///
   /// Returns a [Future] containing a [Response] with a [List<VirtualFolderInfo>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<VirtualFolderInfo>>> getVirtualFolders({ 
+  Future<Response<List<VirtualFolderInfo>>> getVirtualFolders({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -216,9 +210,7 @@ _bodyData=jsonEncode(addVirtualFolderDto);
     final _path = r'/Library/VirtualFolders';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -244,9 +236,14 @@ _bodyData=jsonEncode(addVirtualFolderDto);
     List<VirtualFolderInfo>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<VirtualFolderInfo>, VirtualFolderInfo>(rawData, 'List<VirtualFolderInfo>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<VirtualFolderInfo>, VirtualFolderInfo>(
+              rawData,
+              'List<VirtualFolderInfo>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -270,7 +267,7 @@ _responseData = rawData == null ? null : deserialize<List<VirtualFolderInfo>, Vi
   }
 
   /// Remove a media path.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - The name of the library.
@@ -285,7 +282,7 @@ _responseData = rawData == null ? null : deserialize<List<VirtualFolderInfo>, Vi
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> removeMediaPath({ 
+  Future<Response<void>> removeMediaPath({
     String? name,
     String? path,
     bool? refreshLibrary = false,
@@ -299,9 +296,7 @@ _responseData = rawData == null ? null : deserialize<List<VirtualFolderInfo>, Vi
     final _path = r'/Library/VirtualFolders/Paths';
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -335,7 +330,7 @@ _responseData = rawData == null ? null : deserialize<List<VirtualFolderInfo>, Vi
   }
 
   /// Removes a virtual folder.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - The name of the folder.
@@ -349,7 +344,7 @@ _responseData = rawData == null ? null : deserialize<List<VirtualFolderInfo>, Vi
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> removeVirtualFolder({ 
+  Future<Response<void>> removeVirtualFolder({
     String? name,
     bool? refreshLibrary = false,
     CancelToken? cancelToken,
@@ -362,9 +357,7 @@ _responseData = rawData == null ? null : deserialize<List<VirtualFolderInfo>, Vi
     final _path = r'/Library/VirtualFolders';
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -397,7 +390,7 @@ _responseData = rawData == null ? null : deserialize<List<VirtualFolderInfo>, Vi
   }
 
   /// Renames a virtual folder.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - The name of the virtual folder.
@@ -412,7 +405,7 @@ _responseData = rawData == null ? null : deserialize<List<VirtualFolderInfo>, Vi
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> renameVirtualFolder({ 
+  Future<Response<void>> renameVirtualFolder({
     String? name,
     String? newName,
     bool? refreshLibrary = false,
@@ -426,9 +419,7 @@ _responseData = rawData == null ? null : deserialize<List<VirtualFolderInfo>, Vi
     final _path = r'/Library/VirtualFolders/Name';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -462,7 +453,7 @@ _responseData = rawData == null ? null : deserialize<List<VirtualFolderInfo>, Vi
   }
 
   /// Update library options.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [updateLibraryOptionsDto] - The library name and options.
@@ -475,7 +466,7 @@ _responseData = rawData == null ? null : deserialize<List<VirtualFolderInfo>, Vi
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> updateLibraryOptions({ 
+  Future<Response<void>> updateLibraryOptions({
     UpdateLibraryOptionsDto? updateLibraryOptionsDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -487,9 +478,7 @@ _responseData = rawData == null ? null : deserialize<List<VirtualFolderInfo>, Vi
     final _path = r'/Library/VirtualFolders/LibraryOptions';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -508,13 +497,10 @@ _responseData = rawData == null ? null : deserialize<List<VirtualFolderInfo>, Vi
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(updateLibraryOptionsDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(updateLibraryOptionsDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -534,7 +520,7 @@ _bodyData=jsonEncode(updateLibraryOptionsDto);
   }
 
   /// Updates a media path.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [updateMediaPathRequestDto] - The name of the library and path infos.
@@ -547,7 +533,7 @@ _bodyData=jsonEncode(updateLibraryOptionsDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> updateMediaPath({ 
+  Future<Response<void>> updateMediaPath({
     required UpdateMediaPathRequestDto updateMediaPathRequestDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -559,9 +545,7 @@ _bodyData=jsonEncode(updateLibraryOptionsDto);
     final _path = r'/Library/VirtualFolders/Paths/Update';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -580,13 +564,10 @@ _bodyData=jsonEncode(updateLibraryOptionsDto);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(updateMediaPathRequestDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(updateMediaPathRequestDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -604,5 +585,4 @@ _bodyData=jsonEncode(updateMediaPathRequestDto);
 
     return _response;
   }
-
 }

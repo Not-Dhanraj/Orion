@@ -12,16 +12,14 @@ import 'package:dio/dio.dart';
 import 'package:jelly_api/lib/model/backup_manifest_dto.dart';
 import 'package:jelly_api/lib/model/backup_options_dto.dart';
 import 'package:jelly_api/lib/model/backup_restore_request_dto.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 
 class BackupApi {
-
   final Dio _dio;
 
   const BackupApi(this._dio);
 
   /// Creates a new Backup.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [backupOptionsDto] - The backup options.
@@ -34,7 +32,7 @@ class BackupApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BackupManifestDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BackupManifestDto>> createBackup({ 
+  Future<Response<BackupManifestDto>> createBackup({
     BackupOptionsDto? backupOptionsDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -46,9 +44,7 @@ class BackupApi {
     final _path = r'/Backup/Create';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -67,13 +63,10 @@ class BackupApi {
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(backupOptionsDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(backupOptionsDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -92,9 +85,14 @@ _bodyData=jsonEncode(backupOptionsDto);
     BackupManifestDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BackupManifestDto, BackupManifestDto>(rawData, 'BackupManifestDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BackupManifestDto, BackupManifestDto>(
+              rawData,
+              'BackupManifestDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -118,7 +116,7 @@ _responseData = rawData == null ? null : deserialize<BackupManifestDto, BackupMa
   }
 
   /// Gets the descriptor from an existing archive is present.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [path] - The data to start a restore process.
@@ -131,7 +129,7 @@ _responseData = rawData == null ? null : deserialize<BackupManifestDto, BackupMa
   ///
   /// Returns a [Future] containing a [Response] with a [BackupManifestDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BackupManifestDto>> getBackup({ 
+  Future<Response<BackupManifestDto>> getBackup({
     required String path,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -143,9 +141,7 @@ _responseData = rawData == null ? null : deserialize<BackupManifestDto, BackupMa
     final _path = r'/Backup/Manifest';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -160,9 +156,7 @@ _responseData = rawData == null ? null : deserialize<BackupManifestDto, BackupMa
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      r'path': path,
-    };
+    final _queryParameters = <String, dynamic>{r'path': path};
 
     final _response = await _dio.request<Object>(
       _path,
@@ -176,9 +170,14 @@ _responseData = rawData == null ? null : deserialize<BackupManifestDto, BackupMa
     BackupManifestDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BackupManifestDto, BackupManifestDto>(rawData, 'BackupManifestDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BackupManifestDto, BackupManifestDto>(
+              rawData,
+              'BackupManifestDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -202,7 +201,7 @@ _responseData = rawData == null ? null : deserialize<BackupManifestDto, BackupMa
   }
 
   /// Gets a list of all currently present backups in the backup directory.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -214,7 +213,7 @@ _responseData = rawData == null ? null : deserialize<BackupManifestDto, BackupMa
   ///
   /// Returns a [Future] containing a [Response] with a [List<BackupManifestDto>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<BackupManifestDto>>> listBackups({ 
+  Future<Response<List<BackupManifestDto>>> listBackups({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -225,9 +224,7 @@ _responseData = rawData == null ? null : deserialize<BackupManifestDto, BackupMa
     final _path = r'/Backup';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -253,9 +250,14 @@ _responseData = rawData == null ? null : deserialize<BackupManifestDto, BackupMa
     List<BackupManifestDto>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<BackupManifestDto>, BackupManifestDto>(rawData, 'List<BackupManifestDto>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<BackupManifestDto>, BackupManifestDto>(
+              rawData,
+              'List<BackupManifestDto>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -279,7 +281,7 @@ _responseData = rawData == null ? null : deserialize<List<BackupManifestDto>, Ba
   }
 
   /// Restores to a backup by restarting the server and applying the backup.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [backupRestoreRequestDto] - The data to start a restore process.
@@ -292,7 +294,7 @@ _responseData = rawData == null ? null : deserialize<List<BackupManifestDto>, Ba
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> startRestoreBackup({ 
+  Future<Response<void>> startRestoreBackup({
     required BackupRestoreRequestDto backupRestoreRequestDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -304,9 +306,7 @@ _responseData = rawData == null ? null : deserialize<List<BackupManifestDto>, Ba
     final _path = r'/Backup/Restore';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -325,13 +325,10 @@ _responseData = rawData == null ? null : deserialize<List<BackupManifestDto>, Ba
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(backupRestoreRequestDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(backupRestoreRequestDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -349,5 +346,4 @@ _bodyData=jsonEncode(backupRestoreRequestDto);
 
     return _response;
   }
-
 }

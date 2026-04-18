@@ -102,7 +102,7 @@ PluginInstallingMessage _$PluginInstallingMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            SessionMessageType.packageInstalling,
+            'PackageInstalling',
       ),
     );
     return val;

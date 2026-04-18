@@ -102,7 +102,7 @@ UserDataChangedMessage _$UserDataChangedMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            SessionMessageType.userDataChanged,
+            'UserDataChanged',
       ),
     );
     return val;

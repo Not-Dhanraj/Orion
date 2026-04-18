@@ -9,6 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'sync_play_not_in_group_update.g.dart';
 
+
 @CopyWith()
 @JsonSerializable(
   checked: true,
@@ -19,43 +20,68 @@ part 'sync_play_not_in_group_update.g.dart';
 class SyncPlayNotInGroupUpdate {
   /// Returns a new [SyncPlayNotInGroupUpdate] instance.
   SyncPlayNotInGroupUpdate({
-    this.groupId,
 
-    this.data,
+     this.groupId,
 
-    this.type = GroupUpdateType.notInGroup,
+     this.data,
+
+     this.type = GroupUpdateType.notInGroup,
   });
 
-  /// Gets the group identifier.
-  @JsonKey(name: r'GroupId', required: false, includeIfNull: false)
+      /// Gets the group identifier.
+  @JsonKey(
+    
+    name: r'GroupId',
+    required: false,
+    includeIfNull: false,
+  )
+
+
   final String? groupId;
 
-  /// Gets the update data.
-  @JsonKey(name: r'Data', required: false, includeIfNull: false)
+
+
+      /// Gets the update data.
+  @JsonKey(
+    
+    name: r'Data',
+    required: false,
+    includeIfNull: false,
+  )
+
+
   final String? data;
 
-  /// Enum GroupUpdateType.
+
+
+      /// Enum GroupUpdateType.
   @JsonKey(
     defaultValue: GroupUpdateType.notInGroup,
     name: r'Type',
     required: false,
     includeIfNull: false,
   )
+
+
   final GroupUpdateType? type;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is SyncPlayNotInGroupUpdate &&
-          other.groupId == groupId &&
-          other.data == data &&
-          other.type == type;
 
-  @override
-  int get hashCode => groupId.hashCode + data.hashCode + type.hashCode;
 
-  factory SyncPlayNotInGroupUpdate.fromJson(Map<String, dynamic> json) =>
-      _$SyncPlayNotInGroupUpdateFromJson(json);
+
+
+    @override
+    bool operator ==(Object other) => identical(this, other) || other is SyncPlayNotInGroupUpdate &&
+      other.groupId == groupId &&
+      other.data == data &&
+      other.type == type;
+
+    @override
+    int get hashCode =>
+        groupId.hashCode +
+        data.hashCode +
+        type.hashCode;
+
+  factory SyncPlayNotInGroupUpdate.fromJson(Map<String, dynamic> json) => _$SyncPlayNotInGroupUpdateFromJson(json);
 
   Map<String, dynamic> toJson() => _$SyncPlayNotInGroupUpdateToJson(this);
 
@@ -63,4 +89,6 @@ class SyncPlayNotInGroupUpdate {
   String toString() {
     return toJson().toString();
   }
+
 }
+

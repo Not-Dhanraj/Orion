@@ -6,11 +6,9 @@ import 'dart:async';
 
 // ignore: unused_import
 import 'dart:convert';
-import 'package:jelly_api/lib/deserialize.dart';
 import 'package:dio/dio.dart';
 
 import 'package:jelly_api/lib/model/metadata_refresh_mode.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 
 class ItemRefreshApi {
   final Dio _dio;

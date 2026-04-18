@@ -11,16 +11,14 @@ import 'package:dio/dio.dart';
 
 import 'package:jelly_api/lib/model/base_item_dto.dart';
 import 'package:jelly_api/lib/model/metadata_editor_info.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 
 class ItemUpdateApi {
-
   final Dio _dio;
 
   const ItemUpdateApi(this._dio);
 
   /// Gets metadata editor info for an item.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -33,7 +31,7 @@ class ItemUpdateApi {
   ///
   /// Returns a [Future] containing a [Response] with a [MetadataEditorInfo] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<MetadataEditorInfo>> getMetadataEditorInfo({ 
+  Future<Response<MetadataEditorInfo>> getMetadataEditorInfo({
     required String itemId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -42,12 +40,15 @@ class ItemUpdateApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/MetadataEditor'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Items/{itemId}/MetadataEditor'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -73,9 +74,14 @@ class ItemUpdateApi {
     MetadataEditorInfo? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<MetadataEditorInfo, MetadataEditorInfo>(rawData, 'MetadataEditorInfo', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<MetadataEditorInfo, MetadataEditorInfo>(
+              rawData,
+              'MetadataEditorInfo',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -99,7 +105,7 @@ _responseData = rawData == null ? null : deserialize<MetadataEditorInfo, Metadat
   }
 
   /// Updates an item.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -113,7 +119,7 @@ _responseData = rawData == null ? null : deserialize<MetadataEditorInfo, Metadat
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> updateItem({ 
+  Future<Response<void>> updateItem({
     required String itemId,
     required BaseItemDto baseItemDto,
     CancelToken? cancelToken,
@@ -123,12 +129,15 @@ _responseData = rawData == null ? null : deserialize<MetadataEditorInfo, Metadat
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Items/{itemId}'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -147,13 +156,10 @@ _responseData = rawData == null ? null : deserialize<MetadataEditorInfo, Metadat
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(baseItemDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(baseItemDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -173,7 +179,7 @@ _bodyData=jsonEncode(baseItemDto);
   }
 
   /// Updates an item&#39;s content type.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The item id.
@@ -187,7 +193,7 @@ _bodyData=jsonEncode(baseItemDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> updateItemContentType({ 
+  Future<Response<void>> updateItemContentType({
     required String itemId,
     String? contentType,
     CancelToken? cancelToken,
@@ -197,12 +203,15 @@ _bodyData=jsonEncode(baseItemDto);
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/ContentType'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Items/{itemId}/ContentType'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -232,5 +241,4 @@ _bodyData=jsonEncode(baseItemDto);
 
     return _response;
   }
-
 }

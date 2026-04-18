@@ -98,7 +98,7 @@ UserUpdatedMessage _$UserUpdatedMessageFromJson(Map<String, dynamic> json) =>
             'MessageType',
             (v) =>
                 $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-                SessionMessageType.userUpdated,
+                'UserUpdated',
           ),
         );
         return val;

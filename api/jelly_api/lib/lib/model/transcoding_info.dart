@@ -3,8 +3,6 @@
 //
 
 // ignore_for_file: unused_element
-// ignore: unused_import
-import 'package:jelly_api/lib/model/transcode_reason.dart';
 import 'package:jelly_api/lib/model/hardware_acceleration_type.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:json_annotation/json_annotation.dart';

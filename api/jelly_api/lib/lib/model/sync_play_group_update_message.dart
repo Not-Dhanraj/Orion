@@ -10,6 +10,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'sync_play_group_update_message.g.dart';
 
+
 @CopyWith()
 @JsonSerializable(
   checked: true,
@@ -20,43 +21,68 @@ part 'sync_play_group_update_message.g.dart';
 class SyncPlayGroupUpdateMessage {
   /// Returns a new [SyncPlayGroupUpdateMessage] instance.
   SyncPlayGroupUpdateMessage({
-    this.data,
 
-    this.messageId,
+     this.data,
 
-    this.messageType = SessionMessageType.syncPlayGroupUpdate,
+     this.messageId,
+
+     this.messageType = SessionMessageType.syncPlayGroupUpdate,
   });
 
-  /// Group update data
-  @JsonKey(name: r'Data', required: false, includeIfNull: false)
+      /// Group update data
+  @JsonKey(
+    
+    name: r'Data',
+    required: false,
+    includeIfNull: false,
+  )
+
+
   final GroupUpdate? data;
 
-  /// Gets or sets the message id.
-  @JsonKey(name: r'MessageId', required: false, includeIfNull: false)
+
+
+      /// Gets or sets the message id.
+  @JsonKey(
+    
+    name: r'MessageId',
+    required: false,
+    includeIfNull: false,
+  )
+
+
   final String? messageId;
 
-  /// The different kinds of messages that are used in the WebSocket api.
+
+
+      /// The different kinds of messages that are used in the WebSocket api.
   @JsonKey(
     defaultValue: SessionMessageType.syncPlayGroupUpdate,
     name: r'MessageType',
     required: false,
     includeIfNull: false,
   )
+
+
   final SessionMessageType? messageType;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is SyncPlayGroupUpdateMessage &&
-          other.data == data &&
-          other.messageId == messageId &&
-          other.messageType == messageType;
 
-  @override
-  int get hashCode => data.hashCode + messageId.hashCode + messageType.hashCode;
 
-  factory SyncPlayGroupUpdateMessage.fromJson(Map<String, dynamic> json) =>
-      _$SyncPlayGroupUpdateMessageFromJson(json);
+
+
+    @override
+    bool operator ==(Object other) => identical(this, other) || other is SyncPlayGroupUpdateMessage &&
+      other.data == data &&
+      other.messageId == messageId &&
+      other.messageType == messageType;
+
+    @override
+    int get hashCode =>
+        data.hashCode +
+        messageId.hashCode +
+        messageType.hashCode;
+
+  factory SyncPlayGroupUpdateMessage.fromJson(Map<String, dynamic> json) => _$SyncPlayGroupUpdateMessageFromJson(json);
 
   Map<String, dynamic> toJson() => _$SyncPlayGroupUpdateMessageToJson(this);
 
@@ -64,4 +90,6 @@ class SyncPlayGroupUpdateMessage {
   String toString() {
     return toJson().toString();
   }
+
 }
+

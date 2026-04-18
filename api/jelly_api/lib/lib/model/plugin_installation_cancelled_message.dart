@@ -10,6 +10,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'plugin_installation_cancelled_message.g.dart';
 
+
 @CopyWith()
 @JsonSerializable(
   checked: true,
@@ -20,53 +21,75 @@ part 'plugin_installation_cancelled_message.g.dart';
 class PluginInstallationCancelledMessage {
   /// Returns a new [PluginInstallationCancelledMessage] instance.
   PluginInstallationCancelledMessage({
-    this.data,
 
-    this.messageId,
+     this.data,
 
-    this.messageType = SessionMessageType.packageInstallationCancelled,
+     this.messageId,
+
+     this.messageType = SessionMessageType.packageInstallationCancelled,
   });
 
-  /// Class InstallationInfo.
-  @JsonKey(name: r'Data', required: false, includeIfNull: false)
+      /// Class InstallationInfo.
+  @JsonKey(
+    
+    name: r'Data',
+    required: false,
+    includeIfNull: false,
+  )
+
+
   final InstallationInfo? data;
 
-  /// Gets or sets the message id.
-  @JsonKey(name: r'MessageId', required: false, includeIfNull: false)
+
+
+      /// Gets or sets the message id.
+  @JsonKey(
+    
+    name: r'MessageId',
+    required: false,
+    includeIfNull: false,
+  )
+
+
   final String? messageId;
 
-  /// The different kinds of messages that are used in the WebSocket api.
+
+
+      /// The different kinds of messages that are used in the WebSocket api.
   @JsonKey(
     defaultValue: SessionMessageType.packageInstallationCancelled,
     name: r'MessageType',
     required: false,
     includeIfNull: false,
   )
+
+
   final SessionMessageType? messageType;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PluginInstallationCancelledMessage &&
-          other.data == data &&
-          other.messageId == messageId &&
-          other.messageType == messageType;
 
-  @override
-  int get hashCode =>
-      (data == null ? 0 : data.hashCode) +
-      messageId.hashCode +
-      messageType.hashCode;
 
-  factory PluginInstallationCancelledMessage.fromJson(
-    Map<String, dynamic> json,
-  ) => _$PluginInstallationCancelledMessageFromJson(json);
 
-  Map<String, dynamic> toJson() =>
-      _$PluginInstallationCancelledMessageToJson(this);
+
+    @override
+    bool operator ==(Object other) => identical(this, other) || other is PluginInstallationCancelledMessage &&
+      other.data == data &&
+      other.messageId == messageId &&
+      other.messageType == messageType;
+
+    @override
+    int get hashCode =>
+        (data == null ? 0 : data.hashCode) +
+        messageId.hashCode +
+        messageType.hashCode;
+
+  factory PluginInstallationCancelledMessage.fromJson(Map<String, dynamic> json) => _$PluginInstallationCancelledMessageFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PluginInstallationCancelledMessageToJson(this);
 
   @override
   String toString() {
     return toJson().toString();
   }
+
 }
+

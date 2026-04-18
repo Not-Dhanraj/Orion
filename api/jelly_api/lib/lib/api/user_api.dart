@@ -16,7 +16,6 @@ import 'package:jelly_api/lib/model/forgot_password_dto.dart';
 import 'package:jelly_api/lib/model/forgot_password_pin_dto.dart';
 import 'package:jelly_api/lib/model/forgot_password_result.dart';
 import 'package:jelly_api/lib/model/pin_redeem_result.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 import 'package:jelly_api/lib/model/quick_connect_dto.dart';
 import 'package:jelly_api/lib/model/update_user_password.dart';
 import 'package:jelly_api/lib/model/user_configuration.dart';
@@ -24,13 +23,12 @@ import 'package:jelly_api/lib/model/user_dto.dart';
 import 'package:jelly_api/lib/model/user_policy.dart';
 
 class UserApi {
-
   final Dio _dio;
 
   const UserApi(this._dio);
 
   /// Authenticates a user by name.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [authenticateUserByName] - The M:Jellyfin.Api.Controllers.UserController.AuthenticateUserByName(Jellyfin.Api.Models.UserDtos.AuthenticateUserByName) request.
@@ -43,7 +41,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [AuthenticationResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<AuthenticationResult>> authenticateUserByName({ 
+  Future<Response<AuthenticationResult>> authenticateUserByName({
     required AuthenticateUserByName authenticateUserByName,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -55,13 +53,8 @@ class UserApi {
     final _path = r'/Users/AuthenticateByName';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       contentType: 'application/json',
       validateStatus: validateStatus,
     );
@@ -69,13 +62,10 @@ class UserApi {
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(authenticateUserByName);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(authenticateUserByName);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -94,9 +84,14 @@ _bodyData=jsonEncode(authenticateUserByName);
     AuthenticationResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<AuthenticationResult, AuthenticationResult>(rawData, 'AuthenticationResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<AuthenticationResult, AuthenticationResult>(
+              rawData,
+              'AuthenticationResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -120,7 +115,7 @@ _responseData = rawData == null ? null : deserialize<AuthenticationResult, Authe
   }
 
   /// Authenticates a user with quick connect.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [quickConnectDto] - The Jellyfin.Api.Models.UserDtos.QuickConnectDto request.
@@ -133,7 +128,7 @@ _responseData = rawData == null ? null : deserialize<AuthenticationResult, Authe
   ///
   /// Returns a [Future] containing a [Response] with a [AuthenticationResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<AuthenticationResult>> authenticateWithQuickConnect({ 
+  Future<Response<AuthenticationResult>> authenticateWithQuickConnect({
     required QuickConnectDto quickConnectDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -145,13 +140,8 @@ _responseData = rawData == null ? null : deserialize<AuthenticationResult, Authe
     final _path = r'/Users/AuthenticateWithQuickConnect';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       contentType: 'application/json',
       validateStatus: validateStatus,
     );
@@ -159,13 +149,10 @@ _responseData = rawData == null ? null : deserialize<AuthenticationResult, Authe
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(quickConnectDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(quickConnectDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -184,9 +171,14 @@ _bodyData=jsonEncode(quickConnectDto);
     AuthenticationResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<AuthenticationResult, AuthenticationResult>(rawData, 'AuthenticationResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<AuthenticationResult, AuthenticationResult>(
+              rawData,
+              'AuthenticationResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -210,7 +202,7 @@ _responseData = rawData == null ? null : deserialize<AuthenticationResult, Authe
   }
 
   /// Creates a user.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [createUserByName] - The create user by name request body.
@@ -223,7 +215,7 @@ _responseData = rawData == null ? null : deserialize<AuthenticationResult, Authe
   ///
   /// Returns a [Future] containing a [Response] with a [UserDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<UserDto>> createUserByName({ 
+  Future<Response<UserDto>> createUserByName({
     required CreateUserByName createUserByName,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -235,9 +227,7 @@ _responseData = rawData == null ? null : deserialize<AuthenticationResult, Authe
     final _path = r'/Users/New';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -256,13 +246,10 @@ _responseData = rawData == null ? null : deserialize<AuthenticationResult, Authe
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(createUserByName);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(createUserByName);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -281,9 +268,10 @@ _bodyData=jsonEncode(createUserByName);
     UserDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<UserDto, UserDto>(rawData, 'UserDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<UserDto, UserDto>(rawData, 'UserDto', growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -307,7 +295,7 @@ _responseData = rawData == null ? null : deserialize<UserDto, UserDto>(rawData, 
   }
 
   /// Deletes a user.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [userId] - The user id.
@@ -320,7 +308,7 @@ _responseData = rawData == null ? null : deserialize<UserDto, UserDto>(rawData, 
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> deleteUser({ 
+  Future<Response<void>> deleteUser({
     required String userId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -329,12 +317,15 @@ _responseData = rawData == null ? null : deserialize<UserDto, UserDto>(rawData, 
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Users/{userId}'.replaceAll('{' r'userId' '}', userId.toString());
+    final _path = r'/Users/{userId}'.replaceAll(
+      '{'
+      r'userId'
+      '}',
+      userId.toString(),
+    );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -361,7 +352,7 @@ _responseData = rawData == null ? null : deserialize<UserDto, UserDto>(rawData, 
   }
 
   /// Initiates the forgot password process for a local user.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [forgotPasswordDto] - The forgot password request containing the entered username.
@@ -374,7 +365,7 @@ _responseData = rawData == null ? null : deserialize<UserDto, UserDto>(rawData, 
   ///
   /// Returns a [Future] containing a [Response] with a [ForgotPasswordResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ForgotPasswordResult>> forgotPassword({ 
+  Future<Response<ForgotPasswordResult>> forgotPassword({
     required ForgotPasswordDto forgotPasswordDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -386,13 +377,8 @@ _responseData = rawData == null ? null : deserialize<UserDto, UserDto>(rawData, 
     final _path = r'/Users/ForgotPassword';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       contentType: 'application/json',
       validateStatus: validateStatus,
     );
@@ -400,13 +386,10 @@ _responseData = rawData == null ? null : deserialize<UserDto, UserDto>(rawData, 
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(forgotPasswordDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(forgotPasswordDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -425,9 +408,14 @@ _bodyData=jsonEncode(forgotPasswordDto);
     ForgotPasswordResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<ForgotPasswordResult, ForgotPasswordResult>(rawData, 'ForgotPasswordResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<ForgotPasswordResult, ForgotPasswordResult>(
+              rawData,
+              'ForgotPasswordResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -451,7 +439,7 @@ _responseData = rawData == null ? null : deserialize<ForgotPasswordResult, Forgo
   }
 
   /// Redeems a forgot password pin.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [forgotPasswordPinDto] - The forgot password pin request containing the entered pin.
@@ -464,7 +452,7 @@ _responseData = rawData == null ? null : deserialize<ForgotPasswordResult, Forgo
   ///
   /// Returns a [Future] containing a [Response] with a [PinRedeemResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<PinRedeemResult>> forgotPasswordPin({ 
+  Future<Response<PinRedeemResult>> forgotPasswordPin({
     required ForgotPasswordPinDto forgotPasswordPinDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -476,13 +464,8 @@ _responseData = rawData == null ? null : deserialize<ForgotPasswordResult, Forgo
     final _path = r'/Users/ForgotPassword/Pin';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       contentType: 'application/json',
       validateStatus: validateStatus,
     );
@@ -490,13 +473,10 @@ _responseData = rawData == null ? null : deserialize<ForgotPasswordResult, Forgo
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(forgotPasswordPinDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(forgotPasswordPinDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -515,9 +495,14 @@ _bodyData=jsonEncode(forgotPasswordPinDto);
     PinRedeemResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<PinRedeemResult, PinRedeemResult>(rawData, 'PinRedeemResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<PinRedeemResult, PinRedeemResult>(
+              rawData,
+              'PinRedeemResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -541,7 +526,7 @@ _responseData = rawData == null ? null : deserialize<PinRedeemResult, PinRedeemR
   }
 
   /// Gets the user based on auth token.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -553,7 +538,7 @@ _responseData = rawData == null ? null : deserialize<PinRedeemResult, PinRedeemR
   ///
   /// Returns a [Future] containing a [Response] with a [UserDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<UserDto>> getCurrentUser({ 
+  Future<Response<UserDto>> getCurrentUser({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -564,9 +549,7 @@ _responseData = rawData == null ? null : deserialize<PinRedeemResult, PinRedeemR
     final _path = r'/Users/Me';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -592,9 +575,10 @@ _responseData = rawData == null ? null : deserialize<PinRedeemResult, PinRedeemR
     UserDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<UserDto, UserDto>(rawData, 'UserDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<UserDto, UserDto>(rawData, 'UserDto', growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -618,7 +602,7 @@ _responseData = rawData == null ? null : deserialize<UserDto, UserDto>(rawData, 
   }
 
   /// Gets a list of publicly visible users for display on a login screen.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -630,7 +614,7 @@ _responseData = rawData == null ? null : deserialize<UserDto, UserDto>(rawData, 
   ///
   /// Returns a [Future] containing a [Response] with a [List<UserDto>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<UserDto>>> getPublicUsers({ 
+  Future<Response<List<UserDto>>> getPublicUsers({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -641,13 +625,8 @@ _responseData = rawData == null ? null : deserialize<UserDto, UserDto>(rawData, 
     final _path = r'/Users/Public';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -662,9 +641,14 @@ _responseData = rawData == null ? null : deserialize<UserDto, UserDto>(rawData, 
     List<UserDto>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<UserDto>, UserDto>(rawData, 'List<UserDto>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<UserDto>, UserDto>(
+              rawData,
+              'List<UserDto>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -688,7 +672,7 @@ _responseData = rawData == null ? null : deserialize<List<UserDto>, UserDto>(raw
   }
 
   /// Gets a user by Id.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [userId] - The user id.
@@ -701,7 +685,7 @@ _responseData = rawData == null ? null : deserialize<List<UserDto>, UserDto>(raw
   ///
   /// Returns a [Future] containing a [Response] with a [UserDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<UserDto>> getUserById({ 
+  Future<Response<UserDto>> getUserById({
     required String userId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -710,12 +694,15 @@ _responseData = rawData == null ? null : deserialize<List<UserDto>, UserDto>(raw
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Users/{userId}'.replaceAll('{' r'userId' '}', userId.toString());
+    final _path = r'/Users/{userId}'.replaceAll(
+      '{'
+      r'userId'
+      '}',
+      userId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -741,9 +728,10 @@ _responseData = rawData == null ? null : deserialize<List<UserDto>, UserDto>(raw
     UserDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<UserDto, UserDto>(rawData, 'UserDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<UserDto, UserDto>(rawData, 'UserDto', growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -767,7 +755,7 @@ _responseData = rawData == null ? null : deserialize<UserDto, UserDto>(rawData, 
   }
 
   /// Gets a list of users.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [isHidden] - Optional filter by IsHidden=true or false.
@@ -781,7 +769,7 @@ _responseData = rawData == null ? null : deserialize<UserDto, UserDto>(rawData, 
   ///
   /// Returns a [Future] containing a [Response] with a [List<UserDto>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<UserDto>>> getUsers({ 
+  Future<Response<List<UserDto>>> getUsers({
     bool? isHidden,
     bool? isDisabled,
     CancelToken? cancelToken,
@@ -794,9 +782,7 @@ _responseData = rawData == null ? null : deserialize<UserDto, UserDto>(rawData, 
     final _path = r'/Users';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -828,9 +814,14 @@ _responseData = rawData == null ? null : deserialize<UserDto, UserDto>(rawData, 
     List<UserDto>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<UserDto>, UserDto>(rawData, 'List<UserDto>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<UserDto>, UserDto>(
+              rawData,
+              'List<UserDto>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -854,7 +845,7 @@ _responseData = rawData == null ? null : deserialize<List<UserDto>, UserDto>(raw
   }
 
   /// Updates a user.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [userDto] - The updated user model.
@@ -868,7 +859,7 @@ _responseData = rawData == null ? null : deserialize<List<UserDto>, UserDto>(raw
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> updateUser({ 
+  Future<Response<void>> updateUser({
     required UserDto userDto,
     String? userId,
     CancelToken? cancelToken,
@@ -881,9 +872,7 @@ _responseData = rawData == null ? null : deserialize<List<UserDto>, UserDto>(raw
     final _path = r'/Users';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -906,10 +895,10 @@ _responseData = rawData == null ? null : deserialize<List<UserDto>, UserDto>(raw
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(userDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(userDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
           queryParameters: _queryParameters,
@@ -934,7 +923,7 @@ _bodyData=jsonEncode(userDto);
   }
 
   /// Updates a user configuration.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [userConfiguration] - The new user configuration.
@@ -948,7 +937,7 @@ _bodyData=jsonEncode(userDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> updateUserConfiguration({ 
+  Future<Response<void>> updateUserConfiguration({
     required UserConfiguration userConfiguration,
     String? userId,
     CancelToken? cancelToken,
@@ -961,9 +950,7 @@ _bodyData=jsonEncode(userDto);
     final _path = r'/Users/Configuration';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -986,10 +973,10 @@ _bodyData=jsonEncode(userDto);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(userConfiguration);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(userConfiguration);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
           queryParameters: _queryParameters,
@@ -1014,7 +1001,7 @@ _bodyData=jsonEncode(userConfiguration);
   }
 
   /// Updates a user&#39;s password.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [updateUserPassword] - The M:Jellyfin.Api.Controllers.UserController.UpdateUserPassword(System.Nullable{System.Guid},Jellyfin.Api.Models.UserDtos.UpdateUserPassword) request.
@@ -1028,7 +1015,7 @@ _bodyData=jsonEncode(userConfiguration);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> updateUserPassword({ 
+  Future<Response<void>> updateUserPassword({
     required UpdateUserPassword updateUserPassword,
     String? userId,
     CancelToken? cancelToken,
@@ -1041,9 +1028,7 @@ _bodyData=jsonEncode(userConfiguration);
     final _path = r'/Users/Password';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1066,10 +1051,10 @@ _bodyData=jsonEncode(userConfiguration);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(updateUserPassword);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(updateUserPassword);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
           queryParameters: _queryParameters,
@@ -1094,7 +1079,7 @@ _bodyData=jsonEncode(updateUserPassword);
   }
 
   /// Updates a user policy.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [userId] - The user id.
@@ -1108,7 +1093,7 @@ _bodyData=jsonEncode(updateUserPassword);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> updateUserPolicy({ 
+  Future<Response<void>> updateUserPolicy({
     required String userId,
     required UserPolicy userPolicy,
     CancelToken? cancelToken,
@@ -1118,12 +1103,15 @@ _bodyData=jsonEncode(updateUserPassword);
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Users/{userId}/Policy'.replaceAll('{' r'userId' '}', userId.toString());
+    final _path = r'/Users/{userId}/Policy'.replaceAll(
+      '{'
+      r'userId'
+      '}',
+      userId.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1142,13 +1130,10 @@ _bodyData=jsonEncode(updateUserPassword);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(userPolicy);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(userPolicy);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -1166,5 +1151,4 @@ _bodyData=jsonEncode(userPolicy);
 
     return _response;
   }
-
 }

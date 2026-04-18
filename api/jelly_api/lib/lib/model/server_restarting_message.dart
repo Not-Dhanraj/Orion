@@ -9,6 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'server_restarting_message.g.dart';
 
+
 @CopyWith()
 @JsonSerializable(
   checked: true,
@@ -19,36 +20,51 @@ part 'server_restarting_message.g.dart';
 class ServerRestartingMessage {
   /// Returns a new [ServerRestartingMessage] instance.
   ServerRestartingMessage({
-    this.messageId,
 
-    this.messageType = SessionMessageType.serverRestarting,
+     this.messageId,
+
+     this.messageType = SessionMessageType.serverRestarting,
   });
 
-  /// Gets or sets the message id.
-  @JsonKey(name: r'MessageId', required: false, includeIfNull: false)
+      /// Gets or sets the message id.
+  @JsonKey(
+    
+    name: r'MessageId',
+    required: false,
+    includeIfNull: false,
+  )
+
+
   final String? messageId;
 
-  /// The different kinds of messages that are used in the WebSocket api.
+
+
+      /// The different kinds of messages that are used in the WebSocket api.
   @JsonKey(
     defaultValue: SessionMessageType.serverRestarting,
     name: r'MessageType',
     required: false,
     includeIfNull: false,
   )
+
+
   final SessionMessageType? messageType;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ServerRestartingMessage &&
-          other.messageId == messageId &&
-          other.messageType == messageType;
 
-  @override
-  int get hashCode => messageId.hashCode + messageType.hashCode;
 
-  factory ServerRestartingMessage.fromJson(Map<String, dynamic> json) =>
-      _$ServerRestartingMessageFromJson(json);
+
+
+    @override
+    bool operator ==(Object other) => identical(this, other) || other is ServerRestartingMessage &&
+      other.messageId == messageId &&
+      other.messageType == messageType;
+
+    @override
+    int get hashCode =>
+        messageId.hashCode +
+        messageType.hashCode;
+
+  factory ServerRestartingMessage.fromJson(Map<String, dynamic> json) => _$ServerRestartingMessageFromJson(json);
 
   Map<String, dynamic> toJson() => _$ServerRestartingMessageToJson(this);
 
@@ -56,4 +72,6 @@ class ServerRestartingMessage {
   String toString() {
     return toJson().toString();
   }
+
 }
+

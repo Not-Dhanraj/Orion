@@ -10,6 +10,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'scheduled_task_ended_message.g.dart';
 
+
 @CopyWith()
 @JsonSerializable(
   checked: true,
@@ -20,46 +21,68 @@ part 'scheduled_task_ended_message.g.dart';
 class ScheduledTaskEndedMessage {
   /// Returns a new [ScheduledTaskEndedMessage] instance.
   ScheduledTaskEndedMessage({
-    this.data,
 
-    this.messageId,
+     this.data,
 
-    this.messageType = SessionMessageType.scheduledTaskEnded,
+     this.messageId,
+
+     this.messageType = SessionMessageType.scheduledTaskEnded,
   });
 
-  /// Class TaskExecutionInfo.
-  @JsonKey(name: r'Data', required: false, includeIfNull: false)
+      /// Class TaskExecutionInfo.
+  @JsonKey(
+    
+    name: r'Data',
+    required: false,
+    includeIfNull: false,
+  )
+
+
   final TaskResult? data;
 
-  /// Gets or sets the message id.
-  @JsonKey(name: r'MessageId', required: false, includeIfNull: false)
+
+
+      /// Gets or sets the message id.
+  @JsonKey(
+    
+    name: r'MessageId',
+    required: false,
+    includeIfNull: false,
+  )
+
+
   final String? messageId;
 
-  /// The different kinds of messages that are used in the WebSocket api.
+
+
+      /// The different kinds of messages that are used in the WebSocket api.
   @JsonKey(
     defaultValue: SessionMessageType.scheduledTaskEnded,
     name: r'MessageType',
     required: false,
     includeIfNull: false,
   )
+
+
   final SessionMessageType? messageType;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ScheduledTaskEndedMessage &&
-          other.data == data &&
-          other.messageId == messageId &&
-          other.messageType == messageType;
 
-  @override
-  int get hashCode =>
-      (data == null ? 0 : data.hashCode) +
-      messageId.hashCode +
-      messageType.hashCode;
 
-  factory ScheduledTaskEndedMessage.fromJson(Map<String, dynamic> json) =>
-      _$ScheduledTaskEndedMessageFromJson(json);
+
+
+    @override
+    bool operator ==(Object other) => identical(this, other) || other is ScheduledTaskEndedMessage &&
+      other.data == data &&
+      other.messageId == messageId &&
+      other.messageType == messageType;
+
+    @override
+    int get hashCode =>
+        (data == null ? 0 : data.hashCode) +
+        messageId.hashCode +
+        messageType.hashCode;
+
+  factory ScheduledTaskEndedMessage.fromJson(Map<String, dynamic> json) => _$ScheduledTaskEndedMessageFromJson(json);
 
   Map<String, dynamic> toJson() => _$ScheduledTaskEndedMessageToJson(this);
 
@@ -67,4 +90,6 @@ class ScheduledTaskEndedMessage {
   String toString() {
     return toJson().toString();
   }
+
 }
+

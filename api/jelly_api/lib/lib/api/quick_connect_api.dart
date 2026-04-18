@@ -9,17 +9,15 @@ import 'dart:convert';
 import 'package:jelly_api/lib/deserialize.dart';
 import 'package:dio/dio.dart';
 
-import 'package:jelly_api/lib/model/problem_details.dart';
 import 'package:jelly_api/lib/model/quick_connect_result.dart';
 
 class QuickConnectApi {
-
   final Dio _dio;
 
   const QuickConnectApi(this._dio);
 
   /// Authorizes a pending quick connect request.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [code] - Quick connect code to authorize.
@@ -33,7 +31,7 @@ class QuickConnectApi {
   ///
   /// Returns a [Future] containing a [Response] with a [bool] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<bool>> authorizeQuickConnect({ 
+  Future<Response<bool>> authorizeQuickConnect({
     required String code,
     String? userId,
     CancelToken? cancelToken,
@@ -46,9 +44,7 @@ class QuickConnectApi {
     final _path = r'/QuickConnect/Authorize';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -80,9 +76,10 @@ class QuickConnectApi {
     bool? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<bool, bool>(rawData, 'bool', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<bool, bool>(rawData, 'bool', growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -106,7 +103,7 @@ _responseData = rawData == null ? null : deserialize<bool, bool>(rawData, 'bool'
   }
 
   /// Gets the current quick connect state.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -118,7 +115,7 @@ _responseData = rawData == null ? null : deserialize<bool, bool>(rawData, 'bool'
   ///
   /// Returns a [Future] containing a [Response] with a [bool] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<bool>> getQuickConnectEnabled({ 
+  Future<Response<bool>> getQuickConnectEnabled({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -129,13 +126,8 @@ _responseData = rawData == null ? null : deserialize<bool, bool>(rawData, 'bool'
     final _path = r'/QuickConnect/Enabled';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -150,9 +142,10 @@ _responseData = rawData == null ? null : deserialize<bool, bool>(rawData, 'bool'
     bool? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<bool, bool>(rawData, 'bool', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<bool, bool>(rawData, 'bool', growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -176,7 +169,7 @@ _responseData = rawData == null ? null : deserialize<bool, bool>(rawData, 'bool'
   }
 
   /// Attempts to retrieve authentication information.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [secret] - Secret previously returned from the Initiate endpoint.
@@ -189,7 +182,7 @@ _responseData = rawData == null ? null : deserialize<bool, bool>(rawData, 'bool'
   ///
   /// Returns a [Future] containing a [Response] with a [QuickConnectResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<QuickConnectResult>> getQuickConnectState({ 
+  Future<Response<QuickConnectResult>> getQuickConnectState({
     required String secret,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -201,19 +194,12 @@ _responseData = rawData == null ? null : deserialize<bool, bool>(rawData, 'bool'
     final _path = r'/QuickConnect/Connect';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      r'secret': secret,
-    };
+    final _queryParameters = <String, dynamic>{r'secret': secret};
 
     final _response = await _dio.request<Object>(
       _path,
@@ -227,9 +213,14 @@ _responseData = rawData == null ? null : deserialize<bool, bool>(rawData, 'bool'
     QuickConnectResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<QuickConnectResult, QuickConnectResult>(rawData, 'QuickConnectResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<QuickConnectResult, QuickConnectResult>(
+              rawData,
+              'QuickConnectResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -253,7 +244,7 @@ _responseData = rawData == null ? null : deserialize<QuickConnectResult, QuickCo
   }
 
   /// Initiate a new quick connect request.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -265,7 +256,7 @@ _responseData = rawData == null ? null : deserialize<QuickConnectResult, QuickCo
   ///
   /// Returns a [Future] containing a [Response] with a [QuickConnectResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<QuickConnectResult>> initiateQuickConnect({ 
+  Future<Response<QuickConnectResult>> initiateQuickConnect({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -276,13 +267,8 @@ _responseData = rawData == null ? null : deserialize<QuickConnectResult, QuickCo
     final _path = r'/QuickConnect/Initiate';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -297,9 +283,14 @@ _responseData = rawData == null ? null : deserialize<QuickConnectResult, QuickCo
     QuickConnectResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<QuickConnectResult, QuickConnectResult>(rawData, 'QuickConnectResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<QuickConnectResult, QuickConnectResult>(
+              rawData,
+              'QuickConnectResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -321,5 +312,4 @@ _responseData = rawData == null ? null : deserialize<QuickConnectResult, QuickCo
       extra: _response.extra,
     );
   }
-
 }

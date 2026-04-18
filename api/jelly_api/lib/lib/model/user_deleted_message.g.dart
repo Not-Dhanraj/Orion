@@ -94,7 +94,7 @@ UserDeletedMessage _$UserDeletedMessageFromJson(Map<String, dynamic> json) =>
             'MessageType',
             (v) =>
                 $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-                SessionMessageType.userDeleted,
+                'UserDeleted',
           ),
         );
         return val;

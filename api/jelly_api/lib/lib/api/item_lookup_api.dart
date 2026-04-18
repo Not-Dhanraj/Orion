@@ -17,19 +17,17 @@ import 'package:jelly_api/lib/model/external_id_info.dart';
 import 'package:jelly_api/lib/model/movie_info_remote_search_query.dart';
 import 'package:jelly_api/lib/model/music_video_info_remote_search_query.dart';
 import 'package:jelly_api/lib/model/person_lookup_info_remote_search_query.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 import 'package:jelly_api/lib/model/remote_search_result.dart';
 import 'package:jelly_api/lib/model/series_info_remote_search_query.dart';
 import 'package:jelly_api/lib/model/trailer_info_remote_search_query.dart';
 
 class ItemLookupApi {
-
   final Dio _dio;
 
   const ItemLookupApi(this._dio);
 
   /// Applies search criteria to an item and refreshes metadata.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item id.
@@ -44,7 +42,7 @@ class ItemLookupApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> applySearchCriteria({ 
+  Future<Response<void>> applySearchCriteria({
     required String itemId,
     required RemoteSearchResult remoteSearchResult,
     bool? replaceAllImages = true,
@@ -55,12 +53,15 @@ class ItemLookupApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/RemoteSearch/Apply/{itemId}'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Items/RemoteSearch/Apply/{itemId}'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -83,10 +84,10 @@ class ItemLookupApi {
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(remoteSearchResult);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(remoteSearchResult);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
           queryParameters: _queryParameters,
@@ -111,7 +112,7 @@ _bodyData=jsonEncode(remoteSearchResult);
   }
 
   /// Get book remote search.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [bookInfoRemoteSearchQuery] - Remote search query.
@@ -124,7 +125,7 @@ _bodyData=jsonEncode(remoteSearchResult);
   ///
   /// Returns a [Future] containing a [Response] with a [List<RemoteSearchResult>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<RemoteSearchResult>>> getBookRemoteSearchResults({ 
+  Future<Response<List<RemoteSearchResult>>> getBookRemoteSearchResults({
     required BookInfoRemoteSearchQuery bookInfoRemoteSearchQuery,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -136,9 +137,7 @@ _bodyData=jsonEncode(remoteSearchResult);
     final _path = r'/Items/RemoteSearch/Book';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -157,13 +156,10 @@ _bodyData=jsonEncode(remoteSearchResult);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(bookInfoRemoteSearchQuery);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(bookInfoRemoteSearchQuery);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -182,9 +178,14 @@ _bodyData=jsonEncode(bookInfoRemoteSearchQuery);
     List<RemoteSearchResult>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, RemoteSearchResult>(rawData, 'List<RemoteSearchResult>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<RemoteSearchResult>, RemoteSearchResult>(
+              rawData,
+              'List<RemoteSearchResult>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -208,7 +209,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
   }
 
   /// Get box set remote search.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [boxSetInfoRemoteSearchQuery] - Remote search query.
@@ -221,7 +222,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
   ///
   /// Returns a [Future] containing a [Response] with a [List<RemoteSearchResult>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<RemoteSearchResult>>> getBoxSetRemoteSearchResults({ 
+  Future<Response<List<RemoteSearchResult>>> getBoxSetRemoteSearchResults({
     required BoxSetInfoRemoteSearchQuery boxSetInfoRemoteSearchQuery,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -233,9 +234,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
     final _path = r'/Items/RemoteSearch/BoxSet';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -254,13 +253,10 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(boxSetInfoRemoteSearchQuery);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(boxSetInfoRemoteSearchQuery);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -279,9 +275,14 @@ _bodyData=jsonEncode(boxSetInfoRemoteSearchQuery);
     List<RemoteSearchResult>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, RemoteSearchResult>(rawData, 'List<RemoteSearchResult>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<RemoteSearchResult>, RemoteSearchResult>(
+              rawData,
+              'List<RemoteSearchResult>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -305,7 +306,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
   }
 
   /// Get the item&#39;s external id info.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item id.
@@ -318,7 +319,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
   ///
   /// Returns a [Future] containing a [Response] with a [List<ExternalIdInfo>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<ExternalIdInfo>>> getExternalIdInfos({ 
+  Future<Response<List<ExternalIdInfo>>> getExternalIdInfos({
     required String itemId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -327,12 +328,15 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/ExternalIdInfos'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Items/{itemId}/ExternalIdInfos'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -358,9 +362,14 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
     List<ExternalIdInfo>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<ExternalIdInfo>, ExternalIdInfo>(rawData, 'List<ExternalIdInfo>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<ExternalIdInfo>, ExternalIdInfo>(
+              rawData,
+              'List<ExternalIdInfo>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -384,7 +393,7 @@ _responseData = rawData == null ? null : deserialize<List<ExternalIdInfo>, Exter
   }
 
   /// Get movie remote search.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [movieInfoRemoteSearchQuery] - Remote search query.
@@ -397,7 +406,7 @@ _responseData = rawData == null ? null : deserialize<List<ExternalIdInfo>, Exter
   ///
   /// Returns a [Future] containing a [Response] with a [List<RemoteSearchResult>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<RemoteSearchResult>>> getMovieRemoteSearchResults({ 
+  Future<Response<List<RemoteSearchResult>>> getMovieRemoteSearchResults({
     required MovieInfoRemoteSearchQuery movieInfoRemoteSearchQuery,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -409,9 +418,7 @@ _responseData = rawData == null ? null : deserialize<List<ExternalIdInfo>, Exter
     final _path = r'/Items/RemoteSearch/Movie';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -430,13 +437,10 @@ _responseData = rawData == null ? null : deserialize<List<ExternalIdInfo>, Exter
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(movieInfoRemoteSearchQuery);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(movieInfoRemoteSearchQuery);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -455,9 +459,14 @@ _bodyData=jsonEncode(movieInfoRemoteSearchQuery);
     List<RemoteSearchResult>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, RemoteSearchResult>(rawData, 'List<RemoteSearchResult>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<RemoteSearchResult>, RemoteSearchResult>(
+              rawData,
+              'List<RemoteSearchResult>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -481,7 +490,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
   }
 
   /// Get music album remote search.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [albumInfoRemoteSearchQuery] - Remote search query.
@@ -494,7 +503,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
   ///
   /// Returns a [Future] containing a [Response] with a [List<RemoteSearchResult>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<RemoteSearchResult>>> getMusicAlbumRemoteSearchResults({ 
+  Future<Response<List<RemoteSearchResult>>> getMusicAlbumRemoteSearchResults({
     required AlbumInfoRemoteSearchQuery albumInfoRemoteSearchQuery,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -506,9 +515,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
     final _path = r'/Items/RemoteSearch/MusicAlbum';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -527,13 +534,10 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(albumInfoRemoteSearchQuery);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(albumInfoRemoteSearchQuery);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -552,9 +556,14 @@ _bodyData=jsonEncode(albumInfoRemoteSearchQuery);
     List<RemoteSearchResult>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, RemoteSearchResult>(rawData, 'List<RemoteSearchResult>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<RemoteSearchResult>, RemoteSearchResult>(
+              rawData,
+              'List<RemoteSearchResult>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -578,7 +587,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
   }
 
   /// Get music artist remote search.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [artistInfoRemoteSearchQuery] - Remote search query.
@@ -591,7 +600,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
   ///
   /// Returns a [Future] containing a [Response] with a [List<RemoteSearchResult>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<RemoteSearchResult>>> getMusicArtistRemoteSearchResults({ 
+  Future<Response<List<RemoteSearchResult>>> getMusicArtistRemoteSearchResults({
     required ArtistInfoRemoteSearchQuery artistInfoRemoteSearchQuery,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -603,9 +612,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
     final _path = r'/Items/RemoteSearch/MusicArtist';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -624,13 +631,10 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(artistInfoRemoteSearchQuery);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(artistInfoRemoteSearchQuery);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -649,9 +653,14 @@ _bodyData=jsonEncode(artistInfoRemoteSearchQuery);
     List<RemoteSearchResult>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, RemoteSearchResult>(rawData, 'List<RemoteSearchResult>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<RemoteSearchResult>, RemoteSearchResult>(
+              rawData,
+              'List<RemoteSearchResult>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -675,7 +684,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
   }
 
   /// Get music video remote search.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [musicVideoInfoRemoteSearchQuery] - Remote search query.
@@ -688,7 +697,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
   ///
   /// Returns a [Future] containing a [Response] with a [List<RemoteSearchResult>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<RemoteSearchResult>>> getMusicVideoRemoteSearchResults({ 
+  Future<Response<List<RemoteSearchResult>>> getMusicVideoRemoteSearchResults({
     required MusicVideoInfoRemoteSearchQuery musicVideoInfoRemoteSearchQuery,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -700,9 +709,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
     final _path = r'/Items/RemoteSearch/MusicVideo';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -721,13 +728,10 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(musicVideoInfoRemoteSearchQuery);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(musicVideoInfoRemoteSearchQuery);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -746,9 +750,14 @@ _bodyData=jsonEncode(musicVideoInfoRemoteSearchQuery);
     List<RemoteSearchResult>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, RemoteSearchResult>(rawData, 'List<RemoteSearchResult>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<RemoteSearchResult>, RemoteSearchResult>(
+              rawData,
+              'List<RemoteSearchResult>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -772,7 +781,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
   }
 
   /// Get person remote search.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [personLookupInfoRemoteSearchQuery] - Remote search query.
@@ -785,8 +794,9 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
   ///
   /// Returns a [Future] containing a [Response] with a [List<RemoteSearchResult>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<RemoteSearchResult>>> getPersonRemoteSearchResults({ 
-    required PersonLookupInfoRemoteSearchQuery personLookupInfoRemoteSearchQuery,
+  Future<Response<List<RemoteSearchResult>>> getPersonRemoteSearchResults({
+    required PersonLookupInfoRemoteSearchQuery
+    personLookupInfoRemoteSearchQuery,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -797,9 +807,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
     final _path = r'/Items/RemoteSearch/Person';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -818,13 +826,10 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(personLookupInfoRemoteSearchQuery);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(personLookupInfoRemoteSearchQuery);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -843,9 +848,14 @@ _bodyData=jsonEncode(personLookupInfoRemoteSearchQuery);
     List<RemoteSearchResult>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, RemoteSearchResult>(rawData, 'List<RemoteSearchResult>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<RemoteSearchResult>, RemoteSearchResult>(
+              rawData,
+              'List<RemoteSearchResult>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -869,7 +879,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
   }
 
   /// Get series remote search.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [seriesInfoRemoteSearchQuery] - Remote search query.
@@ -882,7 +892,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
   ///
   /// Returns a [Future] containing a [Response] with a [List<RemoteSearchResult>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<RemoteSearchResult>>> getSeriesRemoteSearchResults({ 
+  Future<Response<List<RemoteSearchResult>>> getSeriesRemoteSearchResults({
     required SeriesInfoRemoteSearchQuery seriesInfoRemoteSearchQuery,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -894,9 +904,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
     final _path = r'/Items/RemoteSearch/Series';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -915,13 +923,10 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(seriesInfoRemoteSearchQuery);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(seriesInfoRemoteSearchQuery);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -940,9 +945,14 @@ _bodyData=jsonEncode(seriesInfoRemoteSearchQuery);
     List<RemoteSearchResult>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, RemoteSearchResult>(rawData, 'List<RemoteSearchResult>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<RemoteSearchResult>, RemoteSearchResult>(
+              rawData,
+              'List<RemoteSearchResult>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -966,7 +976,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
   }
 
   /// Get trailer remote search.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [trailerInfoRemoteSearchQuery] - Remote search query.
@@ -979,7 +989,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
   ///
   /// Returns a [Future] containing a [Response] with a [List<RemoteSearchResult>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<RemoteSearchResult>>> getTrailerRemoteSearchResults({ 
+  Future<Response<List<RemoteSearchResult>>> getTrailerRemoteSearchResults({
     required TrailerInfoRemoteSearchQuery trailerInfoRemoteSearchQuery,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -991,9 +1001,7 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
     final _path = r'/Items/RemoteSearch/Trailer';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1012,13 +1020,10 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(trailerInfoRemoteSearchQuery);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(trailerInfoRemoteSearchQuery);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -1037,9 +1042,14 @@ _bodyData=jsonEncode(trailerInfoRemoteSearchQuery);
     List<RemoteSearchResult>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, RemoteSearchResult>(rawData, 'List<RemoteSearchResult>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<RemoteSearchResult>, RemoteSearchResult>(
+              rawData,
+              'List<RemoteSearchResult>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1061,5 +1071,4 @@ _responseData = rawData == null ? null : deserialize<List<RemoteSearchResult>, R
       extra: _response.extra,
     );
   }
-
 }

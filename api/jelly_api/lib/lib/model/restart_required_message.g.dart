@@ -85,7 +85,7 @@ RestartRequiredMessage _$RestartRequiredMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            SessionMessageType.restartRequired,
+            'RestartRequired',
       ),
     );
     return val;

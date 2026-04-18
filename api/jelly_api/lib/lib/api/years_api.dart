@@ -16,17 +16,15 @@ import 'package:jelly_api/lib/model/image_type.dart';
 import 'package:jelly_api/lib/model/item_fields.dart';
 import 'package:jelly_api/lib/model/item_sort_by.dart';
 import 'package:jelly_api/lib/model/media_type.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 import 'package:jelly_api/lib/model/sort_order.dart';
 
 class YearsApi {
-
   final Dio _dio;
 
   const YearsApi(this._dio);
 
   /// Gets a year.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [year] - The year.
@@ -40,7 +38,7 @@ class YearsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDto>> getYear({ 
+  Future<Response<BaseItemDto>> getYear({
     required int year,
     String? userId,
     CancelToken? cancelToken,
@@ -50,12 +48,15 @@ class YearsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Years/{year}'.replaceAll('{' r'year' '}', year.toString());
+    final _path = r'/Years/{year}'.replaceAll(
+      '{'
+      r'year'
+      '}',
+      year.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -86,9 +87,14 @@ class YearsApi {
     BaseItemDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(rawData, 'BaseItemDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDto, BaseItemDto>(
+              rawData,
+              'BaseItemDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -112,7 +118,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(r
   }
 
   /// Get years.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [startIndex] - Skips over a given number of items within the results. Use for paging.
@@ -139,7 +145,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(r
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getYears({ 
+  Future<Response<BaseItemDtoQueryResult>> getYears({
     int? startIndex,
     int? limit,
     List<SortOrder>? sortOrder,
@@ -165,9 +171,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(r
     final _path = r'/Years';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -212,9 +216,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(r
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -236,5 +245,4 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
       extra: _response.extra,
     );
   }
-
 }

@@ -9,6 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'sessions_start_message.g.dart';
 
+
 @CopyWith()
 @JsonSerializable(
   checked: true,
@@ -19,36 +20,51 @@ part 'sessions_start_message.g.dart';
 class SessionsStartMessage {
   /// Returns a new [SessionsStartMessage] instance.
   SessionsStartMessage({
-    this.data,
 
-    this.messageType = SessionMessageType.sessionsStart,
+     this.data,
+
+     this.messageType = SessionMessageType.sessionsStart,
   });
 
-  /// Gets or sets the data.
-  @JsonKey(name: r'Data', required: false, includeIfNull: false)
+      /// Gets or sets the data.
+  @JsonKey(
+    
+    name: r'Data',
+    required: false,
+    includeIfNull: false,
+  )
+
+
   final String? data;
 
-  /// The different kinds of messages that are used in the WebSocket api.
+
+
+      /// The different kinds of messages that are used in the WebSocket api.
   @JsonKey(
     defaultValue: SessionMessageType.sessionsStart,
     name: r'MessageType',
     required: false,
     includeIfNull: false,
   )
+
+
   final SessionMessageType? messageType;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is SessionsStartMessage &&
-          other.data == data &&
-          other.messageType == messageType;
 
-  @override
-  int get hashCode => (data == null ? 0 : data.hashCode) + messageType.hashCode;
 
-  factory SessionsStartMessage.fromJson(Map<String, dynamic> json) =>
-      _$SessionsStartMessageFromJson(json);
+
+
+    @override
+    bool operator ==(Object other) => identical(this, other) || other is SessionsStartMessage &&
+      other.data == data &&
+      other.messageType == messageType;
+
+    @override
+    int get hashCode =>
+        (data == null ? 0 : data.hashCode) +
+        messageType.hashCode;
+
+  factory SessionsStartMessage.fromJson(Map<String, dynamic> json) => _$SessionsStartMessageFromJson(json);
 
   Map<String, dynamic> toJson() => _$SessionsStartMessageToJson(this);
 
@@ -56,4 +72,6 @@ class SessionsStartMessage {
   String toString() {
     return toJson().toString();
   }
+
 }
+

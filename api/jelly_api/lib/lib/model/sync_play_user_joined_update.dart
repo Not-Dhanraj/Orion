@@ -9,6 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'sync_play_user_joined_update.g.dart';
 
+
 @CopyWith()
 @JsonSerializable(
   checked: true,
@@ -19,43 +20,68 @@ part 'sync_play_user_joined_update.g.dart';
 class SyncPlayUserJoinedUpdate {
   /// Returns a new [SyncPlayUserJoinedUpdate] instance.
   SyncPlayUserJoinedUpdate({
-    this.groupId,
 
-    this.data,
+     this.groupId,
 
-    this.type = GroupUpdateType.userJoined,
+     this.data,
+
+     this.type = GroupUpdateType.userJoined,
   });
 
-  /// Gets the group identifier.
-  @JsonKey(name: r'GroupId', required: false, includeIfNull: false)
+      /// Gets the group identifier.
+  @JsonKey(
+    
+    name: r'GroupId',
+    required: false,
+    includeIfNull: false,
+  )
+
+
   final String? groupId;
 
-  /// Gets the update data.
-  @JsonKey(name: r'Data', required: false, includeIfNull: false)
+
+
+      /// Gets the update data.
+  @JsonKey(
+    
+    name: r'Data',
+    required: false,
+    includeIfNull: false,
+  )
+
+
   final String? data;
 
-  /// Enum GroupUpdateType.
+
+
+      /// Enum GroupUpdateType.
   @JsonKey(
     defaultValue: GroupUpdateType.userJoined,
     name: r'Type',
     required: false,
     includeIfNull: false,
   )
+
+
   final GroupUpdateType? type;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is SyncPlayUserJoinedUpdate &&
-          other.groupId == groupId &&
-          other.data == data &&
-          other.type == type;
 
-  @override
-  int get hashCode => groupId.hashCode + data.hashCode + type.hashCode;
 
-  factory SyncPlayUserJoinedUpdate.fromJson(Map<String, dynamic> json) =>
-      _$SyncPlayUserJoinedUpdateFromJson(json);
+
+
+    @override
+    bool operator ==(Object other) => identical(this, other) || other is SyncPlayUserJoinedUpdate &&
+      other.groupId == groupId &&
+      other.data == data &&
+      other.type == type;
+
+    @override
+    int get hashCode =>
+        groupId.hashCode +
+        data.hashCode +
+        type.hashCode;
+
+  factory SyncPlayUserJoinedUpdate.fromJson(Map<String, dynamic> json) => _$SyncPlayUserJoinedUpdateFromJson(json);
 
   Map<String, dynamic> toJson() => _$SyncPlayUserJoinedUpdateToJson(this);
 
@@ -63,4 +89,6 @@ class SyncPlayUserJoinedUpdate {
   String toString() {
     return toJson().toString();
   }
+
 }
+

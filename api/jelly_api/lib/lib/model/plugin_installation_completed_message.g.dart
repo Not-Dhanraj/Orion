@@ -107,7 +107,7 @@ PluginInstallationCompletedMessage _$PluginInstallationCompletedMessageFromJson(
         'MessageType',
         (v) =>
             $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-            SessionMessageType.packageInstallationCompleted,
+            'PackageInstallationCompleted',
       ),
     );
     return val;

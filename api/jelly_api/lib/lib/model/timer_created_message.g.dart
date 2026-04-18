@@ -100,7 +100,7 @@ TimerCreatedMessage _$TimerCreatedMessageFromJson(Map<String, dynamic> json) =>
             'MessageType',
             (v) =>
                 $enumDecodeNullable(_$SessionMessageTypeEnumMap, v) ??
-                SessionMessageType.timerCreated,
+                'TimerCreated',
           ),
         );
         return val;

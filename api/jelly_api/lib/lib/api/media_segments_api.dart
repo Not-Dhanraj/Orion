@@ -11,16 +11,14 @@ import 'package:dio/dio.dart';
 
 import 'package:jelly_api/lib/model/media_segment_dto_query_result.dart';
 import 'package:jelly_api/lib/model/media_segment_type.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 
 class MediaSegmentsApi {
-
   final Dio _dio;
 
   const MediaSegmentsApi(this._dio);
 
   /// Gets all media segments based on an itemId.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - The ItemId.
@@ -34,7 +32,7 @@ class MediaSegmentsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [MediaSegmentDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<MediaSegmentDtoQueryResult>> getItemSegments({ 
+  Future<Response<MediaSegmentDtoQueryResult>> getItemSegments({
     required String itemId,
     List<MediaSegmentType>? includeSegmentTypes,
     CancelToken? cancelToken,
@@ -44,12 +42,15 @@ class MediaSegmentsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/MediaSegments/{itemId}'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/MediaSegments/{itemId}'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -65,7 +66,8 @@ class MediaSegmentsApi {
     );
 
     final _queryParameters = <String, dynamic>{
-      if (includeSegmentTypes != null) r'includeSegmentTypes': includeSegmentTypes,
+      if (includeSegmentTypes != null)
+        r'includeSegmentTypes': includeSegmentTypes,
     };
 
     final _response = await _dio.request<Object>(
@@ -80,9 +82,14 @@ class MediaSegmentsApi {
     MediaSegmentDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<MediaSegmentDtoQueryResult, MediaSegmentDtoQueryResult>(rawData, 'MediaSegmentDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<MediaSegmentDtoQueryResult, MediaSegmentDtoQueryResult>(
+              rawData,
+              'MediaSegmentDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -104,5 +111,4 @@ _responseData = rawData == null ? null : deserialize<MediaSegmentDtoQueryResult,
       extra: _response.extra,
     );
   }
-
 }

@@ -22,7 +22,6 @@ import 'package:jelly_api/lib/model/item_sort_by.dart';
 import 'package:jelly_api/lib/model/listings_provider_info.dart';
 import 'package:jelly_api/lib/model/live_tv_info.dart';
 import 'package:jelly_api/lib/model/name_id_pair.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 import 'package:jelly_api/lib/model/recording_status.dart';
 import 'package:jelly_api/lib/model/series_timer_info_dto.dart';
 import 'package:jelly_api/lib/model/series_timer_info_dto_query_result.dart';
@@ -34,13 +33,12 @@ import 'package:jelly_api/lib/model/tuner_channel_mapping.dart';
 import 'package:jelly_api/lib/model/tuner_host_info.dart';
 
 class LiveTvApi {
-
   final Dio _dio;
 
   const LiveTvApi(this._dio);
 
   /// Adds a listings provider.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [pw] - Password.
@@ -56,7 +54,7 @@ class LiveTvApi {
   ///
   /// Returns a [Future] containing a [Response] with a [ListingsProviderInfo] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ListingsProviderInfo>> addListingProvider({ 
+  Future<Response<ListingsProviderInfo>> addListingProvider({
     String? pw,
     bool? validateListings = false,
     bool? validateLogin = false,
@@ -71,9 +69,7 @@ class LiveTvApi {
     final _path = r'/LiveTv/ListingProviders';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -98,10 +94,10 @@ class LiveTvApi {
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(listingsProviderInfo);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(listingsProviderInfo);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
           queryParameters: _queryParameters,
@@ -125,9 +121,14 @@ _bodyData=jsonEncode(listingsProviderInfo);
     ListingsProviderInfo? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<ListingsProviderInfo, ListingsProviderInfo>(rawData, 'ListingsProviderInfo', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<ListingsProviderInfo, ListingsProviderInfo>(
+              rawData,
+              'ListingsProviderInfo',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -151,7 +152,7 @@ _responseData = rawData == null ? null : deserialize<ListingsProviderInfo, Listi
   }
 
   /// Adds a tuner host.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [tunerHostInfo] - New tuner host.
@@ -164,7 +165,7 @@ _responseData = rawData == null ? null : deserialize<ListingsProviderInfo, Listi
   ///
   /// Returns a [Future] containing a [Response] with a [TunerHostInfo] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<TunerHostInfo>> addTunerHost({ 
+  Future<Response<TunerHostInfo>> addTunerHost({
     TunerHostInfo? tunerHostInfo,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -176,9 +177,7 @@ _responseData = rawData == null ? null : deserialize<ListingsProviderInfo, Listi
     final _path = r'/LiveTv/TunerHosts';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -197,13 +196,10 @@ _responseData = rawData == null ? null : deserialize<ListingsProviderInfo, Listi
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(tunerHostInfo);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(tunerHostInfo);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -222,9 +218,14 @@ _bodyData=jsonEncode(tunerHostInfo);
     TunerHostInfo? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<TunerHostInfo, TunerHostInfo>(rawData, 'TunerHostInfo', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<TunerHostInfo, TunerHostInfo>(
+              rawData,
+              'TunerHostInfo',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -248,7 +249,7 @@ _responseData = rawData == null ? null : deserialize<TunerHostInfo, TunerHostInf
   }
 
   /// Cancels a live tv series timer.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [timerId] - Timer id.
@@ -261,7 +262,7 @@ _responseData = rawData == null ? null : deserialize<TunerHostInfo, TunerHostInf
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> cancelSeriesTimer({ 
+  Future<Response<void>> cancelSeriesTimer({
     required String timerId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -270,12 +271,15 @@ _responseData = rawData == null ? null : deserialize<TunerHostInfo, TunerHostInf
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/LiveTv/SeriesTimers/{timerId}'.replaceAll('{' r'timerId' '}', timerId.toString());
+    final _path = r'/LiveTv/SeriesTimers/{timerId}'.replaceAll(
+      '{'
+      r'timerId'
+      '}',
+      timerId.toString(),
+    );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -302,7 +306,7 @@ _responseData = rawData == null ? null : deserialize<TunerHostInfo, TunerHostInf
   }
 
   /// Cancels a live tv timer.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [timerId] - Timer id.
@@ -315,7 +319,7 @@ _responseData = rawData == null ? null : deserialize<TunerHostInfo, TunerHostInf
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> cancelTimer({ 
+  Future<Response<void>> cancelTimer({
     required String timerId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -324,12 +328,15 @@ _responseData = rawData == null ? null : deserialize<TunerHostInfo, TunerHostInf
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/LiveTv/Timers/{timerId}'.replaceAll('{' r'timerId' '}', timerId.toString());
+    final _path = r'/LiveTv/Timers/{timerId}'.replaceAll(
+      '{'
+      r'timerId'
+      '}',
+      timerId.toString(),
+    );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -356,7 +363,7 @@ _responseData = rawData == null ? null : deserialize<TunerHostInfo, TunerHostInf
   }
 
   /// Creates a live tv series timer.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [seriesTimerInfoDto] - New series timer info.
@@ -369,7 +376,7 @@ _responseData = rawData == null ? null : deserialize<TunerHostInfo, TunerHostInf
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> createSeriesTimer({ 
+  Future<Response<void>> createSeriesTimer({
     SeriesTimerInfoDto? seriesTimerInfoDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -381,9 +388,7 @@ _responseData = rawData == null ? null : deserialize<TunerHostInfo, TunerHostInf
     final _path = r'/LiveTv/SeriesTimers';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -402,13 +407,10 @@ _responseData = rawData == null ? null : deserialize<TunerHostInfo, TunerHostInf
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(seriesTimerInfoDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(seriesTimerInfoDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -428,7 +430,7 @@ _bodyData=jsonEncode(seriesTimerInfoDto);
   }
 
   /// Creates a live tv timer.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [timerInfoDto] - New timer info.
@@ -441,7 +443,7 @@ _bodyData=jsonEncode(seriesTimerInfoDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> createTimer({ 
+  Future<Response<void>> createTimer({
     TimerInfoDto? timerInfoDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -453,9 +455,7 @@ _bodyData=jsonEncode(seriesTimerInfoDto);
     final _path = r'/LiveTv/Timers';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -474,13 +474,10 @@ _bodyData=jsonEncode(seriesTimerInfoDto);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(timerInfoDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(timerInfoDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -500,7 +497,7 @@ _bodyData=jsonEncode(timerInfoDto);
   }
 
   /// Delete listing provider.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [id] - Listing provider id.
@@ -513,7 +510,7 @@ _bodyData=jsonEncode(timerInfoDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> deleteListingProvider({ 
+  Future<Response<void>> deleteListingProvider({
     String? id,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -525,9 +522,7 @@ _bodyData=jsonEncode(timerInfoDto);
     final _path = r'/LiveTv/ListingProviders';
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -542,9 +537,7 @@ _bodyData=jsonEncode(timerInfoDto);
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      if (id != null) r'id': id,
-    };
+    final _queryParameters = <String, dynamic>{if (id != null) r'id': id};
 
     final _response = await _dio.request<Object>(
       _path,
@@ -559,7 +552,7 @@ _bodyData=jsonEncode(timerInfoDto);
   }
 
   /// Deletes a live tv recording.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [recordingId] - Recording id.
@@ -572,7 +565,7 @@ _bodyData=jsonEncode(timerInfoDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> deleteRecording({ 
+  Future<Response<void>> deleteRecording({
     required String recordingId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -581,12 +574,15 @@ _bodyData=jsonEncode(timerInfoDto);
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/LiveTv/Recordings/{recordingId}'.replaceAll('{' r'recordingId' '}', recordingId.toString());
+    final _path = r'/LiveTv/Recordings/{recordingId}'.replaceAll(
+      '{'
+      r'recordingId'
+      '}',
+      recordingId.toString(),
+    );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -613,7 +609,7 @@ _bodyData=jsonEncode(timerInfoDto);
   }
 
   /// Deletes a tuner host.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [id] - Tuner host id.
@@ -626,7 +622,7 @@ _bodyData=jsonEncode(timerInfoDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> deleteTunerHost({ 
+  Future<Response<void>> deleteTunerHost({
     String? id,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -638,9 +634,7 @@ _bodyData=jsonEncode(timerInfoDto);
     final _path = r'/LiveTv/TunerHosts';
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -655,9 +649,7 @@ _bodyData=jsonEncode(timerInfoDto);
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      if (id != null) r'id': id,
-    };
+    final _queryParameters = <String, dynamic>{if (id != null) r'id': id};
 
     final _response = await _dio.request<Object>(
       _path,
@@ -672,7 +664,7 @@ _bodyData=jsonEncode(timerInfoDto);
   }
 
   /// Discover tuners.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [newDevicesOnly] - Only discover new tuners.
@@ -685,7 +677,7 @@ _bodyData=jsonEncode(timerInfoDto);
   ///
   /// Returns a [Future] containing a [Response] with a [List<TunerHostInfo>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<TunerHostInfo>>> discoverTuners({ 
+  Future<Response<List<TunerHostInfo>>> discoverTuners({
     bool? newDevicesOnly = false,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -697,9 +689,7 @@ _bodyData=jsonEncode(timerInfoDto);
     final _path = r'/LiveTv/Tuners/Discover';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -730,9 +720,14 @@ _bodyData=jsonEncode(timerInfoDto);
     List<TunerHostInfo>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<TunerHostInfo>, TunerHostInfo>(rawData, 'List<TunerHostInfo>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<TunerHostInfo>, TunerHostInfo>(
+              rawData,
+              'List<TunerHostInfo>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -756,7 +751,7 @@ _responseData = rawData == null ? null : deserialize<List<TunerHostInfo>, TunerH
   }
 
   /// Discover tuners.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [newDevicesOnly] - Only discover new tuners.
@@ -769,7 +764,7 @@ _responseData = rawData == null ? null : deserialize<List<TunerHostInfo>, TunerH
   ///
   /// Returns a [Future] containing a [Response] with a [List<TunerHostInfo>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<TunerHostInfo>>> discvoverTuners({ 
+  Future<Response<List<TunerHostInfo>>> discvoverTuners({
     bool? newDevicesOnly = false,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -781,9 +776,7 @@ _responseData = rawData == null ? null : deserialize<List<TunerHostInfo>, TunerH
     final _path = r'/LiveTv/Tuners/Discvover';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -814,9 +807,14 @@ _responseData = rawData == null ? null : deserialize<List<TunerHostInfo>, TunerH
     List<TunerHostInfo>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<TunerHostInfo>, TunerHostInfo>(rawData, 'List<TunerHostInfo>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<TunerHostInfo>, TunerHostInfo>(
+              rawData,
+              'List<TunerHostInfo>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -840,7 +838,7 @@ _responseData = rawData == null ? null : deserialize<List<TunerHostInfo>, TunerH
   }
 
   /// Gets a live tv channel.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [channelId] - Channel id.
@@ -854,7 +852,7 @@ _responseData = rawData == null ? null : deserialize<List<TunerHostInfo>, TunerH
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDto>> getChannel({ 
+  Future<Response<BaseItemDto>> getChannel({
     required String channelId,
     String? userId,
     CancelToken? cancelToken,
@@ -864,12 +862,15 @@ _responseData = rawData == null ? null : deserialize<List<TunerHostInfo>, TunerH
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/LiveTv/Channels/{channelId}'.replaceAll('{' r'channelId' '}', channelId.toString());
+    final _path = r'/LiveTv/Channels/{channelId}'.replaceAll(
+      '{'
+      r'channelId'
+      '}',
+      channelId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -900,9 +901,14 @@ _responseData = rawData == null ? null : deserialize<List<TunerHostInfo>, TunerH
     BaseItemDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(rawData, 'BaseItemDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDto, BaseItemDto>(
+              rawData,
+              'BaseItemDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -926,7 +932,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(r
   }
 
   /// Get channel mapping options.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [providerId] - Provider id.
@@ -939,7 +945,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(r
   ///
   /// Returns a [Future] containing a [Response] with a [ChannelMappingOptionsDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ChannelMappingOptionsDto>> getChannelMappingOptions({ 
+  Future<Response<ChannelMappingOptionsDto>> getChannelMappingOptions({
     String? providerId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -951,9 +957,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(r
     final _path = r'/LiveTv/ChannelMappingOptions';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -984,9 +988,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(r
     ChannelMappingOptionsDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<ChannelMappingOptionsDto, ChannelMappingOptionsDto>(rawData, 'ChannelMappingOptionsDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<ChannelMappingOptionsDto, ChannelMappingOptionsDto>(
+              rawData,
+              'ChannelMappingOptionsDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1010,7 +1019,7 @@ _responseData = rawData == null ? null : deserialize<ChannelMappingOptionsDto, C
   }
 
   /// Gets default listings provider info.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -1022,7 +1031,7 @@ _responseData = rawData == null ? null : deserialize<ChannelMappingOptionsDto, C
   ///
   /// Returns a [Future] containing a [Response] with a [ListingsProviderInfo] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ListingsProviderInfo>> getDefaultListingProvider({ 
+  Future<Response<ListingsProviderInfo>> getDefaultListingProvider({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -1033,9 +1042,7 @@ _responseData = rawData == null ? null : deserialize<ChannelMappingOptionsDto, C
     final _path = r'/LiveTv/ListingProviders/Default';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1061,9 +1068,14 @@ _responseData = rawData == null ? null : deserialize<ChannelMappingOptionsDto, C
     ListingsProviderInfo? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<ListingsProviderInfo, ListingsProviderInfo>(rawData, 'ListingsProviderInfo', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<ListingsProviderInfo, ListingsProviderInfo>(
+              rawData,
+              'ListingsProviderInfo',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1087,7 +1099,7 @@ _responseData = rawData == null ? null : deserialize<ListingsProviderInfo, Listi
   }
 
   /// Gets the default values for a new timer.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [programId] - Optional. To attach default values based on a program.
@@ -1100,7 +1112,7 @@ _responseData = rawData == null ? null : deserialize<ListingsProviderInfo, Listi
   ///
   /// Returns a [Future] containing a [Response] with a [SeriesTimerInfoDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SeriesTimerInfoDto>> getDefaultTimer({ 
+  Future<Response<SeriesTimerInfoDto>> getDefaultTimer({
     String? programId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1112,9 +1124,7 @@ _responseData = rawData == null ? null : deserialize<ListingsProviderInfo, Listi
     final _path = r'/LiveTv/Timers/Defaults';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1145,9 +1155,14 @@ _responseData = rawData == null ? null : deserialize<ListingsProviderInfo, Listi
     SeriesTimerInfoDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<SeriesTimerInfoDto, SeriesTimerInfoDto>(rawData, 'SeriesTimerInfoDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<SeriesTimerInfoDto, SeriesTimerInfoDto>(
+              rawData,
+              'SeriesTimerInfoDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1171,7 +1186,7 @@ _responseData = rawData == null ? null : deserialize<SeriesTimerInfoDto, SeriesT
   }
 
   /// Get guide info.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -1183,7 +1198,7 @@ _responseData = rawData == null ? null : deserialize<SeriesTimerInfoDto, SeriesT
   ///
   /// Returns a [Future] containing a [Response] with a [GuideInfo] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GuideInfo>> getGuideInfo({ 
+  Future<Response<GuideInfo>> getGuideInfo({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -1194,9 +1209,7 @@ _responseData = rawData == null ? null : deserialize<SeriesTimerInfoDto, SeriesT
     final _path = r'/LiveTv/GuideInfo';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1222,9 +1235,14 @@ _responseData = rawData == null ? null : deserialize<SeriesTimerInfoDto, SeriesT
     GuideInfo? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<GuideInfo, GuideInfo>(rawData, 'GuideInfo', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<GuideInfo, GuideInfo>(
+              rawData,
+              'GuideInfo',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1248,7 +1266,7 @@ _responseData = rawData == null ? null : deserialize<GuideInfo, GuideInfo>(rawDa
   }
 
   /// Gets available lineups.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [id] - Provider id.
@@ -1264,7 +1282,7 @@ _responseData = rawData == null ? null : deserialize<GuideInfo, GuideInfo>(rawDa
   ///
   /// Returns a [Future] containing a [Response] with a [List<NameIdPair>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<NameIdPair>>> getLineups({ 
+  Future<Response<List<NameIdPair>>> getLineups({
     String? id,
     String? type,
     String? location,
@@ -1279,9 +1297,7 @@ _responseData = rawData == null ? null : deserialize<GuideInfo, GuideInfo>(rawDa
     final _path = r'/LiveTv/ListingProviders/Lineups';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1315,9 +1331,14 @@ _responseData = rawData == null ? null : deserialize<GuideInfo, GuideInfo>(rawDa
     List<NameIdPair>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<NameIdPair>, NameIdPair>(rawData, 'List<NameIdPair>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<NameIdPair>, NameIdPair>(
+              rawData,
+              'List<NameIdPair>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1341,7 +1362,7 @@ _responseData = rawData == null ? null : deserialize<List<NameIdPair>, NameIdPai
   }
 
   /// Gets a live tv recording stream.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [recordingId] - Recording id.
@@ -1354,7 +1375,7 @@ _responseData = rawData == null ? null : deserialize<List<NameIdPair>, NameIdPai
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getLiveRecordingFile({ 
+  Future<Response<Uint8List>> getLiveRecordingFile({
     required String recordingId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1363,17 +1384,17 @@ _responseData = rawData == null ? null : deserialize<List<NameIdPair>, NameIdPai
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/LiveTv/LiveRecordings/{recordingId}/stream'.replaceAll('{' r'recordingId' '}', recordingId.toString());
+    final _path = r'/LiveTv/LiveRecordings/{recordingId}/stream'.replaceAll(
+      '{'
+      r'recordingId'
+      '}',
+      recordingId.toString(),
+    );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -1388,9 +1409,8 @@ _responseData = rawData == null ? null : deserialize<List<NameIdPair>, NameIdPai
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1414,7 +1434,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets a live tv channel stream.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [streamId] - Stream id.
@@ -1428,7 +1448,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getLiveStreamFile({ 
+  Future<Response<Uint8List>> getLiveStreamFile({
     required String streamId,
     required String container,
     CancelToken? cancelToken,
@@ -1438,17 +1458,24 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/LiveTv/LiveStreamFiles/{streamId}/stream.{container}'.replaceAll('{' r'streamId' '}', streamId.toString()).replaceAll('{' r'container' '}', container.toString());
+    final _path = r'/LiveTv/LiveStreamFiles/{streamId}/stream.{container}'
+        .replaceAll(
+          '{'
+          r'streamId'
+          '}',
+          streamId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'container'
+          '}',
+          container.toString(),
+        );
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -1463,9 +1490,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1489,7 +1515,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets available live tv channels.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [type] - Optional. Filter by channel type.
@@ -1522,7 +1548,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getLiveTvChannels({ 
+  Future<Response<BaseItemDtoQueryResult>> getLiveTvChannels({
     ChannelType? type,
     String? userId,
     int? startIndex,
@@ -1554,9 +1580,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     final _path = r'/LiveTv/Channels';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1591,7 +1615,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
       if (enableUserData != null) r'enableUserData': enableUserData,
       if (sortBy != null) r'sortBy': sortBy,
       if (sortOrder != null) r'sortOrder': sortOrder,
-      if (enableFavoriteSorting != null) r'enableFavoriteSorting': enableFavoriteSorting,
+      if (enableFavoriteSorting != null)
+        r'enableFavoriteSorting': enableFavoriteSorting,
       if (addCurrentProgram != null) r'addCurrentProgram': addCurrentProgram,
     };
 
@@ -1607,9 +1632,14 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1633,7 +1663,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Gets available live tv services.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -1645,7 +1675,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [LiveTvInfo] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<LiveTvInfo>> getLiveTvInfo({ 
+  Future<Response<LiveTvInfo>> getLiveTvInfo({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -1656,9 +1686,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     final _path = r'/LiveTv/Info';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1684,9 +1712,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     LiveTvInfo? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<LiveTvInfo, LiveTvInfo>(rawData, 'LiveTvInfo', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<LiveTvInfo, LiveTvInfo>(
+              rawData,
+              'LiveTvInfo',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1710,7 +1743,7 @@ _responseData = rawData == null ? null : deserialize<LiveTvInfo, LiveTvInfo>(raw
   }
 
   /// Gets available live tv epgs.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [channelIds] - The channels to return guide information for.
@@ -1749,7 +1782,7 @@ _responseData = rawData == null ? null : deserialize<LiveTvInfo, LiveTvInfo>(raw
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getLiveTvPrograms({ 
+  Future<Response<BaseItemDtoQueryResult>> getLiveTvPrograms({
     List<String>? channelIds,
     String? userId,
     DateTime? minStartDate,
@@ -1787,9 +1820,7 @@ _responseData = rawData == null ? null : deserialize<LiveTvInfo, LiveTvInfo>(raw
     final _path = r'/LiveTv/Programs';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1831,7 +1862,8 @@ _responseData = rawData == null ? null : deserialize<LiveTvInfo, LiveTvInfo>(raw
       if (seriesTimerId != null) r'seriesTimerId': seriesTimerId,
       if (librarySeriesId != null) r'librarySeriesId': librarySeriesId,
       if (fields != null) r'fields': fields,
-      if (enableTotalRecordCount != null) r'enableTotalRecordCount': enableTotalRecordCount,
+      if (enableTotalRecordCount != null)
+        r'enableTotalRecordCount': enableTotalRecordCount,
     };
 
     final _response = await _dio.request<Object>(
@@ -1846,9 +1878,14 @@ _responseData = rawData == null ? null : deserialize<LiveTvInfo, LiveTvInfo>(raw
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1872,7 +1909,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Gets a live tv program.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [programId] - Program id.
@@ -1886,7 +1923,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDto>> getProgram({ 
+  Future<Response<BaseItemDto>> getProgram({
     required String programId,
     String? userId,
     CancelToken? cancelToken,
@@ -1896,12 +1933,15 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/LiveTv/Programs/{programId}'.replaceAll('{' r'programId' '}', programId.toString());
+    final _path = r'/LiveTv/Programs/{programId}'.replaceAll(
+      '{'
+      r'programId'
+      '}',
+      programId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1932,9 +1972,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     BaseItemDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(rawData, 'BaseItemDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDto, BaseItemDto>(
+              rawData,
+              'BaseItemDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1958,7 +2003,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(r
   }
 
   /// Gets available live tv epgs.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [getProgramsDto] - Request body.
@@ -1971,7 +2016,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(r
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getPrograms({ 
+  Future<Response<BaseItemDtoQueryResult>> getPrograms({
     GetProgramsDto? getProgramsDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1983,9 +2028,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(r
     final _path = r'/LiveTv/Programs';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -2004,13 +2047,10 @@ _responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(r
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(getProgramsDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(getProgramsDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -2029,9 +2069,14 @@ _bodyData=jsonEncode(getProgramsDto);
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -2055,7 +2100,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Gets recommended live tv epgs.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [userId] - Optional. filter by user id.
@@ -2084,7 +2129,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getRecommendedPrograms({ 
+  Future<Response<BaseItemDtoQueryResult>> getRecommendedPrograms({
     String? userId,
     int? startIndex,
     int? limit,
@@ -2112,9 +2157,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     final _path = r'/LiveTv/Programs/Recommended';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -2146,7 +2189,8 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
       if (genreIds != null) r'genreIds': genreIds,
       if (fields != null) r'fields': fields,
       if (enableUserData != null) r'enableUserData': enableUserData,
-      if (enableTotalRecordCount != null) r'enableTotalRecordCount': enableTotalRecordCount,
+      if (enableTotalRecordCount != null)
+        r'enableTotalRecordCount': enableTotalRecordCount,
     };
 
     final _response = await _dio.request<Object>(
@@ -2161,9 +2205,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -2187,7 +2236,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Gets a live tv recording.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [recordingId] - Recording id.
@@ -2201,7 +2250,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDto>> getRecording({ 
+  Future<Response<BaseItemDto>> getRecording({
     required String recordingId,
     String? userId,
     CancelToken? cancelToken,
@@ -2211,12 +2260,15 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/LiveTv/Recordings/{recordingId}'.replaceAll('{' r'recordingId' '}', recordingId.toString());
+    final _path = r'/LiveTv/Recordings/{recordingId}'.replaceAll(
+      '{'
+      r'recordingId'
+      '}',
+      recordingId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -2247,9 +2299,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     BaseItemDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(rawData, 'BaseItemDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDto, BaseItemDto>(
+              rawData,
+              'BaseItemDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -2273,7 +2330,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(r
   }
 
   /// Gets recording folders.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [userId] - Optional. Filter by user and attach user data.
@@ -2286,7 +2343,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(r
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getRecordingFolders({ 
+  Future<Response<BaseItemDtoQueryResult>> getRecordingFolders({
     String? userId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -2298,9 +2355,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(r
     final _path = r'/LiveTv/Recordings/Folders';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -2331,9 +2386,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDto, BaseItemDto>(r
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -2357,7 +2417,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Get recording group.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [groupId] - Group id.
@@ -2371,7 +2431,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
   @Deprecated('This operation has been deprecated')
-  Future<Response<void>> getRecordingGroup({ 
+  Future<Response<void>> getRecordingGroup({
     required String groupId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -2380,12 +2440,15 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/LiveTv/Recordings/Groups/{groupId}'.replaceAll('{' r'groupId' '}', groupId.toString());
+    final _path = r'/LiveTv/Recordings/Groups/{groupId}'.replaceAll(
+      '{'
+      r'groupId'
+      '}',
+      groupId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -2412,7 +2475,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Gets live tv recording groups.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [userId] - Optional. Filter by user and attach user data.
@@ -2426,7 +2489,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
   @Deprecated('This operation has been deprecated')
-  Future<Response<BaseItemDtoQueryResult>> getRecordingGroups({ 
+  Future<Response<BaseItemDtoQueryResult>> getRecordingGroups({
     String? userId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -2438,9 +2501,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     final _path = r'/LiveTv/Recordings/Groups';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -2471,9 +2532,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -2497,7 +2563,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Gets live tv recordings.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [channelId] - Optional. Filter by channel id.
@@ -2528,7 +2594,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BaseItemDtoQueryResult>> getRecordings({ 
+  Future<Response<BaseItemDtoQueryResult>> getRecordings({
     String? channelId,
     String? userId,
     int? startIndex,
@@ -2558,9 +2624,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     final _path = r'/LiveTv/Recordings';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -2594,7 +2658,8 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
       if (isSports != null) r'isSports': isSports,
       if (isNews != null) r'isNews': isNews,
       if (isLibraryItem != null) r'isLibraryItem': isLibraryItem,
-      if (enableTotalRecordCount != null) r'enableTotalRecordCount': enableTotalRecordCount,
+      if (enableTotalRecordCount != null)
+        r'enableTotalRecordCount': enableTotalRecordCount,
     };
 
     final _response = await _dio.request<Object>(
@@ -2609,9 +2674,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -2635,7 +2705,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Gets live tv recording series.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [channelId] - Optional. Filter by channel id.
@@ -2662,7 +2732,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   /// Returns a [Future] containing a [Response] with a [BaseItemDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
   @Deprecated('This operation has been deprecated')
-  Future<Response<BaseItemDtoQueryResult>> getRecordingsSeries({ 
+  Future<Response<BaseItemDtoQueryResult>> getRecordingsSeries({
     String? channelId,
     String? userId,
     String? groupId,
@@ -2687,9 +2757,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     final _path = r'/LiveTv/Recordings/Series';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -2718,7 +2786,8 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
       if (enableImageTypes != null) r'enableImageTypes': enableImageTypes,
       if (fields != null) r'fields': fields,
       if (enableUserData != null) r'enableUserData': enableUserData,
-      if (enableTotalRecordCount != null) r'enableTotalRecordCount': enableTotalRecordCount,
+      if (enableTotalRecordCount != null)
+        r'enableTotalRecordCount': enableTotalRecordCount,
     };
 
     final _response = await _dio.request<Object>(
@@ -2733,9 +2802,14 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     BaseItemDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(rawData, 'BaseItemDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<BaseItemDtoQueryResult, BaseItemDtoQueryResult>(
+              rawData,
+              'BaseItemDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -2759,7 +2833,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   }
 
   /// Gets available countries.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -2771,7 +2845,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getSchedulesDirectCountries({ 
+  Future<Response<Uint8List>> getSchedulesDirectCountries({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -2783,9 +2857,7 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -2811,9 +2883,8 @@ _responseData = rawData == null ? null : deserialize<BaseItemDtoQueryResult, Bas
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -2837,7 +2908,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Gets a live tv series timer.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [timerId] - Timer id.
@@ -2850,7 +2921,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [SeriesTimerInfoDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SeriesTimerInfoDto>> getSeriesTimer({ 
+  Future<Response<SeriesTimerInfoDto>> getSeriesTimer({
     required String timerId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -2859,12 +2930,15 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/LiveTv/SeriesTimers/{timerId}'.replaceAll('{' r'timerId' '}', timerId.toString());
+    final _path = r'/LiveTv/SeriesTimers/{timerId}'.replaceAll(
+      '{'
+      r'timerId'
+      '}',
+      timerId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -2890,9 +2964,14 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     SeriesTimerInfoDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<SeriesTimerInfoDto, SeriesTimerInfoDto>(rawData, 'SeriesTimerInfoDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<SeriesTimerInfoDto, SeriesTimerInfoDto>(
+              rawData,
+              'SeriesTimerInfoDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -2916,7 +2995,7 @@ _responseData = rawData == null ? null : deserialize<SeriesTimerInfoDto, SeriesT
   }
 
   /// Gets live tv series timers.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [sortBy] - Optional. Sort by SortName or Priority.
@@ -2930,7 +3009,7 @@ _responseData = rawData == null ? null : deserialize<SeriesTimerInfoDto, SeriesT
   ///
   /// Returns a [Future] containing a [Response] with a [SeriesTimerInfoDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SeriesTimerInfoDtoQueryResult>> getSeriesTimers({ 
+  Future<Response<SeriesTimerInfoDtoQueryResult>> getSeriesTimers({
     String? sortBy,
     SortOrder? sortOrder,
     CancelToken? cancelToken,
@@ -2943,9 +3022,7 @@ _responseData = rawData == null ? null : deserialize<SeriesTimerInfoDto, SeriesT
     final _path = r'/LiveTv/SeriesTimers';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -2977,9 +3054,13 @@ _responseData = rawData == null ? null : deserialize<SeriesTimerInfoDto, SeriesT
     SeriesTimerInfoDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<SeriesTimerInfoDtoQueryResult, SeriesTimerInfoDtoQueryResult>(rawData, 'SeriesTimerInfoDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<
+              SeriesTimerInfoDtoQueryResult,
+              SeriesTimerInfoDtoQueryResult
+            >(rawData, 'SeriesTimerInfoDtoQueryResult', growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -3003,7 +3084,7 @@ _responseData = rawData == null ? null : deserialize<SeriesTimerInfoDtoQueryResu
   }
 
   /// Gets a timer.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [timerId] - Timer id.
@@ -3016,7 +3097,7 @@ _responseData = rawData == null ? null : deserialize<SeriesTimerInfoDtoQueryResu
   ///
   /// Returns a [Future] containing a [Response] with a [TimerInfoDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<TimerInfoDto>> getTimer({ 
+  Future<Response<TimerInfoDto>> getTimer({
     required String timerId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -3025,12 +3106,15 @@ _responseData = rawData == null ? null : deserialize<SeriesTimerInfoDtoQueryResu
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/LiveTv/Timers/{timerId}'.replaceAll('{' r'timerId' '}', timerId.toString());
+    final _path = r'/LiveTv/Timers/{timerId}'.replaceAll(
+      '{'
+      r'timerId'
+      '}',
+      timerId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -3056,9 +3140,14 @@ _responseData = rawData == null ? null : deserialize<SeriesTimerInfoDtoQueryResu
     TimerInfoDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<TimerInfoDto, TimerInfoDto>(rawData, 'TimerInfoDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<TimerInfoDto, TimerInfoDto>(
+              rawData,
+              'TimerInfoDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -3082,7 +3171,7 @@ _responseData = rawData == null ? null : deserialize<TimerInfoDto, TimerInfoDto>
   }
 
   /// Gets the live tv timers.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [channelId] - Optional. Filter by channel id.
@@ -3098,7 +3187,7 @@ _responseData = rawData == null ? null : deserialize<TimerInfoDto, TimerInfoDto>
   ///
   /// Returns a [Future] containing a [Response] with a [TimerInfoDtoQueryResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<TimerInfoDtoQueryResult>> getTimers({ 
+  Future<Response<TimerInfoDtoQueryResult>> getTimers({
     String? channelId,
     String? seriesTimerId,
     bool? isActive,
@@ -3113,9 +3202,7 @@ _responseData = rawData == null ? null : deserialize<TimerInfoDto, TimerInfoDto>
     final _path = r'/LiveTv/Timers';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -3149,9 +3236,14 @@ _responseData = rawData == null ? null : deserialize<TimerInfoDto, TimerInfoDto>
     TimerInfoDtoQueryResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<TimerInfoDtoQueryResult, TimerInfoDtoQueryResult>(rawData, 'TimerInfoDtoQueryResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<TimerInfoDtoQueryResult, TimerInfoDtoQueryResult>(
+              rawData,
+              'TimerInfoDtoQueryResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -3175,7 +3267,7 @@ _responseData = rawData == null ? null : deserialize<TimerInfoDtoQueryResult, Ti
   }
 
   /// Get tuner host types.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -3187,7 +3279,7 @@ _responseData = rawData == null ? null : deserialize<TimerInfoDtoQueryResult, Ti
   ///
   /// Returns a [Future] containing a [Response] with a [List<NameIdPair>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<NameIdPair>>> getTunerHostTypes({ 
+  Future<Response<List<NameIdPair>>> getTunerHostTypes({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -3198,9 +3290,7 @@ _responseData = rawData == null ? null : deserialize<TimerInfoDtoQueryResult, Ti
     final _path = r'/LiveTv/TunerHosts/Types';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -3226,9 +3316,14 @@ _responseData = rawData == null ? null : deserialize<TimerInfoDtoQueryResult, Ti
     List<NameIdPair>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<NameIdPair>, NameIdPair>(rawData, 'List<NameIdPair>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<NameIdPair>, NameIdPair>(
+              rawData,
+              'List<NameIdPair>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -3252,7 +3347,7 @@ _responseData = rawData == null ? null : deserialize<List<NameIdPair>, NameIdPai
   }
 
   /// Resets a tv tuner.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [tunerId] - Tuner id.
@@ -3265,7 +3360,7 @@ _responseData = rawData == null ? null : deserialize<List<NameIdPair>, NameIdPai
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> resetTuner({ 
+  Future<Response<void>> resetTuner({
     required String tunerId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -3274,12 +3369,15 @@ _responseData = rawData == null ? null : deserialize<List<NameIdPair>, NameIdPai
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/LiveTv/Tuners/{tunerId}/Reset'.replaceAll('{' r'tunerId' '}', tunerId.toString());
+    final _path = r'/LiveTv/Tuners/{tunerId}/Reset'.replaceAll(
+      '{'
+      r'tunerId'
+      '}',
+      tunerId.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -3306,7 +3404,7 @@ _responseData = rawData == null ? null : deserialize<List<NameIdPair>, NameIdPai
   }
 
   /// Set channel mappings.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [setChannelMappingDto] - The set channel mapping dto.
@@ -3319,7 +3417,7 @@ _responseData = rawData == null ? null : deserialize<List<NameIdPair>, NameIdPai
   ///
   /// Returns a [Future] containing a [Response] with a [TunerChannelMapping] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<TunerChannelMapping>> setChannelMapping({ 
+  Future<Response<TunerChannelMapping>> setChannelMapping({
     required SetChannelMappingDto setChannelMappingDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -3331,9 +3429,7 @@ _responseData = rawData == null ? null : deserialize<List<NameIdPair>, NameIdPai
     final _path = r'/LiveTv/ChannelMappings';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -3352,13 +3448,10 @@ _responseData = rawData == null ? null : deserialize<List<NameIdPair>, NameIdPai
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(setChannelMappingDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(setChannelMappingDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -3377,9 +3470,14 @@ _bodyData=jsonEncode(setChannelMappingDto);
     TunerChannelMapping? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<TunerChannelMapping, TunerChannelMapping>(rawData, 'TunerChannelMapping', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<TunerChannelMapping, TunerChannelMapping>(
+              rawData,
+              'TunerChannelMapping',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -3403,7 +3501,7 @@ _responseData = rawData == null ? null : deserialize<TunerChannelMapping, TunerC
   }
 
   /// Updates a live tv series timer.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [timerId] - Timer id.
@@ -3417,7 +3515,7 @@ _responseData = rawData == null ? null : deserialize<TunerChannelMapping, TunerC
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> updateSeriesTimer({ 
+  Future<Response<void>> updateSeriesTimer({
     required String timerId,
     SeriesTimerInfoDto? seriesTimerInfoDto,
     CancelToken? cancelToken,
@@ -3427,12 +3525,15 @@ _responseData = rawData == null ? null : deserialize<TunerChannelMapping, TunerC
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/LiveTv/SeriesTimers/{timerId}'.replaceAll('{' r'timerId' '}', timerId.toString());
+    final _path = r'/LiveTv/SeriesTimers/{timerId}'.replaceAll(
+      '{'
+      r'timerId'
+      '}',
+      timerId.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -3451,13 +3552,10 @@ _responseData = rawData == null ? null : deserialize<TunerChannelMapping, TunerC
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(seriesTimerInfoDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(seriesTimerInfoDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -3477,7 +3575,7 @@ _bodyData=jsonEncode(seriesTimerInfoDto);
   }
 
   /// Updates a live tv timer.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [timerId] - Timer id.
@@ -3491,7 +3589,7 @@ _bodyData=jsonEncode(seriesTimerInfoDto);
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> updateTimer({ 
+  Future<Response<void>> updateTimer({
     required String timerId,
     TimerInfoDto? timerInfoDto,
     CancelToken? cancelToken,
@@ -3501,12 +3599,15 @@ _bodyData=jsonEncode(seriesTimerInfoDto);
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/LiveTv/Timers/{timerId}'.replaceAll('{' r'timerId' '}', timerId.toString());
+    final _path = r'/LiveTv/Timers/{timerId}'.replaceAll(
+      '{'
+      r'timerId'
+      '}',
+      timerId.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -3525,13 +3626,10 @@ _bodyData=jsonEncode(seriesTimerInfoDto);
     dynamic _bodyData;
 
     try {
-_bodyData=jsonEncode(timerInfoDto);
-    } catch(error, stackTrace) {
+      _bodyData = jsonEncode(timerInfoDto);
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -3549,5 +3647,4 @@ _bodyData=jsonEncode(timerInfoDto);
 
     return _response;
   }
-
 }

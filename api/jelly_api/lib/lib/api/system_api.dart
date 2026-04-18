@@ -12,19 +12,17 @@ import 'package:dio/dio.dart';
 import 'dart:typed_data';
 import 'package:jelly_api/lib/model/end_point_info.dart';
 import 'package:jelly_api/lib/model/log_file.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 import 'package:jelly_api/lib/model/public_system_info.dart';
 import 'package:jelly_api/lib/model/system_info.dart';
 import 'package:jelly_api/lib/model/system_storage_dto.dart';
 
 class SystemApi {
-
   final Dio _dio;
 
   const SystemApi(this._dio);
 
   /// Gets information about the request endpoint.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -36,7 +34,7 @@ class SystemApi {
   ///
   /// Returns a [Future] containing a [Response] with a [EndPointInfo] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<EndPointInfo>> getEndpointInfo({ 
+  Future<Response<EndPointInfo>> getEndpointInfo({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -47,9 +45,7 @@ class SystemApi {
     final _path = r'/System/Endpoint';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -75,9 +71,14 @@ class SystemApi {
     EndPointInfo? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<EndPointInfo, EndPointInfo>(rawData, 'EndPointInfo', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<EndPointInfo, EndPointInfo>(
+              rawData,
+              'EndPointInfo',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -101,7 +102,7 @@ _responseData = rawData == null ? null : deserialize<EndPointInfo, EndPointInfo>
   }
 
   /// Gets a log file.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [name] - The name of the log file to get.
@@ -114,7 +115,7 @@ _responseData = rawData == null ? null : deserialize<EndPointInfo, EndPointInfo>
   ///
   /// Returns a [Future] containing a [Response] with a [Uint8List] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Uint8List>> getLogFile({ 
+  Future<Response<Uint8List>> getLogFile({
     required String name,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -127,9 +128,7 @@ _responseData = rawData == null ? null : deserialize<EndPointInfo, EndPointInfo>
     final _options = Options(
       method: r'GET',
       responseType: ResponseType.bytes,
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -144,9 +143,7 @@ _responseData = rawData == null ? null : deserialize<EndPointInfo, EndPointInfo>
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      r'name': name,
-    };
+    final _queryParameters = <String, dynamic>{r'name': name};
 
     final _response = await _dio.request<Object>(
       _path,
@@ -160,9 +157,8 @@ _responseData = rawData == null ? null : deserialize<EndPointInfo, EndPointInfo>
     Uint8List? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : rawData as Uint8List;
-
+      final rawData = _response.data;
+      _responseData = rawData == null ? null : rawData as Uint8List;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -186,7 +182,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   }
 
   /// Pings the system.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -198,7 +194,7 @@ _responseData = rawData == null ? null : rawData as Uint8List;
   ///
   /// Returns a [Future] containing a [Response] with a [String] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<String>> getPingSystem({ 
+  Future<Response<String>> getPingSystem({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -209,13 +205,8 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     final _path = r'/System/Ping';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -230,9 +221,10 @@ _responseData = rawData == null ? null : rawData as Uint8List;
     String? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<String, String>(rawData, 'String', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<String, String>(rawData, 'String', growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -256,7 +248,7 @@ _responseData = rawData == null ? null : deserialize<String, String>(rawData, 'S
   }
 
   /// Gets public information about the server.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -268,7 +260,7 @@ _responseData = rawData == null ? null : deserialize<String, String>(rawData, 'S
   ///
   /// Returns a [Future] containing a [Response] with a [PublicSystemInfo] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<PublicSystemInfo>> getPublicSystemInfo({ 
+  Future<Response<PublicSystemInfo>> getPublicSystemInfo({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -279,13 +271,8 @@ _responseData = rawData == null ? null : deserialize<String, String>(rawData, 'S
     final _path = r'/System/Info/Public';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -300,9 +287,14 @@ _responseData = rawData == null ? null : deserialize<String, String>(rawData, 'S
     PublicSystemInfo? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<PublicSystemInfo, PublicSystemInfo>(rawData, 'PublicSystemInfo', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<PublicSystemInfo, PublicSystemInfo>(
+              rawData,
+              'PublicSystemInfo',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -326,7 +318,7 @@ _responseData = rawData == null ? null : deserialize<PublicSystemInfo, PublicSys
   }
 
   /// Gets a list of available server log files.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -338,7 +330,7 @@ _responseData = rawData == null ? null : deserialize<PublicSystemInfo, PublicSys
   ///
   /// Returns a [Future] containing a [Response] with a [List<LogFile>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<LogFile>>> getServerLogs({ 
+  Future<Response<List<LogFile>>> getServerLogs({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -349,9 +341,7 @@ _responseData = rawData == null ? null : deserialize<PublicSystemInfo, PublicSys
     final _path = r'/System/Logs';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -377,9 +367,14 @@ _responseData = rawData == null ? null : deserialize<PublicSystemInfo, PublicSys
     List<LogFile>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<LogFile>, LogFile>(rawData, 'List<LogFile>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<LogFile>, LogFile>(
+              rawData,
+              'List<LogFile>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -403,7 +398,7 @@ _responseData = rawData == null ? null : deserialize<List<LogFile>, LogFile>(raw
   }
 
   /// Gets information about the server.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -415,7 +410,7 @@ _responseData = rawData == null ? null : deserialize<List<LogFile>, LogFile>(raw
   ///
   /// Returns a [Future] containing a [Response] with a [SystemInfo] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SystemInfo>> getSystemInfo({ 
+  Future<Response<SystemInfo>> getSystemInfo({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -426,9 +421,7 @@ _responseData = rawData == null ? null : deserialize<List<LogFile>, LogFile>(raw
     final _path = r'/System/Info';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -454,9 +447,14 @@ _responseData = rawData == null ? null : deserialize<List<LogFile>, LogFile>(raw
     SystemInfo? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<SystemInfo, SystemInfo>(rawData, 'SystemInfo', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<SystemInfo, SystemInfo>(
+              rawData,
+              'SystemInfo',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -480,7 +478,7 @@ _responseData = rawData == null ? null : deserialize<SystemInfo, SystemInfo>(raw
   }
 
   /// Gets information about the server.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -492,7 +490,7 @@ _responseData = rawData == null ? null : deserialize<SystemInfo, SystemInfo>(raw
   ///
   /// Returns a [Future] containing a [Response] with a [SystemStorageDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SystemStorageDto>> getSystemStorage({ 
+  Future<Response<SystemStorageDto>> getSystemStorage({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -503,9 +501,7 @@ _responseData = rawData == null ? null : deserialize<SystemInfo, SystemInfo>(raw
     final _path = r'/System/Info/Storage';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -531,9 +527,14 @@ _responseData = rawData == null ? null : deserialize<SystemInfo, SystemInfo>(raw
     SystemStorageDto? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<SystemStorageDto, SystemStorageDto>(rawData, 'SystemStorageDto', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<SystemStorageDto, SystemStorageDto>(
+              rawData,
+              'SystemStorageDto',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -557,7 +558,7 @@ _responseData = rawData == null ? null : deserialize<SystemStorageDto, SystemSto
   }
 
   /// Pings the system.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -569,7 +570,7 @@ _responseData = rawData == null ? null : deserialize<SystemStorageDto, SystemSto
   ///
   /// Returns a [Future] containing a [Response] with a [String] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<String>> postPingSystem({ 
+  Future<Response<String>> postPingSystem({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -580,13 +581,8 @@ _responseData = rawData == null ? null : deserialize<SystemStorageDto, SystemSto
     final _path = r'/System/Ping';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -601,9 +597,10 @@ _responseData = rawData == null ? null : deserialize<SystemStorageDto, SystemSto
     String? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<String, String>(rawData, 'String', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<String, String>(rawData, 'String', growable: true);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -627,7 +624,7 @@ _responseData = rawData == null ? null : deserialize<String, String>(rawData, 'S
   }
 
   /// Restarts the application.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -639,7 +636,7 @@ _responseData = rawData == null ? null : deserialize<String, String>(rawData, 'S
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> restartApplication({ 
+  Future<Response<void>> restartApplication({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -650,9 +647,7 @@ _responseData = rawData == null ? null : deserialize<String, String>(rawData, 'S
     final _path = r'/System/Restart';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -679,7 +674,7 @@ _responseData = rawData == null ? null : deserialize<String, String>(rawData, 'S
   }
 
   /// Shuts down the application.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -691,7 +686,7 @@ _responseData = rawData == null ? null : deserialize<String, String>(rawData, 'S
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> shutdownApplication({ 
+  Future<Response<void>> shutdownApplication({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -702,9 +697,7 @@ _responseData = rawData == null ? null : deserialize<String, String>(rawData, 'S
     final _path = r'/System/Shutdown';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -729,5 +722,4 @@ _responseData = rawData == null ? null : deserialize<String, String>(rawData, 'S
 
     return _response;
   }
-
 }

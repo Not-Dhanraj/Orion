@@ -11,17 +11,15 @@ import 'package:dio/dio.dart';
 
 import 'package:jelly_api/lib/model/image_provider_info.dart';
 import 'package:jelly_api/lib/model/image_type.dart';
-import 'package:jelly_api/lib/model/problem_details.dart';
 import 'package:jelly_api/lib/model/remote_image_result.dart';
 
 class RemoteImageApi {
-
   final Dio _dio;
 
   const RemoteImageApi(this._dio);
 
   /// Downloads a remote image for an item.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item Id.
@@ -36,7 +34,7 @@ class RemoteImageApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> downloadRemoteImage({ 
+  Future<Response<void>> downloadRemoteImage({
     required String itemId,
     required ImageType type,
     String? imageUrl,
@@ -47,12 +45,15 @@ class RemoteImageApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/RemoteImages/Download'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Items/{itemId}/RemoteImages/Download'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -85,7 +86,7 @@ class RemoteImageApi {
   }
 
   /// Gets available remote image providers for an item.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item Id.
@@ -98,7 +99,7 @@ class RemoteImageApi {
   ///
   /// Returns a [Future] containing a [Response] with a [List<ImageProviderInfo>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<ImageProviderInfo>>> getRemoteImageProviders({ 
+  Future<Response<List<ImageProviderInfo>>> getRemoteImageProviders({
     required String itemId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -107,12 +108,15 @@ class RemoteImageApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/RemoteImages/Providers'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Items/{itemId}/RemoteImages/Providers'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -138,9 +142,14 @@ class RemoteImageApi {
     List<ImageProviderInfo>? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<ImageProviderInfo>, ImageProviderInfo>(rawData, 'List<ImageProviderInfo>', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<List<ImageProviderInfo>, ImageProviderInfo>(
+              rawData,
+              'List<ImageProviderInfo>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -164,7 +173,7 @@ _responseData = rawData == null ? null : deserialize<List<ImageProviderInfo>, Im
   }
 
   /// Gets available remote images for an item.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [itemId] - Item Id.
@@ -182,7 +191,7 @@ _responseData = rawData == null ? null : deserialize<List<ImageProviderInfo>, Im
   ///
   /// Returns a [Future] containing a [Response] with a [RemoteImageResult] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<RemoteImageResult>> getRemoteImages({ 
+  Future<Response<RemoteImageResult>> getRemoteImages({
     required String itemId,
     ImageType? type,
     int? startIndex,
@@ -196,12 +205,15 @@ _responseData = rawData == null ? null : deserialize<List<ImageProviderInfo>, Im
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/Items/{itemId}/RemoteImages'.replaceAll('{' r'itemId' '}', itemId.toString());
+    final _path = r'/Items/{itemId}/RemoteImages'.replaceAll(
+      '{'
+      r'itemId'
+      '}',
+      itemId.toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -221,7 +233,8 @@ _responseData = rawData == null ? null : deserialize<List<ImageProviderInfo>, Im
       if (startIndex != null) r'startIndex': startIndex,
       if (limit != null) r'limit': limit,
       if (providerName != null) r'providerName': providerName,
-      if (includeAllLanguages != null) r'includeAllLanguages': includeAllLanguages,
+      if (includeAllLanguages != null)
+        r'includeAllLanguages': includeAllLanguages,
     };
 
     final _response = await _dio.request<Object>(
@@ -236,9 +249,14 @@ _responseData = rawData == null ? null : deserialize<List<ImageProviderInfo>, Im
     RemoteImageResult? _responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<RemoteImageResult, RemoteImageResult>(rawData, 'RemoteImageResult', growable: true);
-
+      final rawData = _response.data;
+      _responseData = rawData == null
+          ? null
+          : deserialize<RemoteImageResult, RemoteImageResult>(
+              rawData,
+              'RemoteImageResult',
+              growable: true,
+            );
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -260,5 +278,4 @@ _responseData = rawData == null ? null : deserialize<RemoteImageResult, RemoteIm
       extra: _response.extra,
     );
   }
-
 }

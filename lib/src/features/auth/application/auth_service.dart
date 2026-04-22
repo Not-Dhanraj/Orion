@@ -138,7 +138,11 @@ class AuthService {
     }
   }
 
-  Future<void> validateAndConfigureJellyfin(String url, String username, String password) async {
+  Future<void> validateAndConfigureJellyfin(
+    String url,
+    String username,
+    String password,
+  ) async {
     if (url.isEmpty || username.isEmpty) {
       throw AuthException('Jellyfin URL and username cannot be empty');
     }
@@ -147,20 +151,30 @@ class AuthService {
 
     try {
       var jellyApi = JellyApi(basePathOverride: normalizedUrl);
-      final authHeader = 'MediaBrowser Client="Orion", Device="Flutter", DeviceId="orion-app", Version="1.0.0"';
-      
+      final deviceId = _storageService.deviceId;
+      final authHeader =
+          'MediaBrowser Client="Orion", Device="Orion App", '
+          'DeviceId="$deviceId", Version="1.0.0"';
+
       final response = await jellyApi.getUserApi().authenticateUserByName(
-        authenticateUserByName: AuthenticateUserByName(username: username, pw: password),
-        headers: {'X-Emby-Authorization': authHeader},
+        authenticateUserByName: AuthenticateUserByName(
+          username: username,
+          pw: password,
+        ),
+        headers: {'Authorization': authHeader},
       );
 
       if (response.statusCode != 200) {
-        throw AuthException('Jellyfin API returned an error: ${response.statusMessage}');
+        throw AuthException(
+          'Jellyfin API returned an error: ${response.statusMessage}',
+        );
       }
 
       final data = response.data;
       if (data == null || data.accessToken == null || data.user?.id == null) {
-        throw AuthException('Jellyfin login failed: No access token or user ID returned');
+        throw AuthException(
+          'Jellyfin login failed: No access token or user ID returned',
+        );
       }
 
       await _storageService.saveJellyfinCredentials(

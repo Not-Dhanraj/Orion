@@ -1,9 +1,16 @@
 import 'dart:async';
 
-import 'package:client/src/features/jellyfin/presentation/jellyfin_player_page.dart';
+import 'package:client/src/features/jellyfin/presentation/models/video_fit.dart';
 import 'package:client/src/features/jellyfin/presentation/widgets/player_control_button.dart';
 import 'package:client/src/features/jellyfin/presentation/widgets/player_gradient_overlay.dart';
-import 'package:client/src/features/jellyfin/presentation/widgets/player_settings_sheet.dart';
+import 'package:client/src/features/jellyfin/presentation/widgets/controls/bottom_bar.dart';
+import 'package:client/src/features/jellyfin/presentation/widgets/controls/center_controls.dart';
+import 'package:client/src/features/jellyfin/presentation/widgets/controls/top_bar.dart';
+import 'package:client/src/features/jellyfin/presentation/widgets/sheets/audio_subtitle_sheet.dart';
+import 'package:client/src/features/jellyfin/presentation/widgets/sheets/fit_sheet.dart';
+import 'package:client/src/features/jellyfin/presentation/widgets/sheets/quality_sheet.dart';
+import 'package:client/src/features/jellyfin/presentation/widgets/sheets/speed_volume_sheet.dart';
+import 'package:client/src/features/jellyfin/domain/video_quality.dart';
 import 'package:flutter/material.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
@@ -15,7 +22,15 @@ class PlayerControlsOverlay extends StatefulWidget {
   final Duration expectedDuration;
   final VideoQuality currentQuality;
   final List<VideoQuality> qualities;
+  final List<AudioTrack> availableAudioTracks;
+  final List<SubtitleTrack> availableSubtitleTracks;
+  final AudioTrack? currentAudioTrack;
+  final SubtitleTrack? currentSubtitleTrack;
+  final VideoFit currentFit;
+  final ValueChanged<VideoFit> onFitChanged;
   final ValueChanged<VideoQuality> onQualityChanged;
+  final ValueChanged<AudioTrack> onAudioChanged;
+  final ValueChanged<SubtitleTrack> onSubtitleChanged;
   final VoidCallback onBack;
 
   const PlayerControlsOverlay({
@@ -26,7 +41,15 @@ class PlayerControlsOverlay extends StatefulWidget {
     required this.expectedDuration,
     required this.currentQuality,
     required this.qualities,
+    this.availableAudioTracks = const [],
+    this.availableSubtitleTracks = const [],
+    this.currentAudioTrack,
+    this.currentSubtitleTrack,
+    this.currentFit = kDefaultVideoFit,
+    required this.onFitChanged,
     required this.onQualityChanged,
+    required this.onAudioChanged,
+    required this.onSubtitleChanged,
     required this.onBack,
   });
 
@@ -67,6 +90,7 @@ class _PlayerControlsOverlayState extends State<PlayerControlsOverlay>
     _fadeAnim = CurvedAnimation(parent: _fadeCtrl, curve: Curves.easeInOut);
 
     _playing = widget.player.state.playing;
+    _buffering = widget.player.state.buffering;
     _position = widget.player.state.position;
     _duration = widget.player.state.duration;
 
@@ -154,36 +178,13 @@ class _PlayerControlsOverlayState extends State<PlayerControlsOverlay>
     _scheduleHide();
   }
 
-  void _openAudioSubtitles() {
-    _hideTimer?.cancel();
-    showModalBottomSheet<void>(
-      context: context,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      builder: (_) => PlayerAudioSubtitleSheet(
-        subtitleTracks: _subtitleTracks,
-        audioTracks: _audioTracks,
-        currentSubtitle: _currentSubtitle,
-        currentAudio: _currentAudio,
-        onSubtitleChanged: (t) => setState(() {
-          _currentSubtitle = t;
-          widget.player.setSubtitleTrack(t);
-        }),
-        onAudioChanged: (t) => setState(() {
-          _currentAudio = t;
-          widget.player.setAudioTrack(t);
-        }),
-      ),
-    ).whenComplete(_scheduleHide);
-  }
-
   void _openQuality() {
     _hideTimer?.cancel();
     showModalBottomSheet<void>(
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
-      builder: (_) => PlayerQualitySheet(
+      builder: (_) => QualitySheet(
         currentQuality: widget.currentQuality,
         qualities: widget.qualities,
         onQualityChanged: widget.onQualityChanged,
@@ -197,7 +198,7 @@ class _PlayerControlsOverlayState extends State<PlayerControlsOverlay>
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
-      builder: (_) => PlayerSpeedVolumeSheet(
+      builder: (_) => SpeedVolumeSheet(
         speed: _speed,
         volume: _volume,
         onSpeedChanged: (v) => setState(() {
@@ -208,6 +209,50 @@ class _PlayerControlsOverlayState extends State<PlayerControlsOverlay>
           _volume = v;
           widget.player.setVolume(v);
         }),
+      ),
+    ).whenComplete(_scheduleHide);
+  }
+
+  void _openFit() {
+    _hideTimer?.cancel();
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (_) => FitSheet(
+        currentFit: widget.currentFit,
+        onFitChanged: widget.onFitChanged,
+      ),
+    ).whenComplete(_scheduleHide);
+  }
+
+  void _openAudioSubtitles() {
+    _hideTimer?.cancel();
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (_) => AudioSubtitleSheet(
+        subtitleTracks: widget.availableSubtitleTracks.isNotEmpty
+            ? widget.availableSubtitleTracks
+            : _subtitleTracks,
+        audioTracks: widget.availableAudioTracks.isNotEmpty
+            ? widget.availableAudioTracks
+            : _audioTracks,
+        currentSubtitle: widget.availableSubtitleTracks.isNotEmpty
+            ? (widget.currentSubtitleTrack ?? _currentSubtitle)
+            : _currentSubtitle,
+        currentAudio: widget.availableAudioTracks.isNotEmpty
+            ? (widget.currentAudioTrack ?? _currentAudio)
+            : _currentAudio,
+        onSubtitleChanged: (t) {
+          setState(() => _currentSubtitle = t);
+          widget.onSubtitleChanged(t);
+        },
+        onAudioChanged: (t) {
+          setState(() => _currentAudio = t);
+          widget.onAudioChanged(t);
+        },
       ),
     ).whenComplete(_scheduleHide);
   }
@@ -231,7 +276,6 @@ class _PlayerControlsOverlayState extends State<PlayerControlsOverlay>
     return Stack(
       fit: StackFit.expand,
       children: [
-        // Buffering indicator
         if (_buffering)
           const Center(
             child: CircularProgressIndicator(
@@ -257,7 +301,7 @@ class _PlayerControlsOverlayState extends State<PlayerControlsOverlay>
               Expanded(
                 child: GestureDetector(
                   onDoubleTap: () {
-                    _skip(30);
+                    _skip(10);
                     _showControls();
                   },
                   child: const SizedBox.expand(),
@@ -272,24 +316,26 @@ class _PlayerControlsOverlayState extends State<PlayerControlsOverlay>
           child: FadeTransition(
             opacity: _fadeAnim,
             child: PlayerGradientOverlay(
-              top: _TopBar(
+              top: PlayerTopBar(
                 title: widget.title,
                 speed: _speed,
+                currentFit: widget.currentFit,
                 onBack: widget.onBack,
                 onAudioSubtitlesTap: _openAudioSubtitles,
                 onQualityTap: _openQuality,
                 onSpeedVolumeTap: _openSpeedVolume,
+                onFitTap: _openFit,
               ),
-              center: _CenterControls(
+              center: PlayerCenterControls(
                 playing: _playing,
                 onPlayPause: () {
                   widget.player.playOrPause();
                   _scheduleHide();
                 },
                 onSkipBack: () => _skip(-10),
-                onSkipForward: () => _skip(30),
+                onSkipForward: () => _skip(10),
               ),
-              bottom: _BottomBar(
+              bottom: PlayerBottomBar(
                 position: _position,
                 duration: _displayDuration,
                 progress: _progress,
@@ -321,253 +367,6 @@ class _PlayerControlsOverlayState extends State<PlayerControlsOverlay>
           ),
         ),
       ],
-    );
-  }
-}
-
-class _TopBar extends StatelessWidget {
-  final String title;
-  final double speed;
-  final VoidCallback onBack;
-  final VoidCallback onAudioSubtitlesTap;
-  final VoidCallback onQualityTap;
-  final VoidCallback onSpeedVolumeTap;
-
-  const _TopBar({
-    required this.title,
-    required this.speed,
-    required this.onBack,
-    required this.onAudioSubtitlesTap,
-    required this.onQualityTap,
-    required this.onSpeedVolumeTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        child: Row(
-          children: [
-            IconButton(
-              icon: const Icon(
-                Icons.arrow_back_ios_new_rounded,
-                color: Colors.white,
-                size: 22,
-              ),
-              onPressed: onBack,
-              tooltip: 'Back',
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  shadows: [Shadow(blurRadius: 8, color: Colors.black54)],
-                ),
-              ),
-            ),
-            if (speed != 1.0)
-              Container(
-                margin: const EdgeInsets.only(right: 8),
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(
-                  color: Colors.white12,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  '${speed}x',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            IconButton(
-              icon: const Icon(
-                Icons.subtitles_rounded,
-                color: Colors.white,
-                size: 22,
-              ),
-              onPressed: onAudioSubtitlesTap,
-              tooltip: 'Subtitles & Audio',
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.high_quality_rounded,
-                color: Colors.white,
-                size: 22,
-              ),
-              onPressed: onQualityTap,
-              tooltip: 'Quality',
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.tune_rounded,
-                color: Colors.white,
-                size: 22,
-              ),
-              onPressed: onSpeedVolumeTap,
-              tooltip: 'Settings',
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _CenterControls extends StatelessWidget {
-  final bool playing;
-  final VoidCallback onPlayPause;
-  final VoidCallback onSkipBack;
-  final VoidCallback onSkipForward;
-
-  const _CenterControls({
-    required this.playing,
-    required this.onPlayPause,
-    required this.onSkipBack,
-    required this.onSkipForward,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        PlayerControlButton(
-          icon: Icons.replay_10_rounded,
-          size: 32,
-          onTap: onSkipBack,
-        ),
-        const SizedBox(width: 16),
-        PlayerControlButton(
-          icon: playing ? Icons.pause_rounded : Icons.play_arrow_rounded,
-          size: 56,
-          onTap: onPlayPause,
-        ),
-        const SizedBox(width: 16),
-        PlayerControlButton(
-          icon: Icons.forward_30_rounded,
-          size: 32,
-          onTap: onSkipForward,
-        ),
-      ],
-    );
-  }
-}
-
-class _BottomBar extends StatelessWidget {
-  final Duration position;
-  final Duration duration;
-  final double progress;
-  final SubtitleTrack currentSubtitle;
-  final Color primaryColor;
-  final bool buffering;
-  final ValueChanged<double> onDragStart;
-  final ValueChanged<double> onDragUpdate;
-  final ValueChanged<double> onDragEnd;
-  final String Function(Duration) fmt;
-
-  const _BottomBar({
-    required this.position,
-    required this.duration,
-    required this.progress,
-    required this.currentSubtitle,
-    required this.primaryColor,
-    required this.buffering,
-    required this.onDragStart,
-    required this.onDragUpdate,
-    required this.onDragEnd,
-    required this.fmt,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-      child: SafeArea(
-        top: false,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SliderTheme(
-              data: SliderTheme.of(context).copyWith(
-                trackHeight: 3,
-                thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 7),
-                overlayShape: const RoundSliderOverlayShape(overlayRadius: 16),
-                activeTrackColor: primaryColor,
-                inactiveTrackColor: Colors.white24,
-                thumbColor: primaryColor,
-                overlayColor: primaryColor.withValues(alpha: 0.18),
-              ),
-              child: Slider(
-                value: progress,
-                onChangeStart: onDragStart,
-                onChanged: onDragUpdate,
-                onChangeEnd: onDragEnd,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: Row(
-                children: [
-                  Text(
-                    fmt(position),
-                    style: const TextStyle(color: Colors.white70, fontSize: 12),
-                  ),
-                  const Spacer(),
-                  if (currentSubtitle.id != 'no')
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.closed_caption_rounded,
-                            color: primaryColor,
-                            size: 14,
-                          ),
-                          const SizedBox(width: 3),
-                          Text(
-                            currentSubtitle.title ??
-                                currentSubtitle.language ??
-                                'CC',
-                            style: TextStyle(
-                              color: primaryColor,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  Text(
-                    fmt(duration),
-                    style: const TextStyle(color: Colors.white70, fontSize: 12),
-                  ),
-                  const SizedBox(width: 12),
-                  GestureDetector(
-                    onTap: () => toggleFullscreen(context),
-                    child: Icon(
-                      isFullscreen(context)
-                          ? Icons.fullscreen_exit_rounded
-                          : Icons.fullscreen_rounded,
-                      color: Colors.white70,
-                      size: 20,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

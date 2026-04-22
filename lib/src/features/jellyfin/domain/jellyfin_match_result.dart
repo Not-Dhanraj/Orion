@@ -60,32 +60,8 @@ class JellyfinMatchResult {
     );
   }
 
-  double get playbackPercentage {
-    if (played) return 1.0;
-    if (playbackPositionTicks == null ||
-        runtimeTicks == null ||
-        runtimeTicks == 0) {
-      return 0.0;
-    }
-
-    final result = playbackPositionTicks! / runtimeTicks!;
-    return result.clamp(0.0, 1.0);
-  }
-
-  bool get isPartiallyPlayed =>
-      playbackPercentage > 0 && playbackPercentage < 1.0;
-
-  Duration get currentPosition {
-    if (playbackPositionTicks == null) return Duration.zero;
-    return Duration(microseconds: playbackPositionTicks! ~/ 10);
-  }
-
   Duration get totalRuntime {
     if (runtimeTicks == null) return Duration.zero;
     return Duration(microseconds: runtimeTicks! ~/ 10);
-  }
-
-  Duration get remainingTime {
-    return totalRuntime - currentPosition;
   }
 }

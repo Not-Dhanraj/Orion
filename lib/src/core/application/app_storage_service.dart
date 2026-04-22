@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:client/src/constants/app_const.dart';
 import 'package:client/src/core/domain/credentials.dart';
@@ -12,6 +13,7 @@ class AppStorageService {
   SonarrCredentials? _sonarrCredentials;
   RadarrCredentials? _radarrCredentials;
   JellyfinCredentials? _jellyfinCredentials;
+  String? _deviceId;
 
   AppStorageService({FlutterSecureStorage? secureStorage})
     : _secureStorage = secureStorage ?? const FlutterSecureStorage();
@@ -21,7 +23,10 @@ class AppStorageService {
     final appConst = AppConst();
     await Hive.openBox(appConst.themeBoxName);
     await _loadCredentials();
+    _deviceId = await getDeviceId();
   }
+
+  String get deviceId => _deviceId!;
 
   Future<void> saveSonarrCredentials(SonarrCredentials credentials) async {
     var appConst = AppConst();
@@ -79,6 +84,20 @@ class AppStorageService {
 
   bool hasJellyfinCredentials() => _jellyfinCredentials != null;
 
+  Future<String> getDeviceId() async {
+    final appConst = AppConst();
+    final stored = await _secureStorage.read(key: appConst.deviceIdKey);
+    if (stored != null && stored.isNotEmpty) return stored;
+
+    final rng = Random.secure();
+    final id = List.generate(
+      16,
+      (_) => rng.nextInt(256),
+    ).map((b) => b.toRadixString(16).padLeft(2, '0')).join();
+    await _secureStorage.write(key: appConst.deviceIdKey, value: id);
+    return id;
+  }
+
   Future<void> deleteSonarrCredentials() async {
     var appConst = AppConst();
     _sonarrCredentials = null;
@@ -101,7 +120,9 @@ class AppStorageService {
     var appConst = AppConst();
     final sonarrData = await _secureStorage.read(key: appConst.sonarrCredKey);
     final radarrData = await _secureStorage.read(key: appConst.radarrCredKey);
-    final jellyfinData = await _secureStorage.read(key: appConst.jellyfinCredKey);
+    final jellyfinData = await _secureStorage.read(
+      key: appConst.jellyfinCredKey,
+    );
 
     _sonarrCredentials = _decodeSonarrCredentials(sonarrData);
     _radarrCredentials = _decodeRadarrCredentials(radarrData);
@@ -171,14 +192,20 @@ class AppStorageService {
       final username = decoded['username'];
       final accessToken = decoded['accessToken'];
       final userId = decoded['userId'];
-      
-      if (url is! String || username is! String || accessToken is! String || userId is! String || 
-          url.isEmpty || username.isEmpty || accessToken.isEmpty || userId.isEmpty) {
+
+      if (url is! String ||
+          username is! String ||
+          accessToken is! String ||
+          userId is! String ||
+          url.isEmpty ||
+          username.isEmpty ||
+          accessToken.isEmpty ||
+          userId.isEmpty) {
         return null;
       }
 
       return JellyfinCredentials(
-        jellyfinUrl: url, 
+        jellyfinUrl: url,
         username: username,
         accessToken: accessToken,
         userId: userId,

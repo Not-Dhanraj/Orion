@@ -38,8 +38,8 @@ class _LibraryPageState extends ConsumerState<LibraryPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-      final enabled = ref.watch(enabledNotifierProvider);
-      return Scaffold(
+
+    return Scaffold(
       body: Column(
         children: [
           ListenableBuilder(
@@ -57,8 +57,8 @@ class _LibraryPageState extends ConsumerState<LibraryPage>
               controller: _tabController,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                if (enabled.sonarr) SeriesLibraryPage(),
-                if (enabled.radarr) MovieLibraryPage(),
+                if (_tabs.contains('TV SHOWS')) SeriesLibraryPage(),
+                if (_tabs.contains('MOVIES')) MovieLibraryPage(),
               ],
             ),
           ),

@@ -1,7 +1,9 @@
-import 'package:client/src/features/jellyfin/application/jellyfin_matching_service.dart';
+import 'package:client/src/features/jellyfin/application/jellyfin_match_providers.dart';
+import 'package:client/src/features/jellyfin/domain/jellyfin_match_result.dart';
 import 'package:client/src/features/series/domain/season_page_args.dart';
 import 'package:client/src/features/series/presentation/season/season_controller.dart';
 import 'package:client/src/shared/domain/snackbar_config.dart';
+import 'package:client/src/shared/widgets/indicators/animated_loading_text.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/shared/widgets/dialogs/custom_dialog.dart';
 import 'package:client/src/features/releases/domain/release_target.dart';
@@ -35,6 +37,17 @@ class SeasonEpisodeList extends ConsumerWidget {
       ).notifier,
     );
 
+    final tvdbId = series.tvdbId ?? 0;
+    final seasonMatchState = tvdbId > 0
+        ? ref.watch(
+            jellyfinSeasonMatchProvider((
+              tvdbId: tvdbId,
+              seasonNumber: seasonNumber,
+            )),
+          )
+        : const AsyncValue<Map<int, JellyfinMatchResult>>.data({});
+    final matchMap = seasonMatchState.valueOrNull ?? {};
+
     return Column(
       children: [
         for (final e in episodes)
@@ -44,6 +57,8 @@ class SeasonEpisodeList extends ConsumerWidget {
             seasonNumber: seasonNumber,
             controller: controller,
             runWithLoading: runWithLoading,
+            jellyfinMatch: matchMap[e.episodeNumber ?? 0],
+            isMatchLoading: seasonMatchState.isLoading,
           ),
       ],
     );
@@ -56,6 +71,8 @@ class _EpisodeListItem extends ConsumerWidget {
   final int seasonNumber;
   final SeasonPageController controller;
   final Future<void> Function(Future<void> Function()) runWithLoading;
+  final JellyfinMatchResult? jellyfinMatch;
+  final bool isMatchLoading;
 
   const _EpisodeListItem({
     required this.episode,
@@ -63,6 +80,8 @@ class _EpisodeListItem extends ConsumerWidget {
     required this.seasonNumber,
     required this.controller,
     required this.runWithLoading,
+    this.jellyfinMatch,
+    this.isMatchLoading = false,
   });
 
   @override
@@ -80,6 +99,7 @@ class _EpisodeListItem extends ConsumerWidget {
       _ => ('MISSING', cs.error),
     };
 
+    final isWatched = jellyfinMatch?.played ?? false;
     return EpisodeRow(
       number: FormatUtils.formatEpisodeNumber(episode.episodeNumber),
       title: episode.title ?? 'Unknown',
@@ -87,6 +107,7 @@ class _EpisodeListItem extends ConsumerWidget {
       statusColor: statusColor,
       isMonitored: monitored,
       hasFile: hasFile,
+      isWatched: isWatched,
       onToggleMonitor: () => runWithLoading(() async {
         try {
           final nextMonitored = !monitored;
@@ -121,44 +142,73 @@ class _EpisodeListItem extends ConsumerWidget {
 
   Future<void> _playEpisode(BuildContext context, WidgetRef ref) async {
     final tvdbId = series.tvdbId;
-    if (tvdbId == null || tvdbId == 0) {
+
+    if (isMatchLoading) {
       CustomSnackbar.show(
         context,
-        message: 'Cannot play: Series has no valid TVDB ID for matching.',
-        type: CustomSnackbarType.error,
+        message: 'Loading metadata, please wait...',
+        type: CustomSnackbarType.info,
       );
       return;
     }
 
-    runWithLoading(() async {
-      try {
-        final matchingService = ref.read(jellyfinMatchingServiceProvider);
-        final match = await matchingService.matchEpisode(
-          tvdbId,
-          seasonNumber,
-          episode.episodeNumber ?? 0,
-        );
+    bool isCancelled = false;
 
-        if (match != null && context.mounted) {
-          context.push('/jellyfinPlayer', extra: match);
-        } else if (context.mounted) {
-          CustomSnackbar.show(
-            context,
-            message:
-                'No match found on Jellyfin for S${seasonNumber.toString().padLeft(2, "0")}E${(episode.episodeNumber ?? 0).toString().padLeft(2, "0")}.',
-            type: CustomSnackbarType.error,
-          );
-        }
-      } catch (e) {
-        if (context.mounted) {
-          CustomSnackbar.show(
-            context,
-            message: 'Jellyfin error: $e',
-            type: CustomSnackbarType.error,
-          );
-        }
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => PopScope(
+        canPop: false,
+        child: Dialog(
+          child: CustomDialog(
+            title: 'Loading',
+            heading: 'Loading Matching Service',
+            bodyWidget: AnimatedLoadingText(),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  isCancelled = true;
+                  Navigator.of(context).pop();
+                },
+                child: const Text('CANCEL'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    await Future.delayed(Duration(milliseconds: 600));
+
+    try {
+      final finalMatch = await controller.resolveJellyfinEpisodeMatch(
+        tvdbId: tvdbId,
+        seasonNumber: seasonNumber,
+        episodeNumber: episode.episodeNumber ?? 0,
+        jellyfinMatch: jellyfinMatch,
+      );
+
+      if (isCancelled) return;
+
+      if (context.mounted) {
+        Navigator.of(context).pop();
+        await context.push('/jellyfinPlayer', extra: finalMatch);
+        await Future.delayed(const Duration(milliseconds: 1000));
+        controller.invalidateJellyfinMatch(tvdbId!, seasonNumber);
       }
-    });
+    } catch (e) {
+      if (isCancelled) return;
+      
+      if (context.mounted) {
+        Navigator.of(context).pop();
+        CustomSnackbar.show(
+          context,
+          message: e.toString().contains('Exception: ')
+              ? e.toString().replaceFirst('Exception: ', '')
+              : 'Jellyfin error: $e',
+          type: CustomSnackbarType.error,
+        );
+      }
+    }
   }
 
   Future<void> _searchEpisode(BuildContext context) async {

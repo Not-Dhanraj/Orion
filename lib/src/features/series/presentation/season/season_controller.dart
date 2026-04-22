@@ -1,3 +1,6 @@
+import 'package:client/src/features/jellyfin/application/jellyfin_match_providers.dart';
+import 'package:client/src/features/jellyfin/application/jellyfin_matching_service.dart';
+import 'package:client/src/features/jellyfin/domain/jellyfin_match_result.dart';
 import 'package:client/src/features/series/application/season_service.dart';
 import 'package:client/src/features/series/domain/season_page_args.dart';
 import 'package:client/src/features/series/domain/season_page_state.dart';
@@ -174,6 +177,47 @@ class SeasonPageController
       state = AsyncData(currentState);
       rethrow;
     }
+  }
+
+  Future<JellyfinMatchResult> resolveJellyfinEpisodeMatch({
+    required int? tvdbId,
+    required int seasonNumber,
+    required int episodeNumber,
+    required JellyfinMatchResult? jellyfinMatch,
+  }) async {
+    if (tvdbId == null || tvdbId == 0) {
+      throw Exception('Cannot play: Series has no valid TVDB ID for matching.');
+    }
+
+    final match =
+        jellyfinMatch ??
+        await ref
+            .read(jellyfinMatchingServiceProvider)
+            .matchEpisode(tvdbId, seasonNumber, episodeNumber);
+
+    if (match == null) {
+      throw Exception(
+        'No match found on Jellyfin for S${seasonNumber.toString().padLeft(2, "0")}E${episodeNumber.toString().padLeft(2, "0")}.',
+      );
+    }
+
+    return match.played
+        ? JellyfinMatchResult(
+            jellyfinItemId: match.jellyfinItemId,
+            jellyfinSeriesId: match.jellyfinSeriesId,
+            title: match.title,
+            played: match.played,
+            playbackPositionTicks: 0,
+            runtimeTicks: match.runtimeTicks,
+            lastPlayedDate: match.lastPlayedDate,
+          )
+        : match;
+  }
+
+  void invalidateJellyfinMatch(int tvdbId, int seasonNumber) {
+    ref.invalidate(
+      jellyfinSeasonMatchProvider((tvdbId: tvdbId, seasonNumber: seasonNumber)),
+    );
   }
 }
 

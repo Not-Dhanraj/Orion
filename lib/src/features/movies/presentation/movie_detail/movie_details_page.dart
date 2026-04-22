@@ -187,74 +187,6 @@ class _MovieDetailsPageState extends ConsumerState<MovieDetailsPage> {
                   syncStatusLabel: 'DOWNLOAD STATUS',
                   isMonitored: movie.monitored ?? false,
                   actions: [
-                    if (jellyMatchIsLoading)
-                      const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    else if (jellymatch != null) ...[
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          context.push('/jellyfinPlayer', extra: jellymatch);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: cs.primary,
-                          foregroundColor: cs.onPrimary,
-                        ),
-                        icon: const Icon(
-                          TablerIcons.player_play_filled,
-                          size: 16,
-                        ),
-                        label: Text(
-                          jellymatch.isPartiallyPlayed
-                              ? 'RESUME (${(jellymatch.playbackPercentage * 100).toStringAsFixed(0)}%)'
-                              : 'WATCH NOW',
-                        ),
-                      ),
-                      if (movie.hasFile == true)
-                        OutlinedButton.icon(
-                          onPressed: () => _confirmDeleteFile(context),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: cs.error,
-                            side: BorderSide(
-                              color: cs.error.withValues(alpha: 0.4),
-                            ),
-                          ),
-                          icon: const Icon(TablerIcons.trash, size: 14),
-                          label: const Text('FILE'),
-                        ),
-                    ] else if (movie.hasFile == true)
-                      OutlinedButton.icon(
-                        onPressed: () => _confirmDeleteFile(context),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: cs.onSurface,
-                          backgroundColor: cs.primaryContainer.withValues(
-                            alpha: 0.5,
-                          ),
-                          side: BorderSide(color: cs.primaryContainer),
-                        ),
-                        icon: const Icon(TablerIcons.check, size: 14),
-                        label: const Text('DOWNLOADED'),
-                      )
-                    else
-                      ElevatedButton(
-                        onPressed: () {
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            useSafeArea: true,
-                            backgroundColor: Colors.transparent,
-                            builder: (context) => ReleaseSheet(
-                              target: MovieReleaseTarget(
-                                movieId: movie.id!,
-                                title: movie.title ?? 'Unknown',
-                              ),
-                            ),
-                          );
-                        },
-                        child: const Text('SEARCH RELEASES'),
-                      ),
                     OutlinedButton(
                       onPressed: () {
                         showModalBottomSheet(
@@ -277,6 +209,153 @@ class _MovieDetailsPageState extends ConsumerState<MovieDetailsPage> {
                         ),
                       ),
                       child: const Text('DELETE'),
+                    ),
+                    PopupMenuButton<String>(
+                      icon: Icon(
+                        Icons.more_vert,
+                        size: 20,
+                        color: cs.onSurface,
+                      ),
+                      splashRadius: 24,
+                      elevation: 4,
+                      shadowColor: Colors.black45,
+                      surfaceTintColor: Colors.transparent,
+                      color: cs.surfaceContainerHigh,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero,
+                        side: BorderSide(
+                          color: cs.outlineVariant.withValues(alpha: 0.3),
+                        ),
+                      ),
+                      onSelected: (value) async {
+                        if (value == 'search') {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            useSafeArea: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) => ReleaseSheet(
+                              target: MovieReleaseTarget(
+                                movieId: movie.id!,
+                                title: movie.title ?? 'Unknown',
+                              ),
+                            ),
+                          );
+                        } else if (value == 'delete_file') {
+                          _confirmDeleteFile(context);
+                        } else if (value == 'play') {
+                          if (jellymatch == null) {
+                            CustomSnackbar.show(
+                              context,
+                              message:
+                                  'Media file exists in Radarr but no match was found in Jellyfin.',
+                              type: CustomSnackbarType.error,
+                            );
+                          } else {
+                            await context.push(
+                              '/jellyfinPlayer',
+                              extra: jellymatch,
+                            );
+                            await Future.delayed(
+                              const Duration(milliseconds: 1000),
+                            );
+                            if (context.mounted) {
+                              ref.invalidate(
+                                jellyfinMovieMatchProvider(tmdbId),
+                              );
+                            }
+                          }
+                        }
+                      },
+                      itemBuilder: (context) => [
+                        if (movie.hasFile == true || jellymatch != null)
+                          PopupMenuItem(
+                            value: 'play',
+                            enabled: !jellyMatchIsLoading && jellymatch != null,
+                            child: Row(
+                              children: [
+                                if (jellyMatchIsLoading)
+                                  SizedBox(
+                                    width: 18,
+                                    height: 18,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: cs.onSurface.withValues(
+                                        alpha: 0.5,
+                                      ),
+                                    ),
+                                  )
+                                else
+                                  Icon(
+                                    jellymatch == null
+                                        ? TablerIcons.alert_triangle_filled
+                                        : jellymatch.played
+                                        ? TablerIcons.check
+                                        : TablerIcons.player_play_filled,
+                                    size: 18,
+                                    color: jellymatch == null
+                                        ? cs.error
+                                        : cs.primary,
+                                  ),
+                                const SizedBox(width: 12),
+                                Text(
+                                  jellyMatchIsLoading
+                                      ? 'Loading Match...'
+                                      : jellymatch == null
+                                      ? 'Playback Error'
+                                      : jellymatch.played
+                                      ? 'Watch Again'
+                                      : 'Watch Now',
+                                  style: tt.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color: jellymatch == null ? cs.error : null,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        if (movie.hasFile != true)
+                          PopupMenuItem(
+                            value: 'search',
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.search,
+                                  size: 18,
+                                  color: cs.onSurface,
+                                ),
+                                const SizedBox(width: 12),
+                                Text(
+                                  'Search Releases',
+                                  style: tt.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        if (movie.hasFile == true)
+                          PopupMenuItem(
+                            value: 'delete_file',
+                            child: Row(
+                              children: [
+                                Icon(
+                                  TablerIcons.trash,
+                                  size: 18,
+                                  color: cs.error,
+                                ),
+                                const SizedBox(width: 12),
+                                Text(
+                                  'Delete File',
+                                  style: tt.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color: cs.error,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                      ],
                     ),
                   ],
                 ),

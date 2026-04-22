@@ -1,54 +1,49 @@
-import 'package:client/src/exceptions/repository_exception.dart';
+import 'package:client/src/core/application/api_provider.dart';
 import 'package:client/src/core/application/app_storage_service.dart';
-import 'package:dio/dio.dart';
+import 'package:client/src/exceptions/repository_exception.dart';
+import 'package:client/src/core/domain/credentials.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jelly_api/jelly_api.dart';
 
 class JellyfinRepository {
-  final Dio _dio;
-  final String _userId;
+  final JellyApi _api;
+  final JellyfinCredentials _creds;
 
-  JellyfinRepository(this._dio, this._userId);
+  JellyfinRepository(this._api, this._creds);
 
-  Future<List<BaseItemDto>> searchMoviesByTmdbId(int tmdbId) async {
-    final response = await _dio.get<Map<String, dynamic>>(
-      '/Users/$_userId/Items',
-      queryParameters: {
-        'AnyProviderIdEquals': 'Tmdb=$tmdbId',
-        'IncludeItemTypes': 'Movie',
-        'Recursive': true,
-        'Fields': 'ProviderIds,UserData',
-        'Limit': 5,
-      },
-    );
+  String get _userId => _creds.userId;
 
-    return _extractItemsAsBaseItemDto(response.data);
+  Future<BaseItemDto?> getItemByID(String itemId) async {
+    try {
+      final response = await _api.getItemsApi().getItems(
+        userId: _userId,
+        ids: [itemId],
+        fields: [ItemFields.mediaSources],
+      );
+      return response.data?.items?.firstOrNull;
+    } catch (e) {
+      return null;
+    }
   }
 
-  Future<List<BaseItemDto>> searchSeriesByTvdbId(
-    String providerKey,
-    int tvdbId,
-  ) async {
-    final response = await _dio.get<Map<String, dynamic>>(
-      '/Users/$_userId/Items',
-      queryParameters: {
-        'AnyProviderIdEquals': '$providerKey=$tvdbId',
-        'IncludeItemTypes': 'Series',
-        'Recursive': true,
-        'Fields': 'ProviderIds,UserData',
-        'Limit': 5,
-      },
+  Future<List<BaseItemDto>> getAllItems(int tmdbId, bool isMovie) async {
+    final res = await _api.getItemsApi().getItems(
+      userId: _userId,
+      recursive: true,
+      includeItemTypes: [
+        if (isMovie) BaseItemKind.movie,
+        if (!isMovie) BaseItemKind.series,
+      ],
+      fields: [ItemFields.providerIds, ItemFields.seasonUserData],
     );
-
-    return _extractItemsAsBaseItemDto(response.data);
+    return res.data?.items ?? [];
   }
 
   Future<List<BaseItemDto>> getEpisodes(
     String seriesId,
     int seasonNumber,
   ) async {
-    final tvShowsApi = TvShowsApi(_dio);
-    final response = await tvShowsApi.getEpisodes(
+    final response = await _api.getTvShowsApi().getEpisodes(
       seriesId: seriesId,
       userId: _userId,
       season: seasonNumber,
@@ -56,38 +51,85 @@ class JellyfinRepository {
       enableUserData: true,
       isMissing: false,
     );
-
     return response.data?.items?.toList() ?? [];
   }
 
   Future<void> reportPlaybackStart(PlaybackStartInfo info) async {
-    final api = PlaystateApi(_dio);
-    await api.reportPlaybackStart(playbackStartInfo: info);
+    await _api.getPlaystateApi().reportPlaybackStart(playbackStartInfo: info);
   }
 
   Future<void> reportPlaybackProgress(PlaybackProgressInfo info) async {
-    final api = PlaystateApi(_dio);
-    await api.reportPlaybackProgress(playbackProgressInfo: info);
+    await _api.getPlaystateApi().reportPlaybackProgress(
+      playbackProgressInfo: info,
+    );
   }
 
   Future<void> reportPlaybackStopped(PlaybackStopInfo info) async {
-    final api = PlaystateApi(_dio);
-    await api.reportPlaybackStopped(playbackStopInfo: info);
+    await _api.getPlaystateApi().reportPlaybackStopped(playbackStopInfo: info);
   }
 
-  List<BaseItemDto> _extractItemsAsBaseItemDto(Map<String, dynamic>? data) {
-    if (data == null) return [];
-    final items = data['Items'];
-    if (items is! List) return [];
+  Future<int?> getSourceBitrate(String itemId) async {
+    try {
+      final response = await _api.getMediaInfoApi().getPostedPlaybackInfo(
+        itemId: itemId,
+        playbackInfoDto: PlaybackInfoDto(userId: _userId),
+      );
+      return response.data?.mediaSources?.firstOrNull?.bitrate;
+    } catch (_) {
+      return null;
+    }
+  }
 
-    return items
-        .whereType<Map<String, dynamic>>()
-        .map((rawItem) => BaseItemDto.fromJson(rawItem))
-        .toList();
+  Future<String?> getPlaybackUrl({
+    required String itemId,
+    Duration? startTime,
+    int? audioStreamIndex,
+    int? subtitleStreamIndex,
+    int? maxStreamingBitrate,
+    bool enableTranscoding = true,
+  }) async {
+    try {
+      final response = await _api.getMediaInfoApi().getPostedPlaybackInfo(
+        itemId: itemId,
+        playbackInfoDto: PlaybackInfoDto(
+          userId: _userId,
+          startTimeTicks: startTime != null
+              ? startTime.inMicroseconds * 10
+              : null,
+          audioStreamIndex: audioStreamIndex,
+          subtitleStreamIndex: subtitleStreamIndex,
+          maxStreamingBitrate: maxStreamingBitrate,
+          enableDirectPlay: true,
+          enableDirectStream: true,
+          enableTranscoding: enableTranscoding,
+          allowAudioStreamCopy: true,
+          allowVideoStreamCopy: true,
+          autoOpenLiveStream: true,
+        ),
+      );
+
+      final mediaSource = response.data?.mediaSources?.firstOrNull;
+      if (mediaSource == null) return null;
+
+      if ((mediaSource.supportsDirectStream ?? false) ||
+          (mediaSource.supportsDirectPlay ?? false)) {
+        return '${_creds.jellyfinUrl}/Videos/${mediaSource.id}/stream'
+            '?Static=true&mediaSourceId=${mediaSource.id}&api_key=${_creds.accessToken}'
+            '${mediaSource.eTag != null ? '&Tag=${mediaSource.eTag}' : ''}'
+            '${mediaSource.liveStreamId != null ? '&LiveStreamId=${mediaSource.liveStreamId}' : ''}';
+      } else if ((mediaSource.supportsTranscoding ?? false) &&
+          mediaSource.transcodingUrl != null) {
+        return '${_creds.jellyfinUrl}${mediaSource.transcodingUrl}';
+      }
+      return null;
+    } catch (_) {
+      return null;
+    }
   }
 }
 
 final jellyfinRepositoryProvider = Provider<JellyfinRepository>((ref) {
+  final api = ref.watch(jellyfinApiProvider);
   final storageService = ref.watch(appStorageProvider);
   final creds = storageService.getJellyfinCredentials();
 
@@ -95,24 +137,5 @@ final jellyfinRepositoryProvider = Provider<JellyfinRepository>((ref) {
     throw RepositoryException('No Jellyfin credentials stored.');
   }
 
-  final baseUrl = creds.jellyfinUrl.endsWith('/')
-      ? creds.jellyfinUrl.substring(0, creds.jellyfinUrl.length - 1)
-      : creds.jellyfinUrl;
-
-  final dio = Dio(
-    BaseOptions(
-      baseUrl: baseUrl,
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
-      headers: {
-        'Authorization':
-            'MediaBrowser Client="Orion", Device="Orion App", '
-            'DeviceId="orion-app-v1", Version="1.0.0", '
-            'Token="${creds.accessToken}"',
-        'Accept': 'application/json',
-      },
-    ),
-  );
-
-  return JellyfinRepository(dio, creds.userId);
+  return JellyfinRepository(api, creds);
 });

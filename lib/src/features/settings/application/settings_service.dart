@@ -78,10 +78,16 @@ class SettingsService {
     final normalizedUrl = url.toNormalizedUrl();
     try {
       var jellyApi = JellyApi(basePathOverride: normalizedUrl);
-      final authHeader = 'MediaBrowser Client="Orion", Device="Flutter", DeviceId="orion-app", Version="1.0.0"';
+      final deviceId = _storageService.deviceId;
+      final authHeader =
+          'MediaBrowser Client="Orion", Device="Orion App", '
+          'DeviceId="$deviceId", Version="1.0.0"';
       final response = await jellyApi.getUserApi().authenticateUserByName(
-        authenticateUserByName: AuthenticateUserByName(username: username, pw: password),
-        headers: {'X-Emby-Authorization': authHeader},
+        authenticateUserByName: AuthenticateUserByName(
+          username: username,
+          pw: password,
+        ),
+        headers: {'Authorization': authHeader},
       );
       if (response.statusCode != 200) {
         throw Exception('API returned ${response.statusMessage}');
@@ -99,7 +105,11 @@ class SettingsService {
       await _storageService.saveJellyfinCredentials(creds);
       return creds;
     } catch (e, st) {
-      throw RepositoryException('Failed to validate Jellyfin connection', error: e, stackTrace: st);
+      throw RepositoryException(
+        'Failed to validate Jellyfin connection',
+        error: e,
+        stackTrace: st,
+      );
     }
   }
 }

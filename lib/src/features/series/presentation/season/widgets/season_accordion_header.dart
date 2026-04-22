@@ -87,15 +87,6 @@ class SeasonAccordionHeader extends StatelessWidget {
                   onPressed: onToggleMonitor,
                   tooltip: isMonitored ? 'Unmonitor Season' : 'Monitor Season',
                 ),
-                IconButton(
-                  icon: Icon(
-                    hasMissingFiles ? Icons.search : Icons.folder,
-                    size: 18,
-                  ),
-                  color: hasMissingFiles ? cs.primary : Colors.green,
-                  onPressed: onSearchAll,
-                  tooltip: 'Search Season Releases',
-                ),
                 if (status != 'UNMONITORED') ...[
                   const SizedBox(width: 8),
                   SeasonStatusBadge(
@@ -103,7 +94,47 @@ class SeasonAccordionHeader extends StatelessWidget {
                     expanded: expanded,
                     isLoading: isLoading,
                   ),
+                  const SizedBox(width: 4),
                 ],
+                PopupMenuButton<String>(
+                  icon: Icon(
+                    Icons.more_vert,
+                    size: 20,
+                    color: expanded ? cs.onSurface : cs.outline,
+                  ),
+                  splashRadius: 24,
+                  elevation: 4,
+                  shadowColor: Colors.black45,
+                  surfaceTintColor: Colors.transparent,
+                  color: cs.surfaceContainerHigh,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
+                    side: BorderSide(
+                      color: cs.outlineVariant.withValues(alpha: 0.3),
+                    ),
+                  ),
+                  onSelected: (value) {
+                    if (value == 'search') onSearchAll();
+                  },
+                  itemBuilder: (context) => [
+                    if (hasMissingFiles)
+                      PopupMenuItem(
+                        value: 'search',
+                        child: Row(
+                          children: [
+                            Icon(Icons.search, size: 20, color: cs.onSurface),
+                            const SizedBox(width: 12),
+                            Text(
+                              'Search Releases',
+                              style: tt.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
               ],
             ),
           ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:media_kit/media_kit.dart';
-import 'package:client/src/features/jellyfin/presentation/widgets/sheets/sheet_components.dart';
+import 'package:client/src/features/jellyfin/presentation/jellyfin_player/widgets/sheets/sheet_components.dart';
 
 class AudioSubtitleSheet extends StatefulWidget {
   final List<SubtitleTrack> subtitleTracks;

@@ -1,5 +1,5 @@
 import 'package:client/src/features/jellyfin/domain/video_quality.dart';
-import 'package:client/src/features/jellyfin/presentation/widgets/sheets/sheet_components.dart';
+import 'package:client/src/features/jellyfin/presentation/jellyfin_player/widgets/sheets/sheet_components.dart';
 import 'package:flutter/material.dart';
 
 class QualitySheet extends StatefulWidget {

@@ -1,4 +1,4 @@
-import 'package:client/src/features/jellyfin/presentation/widgets/player_control_button.dart';
+import 'package:client/src/features/jellyfin/presentation/jellyfin_player/widgets/player_control_button.dart';
 import 'package:flutter/material.dart';
 
 class PlayerCenterControls extends StatelessWidget {

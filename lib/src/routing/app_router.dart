@@ -13,7 +13,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sonarr_api/sonarr_api.dart';
 import 'package:radarr_api/radarr_api.dart';
 import 'package:client/src/routing/extra_codec.dart';
-import 'package:client/src/features/jellyfin/presentation/jellyfin_player_page.dart';
+import 'package:client/src/features/jellyfin/presentation/jellyfin_player/jellyfin_player_page.dart';
 import 'package:client/src/features/jellyfin/domain/jellyfin_match_result.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();

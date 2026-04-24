@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:client/src/features/jellyfin/presentation/video_fit.dart';
-import 'package:client/src/features/jellyfin/presentation/widgets/player_gradient_overlay.dart';
-import 'package:client/src/features/jellyfin/presentation/widgets/controls/bottom_bar.dart';
-import 'package:client/src/features/jellyfin/presentation/widgets/controls/center_controls.dart';
-import 'package:client/src/features/jellyfin/presentation/widgets/controls/top_bar.dart';
-import 'package:client/src/features/jellyfin/presentation/widgets/sheets/audio_subtitle_sheet.dart';
-import 'package:client/src/features/jellyfin/presentation/widgets/sheets/fit_sheet.dart';
-import 'package:client/src/features/jellyfin/presentation/widgets/sheets/quality_sheet.dart';
-import 'package:client/src/features/jellyfin/presentation/widgets/sheets/speed_volume_sheet.dart';
+import 'package:client/src/features/jellyfin/presentation/jellyfin_player/video_fit.dart';
+import 'package:client/src/features/jellyfin/presentation/jellyfin_player/widgets/player_gradient_overlay.dart';
+import 'package:client/src/features/jellyfin/presentation/jellyfin_player/widgets/controls/bottom_bar.dart';
+import 'package:client/src/features/jellyfin/presentation/jellyfin_player/widgets/controls/center_controls.dart';
+import 'package:client/src/features/jellyfin/presentation/jellyfin_player/widgets/controls/top_bar.dart';
+import 'package:client/src/features/jellyfin/presentation/jellyfin_player/widgets/sheets/audio_subtitle_sheet.dart';
+import 'package:client/src/features/jellyfin/presentation/jellyfin_player/widgets/sheets/fit_sheet.dart';
+import 'package:client/src/features/jellyfin/presentation/jellyfin_player/widgets/sheets/quality_sheet.dart';
+import 'package:client/src/features/jellyfin/presentation/jellyfin_player/widgets/sheets/speed_volume_sheet.dart';
 import 'package:client/src/features/jellyfin/domain/video_quality.dart';
 import 'package:flutter/material.dart';
 import 'package:media_kit/media_kit.dart';

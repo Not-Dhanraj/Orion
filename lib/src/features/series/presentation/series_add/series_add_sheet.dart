@@ -1,6 +1,6 @@
 import 'package:client/src/features/series/presentation/series_add/series_add_controller.dart';
 import 'package:client/src/features/series/presentation/series_add/widgets/series_add_form.dart';
-import 'package:client/src/shared/domain/snackbar_config.dart';
+import 'package:client/src/shared/widgets/indicators/snackbar_config.dart';
 import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
 import 'package:client/src/shared/widgets/sheets/sheet_header.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';

@@ -30,18 +30,26 @@ environment:
 dependencies:
   animations: ^2.0.11
   cached_network_image: ^3.4.1
+  collection: ^1.19.1
+  dio: ^5.9.2
   entry: ^1.0.1
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.6.1
+  flutter_secure_storage: ^9.2.4
   flutter_staggered_grid_view: ^0.7.0
-  go_router: ^17.2.0
   flutter_tabler_icons:
     git: https://github.com/agil3st/flutter_tabler_icons.git
+  go_router: ^17.2.0
   google_fonts: ^8.0.2
   hive_ce: ^2.11.3
   hive_ce_flutter: ^2.3.1
   intl: ^0.19.0
+  jelly_api:
+    path: ./api/jelly_api
+  media_kit: ^1.2.6
+  media_kit_libs_video: ^1.0.7
+  media_kit_video: ^2.0.1
   radarr_api:
     path: ./api/radarr_api
   sonarr_api:
@@ -55,12 +63,7 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
-  hive_ce_generator: ^1.9.3
   icons_launcher: ^3.1.0
-
-
-
-
 
 icons_launcher:
   image_path: 'assets/icon/icon.png'
@@ -88,8 +91,6 @@ icons_launcher:
     linux:
       enable: true
       image_path: 'assets/icon/icon.png'
-
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

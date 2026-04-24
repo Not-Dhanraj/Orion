@@ -1,10 +1,12 @@
+import 'package:client/src/features/jellyfin/application/jellyfin_match_providers.dart';
 import 'package:client/src/features/movies/presentation/movie_detail/movie_details_controller.dart';
 import 'package:client/src/features/movies/presentation/movie_edit/movie_edit_sheet.dart';
 import 'package:client/src/features/releases/domain/release_target.dart';
 import 'package:client/src/features/releases/presentation/release_sheet.dart';
 import 'package:client/src/shared/domain/media_spec.dart';
-import 'package:client/src/shared/domain/snackbar_config.dart';
+import 'package:client/src/shared/widgets/indicators/snackbar_config.dart';
 import 'package:client/src/shared/utils/movie_utils.dart';
+import 'package:client/src/shared/widgets/dialogs/custom_dialog.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/shared/widgets/media/media_delete_dialog.dart';
 import 'package:client/src/shared/widgets/media/media_hero_header.dart';
@@ -12,6 +14,7 @@ import 'package:client/src/shared/widgets/media/media_overview.dart';
 import 'package:client/src/shared/widgets/media/media_specs_grid.dart';
 import 'package:client/src/shared/domain/telemetry_models.dart';
 import 'package:client/src/shared/widgets/media/media_telemetry.dart';
+import 'package:client/src/features/jellyfin/domain/jellyfin_match_result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
@@ -62,6 +65,69 @@ class _MovieDetailsPageState extends ConsumerState<MovieDetailsPage> {
     }
   }
 
+  Future<void> _deleteFile(BuildContext context) async {
+    try {
+      await ref.read(movieDetailsController.notifier).deleteMovieFile();
+      if (context.mounted) {
+        CustomSnackbar.show(
+          context,
+          message: 'Movie file deleted.',
+          type: CustomSnackbarType.success,
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        CustomSnackbar.show(
+          context,
+          message: 'Failed to delete file: ${e.toString()}',
+          type: CustomSnackbarType.error,
+        );
+      }
+    }
+  }
+
+  void _confirmDeleteFile(BuildContext context) {
+    final movie = ref.read(movieDetailsController);
+    showDialog(
+      context: context,
+      builder: (dialogContext) => Dialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 480),
+          child: CustomDialog(
+            title: 'DELETE FILE',
+            heading: 'Delete downloaded file for "${movie.title}"?',
+            body:
+                'The movie will remain monitored in Radarr. Only the file on disk will be removed.',
+            actions: [
+              ElevatedButton(
+                onPressed: () => dialogContext.pop(),
+                child: const Text('CANCEL'),
+              ),
+              OutlinedButton.icon(
+                onPressed: () {
+                  dialogContext.pop();
+                  _deleteFile(context);
+                },
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Theme.of(dialogContext).colorScheme.error,
+                  side: BorderSide(
+                    color: Theme.of(
+                      dialogContext,
+                    ).colorScheme.error.withValues(alpha: 0.4),
+                  ),
+                ),
+                icon: const Icon(TablerIcons.trash, size: 14),
+                label: const Text('DELETE FILE'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   void _confirmDelete(BuildContext context, MovieResource movie) {
     showDialog(
       context: context,
@@ -82,6 +148,13 @@ class _MovieDetailsPageState extends ConsumerState<MovieDetailsPage> {
   @override
   Widget build(BuildContext context) {
     final movie = ref.watch(movieDetailsController);
+    final tmdbId = movie.tmdbId ?? 0;
+    final matchAsync = tmdbId > 0
+        ? ref.watch(jellyfinMovieMatchProvider(tmdbId))
+        : const AsyncValue<JellyfinMatchResult?>.data(null);
+    final jellyMatchIsLoading = matchAsync.isLoading;
+    final jellymatch = matchAsync.valueOrNull;
+
     final cs = Theme.of(context).colorScheme;
     final tt = Theme.of(context).textTheme;
 
@@ -114,39 +187,6 @@ class _MovieDetailsPageState extends ConsumerState<MovieDetailsPage> {
                   syncStatusLabel: 'DOWNLOAD STATUS',
                   isMonitored: movie.monitored ?? false,
                   actions: [
-                    if (movie.hasFile == true)
-                      ElevatedButton(
-                        onPressed: () {
-                          CustomSnackbar.show(
-                            context,
-                            message: 'Movie is already downloaded!',
-                            type: CustomSnackbarType.info,
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: cs.primaryContainer,
-                          foregroundColor: cs.onSecondaryContainer,
-                        ),
-                        child: const Text('DOWNLOADED'),
-                      )
-                    else
-                      ElevatedButton(
-                        onPressed: () {
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            useSafeArea: true,
-                            backgroundColor: Colors.transparent,
-                            builder: (context) => ReleaseSheet(
-                              target: MovieReleaseTarget(
-                                movieId: movie.id!,
-                                title: movie.title ?? 'Unknown',
-                              ),
-                            ),
-                          );
-                        },
-                        child: const Text('SEARCH RELEASES'),
-                      ),
                     OutlinedButton(
                       onPressed: () {
                         showModalBottomSheet(
@@ -169,6 +209,153 @@ class _MovieDetailsPageState extends ConsumerState<MovieDetailsPage> {
                         ),
                       ),
                       child: const Text('DELETE'),
+                    ),
+                    PopupMenuButton<String>(
+                      icon: Icon(
+                        Icons.more_vert,
+                        size: 20,
+                        color: cs.onSurface,
+                      ),
+                      splashRadius: 24,
+                      elevation: 4,
+                      shadowColor: Colors.black45,
+                      surfaceTintColor: Colors.transparent,
+                      color: cs.surfaceContainerHigh,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero,
+                        side: BorderSide(
+                          color: cs.outlineVariant.withValues(alpha: 0.3),
+                        ),
+                      ),
+                      onSelected: (value) async {
+                        if (value == 'search') {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            useSafeArea: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) => ReleaseSheet(
+                              target: MovieReleaseTarget(
+                                movieId: movie.id!,
+                                title: movie.title ?? 'Unknown',
+                              ),
+                            ),
+                          );
+                        } else if (value == 'delete_file') {
+                          _confirmDeleteFile(context);
+                        } else if (value == 'play') {
+                          if (jellymatch == null) {
+                            CustomSnackbar.show(
+                              context,
+                              message:
+                                  'Media file exists in Radarr but no match was found in Jellyfin.',
+                              type: CustomSnackbarType.error,
+                            );
+                          } else {
+                            await context.push(
+                              '/jellyfinPlayer',
+                              extra: jellymatch,
+                            );
+                            await Future.delayed(
+                              const Duration(milliseconds: 1000),
+                            );
+                            if (context.mounted) {
+                              ref.invalidate(
+                                jellyfinMovieMatchProvider(tmdbId),
+                              );
+                            }
+                          }
+                        }
+                      },
+                      itemBuilder: (context) => [
+                        if (movie.hasFile == true || jellymatch != null)
+                          PopupMenuItem(
+                            value: 'play',
+                            enabled: !jellyMatchIsLoading && jellymatch != null,
+                            child: Row(
+                              children: [
+                                if (jellyMatchIsLoading)
+                                  SizedBox(
+                                    width: 18,
+                                    height: 18,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: cs.onSurface.withValues(
+                                        alpha: 0.5,
+                                      ),
+                                    ),
+                                  )
+                                else
+                                  Icon(
+                                    jellymatch == null
+                                        ? TablerIcons.alert_triangle_filled
+                                        : jellymatch.played
+                                        ? TablerIcons.check
+                                        : TablerIcons.player_play_filled,
+                                    size: 18,
+                                    color: jellymatch == null
+                                        ? cs.error
+                                        : cs.primary,
+                                  ),
+                                const SizedBox(width: 12),
+                                Text(
+                                  jellyMatchIsLoading
+                                      ? 'Loading Match...'
+                                      : jellymatch == null
+                                      ? 'Playback Error'
+                                      : jellymatch.played
+                                      ? 'Watch Again'
+                                      : 'Watch Now',
+                                  style: tt.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color: jellymatch == null ? cs.error : null,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        if (movie.hasFile != true)
+                          PopupMenuItem(
+                            value: 'search',
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.search,
+                                  size: 18,
+                                  color: cs.onSurface,
+                                ),
+                                const SizedBox(width: 12),
+                                Text(
+                                  'Search Releases',
+                                  style: tt.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        if (movie.hasFile == true)
+                          PopupMenuItem(
+                            value: 'delete_file',
+                            child: Row(
+                              children: [
+                                Icon(
+                                  TablerIcons.trash,
+                                  size: 18,
+                                  color: cs.error,
+                                ),
+                                const SizedBox(width: 12),
+                                Text(
+                                  'Delete File',
+                                  style: tt.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color: cs.error,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                      ],
                     ),
                   ],
                 ),

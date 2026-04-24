@@ -1,8 +1,8 @@
-import 'package:client/src/exceptions/auth_exception.dart';
+import 'package:client/src/core/exceptions/auth_exception.dart';
 import 'package:client/src/features/auth/application/auth_service.dart';
 import 'package:client/src/features/auth/domain/auth_state.dart';
 import 'package:client/src/features/auth/domain/welcome_step.dart';
-import 'package:client/src/shared/domain/snackbar_config.dart';
+import 'package:client/src/shared/widgets/indicators/snackbar_config.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -100,6 +100,40 @@ class AuthController extends Notifier<AuthState> {
           : 'An unexpected error occurred: ${e.toString()}';
 
       state = state.copyWith(isLoadingRadarr: false, radarrError: errorMessage);
+      if (context.mounted) showErrorSnackbar(context, errorMessage);
+    }
+  }
+
+  Future<void> updateJellyfin(
+    String url,
+    String username,
+    String password,
+    BuildContext context,
+  ) async {
+    state = state.copyWith(isLoadingJellyfin: true, clearJellyfinError: true);
+
+    try {
+      await _authService.validateAndConfigureJellyfin(url, username, password);
+
+      state = state.copyWith(
+        isLoadingJellyfin: false,
+        jellyfinConfigured: true,
+        currentStep: WelcomeStep.selector,
+      );
+
+      await Future.delayed(const Duration(milliseconds: 500));
+      if (context.mounted) {
+        showSuccessSnackbar(
+          context,
+          'Jellyfin linked successfully. Initializing system...',
+        );
+      }
+    } catch (e) {
+      final errorMessage = e is AuthException
+          ? e.message
+          : 'An unexpected error occurred: ${e.toString()}';
+
+      state = state.copyWith(isLoadingJellyfin: false, jellyfinError: errorMessage);
       if (context.mounted) showErrorSnackbar(context, errorMessage);
     }
   }

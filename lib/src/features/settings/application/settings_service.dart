@@ -1,15 +1,16 @@
-import 'package:client/src/core/application/hive_service.dart';
+import 'package:client/src/core/application/app_storage_service.dart';
 import 'package:client/src/core/domain/credentials.dart';
-import 'package:client/src/exceptions/repository_exception.dart';
+import 'package:client/src/core/exceptions/repository_exception.dart';
 import 'package:client/src/features/settings/data/settings_validation_repository.dart';
 import 'package:client/src/shared/utils/string_extension.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jelly_api/jelly_api.dart';
 
 class SettingsService {
   final SettingsValidationRepository _validator;
-  final HiveService _hive;
+  final AppStorageService _storageService;
 
-  SettingsService(this._validator, this._hive);
+  SettingsService(this._validator, this._storageService);
 
   Future<void> validateAndSaveSonarrCredentials(
     String url,
@@ -28,7 +29,7 @@ class SettingsService {
     }
 
     try {
-      await _hive.saveSonarrCredentials(
+      await _storageService.saveSonarrCredentials(
         SonarrCredentials(sonarrUrl: normalizedUrl, sonarrApi: apiKey),
       );
     } catch (e, st) {
@@ -57,7 +58,7 @@ class SettingsService {
     }
 
     try {
-      await _hive.saveRadarrCredentials(
+      await _storageService.saveRadarrCredentials(
         RadarrCredentials(radarrUrl: normalizedUrl, radarrApi: apiKey),
       );
     } catch (e, st) {
@@ -68,11 +69,54 @@ class SettingsService {
       );
     }
   }
+
+  Future<JellyfinCredentials> validateAndSaveJellyfinCredentials(
+    String url,
+    String username,
+    String password,
+  ) async {
+    final normalizedUrl = url.toNormalizedUrl();
+    try {
+      var jellyApi = JellyApi(basePathOverride: normalizedUrl);
+      final deviceId = _storageService.deviceId;
+      final authHeader =
+          'MediaBrowser Client="Orion", Device="Orion App", '
+          'DeviceId="$deviceId", Version="1.0.0"';
+      final response = await jellyApi.getUserApi().authenticateUserByName(
+        authenticateUserByName: AuthenticateUserByName(
+          username: username,
+          pw: password,
+        ),
+        headers: {'Authorization': authHeader},
+      );
+      if (response.statusCode != 200) {
+        throw Exception('API returned ${response.statusMessage}');
+      }
+      final data = response.data;
+      if (data == null || data.accessToken == null || data.user?.id == null) {
+        throw Exception('No access token returned');
+      }
+      final creds = JellyfinCredentials(
+        jellyfinUrl: normalizedUrl,
+        username: username,
+        accessToken: data.accessToken!,
+        userId: data.user!.id!,
+      );
+      await _storageService.saveJellyfinCredentials(creds);
+      return creds;
+    } catch (e, st) {
+      throw RepositoryException(
+        'Failed to validate Jellyfin connection',
+        error: e,
+        stackTrace: st,
+      );
+    }
+  }
 }
 
 final settingsServiceProvider = Provider<SettingsService>(
   (ref) => SettingsService(
     ref.watch(settingsValidationRepositoryProvider),
-    ref.watch(hiveProvider),
+    ref.watch(appStorageProvider),
   ),
 );

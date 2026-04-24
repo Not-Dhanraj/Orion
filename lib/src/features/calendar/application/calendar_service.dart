@@ -2,7 +2,7 @@ import 'package:client/src/core/application/enabled_provider.dart';
 import 'package:client/src/features/calendar/data/radarr_calendar_repository.dart';
 import 'package:client/src/features/calendar/data/sonarr_calendar_repository.dart';
 import 'package:client/src/features/calendar/domain/calendar_item.dart';
-import 'package:client/src/exceptions/repository_exception.dart';
+import 'package:client/src/core/exceptions/repository_exception.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CalendarService {

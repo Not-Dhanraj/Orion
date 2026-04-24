@@ -1,6 +1,6 @@
 import 'package:client/src/constants/theme/app_theme.dart';
 import 'package:client/src/routing/app_router.dart';
-import 'package:client/src/features/settings/application/theme_notifier.dart';
+import 'package:client/src/features/settings/presentation/theme_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

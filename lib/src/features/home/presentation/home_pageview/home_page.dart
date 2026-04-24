@@ -1,8 +1,8 @@
-import 'package:client/src/features/home/application/nav_items_provider.dart';
+import 'package:client/src/features/home/presentation/nav_items_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:client/src/features/home/domain/home_nav_item.dart';
+import 'package:client/src/features/home/presentation/home_nav_item.dart';
 import 'package:client/src/shared/utils/context_extensions.dart';
 import 'widgets/home_appbar.dart';
 import 'widgets/home_bottom_nav.dart';

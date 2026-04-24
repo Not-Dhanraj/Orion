@@ -1,19 +1,15 @@
-import 'package:client/src/constants/app_const.dart';
+import 'package:client/src/core/application/app_storage_service.dart';
 import 'package:client/src/core/domain/enabled.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive_ce_flutter/hive_flutter.dart';
 
 class EnabledNotifier extends Notifier<Enabled> {
   @override
   build() {
-    final appConst = AppConst();
-    if (!Hive.isBoxOpen(appConst.credentialsBox)) {
-      return Enabled(sonarr: false, radarr: false);
-    }
-    final credBox = Hive.box(appConst.credentialsBox);
+    final credentialService = ref.watch(appStorageProvider);
     return Enabled(
-      sonarr: credBox.containsKey(appConst.sonarrCredKey),
-      radarr: credBox.containsKey(appConst.radarrCredKey),
+      sonarr: credentialService.hasSonarrCredentials(),
+      radarr: credentialService.hasRadarrCredentials(),
+      jellyfin: credentialService.hasJellyfinCredentials(),
     );
   }
 }

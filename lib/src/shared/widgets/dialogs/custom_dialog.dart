@@ -32,7 +32,7 @@ class CustomDialog extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
 
     return ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: 800),
+      constraints: BoxConstraints(maxWidth: 600),
       child: Container(
         decoration: BoxDecoration(
           color: cs.surfaceContainerHigh,

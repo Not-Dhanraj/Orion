@@ -1,6 +1,9 @@
+import 'package:client/src/features/jellyfin/application/jellyfin_match_providers.dart';
+import 'package:client/src/features/jellyfin/domain/jellyfin_match_result.dart';
 import 'package:client/src/features/series/domain/season_page_args.dart';
 import 'package:client/src/features/series/presentation/season/season_controller.dart';
-import 'package:client/src/shared/domain/snackbar_config.dart';
+import 'package:client/src/shared/widgets/indicators/snackbar_config.dart';
+import 'package:client/src/shared/widgets/indicators/animated_loading_text.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/shared/widgets/dialogs/custom_dialog.dart';
 import 'package:client/src/features/releases/domain/release_target.dart';
@@ -34,6 +37,17 @@ class SeasonEpisodeList extends ConsumerWidget {
       ).notifier,
     );
 
+    final tvdbId = series.tvdbId ?? 0;
+    final seasonMatchState = tvdbId > 0
+        ? ref.watch(
+            jellyfinSeasonMatchProvider((
+              tvdbId: tvdbId,
+              seasonNumber: seasonNumber,
+            )),
+          )
+        : const AsyncValue<Map<int, JellyfinMatchResult>>.data({});
+    final matchMap = seasonMatchState.valueOrNull ?? {};
+
     return Column(
       children: [
         for (final e in episodes)
@@ -43,18 +57,22 @@ class SeasonEpisodeList extends ConsumerWidget {
             seasonNumber: seasonNumber,
             controller: controller,
             runWithLoading: runWithLoading,
+            jellyfinMatch: matchMap[e.episodeNumber ?? 0],
+            isMatchLoading: seasonMatchState.isLoading,
           ),
       ],
     );
   }
 }
 
-class _EpisodeListItem extends StatelessWidget {
+class _EpisodeListItem extends ConsumerWidget {
   final EpisodeResource episode;
   final SeriesResource series;
   final int seasonNumber;
   final SeasonPageController controller;
   final Future<void> Function(Future<void> Function()) runWithLoading;
+  final JellyfinMatchResult? jellyfinMatch;
+  final bool isMatchLoading;
 
   const _EpisodeListItem({
     required this.episode,
@@ -62,10 +80,12 @@ class _EpisodeListItem extends StatelessWidget {
     required this.seasonNumber,
     required this.controller,
     required this.runWithLoading,
+    this.jellyfinMatch,
+    this.isMatchLoading = false,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final cs = Theme.of(context).colorScheme;
     final hasFile = episode.hasFile ?? false;
     final monitored = episode.monitored ?? false;
@@ -79,6 +99,7 @@ class _EpisodeListItem extends StatelessWidget {
       _ => ('MISSING', cs.error),
     };
 
+    final isWatched = jellyfinMatch?.played ?? false;
     return EpisodeRow(
       number: FormatUtils.formatEpisodeNumber(episode.episodeNumber),
       title: episode.title ?? 'Unknown',
@@ -86,6 +107,7 @@ class _EpisodeListItem extends StatelessWidget {
       statusColor: statusColor,
       isMonitored: monitored,
       hasFile: hasFile,
+      isWatched: isWatched,
       onToggleMonitor: () => runWithLoading(() async {
         try {
           final nextMonitored = !monitored;
@@ -112,9 +134,81 @@ class _EpisodeListItem extends StatelessWidget {
         }
       }),
       onSearch: () => _searchEpisode(context),
-      onDelete: hasFile ? () => _confirmDeleteFile(context) : null,
+      onDelete: hasFile ? () => _confirmDeleteFile(context, ref) : null,
       onShowDetails: () => _showEpisodeDetails(context),
+      onPlay: hasFile ? () => _playEpisode(context, ref) : null,
     );
+  }
+
+  Future<void> _playEpisode(BuildContext context, WidgetRef ref) async {
+    final tvdbId = series.tvdbId;
+
+    if (isMatchLoading) {
+      CustomSnackbar.show(
+        context,
+        message: 'Loading metadata, please wait...',
+        type: CustomSnackbarType.info,
+      );
+      return;
+    }
+
+    bool isCancelled = false;
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => PopScope(
+        canPop: false,
+        child: Dialog(
+          child: CustomDialog(
+            title: 'Loading',
+            heading: 'Loading Matching Service',
+            bodyWidget: AnimatedLoadingText(),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  isCancelled = true;
+                  Navigator.of(context).pop();
+                },
+                child: const Text('CANCEL'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    await Future.delayed(Duration(milliseconds: 600));
+
+    try {
+      final finalMatch = await controller.resolveJellyfinEpisodeMatch(
+        tvdbId: tvdbId,
+        seasonNumber: seasonNumber,
+        episodeNumber: episode.episodeNumber ?? 0,
+        jellyfinMatch: jellyfinMatch,
+      );
+
+      if (isCancelled) return;
+
+      if (context.mounted) {
+        Navigator.of(context).pop();
+        await context.push('/jellyfinPlayer', extra: finalMatch);
+        await Future.delayed(const Duration(milliseconds: 1000));
+        controller.invalidateJellyfinMatch(tvdbId!, seasonNumber);
+      }
+    } catch (e) {
+      if (isCancelled) return;
+      
+      if (context.mounted) {
+        Navigator.of(context).pop();
+        CustomSnackbar.show(
+          context,
+          message: e.toString().contains('Exception: ')
+              ? e.toString().replaceFirst('Exception: ', '')
+              : 'Jellyfin error: $e',
+          type: CustomSnackbarType.error,
+        );
+      }
+    }
   }
 
   Future<void> _searchEpisode(BuildContext context) async {
@@ -146,7 +240,7 @@ class _EpisodeListItem extends StatelessWidget {
     );
   }
 
-  void _confirmDeleteFile(BuildContext context) {
+  void _confirmDeleteFile(BuildContext context, WidgetRef ref) {
     final hostContext = Navigator.of(context, rootNavigator: true).context;
     showDialog(
       context: context,

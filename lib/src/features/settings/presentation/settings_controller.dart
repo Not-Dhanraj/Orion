@@ -1,26 +1,27 @@
-import 'package:client/src/constants/app_const.dart';
-import 'package:client/src/core/application/hive_service.dart';
+import 'package:client/src/core/application/enabled_provider.dart';
+import 'package:client/src/core/application/app_storage_service.dart';
 import 'package:client/src/core/domain/credentials.dart';
 import 'package:client/src/features/settings/application/settings_service.dart';
 import 'package:client/src/features/settings/domain/settings_data.dart';
 import 'package:client/src/shared/utils/string_extension.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive_ce_flutter/adapters.dart';
 
 class SettingsController extends Notifier<SettingsData> {
   late SettingsService _settingsService;
-  late HiveService _hiveService;
+  late AppStorageService _storageService;
 
   @override
   SettingsData build() {
     _settingsService = ref.watch(settingsServiceProvider);
-    _hiveService = ref.watch(hiveProvider);
-    final radarrCredentials = _hiveService.getRadarrCredentials();
-    final sonarrCredentials = _hiveService.getSonarrCredentials();
+    _storageService = ref.watch(appStorageProvider);
+    final radarrCredentials = _storageService.getRadarrCredentials();
+    final sonarrCredentials = _storageService.getSonarrCredentials();
+    final jellyfinCredentials = _storageService.getJellyfinCredentials();
 
     return SettingsData(
       radarrCredentials: radarrCredentials,
       sonarrCredentials: sonarrCredentials,
+      jellyfinCredentials: jellyfinCredentials,
     );
   }
 
@@ -58,28 +59,42 @@ class SettingsController extends Notifier<SettingsData> {
     }
   }
 
-  Future<void> deleteRadarrService() async {
-    final appConst = AppConst();
-
-    if (!Hive.isBoxOpen(appConst.credentialsBox)) {
-      await Hive.openBox(appConst.credentialsBox);
+  Future<void> validateAndUpdateJellyfinCredentials(
+    String url,
+    String username,
+    String password,
+  ) async {
+    try {
+      final credentials = await _settingsService.validateAndSaveJellyfinCredentials(
+        url,
+        username,
+        password,
+      );
+      state = state.copyWith(jellyfinCredentials: credentials);
+    } catch (e) {
+      rethrow;
     }
-    final credentialsBox = Hive.box(appConst.credentialsBox);
-    await credentialsBox.delete(appConst.radarrCredKey);
+  }
+
+  Future<void> deleteRadarrService() async {
+    await _storageService.deleteRadarrCredentials();
+    ref.invalidate(enabledNotifierProvider);
 
     state = state.copyWith(radarrCredentials: null);
   }
 
   Future<void> deleteSonarrService() async {
-    final appConst = AppConst();
-
-    if (!Hive.isBoxOpen(appConst.credentialsBox)) {
-      await Hive.openBox(appConst.credentialsBox);
-    }
-    final credentialsBox = Hive.box(appConst.credentialsBox);
-    await credentialsBox.delete(appConst.sonarrCredKey);
+    await _storageService.deleteSonarrCredentials();
+    ref.invalidate(enabledNotifierProvider);
 
     state = state.copyWith(sonarrCredentials: null);
+  }
+
+  Future<void> deleteJellyfinService() async {
+    await _storageService.deleteJellyfinCredentials();
+    ref.invalidate(enabledNotifierProvider);
+
+    state = state.copyWith(jellyfinCredentials: null);
   }
 }
 

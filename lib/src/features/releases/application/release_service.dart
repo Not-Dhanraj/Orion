@@ -1,4 +1,4 @@
-import 'package:client/src/exceptions/repository_exception.dart';
+import 'package:client/src/core/exceptions/repository_exception.dart';
 import 'package:client/src/features/releases/data/radarr_release_repository.dart';
 import 'package:client/src/features/releases/data/sonarr_release_repository.dart';
 import 'package:client/src/features/releases/domain/release_item.dart';

@@ -1,13 +1,6 @@
-import 'package:hive_ce_flutter/adapters.dart';
-
-part 'credentials.g.dart';
-
-@HiveType(typeId: 1)
-class SonarrCredentials extends HiveObject {
-  @HiveField(0)
+class SonarrCredentials {
   final String sonarrUrl;
 
-  @HiveField(1)
   final String sonarrApi;
 
   SonarrCredentials({required this.sonarrUrl, required this.sonarrApi});
@@ -17,12 +10,9 @@ class SonarrCredentials extends HiveObject {
       'SonarrCredentials(url: $sonarrUrl, api: ${sonarrApi.substring(0, 8)}...)';
 }
 
-@HiveType(typeId: 2)
-class RadarrCredentials extends HiveObject {
-  @HiveField(0)
+class RadarrCredentials {
   final String radarrUrl;
 
-  @HiveField(1)
   final String radarrApi;
 
   RadarrCredentials({required this.radarrUrl, required this.radarrApi});
@@ -30,4 +20,22 @@ class RadarrCredentials extends HiveObject {
   @override
   String toString() =>
       'RadarrCredentials(url: $radarrUrl, api: ${radarrApi.substring(0, 8)}...)';
+}
+
+class JellyfinCredentials {
+  final String jellyfinUrl;
+  final String username;
+  final String accessToken;
+  final String userId;
+
+  JellyfinCredentials({
+    required this.jellyfinUrl,
+    required this.username,
+    required this.accessToken,
+    required this.userId,
+  });
+
+  @override
+  String toString() =>
+      'JellyfinCredentials(url: $jellyfinUrl, username: $username, userId: $userId, accessToken: ${accessToken.substring(0, 8)}...)';
 }

@@ -6,6 +6,7 @@ class WelcomeFormStep extends StatefulWidget {
   final ServiceType serviceType;
   final TextEditingController urlController;
   final TextEditingController apiKeyController;
+  final TextEditingController? passwordController;
   final bool isLoading;
   final VoidCallback onConnect;
   final VoidCallback onBack;
@@ -15,6 +16,7 @@ class WelcomeFormStep extends StatefulWidget {
     required this.serviceType,
     required this.urlController,
     required this.apiKeyController,
+    this.passwordController,
     required this.isLoading,
     required this.onConnect,
     required this.onBack,
@@ -35,7 +37,13 @@ class _WelcomeFormStepState extends State<WelcomeFormStep> {
 
     final serviceName = widget.serviceType == ServiceType.sonarr
         ? 'SONARR'
-        : 'RADARR';
+        : widget.serviceType == ServiceType.radarr
+            ? 'RADARR'
+            : 'JELLYFIN';
+
+    final secondaryLabel = widget.serviceType == ServiceType.jellyfin ? 'USERNAME' : 'API KEY';
+    final secondaryHint = widget.serviceType == ServiceType.jellyfin ? 'Enter username' : 'Paste your API key';
+    final isJellyfin = widget.serviceType == ServiceType.jellyfin;
 
     return SafeArea(
       child: Center(
@@ -84,7 +92,7 @@ class _WelcomeFormStepState extends State<WelcomeFormStep> {
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  'API KEY',
+                  secondaryLabel,
                   style: tt.labelSmall!.copyWith(
                     color: cs.outline,
                     letterSpacing: 2.0,
@@ -93,12 +101,31 @@ class _WelcomeFormStepState extends State<WelcomeFormStep> {
                 const SizedBox(height: 8),
                 CustomTextField(
                   controller: widget.apiKeyController,
-                  hint: 'Paste your API key',
-                  obscure: _obscureApiKey,
+                  hint: secondaryHint,
+                  obscure: isJellyfin ? false : _obscureApiKey,
                   enabled: !widget.isLoading,
-                  onToggle: () =>
+                  onToggle: isJellyfin ? null : () =>
                       setState(() => _obscureApiKey = !_obscureApiKey),
                 ),
+                if (isJellyfin && widget.passwordController != null) ...[
+                  const SizedBox(height: 24),
+                  Text(
+                    'PASSWORD',
+                    style: tt.labelSmall!.copyWith(
+                      color: cs.outline,
+                      letterSpacing: 2.0,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  CustomTextField(
+                    controller: widget.passwordController!,
+                    hint: 'Enter password',
+                    obscure: _obscureApiKey,
+                    enabled: !widget.isLoading,
+                    onToggle: () =>
+                        setState(() => _obscureApiKey = !_obscureApiKey),
+                  ),
+                ],
                 const SizedBox(height: 40),
                 SizedBox(
                   width: double.infinity,

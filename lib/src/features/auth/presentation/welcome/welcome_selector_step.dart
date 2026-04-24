@@ -59,6 +59,13 @@ class WelcomeSelectorStep extends StatelessWidget {
                   isLinked: state.radarrConfigured,
                   onTap: () => onServiceSelect(ServiceType.radarr),
                 ),
+                const SizedBox(height: 16),
+                _ServiceCard(
+                  title: 'JELLYFIN',
+                  subtitle: 'Media Streaming (Optional)',
+                  isLinked: state.jellyfinConfigured,
+                  onTap: () => onServiceSelect(ServiceType.jellyfin),
+                ),
                 const Spacer(),
                 if (canProceed) ...[
                   Text(

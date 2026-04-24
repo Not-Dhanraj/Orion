@@ -1,4 +1,8 @@
 extension StringExtension on String {
+  String removeEndingSlash() {
+    return endsWith('/') ? substring(0, length - 1) : this;
+  }
+
   String capitalizeByWord() {
     if (trim().isEmpty) {
       return '';

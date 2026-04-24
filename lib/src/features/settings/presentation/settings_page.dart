@@ -1,5 +1,5 @@
 import 'package:client/src/features/settings/presentation/settings_controller.dart';
-import 'package:client/src/features/settings/application/theme_notifier.dart';
+import 'package:client/src/features/settings/presentation/theme_notifier.dart';
 import 'package:client/src/features/settings/presentation/widgets/service_config_sheet.dart';
 import 'package:client/src/features/settings/presentation/widgets/settings_about_card.dart';
 import 'package:client/src/features/settings/presentation/widgets/add_service_row.dart';
@@ -10,7 +10,7 @@ import 'package:client/src/features/settings/presentation/widgets/sheet_button.d
 import 'package:client/src/features/settings/presentation/widgets/theme_option_row.dart';
 import 'package:client/src/features/settings/presentation/widgets/settings_row.dart';
 import 'package:client/src/features/settings/presentation/widgets/settings_section_header.dart';
-import 'package:client/src/shared/domain/snackbar_config.dart';
+import 'package:client/src/shared/widgets/indicators/snackbar_config.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/shared/utils/context_extensions.dart';
 import 'package:client/src/shared/utils/string_extension.dart';
@@ -114,7 +114,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       serviceName: 'Sonarr',
                       initialUrl: settings.sonarrCredentials!.sonarrUrl,
                       initialApiKey: settings.sonarrCredentials!.sonarrApi,
-                      onSave: (url, api) => ref
+                      onSave: (url, api, [pass]) => ref
                           .read(settingsController.notifier)
                           .validateAndUpdateSonarrCredentials(url, api),
                     ),
@@ -140,7 +140,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     serviceName: 'Sonarr',
                     initialUrl: '',
                     initialApiKey: '',
-                    onSave: (url, api) => ref
+                    onSave: (url, api, [pass]) => ref
                         .read(settingsController.notifier)
                         .validateAndUpdateSonarrCredentials(url, api),
                   ),
@@ -173,7 +173,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     serviceName: 'Radarr',
                     initialUrl: settings.radarrCredentials!.radarrUrl,
                     initialApiKey: settings.radarrCredentials!.radarrApi,
-                    onSave: (url, api) => ref
+                    onSave: (url, api, [pass]) => ref
                         .read(settingsController.notifier)
                         .validateAndUpdateRadarrCredentials(url, api),
                   ),
@@ -191,9 +191,64 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     serviceName: 'Radarr',
                     initialUrl: '',
                     initialApiKey: '',
-                    onSave: (url, api) => ref
+                    onSave: (url, api, [pass]) => ref
                         .read(settingsController.notifier)
                         .validateAndUpdateRadarrCredentials(url, api),
+                  ),
+                ),
+              const SizedBox(height: 32),
+              SettingsSectionHeader(
+                title: 'JELLYFIN CONFIGURATION',
+                isActive: settings.jellyfinCredentials != null,
+              ),
+              const SizedBox(height: 12),
+              if (settings.jellyfinCredentials != null) ...[
+                SettingsRowGroup(
+                  rows: [
+                    SettingsRow(
+                      label: 'Server URL',
+                      trailing: SettingsReadonlyValue(
+                        value:
+                            settings.jellyfinCredentials!.jellyfinUrl.maskServerUrl,
+                      ),
+                    ),
+                    SettingsRow(
+                      label: 'Username',
+                      trailing: SettingsReadonlyValue(
+                        value: settings.jellyfinCredentials!.username,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                ServiceActionRow(
+                  onEdit: () => _showServerConfigSheet(
+                    serviceName: 'Jellyfin',
+                    isJellyfin: true,
+                    initialUrl: settings.jellyfinCredentials!.jellyfinUrl,
+                    initialApiKey: settings.jellyfinCredentials!.username,
+                    onSave: (url, username, [password]) => ref
+                        .read(settingsController.notifier)
+                        .validateAndUpdateJellyfinCredentials(url, username, password ?? ''),
+                  ),
+                  onDelete: () => _showDeleteConfirmationSheet(
+                    serviceName: 'Jellyfin',
+                    onConfirm: () => ref
+                        .read(settingsController.notifier)
+                        .deleteJellyfinService(),
+                  ),
+                ),
+              ] else
+                AddServiceRow(
+                  label: 'Add Jellyfin',
+                  onTap: () => _showServerConfigSheet(
+                    serviceName: 'Jellyfin',
+                    isJellyfin: true,
+                    initialUrl: '',
+                    initialApiKey: '',
+                    onSave: (url, username, [password]) => ref
+                        .read(settingsController.notifier)
+                        .validateAndUpdateJellyfinCredentials(url, username, password ?? ''),
                   ),
                 ),
               const SizedBox(height: 32),
@@ -250,17 +305,20 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
   void _showServerConfigSheet({
     required String serviceName,
+    bool isJellyfin = false,
     required String initialUrl,
     required String initialApiKey,
-    required Future<void> Function(String, String) onSave,
+    required Future<void> Function(String, String, [String?]) onSave,
   }) {
     showModalBottomSheet(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (_) => ServiceConfigSheet(
         serviceName: serviceName,
         isRadarr: serviceName == 'Radarr',
+        isJellyfin: isJellyfin,
         initialUrl: initialUrl,
         initialApiKey: initialApiKey,
         onSave: onSave,
@@ -277,6 +335,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
     showModalBottomSheet(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (ctx) => Padding(
@@ -368,6 +427,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
     showModalBottomSheet(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       builder: (_) => StatefulBuilder(
         builder: (ctx, setSheetState) {

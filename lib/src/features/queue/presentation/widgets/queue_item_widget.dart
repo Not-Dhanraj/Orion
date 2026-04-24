@@ -1,4 +1,4 @@
-import 'package:client/src/features/queue/application/queue_item_extension.dart';
+import 'package:client/src/features/queue/domain/queue_item_extension.dart';
 import 'package:client/src/features/queue/domain/queue_item.dart';
 import 'package:client/src/features/queue/presentation/queue_controller.dart';
 import 'package:client/src/shared/widgets/dialogs/custom_dialog.dart';

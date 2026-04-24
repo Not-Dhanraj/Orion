@@ -1,6 +1,6 @@
-import 'package:client/src/exceptions/repository_exception.dart';
+import 'package:client/src/core/exceptions/repository_exception.dart';
 import 'package:client/src/features/settings/presentation/widgets/sheet_button.dart';
-import 'package:client/src/shared/domain/snackbar_config.dart';
+import 'package:client/src/shared/widgets/indicators/snackbar_config.dart';
 import 'package:client/src/shared/widgets/inputs/custom_text_field.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:flutter/material.dart';

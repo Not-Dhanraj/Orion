@@ -1,6 +1,6 @@
 import 'package:client/src/features/movies/presentation/movie_add/movie_add_controller.dart';
 import 'package:client/src/features/movies/presentation/movie_add/widgets/movie_add_form.dart';
-import 'package:client/src/shared/domain/snackbar_config.dart';
+import 'package:client/src/shared/widgets/indicators/snackbar_config.dart';
 import 'package:client/src/shared/widgets/indicators/custom_error_state.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/shared/widgets/sheets/sheet_footer.dart';

@@ -1,6 +1,6 @@
 import 'package:client/src/core/application/api_provider.dart';
 import 'package:client/src/core/application/app_storage_service.dart';
-import 'package:client/src/exceptions/repository_exception.dart';
+import 'package:client/src/core/exceptions/repository_exception.dart';
 import 'package:client/src/core/domain/credentials.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jelly_api/jelly_api.dart';
@@ -69,15 +69,11 @@ class JellyfinRepository {
   }
 
   Future<int?> getSourceBitrate(String itemId) async {
-    try {
-      final response = await _api.getMediaInfoApi().getPostedPlaybackInfo(
-        itemId: itemId,
-        playbackInfoDto: PlaybackInfoDto(userId: _userId),
-      );
-      return response.data?.mediaSources?.firstOrNull?.bitrate;
-    } catch (_) {
-      return null;
-    }
+    final response = await _api.getMediaInfoApi().getPostedPlaybackInfo(
+      itemId: itemId,
+      playbackInfoDto: PlaybackInfoDto(userId: _userId),
+    );
+    return response.data?.mediaSources?.firstOrNull?.bitrate;
   }
 
   Future<String?> getPlaybackUrl({

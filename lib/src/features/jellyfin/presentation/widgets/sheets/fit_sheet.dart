@@ -1,4 +1,4 @@
-import 'package:client/src/features/jellyfin/presentation/models/video_fit.dart';
+import 'package:client/src/features/jellyfin/presentation/video_fit.dart';
 import 'package:client/src/features/jellyfin/presentation/widgets/sheets/sheet_components.dart';
 import 'package:flutter/material.dart';
 

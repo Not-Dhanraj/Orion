@@ -1,4 +1,4 @@
-import 'package:client/src/shared/domain/snackbar_config.dart';
+import 'package:client/src/shared/widgets/indicators/snackbar_config.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar_content.dart';
 import 'package:flutter/material.dart';
 

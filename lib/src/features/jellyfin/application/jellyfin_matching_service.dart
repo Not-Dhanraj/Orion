@@ -1,4 +1,4 @@
-import 'package:client/src/exceptions/repository_exception.dart';
+import 'package:client/src/core/exceptions/repository_exception.dart';
 import 'package:client/src/features/jellyfin/data/jellyfin_repository.dart';
 import 'package:client/src/features/jellyfin/domain/jellyfin_match_result.dart';
 import 'package:collection/collection.dart';

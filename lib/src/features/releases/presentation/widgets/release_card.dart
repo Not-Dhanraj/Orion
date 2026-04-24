@@ -1,5 +1,5 @@
 import 'package:client/src/features/releases/domain/release_item.dart';
-import 'package:client/src/shared/domain/snackbar_config.dart';
+import 'package:client/src/shared/widgets/indicators/snackbar_config.dart';
 import 'package:client/src/shared/utils/format_utils.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:flutter/material.dart';

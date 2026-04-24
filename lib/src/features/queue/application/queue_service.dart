@@ -1,5 +1,5 @@
 import 'package:client/src/core/application/enabled_provider.dart';
-import 'package:client/src/exceptions/repository_exception.dart';
+import 'package:client/src/core/exceptions/repository_exception.dart';
 import 'package:client/src/features/queue/data/radarr_queue_repository.dart';
 import 'package:client/src/features/queue/data/sonarr_queue_repository.dart';
 import 'package:client/src/features/queue/domain/queue_item.dart';

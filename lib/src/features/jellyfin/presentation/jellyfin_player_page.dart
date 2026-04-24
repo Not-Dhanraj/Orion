@@ -1,5 +1,5 @@
 import 'package:client/src/features/jellyfin/domain/jellyfin_match_result.dart';
-import 'package:client/src/features/jellyfin/presentation/models/video_fit.dart';
+import 'package:client/src/features/jellyfin/presentation/video_fit.dart';
 import 'package:client/src/features/jellyfin/presentation/controllers/jellyfin_player_controller.dart';
 import 'package:client/src/features/jellyfin/presentation/widgets/player_controls_overlay.dart';
 import 'package:client/src/shared/widgets/indicators/animated_loading_text.dart';

@@ -2,7 +2,7 @@ import 'package:client/src/features/series/presentation/series_detail/series_det
 import 'package:client/src/features/series/presentation/series_edit/series_edit_sheet.dart';
 import 'package:client/src/features/series/presentation/season/widgets/season_accordion.dart';
 import 'package:client/src/shared/domain/media_spec.dart';
-import 'package:client/src/shared/domain/snackbar_config.dart';
+import 'package:client/src/shared/widgets/indicators/snackbar_config.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/shared/utils/series_utils.dart';
 import 'package:client/src/shared/widgets/media/media_delete_dialog.dart';

@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:client/src/features/jellyfin/presentation/models/video_fit.dart';
-import 'package:client/src/features/jellyfin/presentation/widgets/player_control_button.dart';
+import 'package:client/src/features/jellyfin/presentation/video_fit.dart';
 import 'package:client/src/features/jellyfin/presentation/widgets/player_gradient_overlay.dart';
 import 'package:client/src/features/jellyfin/presentation/widgets/controls/bottom_bar.dart';
 import 'package:client/src/features/jellyfin/presentation/widgets/controls/center_controls.dart';

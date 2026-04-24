@@ -1,6 +1,6 @@
 import 'package:client/src/features/series/domain/season_page_args.dart';
 import 'package:client/src/features/series/presentation/season/season_controller.dart';
-import 'package:client/src/shared/domain/snackbar_config.dart';
+import 'package:client/src/shared/widgets/indicators/snackbar_config.dart';
 import 'package:client/src/shared/widgets/indicators/animated_progress_bar.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/features/releases/domain/release_target.dart';

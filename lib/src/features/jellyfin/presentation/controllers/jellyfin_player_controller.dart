@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:client/src/features/jellyfin/application/jellyfin_playback_service.dart';
-import 'package:client/src/features/jellyfin/data/jellyfin_repository.dart';
+import 'package:client/src/features/jellyfin/application/jellyfin_player_data_service.dart';
 
 import 'package:client/src/features/jellyfin/domain/jellyfin_match_result.dart';
 import 'package:client/src/features/jellyfin/domain/video_quality.dart';
-import 'package:client/src/features/jellyfin/presentation/models/jellyfin_player_state.dart';
+import 'package:client/src/features/jellyfin/domain/jellyfin_player_state.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -67,11 +67,11 @@ class JellyfinPlayerController
       }
     });
 
-    final repo = ref.watch(jellyfinRepositoryProvider);
+    final dataService = ref.watch(jellyfinPlayerDataServiceProvider);
 
-    final results = await Future.wait([
-      repo.getItemByID(arg.match.jellyfinItemId),
-      repo.getSourceBitrate(arg.match.jellyfinItemId),
+    final results = await Future.wait<dynamic>([
+      dataService.fetchItemWithTracks(arg.match.jellyfinItemId),
+      dataService.fetchSourceBitrate(arg.match.jellyfinItemId),
     ]);
 
     final itemDto = results[0] as BaseItemDto?;
@@ -131,8 +131,8 @@ class JellyfinPlayerController
         currentState.currentQuality.maxHeight == null &&
         currentState.currentQuality.maxBitrate == null;
 
-    final repo = ref.read(jellyfinRepositoryProvider);
-    final streamUrl = await repo.getPlaybackUrl(
+    final dataService = ref.read(jellyfinPlayerDataServiceProvider);
+    final streamUrl = await dataService.fetchPlaybackUrl(
       itemId: arg.match.jellyfinItemId,
       startTime: startPosition > Duration.zero ? startPosition : null,
       audioStreamIndex: audioIndex,

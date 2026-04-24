@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:client/src/features/home/domain/home_nav_item.dart';
+import 'package:client/src/features/home/presentation/home_nav_item.dart';
 import 'package:client/src/shared/utils/context_extensions.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {

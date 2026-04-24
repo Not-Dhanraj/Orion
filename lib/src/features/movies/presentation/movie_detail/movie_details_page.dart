@@ -4,7 +4,7 @@ import 'package:client/src/features/movies/presentation/movie_edit/movie_edit_sh
 import 'package:client/src/features/releases/domain/release_target.dart';
 import 'package:client/src/features/releases/presentation/release_sheet.dart';
 import 'package:client/src/shared/domain/media_spec.dart';
-import 'package:client/src/shared/domain/snackbar_config.dart';
+import 'package:client/src/shared/widgets/indicators/snackbar_config.dart';
 import 'package:client/src/shared/utils/movie_utils.dart';
 import 'package:client/src/shared/widgets/dialogs/custom_dialog.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';

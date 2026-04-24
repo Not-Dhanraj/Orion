@@ -1,5 +1,5 @@
 import 'package:client/src/core/application/app_storage_service.dart';
-import 'package:client/src/exceptions/api_not_found.dart';
+import 'package:client/src/core/exceptions/api_not_found.dart';
 import 'package:client/src/shared/utils/string_extension.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jelly_api/jelly_api.dart';

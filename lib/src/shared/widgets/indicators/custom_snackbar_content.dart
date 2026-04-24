@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:client/src/shared/domain/snackbar_config.dart';
+import 'package:client/src/shared/widgets/indicators/snackbar_config.dart';
 
 class CustomSnackbarContent extends StatefulWidget {
   final String message;

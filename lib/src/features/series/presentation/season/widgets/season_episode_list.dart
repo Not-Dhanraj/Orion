@@ -2,7 +2,7 @@ import 'package:client/src/features/jellyfin/application/jellyfin_match_provider
 import 'package:client/src/features/jellyfin/domain/jellyfin_match_result.dart';
 import 'package:client/src/features/series/domain/season_page_args.dart';
 import 'package:client/src/features/series/presentation/season/season_controller.dart';
-import 'package:client/src/shared/domain/snackbar_config.dart';
+import 'package:client/src/shared/widgets/indicators/snackbar_config.dart';
 import 'package:client/src/shared/widgets/indicators/animated_loading_text.dart';
 import 'package:client/src/shared/widgets/indicators/custom_snackbar.dart';
 import 'package:client/src/shared/widgets/dialogs/custom_dialog.dart';

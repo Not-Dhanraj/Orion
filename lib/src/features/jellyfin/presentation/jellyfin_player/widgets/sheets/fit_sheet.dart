@@ -33,20 +33,25 @@ class _FitSheetState extends State<FitSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: VideoFit.values.map((fit) {
-              final active = _currentFit == fit;
-              return _FitOptionCard(
-                fit: fit,
-                active: active,
-                onTap: () {
-                  setState(() => _currentFit = fit);
-                  widget.onFitChanged(fit);
-                },
+          LayoutBuilder(
+            builder: (context, constraints) {
+              return Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: VideoFit.values.map((fit) {
+                  final active = _currentFit == fit;
+                  return _FitOptionCard(
+                    fit: fit,
+                    active: active,
+                    availableWidth: constraints.maxWidth,
+                    onTap: () {
+                      setState(() => _currentFit = fit);
+                      widget.onFitChanged(fit);
+                    },
+                  );
+                }).toList(),
               );
-            }).toList(),
+            },
           ),
         ],
       ),
@@ -57,11 +62,13 @@ class _FitSheetState extends State<FitSheet> {
 class _FitOptionCard extends StatelessWidget {
   final VideoFit fit;
   final bool active;
+  final double availableWidth;
   final VoidCallback onTap;
 
   const _FitOptionCard({
     required this.fit,
     required this.active,
+    required this.availableWidth,
     required this.onTap,
   });
 
@@ -69,8 +76,7 @@ class _FitOptionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final tt = Theme.of(context).textTheme;
-    final screenWidth = MediaQuery.sizeOf(context).width;
-    final cardWidth = (screenWidth - 48 - 10) / 2;
+    final cardWidth = (availableWidth - 10) / 2;
 
     return GestureDetector(
       onTap: onTap,

@@ -71,30 +71,26 @@ class _LibraryItemRowState extends State<LibraryItemRow> {
                     child:
                         (widget.posterUrl != null &&
                             widget.posterUrl!.isNotEmpty)
-                        ? Hero(
-                            tag: 'media-hero-${widget.id}',
-                            transitionOnUserGestures: true,
-                            child: CachedNetworkImage(
-                              imageUrl: widget.posterUrl!,
-                              memCacheWidth: 60,
-                              fit: BoxFit.fill,
-                              fadeInDuration: Duration.zero,
-                              placeholderFadeInDuration: Duration.zero,
-                              errorWidget: (context, _, _) => Container(
-                                decoration: const BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Color(0xFF1C1B1D),
-                                      Color(0xFF2A2A2C),
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
+                        ? CachedNetworkImage(
+                            imageUrl: widget.posterUrl!,
+                            memCacheWidth: 60,
+                            fit: BoxFit.fill,
+                            fadeInDuration: Duration.zero,
+                            placeholderFadeInDuration: Duration.zero,
+                            errorWidget: (context, _, _) => Container(
+                              decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color(0xFF1C1B1D),
+                                    Color(0xFF2A2A2C),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
                                 ),
-                                child: Icon(
-                                  TablerIcons.photo_exclamation,
-                                  size: 15,
-                                ),
+                              ),
+                              child: Icon(
+                                TablerIcons.photo_exclamation,
+                                size: 15,
                               ),
                             ),
                           )

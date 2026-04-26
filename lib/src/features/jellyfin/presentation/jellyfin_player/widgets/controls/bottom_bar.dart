@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
@@ -91,17 +94,19 @@ class PlayerBottomBar extends StatelessWidget {
                     fmt(duration),
                     style: const TextStyle(color: Colors.white70, fontSize: 12),
                   ),
-                  const SizedBox(width: 12),
-                  GestureDetector(
-                    onTap: () => toggleFullscreen(context),
-                    child: Icon(
-                      isFullscreen(context)
-                          ? Icons.fullscreen_exit_rounded
-                          : Icons.fullscreen_rounded,
-                      color: Colors.white70,
-                      size: 20,
+                  if (kIsWeb || (!Platform.isAndroid && !Platform.isIOS)) ...[
+                    const SizedBox(width: 12),
+                    GestureDetector(
+                      onTap: () => toggleFullscreen(context),
+                      child: Icon(
+                        isFullscreen(context)
+                            ? Icons.fullscreen_exit_rounded
+                            : Icons.fullscreen_rounded,
+                        color: Colors.white70,
+                        size: 20,
+                      ),
                     ),
-                  ),
+                  ],
                 ],
               ),
             ),

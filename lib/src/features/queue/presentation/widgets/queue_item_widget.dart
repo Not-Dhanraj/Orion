@@ -187,10 +187,10 @@ class QueueItemWidget extends ConsumerWidget {
                 ),
                 child: const Text('Blacklist'),
               ),
-              OutlinedButton(
-                onPressed: () => context.pop(),
-                child: const Text('Cancel'),
-              ),
+              // OutlinedButton(
+              //   onPressed: () => context.pop(),
+              //   child: const Text('Cancel'),
+              // ),
             ],
           ),
         ),

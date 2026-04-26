@@ -3,6 +3,8 @@ import 'package:client/src/shared/widgets/indicators/custom_snackbar_content.dar
 import 'package:flutter/material.dart';
 
 class CustomSnackbar {
+  static OverlayEntry? _currentEntry;
+
   static void show(
     BuildContext context, {
     required String message,
@@ -11,29 +13,61 @@ class CustomSnackbar {
   }) {
     final cs = Theme.of(context).colorScheme;
     final config = SnackbarConfig.from(type, cs);
-
-    // Captured once here; passed into the widget so that if the snackbar
-    // content is rebuilt (e.g. after a navigation pop), the animation
-    // controller can resume from the correct elapsed position instead of
-    // restarting from zero. DO NOT REMOVE THIS
     final showTime = DateTime.now();
 
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          width: 512,
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          duration: duration,
-          content: CustomSnackbarContent(
-            message: message,
-            config: config,
-            showTime: showTime,
-            duration: duration,
+    _currentEntry?.remove();
+    _currentEntry = null;
+
+    final overlay = Overlay.of(context, rootOverlay: true);
+
+    late final OverlayEntry entry;
+
+    entry = OverlayEntry(
+      builder: (context) {
+        return Positioned(
+          bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+          left: 0,
+          right: 0,
+          child: Center(
+            child: Material(
+              color: Colors.transparent,
+              child: SizedBox(
+                width: 512,
+                child: Dismissible(
+                  key: ValueKey(showTime),
+                  direction: DismissDirection.down,
+                  onDismissed: (_) {
+                    if (_currentEntry == entry) {
+                      _currentEntry = null;
+                      Future.microtask(() {
+                        if (entry.mounted) entry.remove();
+                      });
+                    }
+                  },
+                  child: CustomSnackbarContent(
+                    message: message,
+                    config: config,
+                    showTime: showTime,
+                    duration: duration,
+                  ),
+                ),
+              ),
+            ),
           ),
-        ),
-      );
+        );
+      },
+    );
+
+    _currentEntry = entry;
+    overlay.insert(entry);
+
+    Future.delayed(duration, () {
+      if (_currentEntry == entry) {
+        if (entry.mounted) {
+          entry.remove();
+        }
+        _currentEntry = null;
+      }
+    });
   }
 }

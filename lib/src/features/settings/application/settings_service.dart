@@ -1,13 +1,12 @@
 import 'package:client/src/core/application/app_storage_service.dart';
 import 'package:client/src/core/domain/credentials.dart';
 import 'package:client/src/core/exceptions/repository_exception.dart';
-import 'package:client/src/features/settings/data/settings_validation_repository.dart';
+import 'package:client/src/core/data/server_validation_repository.dart';
 import 'package:client/src/shared/utils/string_extension.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jelly_api/jelly_api.dart';
 
 class SettingsService {
-  final SettingsValidationRepository _validator;
+  final ServerValidationRepository _validator;
   final AppStorageService _storageService;
 
   SettingsService(this._validator, this._storageService);
@@ -77,25 +76,18 @@ class SettingsService {
   ) async {
     final normalizedUrl = url.toNormalizedUrl();
     try {
-      var jellyApi = JellyApi(basePathOverride: normalizedUrl);
       final deviceId = _storageService.deviceId;
-      final authHeader =
-          'MediaBrowser Client="Orion", Device="Orion App", '
-          'DeviceId="$deviceId", Version="1.0.0"';
-      final response = await jellyApi.getUserApi().authenticateUserByName(
-        authenticateUserByName: AuthenticateUserByName(
-          username: username,
-          pw: password,
-        ),
-        headers: {'Authorization': authHeader},
+      final data = await _validator.authenticateJellyfin(
+        normalizedUrl,
+        username,
+        password,
+        deviceId,
       );
-      if (response.statusCode != 200) {
-        throw Exception('API returned ${response.statusMessage}');
-      }
-      final data = response.data;
+
       if (data == null || data.accessToken == null || data.user?.id == null) {
         throw Exception('No access token returned');
       }
+
       final creds = JellyfinCredentials(
         jellyfinUrl: normalizedUrl,
         username: username,
@@ -116,7 +108,7 @@ class SettingsService {
 
 final settingsServiceProvider = Provider<SettingsService>(
   (ref) => SettingsService(
-    ref.watch(settingsValidationRepositoryProvider),
+    ref.watch(serverValidationRepositoryProvider),
     ref.watch(appStorageProvider),
   ),
 );

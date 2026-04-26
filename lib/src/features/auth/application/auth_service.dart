@@ -2,24 +2,27 @@ import 'package:client/src/core/application/enabled_provider.dart';
 import 'package:client/src/core/application/app_storage_service.dart';
 import 'package:client/src/core/domain/credentials.dart';
 import 'package:client/src/core/exceptions/auth_exception.dart';
-import 'package:client/src/features/auth/data/auth_repository.dart';
+import 'package:client/src/core/data/server_validation_repository.dart';
+import 'package:client/src/core/application/api_provider.dart';
+import 'package:client/src/shared/utils/string_extension.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AuthService {
   final Ref _ref;
   final AppStorageService _storageService;
-  final AuthRepository _authRepository;
+  final ServerValidationRepository _validationRepository;
 
-  AuthService(this._ref, this._storageService, this._authRepository);
+  AuthService(this._ref, this._storageService, this._validationRepository);
 
   Future<void> _configureSonarr(String url, String apiKey) async {
-    final normalizedUrl = url.endsWith('/') ? url : '$url/';
+    final normalizedUrl = url.toNormalizedUrl();
 
     try {
       await _storageService.saveSonarrCredentials(
         SonarrCredentials(sonarrUrl: normalizedUrl, sonarrApi: apiKey),
       );
       _ref.invalidate(enabledNotifierProvider);
+      _ref.invalidate(seriesApiProvider);
     } catch (e, stackTrace) {
       throw AuthException(
         'Failed to save Sonarr configuration',
@@ -30,13 +33,14 @@ class AuthService {
   }
 
   Future<void> _configureRadarr(String url, String apiKey) async {
-    final normalizedUrl = url.endsWith('/') ? url : '$url/';
+    final normalizedUrl = url.toNormalizedUrl();
 
     try {
       await _storageService.saveRadarrCredentials(
         RadarrCredentials(radarrUrl: normalizedUrl, radarrApi: apiKey),
       );
       _ref.invalidate(enabledNotifierProvider);
+      _ref.invalidate(moviesApiProvider);
     } catch (e, stackTrace) {
       throw AuthException(
         'Failed to save Radarr configuration',
@@ -57,7 +61,7 @@ class AuthService {
 
     try {
       if (serviceType == ServiceType.sonarr) {
-        final data = await _authRepository.validateSonarr(url, apiKey);
+        final data = await _validationRepository.validateSonarr(url, apiKey);
         if (data == null) throw AuthException('Sonarr API returned no data');
         if (data.appName != 'Sonarr') {
           throw AuthException(
@@ -66,7 +70,7 @@ class AuthService {
         }
         await _configureSonarr(url, apiKey);
       } else {
-        final data = await _authRepository.validateRadarr(url, apiKey);
+        final data = await _validationRepository.validateRadarr(url, apiKey);
         if (data == null) throw AuthException('Radarr API returned no data');
         if (data.appName != 'Radarr') {
           throw AuthException(
@@ -94,11 +98,11 @@ class AuthService {
       throw AuthException('Jellyfin URL and username cannot be empty');
     }
 
-    final normalizedUrl = url.endsWith('/') ? url : '$url/';
+    final normalizedUrl = url.toNormalizedUrl();
     final deviceId = _storageService.deviceId;
 
     try {
-      final data = await _authRepository.authenticateJellyfin(
+      final data = await _validationRepository.authenticateJellyfin(
         normalizedUrl,
         username,
         password,
@@ -120,6 +124,7 @@ class AuthService {
         ),
       );
       _ref.invalidate(enabledNotifierProvider);
+      _ref.invalidate(jellyfinApiProvider);
     } catch (e, stackTrace) {
       if (e is AuthException) rethrow;
       throw AuthException(
@@ -137,6 +142,6 @@ final authServiceProvider = Provider<AuthService>((ref) {
   return AuthService(
     ref,
     ref.watch(appStorageProvider),
-    ref.watch(authRepositoryProvider),
+    ref.watch(serverValidationRepositoryProvider),
   );
 });

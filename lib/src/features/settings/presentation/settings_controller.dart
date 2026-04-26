@@ -4,6 +4,7 @@ import 'package:client/src/core/domain/credentials.dart';
 import 'package:client/src/features/settings/application/settings_service.dart';
 import 'package:client/src/features/settings/domain/settings_data.dart';
 import 'package:client/src/shared/utils/string_extension.dart';
+import 'package:client/src/core/application/api_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SettingsController extends Notifier<SettingsData> {
@@ -37,6 +38,7 @@ class SettingsController extends Notifier<SettingsData> {
         sonarrApi: apiKey,
       );
       state = state.copyWith(sonarrCredentials: credentials);
+      ref.invalidate(seriesApiProvider);
     } catch (e) {
       rethrow;
     }
@@ -54,6 +56,7 @@ class SettingsController extends Notifier<SettingsData> {
         radarrApi: apiKey,
       );
       state = state.copyWith(radarrCredentials: credentials);
+      ref.invalidate(moviesApiProvider);
     } catch (e) {
       rethrow;
     }
@@ -71,6 +74,7 @@ class SettingsController extends Notifier<SettingsData> {
         password,
       );
       state = state.copyWith(jellyfinCredentials: credentials);
+      ref.invalidate(jellyfinApiProvider);
     } catch (e) {
       rethrow;
     }
@@ -79,6 +83,7 @@ class SettingsController extends Notifier<SettingsData> {
   Future<void> deleteRadarrService() async {
     await _storageService.deleteRadarrCredentials();
     ref.invalidate(enabledNotifierProvider);
+    ref.invalidate(moviesApiProvider);
 
     state = state.copyWith(radarrCredentials: null);
   }
@@ -86,6 +91,7 @@ class SettingsController extends Notifier<SettingsData> {
   Future<void> deleteSonarrService() async {
     await _storageService.deleteSonarrCredentials();
     ref.invalidate(enabledNotifierProvider);
+    ref.invalidate(seriesApiProvider);
 
     state = state.copyWith(sonarrCredentials: null);
   }
@@ -93,6 +99,7 @@ class SettingsController extends Notifier<SettingsData> {
   Future<void> deleteJellyfinService() async {
     await _storageService.deleteJellyfinCredentials();
     ref.invalidate(enabledNotifierProvider);
+    ref.invalidate(jellyfinApiProvider);
 
     state = state.copyWith(jellyfinCredentials: null);
   }

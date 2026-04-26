@@ -37,7 +37,10 @@ class _JellyfinPlayerPageState extends ConsumerState<JellyfinPlayerPage> {
     ]);
 
     _player = Player(
-      configuration: const PlayerConfiguration(bufferSize: 32 * 1024 * 1024),
+      configuration: PlayerConfiguration(
+        bufferSize: 32 * 1024 * 1024,
+        title: widget.match.title,
+      ),
     );
     _videoController = VideoController(_player);
     _params = JellyfinPlayerParams(
@@ -45,10 +48,38 @@ class _JellyfinPlayerPageState extends ConsumerState<JellyfinPlayerPage> {
       player: _player,
       videoController: _videoController,
     );
+    HardwareKeyboard.instance.addHandler(_handleKeyEvent);
+  }
+
+  bool _handleKeyEvent(KeyEvent event) {
+    if (event is KeyDownEvent) {
+      if (event.logicalKey == LogicalKeyboardKey.space) {
+        _player.playOrPause();
+        return true;
+      } else if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
+        final position = _player.state.position;
+        _player.seek(position + const Duration(seconds: 10));
+        return true;
+      } else if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+        final position = _player.state.position;
+        _player.seek(position - const Duration(seconds: 10));
+        return true;
+      } else if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
+        final volume = _player.state.volume;
+        _player.setVolume((volume + 5.0).clamp(0.0, 100.0));
+        return true;
+      } else if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+        final volume = _player.state.volume;
+        _player.setVolume((volume - 5.0).clamp(0.0, 100.0));
+        return true;
+      }
+    }
+    return false;
   }
 
   @override
   void dispose() {
+    HardwareKeyboard.instance.removeHandler(_handleKeyEvent);
     SystemChrome.setPreferredOrientations(DeviceOrientation.values);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 

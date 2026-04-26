@@ -44,25 +44,21 @@ class MediaHeroHeader extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               (posterUrl != null && posterUrl != '')
-                  ? Hero(
-                      tag: 'media-hero-$id',
-                      transitionOnUserGestures: true,
-                      child: CachedNetworkImage(
-                        imageUrl: posterUrl!,
-                        memCacheWidth: isMobile ? 180 : 234,
-                        fit: BoxFit.fill,
-                        fadeInDuration: Duration.zero,
-                        placeholderFadeInDuration: Duration.zero,
-                        errorWidget: (context, _, _) => Container(
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Color(0xFF1C1B1D), Color(0xFF2A2A2C)],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
+                  ? CachedNetworkImage(
+                      imageUrl: posterUrl!,
+                      memCacheWidth: isMobile ? 180 : 234,
+                      fit: BoxFit.fill,
+                      fadeInDuration: Duration.zero,
+                      placeholderFadeInDuration: Duration.zero,
+                      errorWidget: (context, _, _) => Container(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Color(0xFF1C1B1D), Color(0xFF2A2A2C)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
                           ),
-                          child: Icon(TablerIcons.photo_exclamation, size: 15),
                         ),
+                        child: Icon(TablerIcons.photo_exclamation, size: 15),
                       ),
                     )
                   : Container(

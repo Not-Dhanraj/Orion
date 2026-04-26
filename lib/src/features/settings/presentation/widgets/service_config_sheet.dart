@@ -12,7 +12,12 @@ class ServiceConfigSheet extends StatefulWidget {
   final bool isJellyfin;
   final String initialUrl;
   final String initialApiKey; // Re-used as username for Jellyfin
-  final Future<void> Function(String url, String apiKeyOrUsername, [String? password]) onSave;
+  final Future<void> Function(
+    String url,
+    String apiKeyOrUsername, [
+    String? password,
+  ])
+  onSave;
 
   const ServiceConfigSheet({
     super.key,
@@ -41,7 +46,8 @@ class _ServiceConfigSheetState extends State<ServiceConfigSheet> {
     super.initState();
     _urlController = TextEditingController(text: widget.initialUrl);
     _apiController = TextEditingController(text: widget.initialApiKey);
-    _passwordController = TextEditingController(); // Doesn't persist password to UI
+    _passwordController =
+        TextEditingController(); // Doesn't persist password to UI
   }
 
   @override
@@ -78,7 +84,9 @@ class _ServiceConfigSheetState extends State<ServiceConfigSheet> {
               Text(
                 widget.isJellyfin
                     ? 'JELLYFIN CONFIG'
-                    : widget.isRadarr ? 'RADARR CONFIG' : 'SONARR CONFIG',
+                    : widget.isRadarr
+                    ? 'RADARR CONFIG'
+                    : 'SONARR CONFIG',
                 style: tt.labelSmall!.copyWith(
                   fontSize: 9,
                   letterSpacing: 2.0,
@@ -90,14 +98,45 @@ class _ServiceConfigSheetState extends State<ServiceConfigSheet> {
                 'Configure ${widget.serviceName}',
                 style: tt.titleMedium!.copyWith(fontWeight: FontWeight.bold),
               ),
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: cs.errorContainer.withValues(alpha: 0.3),
+                  borderRadius: BorderRadius.circular(0),
+                  border: Border.all(color: cs.error.withValues(alpha: 0.5)),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.warning_amber_rounded,
+                      size: 18,
+                      color: cs.error,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        'Changing credentials requires a full app restart to function properly.',
+                        style: tt.labelSmall!.copyWith(
+                          color: cs.onSurfaceVariant,
+                          height: 1.3,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(height: 24),
               CustomTextField(
                 controller: _urlController,
                 hint: widget.isRadarr
                     ? 'http://192.168.1.x:7878'
                     : widget.isJellyfin
-                        ? 'http://192.168.1.x:8096'
-                        : 'http://192.168.1.x:8989',
+                    ? 'http://192.168.1.x:8096'
+                    : 'http://192.168.1.x:8989',
                 enabled: !_isLoading,
                 validator: (v) => (v == null || v.trim().isEmpty)
                     ? 'Please enter a server URL'
@@ -109,9 +148,13 @@ class _ServiceConfigSheetState extends State<ServiceConfigSheet> {
                 hint: widget.isJellyfin ? 'Username' : 'API Key',
                 obscure: widget.isJellyfin ? false : _obscureApi,
                 enabled: !_isLoading,
-                onToggle: widget.isJellyfin ? null : () => setState(() => _obscureApi = !_obscureApi),
+                onToggle: widget.isJellyfin
+                    ? null
+                    : () => setState(() => _obscureApi = !_obscureApi),
                 validator: (v) => (v == null || v.trim().isEmpty)
-                    ? widget.isJellyfin ? 'Please enter a username' : 'Please enter an API key'
+                    ? widget.isJellyfin
+                          ? 'Please enter a username'
+                          : 'Please enter an API key'
                     : null,
               ),
               if (widget.isJellyfin) ...[
@@ -154,7 +197,6 @@ class _ServiceConfigSheetState extends State<ServiceConfigSheet> {
   Future<void> _save() async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
     setState(() => _isLoading = true);
-    final hostContext = Navigator.of(context, rootNavigator: true).context;
 
     try {
       await widget.onSave(
@@ -165,21 +207,17 @@ class _ServiceConfigSheetState extends State<ServiceConfigSheet> {
       if (mounted) context.pop();
     } on RepositoryException catch (e) {
       if (!mounted) return;
-      context.pop();
 
-      if (!hostContext.mounted) return;
       CustomSnackbar.show(
-        hostContext,
+        context,
         message: e.message,
         type: CustomSnackbarType.error,
       );
     } catch (e) {
       if (!mounted) return;
-      context.pop();
 
-      if (!hostContext.mounted) return;
       CustomSnackbar.show(
-        hostContext,
+        context,
         message: e.toString(),
         type: CustomSnackbarType.error,
       );

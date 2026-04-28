@@ -11,7 +11,7 @@ A modern, responsive, and feature-rich cross-platform client for Jellyfin, Radar
   - **Movie Management**: Browse, search, and manage your Radarr movie library.
   - **TV Show Management**: Browse, search, and manage your Sonarr TV series library.
   - **Download Queue**: View and manage all downloads in a unified interface with status indicators and progress tracking.
-- **Multi-platform Support**: Run on Android, iOS, Windows, macOS, Linux, and Web.
+- **Multi-platform Support**: Run on Android, Windows, Linux, and Web.
 - **Responsive Design**: Adapts to any screen size with responsive layouts using adaptive navigation.
 - **Dynamic Theming**: Light and dark theme support adapting to your system preferences.
 
@@ -79,25 +79,15 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 <details>
 <summary><strong>What is the purpose of this app?</strong></summary>
-This application is created for educational purposes. It demonstrates how to build a unified interface for multiple media management APIs using Flutter.
+I created this app just for fun and wanted to try something new with open API. It shows a unified interface for multiple media management APIs using Flutter.
 </details>
 
 <details>
-<summary><strong>What exactly is Orion?</strong></summary>
-It is basically a unified frontend for Sonarr, Radarr, and Jellyfin. It brings all of them into one single app so you don't have to switch between different interfaces to manage your movies, shows, and streams.
+<summary><strong>Why did I reinvent the wheel?</strong></summary>
+Because I wanted the wheel to be red, I guess. At the time when I started working on it, there was no open source app fot this on android (there was one but it was discontinued, so I created one myself).
 </details>
 
 <details>
-<summary><strong>Which platforms does Orion support?</strong></summary>
-Based on Flutter, it supports Android, iOS, Windows, macOS, Linux, and Web.
-</details>
-
-<details>
-<summary><strong>Can I stream my movies and shows directly in the app?</strong></summary>
-Yes! Through the Jellyfin integration, you can stream media right to your device on platforms that support video playback. Note that you will only be able to stream items that are present in your Radarr and Sonarr libraries as well.
-</details>
-
-<details>
-<summary><strong>How do I manage my media downloading?</strong></summary>
-Connect Radarr for movies and Sonarr for TV shows. You can view, pause, and manage active downloads directly in app's queue section.
+<summary><strong>Did I vibecode this app?</strong></summary>
+Depends on how you explain vibecoding, but I did use AI for some tasks here and there. One thing I'd like to clarify is that I can't design the UI, so I used Stitch to generate it. I liked it and replaced the old UI with it. You can check old commits to see the old UI.
 </details>
